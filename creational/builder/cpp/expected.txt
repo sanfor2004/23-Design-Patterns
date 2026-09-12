@@ -1,0 +1,2 @@
+/orders timeout=5 retry=1
+Invalid request rejected

@@ -1,0 +1,3 @@
+Begin report
+sales=42
+End report

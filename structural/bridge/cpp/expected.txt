@@ -1,0 +1,3 @@
+Email: status normal
+Email: URGENT: disk full
+SMS: URGENT: disk full
