@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-جهّز object بخطوات اسمها واضح، وبعدين طلّع النتيجة.
+جهّز الكائن (`object`) بخطوات أساميها واضحة، وبعدين طلّع النتيجة.
 
 ## The Problem
 
-الـ Request فيها Endpoint و Timeout واختيار Retry ؛ كل ما الخيارات تزيد، ترتيب الـ Arguments بيبقى أصعب.
+طلب الاتصال (`Request`) فيه عنوان (`Endpoint`)، ومهلة انتظار (`Timeout`)، واختيار لإعادة المحاولة (`Retry`). كل ما الخيارات تزيد، ترتيب المعاملات (`Arguments`) بيبقى أصعب.
 
 ## Naive Solution
 
@@ -28,11 +28,11 @@ Request request{"/orders", 5, true}; // what does true mean?
 
 ## Why It Becomes a Problem
 
-الـ constructor شغال، بس شوية أرقام و Booleans جنب بعض مش بيوضحوا المقصود، والغلط في ترتيبهم سهل يفوت.
+الـ `constructor` شغال، بس شوية أرقام و `Booleans` جنب بعض مش بيوضحوا المقصود، والغلط في ترتيبهم سهل يفوت.
 
 ## The Idea
 
-خزّن الاختيارات مؤقتاً في RequestBuilder. الـ methods اسمها يوضح الاختيار، و build تراجع القيم وترجع Request بالقيمة.
+خزّن الاختيارات مؤقتًا في `RequestBuilder`. سمّي كل عملية باسم يوضح الاختيار اللي بتضبطه. في الآخر، الدالة `build` بتراجع القيم وترجع النتيجة من نوع `Request` بالقيمة.
 
 ## Real-World Analogy
 
@@ -50,13 +50,13 @@ Client  -->  RequestBuilder  -->  Request
 
 ## Participants
 
-RequestBuilder بتجمع الاختيارات وتراجعها. Request بتمتلك القيم النهائية، والـ Client بيختار ترتيب الخطوات الاختيارية.
+في المثال، `RequestBuilder` بتجمع الاختيارات وتراجعها. الكائن الناتج، من نوع `Request`، بيمتلك القيم النهائية. المستدعي (`Client`) بيختار ترتيب الخطوات الاختيارية.
 
 الأدوار القياسية في المثال ده:
 
-- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. هنا: `Request`.
-- [`fluent interface`](../../GLOSSARY.md#fluent-interface) — interface بتسمح بسلسلة نداءات مقروءة؛ ده لوحده مش معناه Builder. هنا: `RequestBuilder.endpoint().timeout().retry()`.
-- [`constructor`](../../GLOSSARY.md#constructor) — العملية الخاصة اللي بتجهّز instance جديدة وقت إنشائها. هنا: `Request::Request`.
+- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. هنا: `Request`.
+- [`fluent interface`](../../GLOSSARY.md#fluent-interface) — عقد (`interface`) بيسمح تكتب سلسلة استدعاءات بشكل مقروء؛ ده لوحده مش معناه إنك بتستخدم `Builder`. هنا: `RequestBuilder.endpoint().timeout().retry()`.
+- [`constructor`](../../GLOSSARY.md#constructor) — العملية الخاصة اللي بتجهّز `instance` جديدة وقت إنشائها. هنا: `Request::Request`.
 
 ## Modern C++20 Example
 
@@ -111,11 +111,11 @@ Invalid request rejected
 
 ### Use cases
 
-مناسب لإعداد HTTP Requests وتجهيز بيانات الاختبار؛ المثال مش بيعمل اتصال بالشبكة.
+مناسب لإعداد `HTTP Requests` وتجهيز بيانات الاختبار؛ المثال مش بيعمل اتصال بالشبكة.
 
 ## When NOT to Use
 
-بلاش مع معاملين واضحين؛ struct صغيرة ممكن تكون أبسط.
+بلاش مع معاملين واضحين؛ الـ `struct` صغيرة ممكن تكون أبسط.
 
 ## Advantages
 
@@ -123,7 +123,7 @@ Invalid request rejected
 
 ## Trade-offs
 
-فيه نوع زيادة هتصونه. constructor بتاعة Request هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
+فيه نوع زيادة هتصونه. الـ `constructor` بتاعة `Request` هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
 
 ## Related Patterns
 
@@ -131,34 +131,34 @@ Invalid request rejected
 
 ## Common Confusion
 
-Factory Method بتختار نوع المنتج جوه Workflow موروث. Builder بتجمع إعداد النتيجة على كذا خطوة.
+الـ `Factory Method` بتختار نوع المنتج جوه `Workflow` موروث. الـ `Builder` بتجمع إعداد النتيجة على كذا خطوة.
 
 ## Terms to Remember
 
-- `Builder` — جهّز object بخطوات اسمها واضح، وبعدين طلّع النتيجة.
-- `Product` — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. مثال: `Request`.
-- `fluent interface` — interface بتسمح بسلسلة نداءات مقروءة؛ ده لوحده مش معناه Builder. مثال: `RequestBuilder.endpoint().timeout().retry()`.
-- `constructor` — العملية الخاصة اللي بتجهّز instance جديدة وقت إنشائها. مثال: `Request::Request`.
+- `Builder` — جهّز الكائن (`object`) بخطوات أساميها واضحة، وبعدين طلّع النتيجة.
+- `Product` — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. مثال: `Request`.
+- `fluent interface` — عقد (`interface`) بيسمح تكتب سلسلة استدعاءات بشكل مقروء؛ ده لوحده مش معناه إنك بتستخدم `Builder`. مثال: `RequestBuilder.endpoint().timeout().retry()`.
+- `constructor` — العملية الخاصة اللي بتجهّز `instance` جديدة وقت إنشائها. مثال: `Request::Request`.
 
 ## Interview Vocabulary
 
-- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز القيم الأولية وبدء lifetime بتاعة object.
+- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز قيمه الأولية. من هنا بيبدأ عمر الكائن (`lifetime`).
 - [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — بتفصل أنواع الشغل المختلفة عشان كل نوع يقدر يتغير لوحده.
 - [`single responsibility`](../../GLOSSARY.md#single-responsibility) — خلّي الجزء مركز على سبب واحد مترابط للتغيير.
 
 ## Interview Question
 
-هل أي fluent interface تعتبر Builder؟ وضّح فين الإنشاء بينتهي.
+هل أي `fluent interface` تعتبر `Builder`؟ وضّح فين الإنشاء بينتهي.
 
 ## Mini Challenge
 
-ارفض Timeout أكبر من 120 ، وجرّب آخر قيمة مقبولة وأول قيمة مرفوضة.
+ارفض `Timeout` أكبر من 120، وجرّب آخر قيمة مقبولة وأول قيمة مرفوضة.
 
 ## Quick Summary
 
-- **المشكلة:** الـ Request فيها Endpoint و Timeout واختيار Retry ؛ كل ما الخيارات تزيد، ترتيب الـ Arguments بيبقى أصعب.
-- **الحل:** خزّن الاختيارات مؤقتاً في RequestBuilder. الـ methods اسمها يوضح الاختيار، و build تراجع القيم وترجع Request بالقيمة.
-- **Trade-off:** فيه نوع زيادة هتصونه. constructor بتاعة Request هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
+- **المشكلة:** طلب الاتصال (`Request`) فيه عنوان (`Endpoint`)، ومهلة انتظار (`Timeout`)، واختيار لإعادة المحاولة (`Retry`). كل ما الخيارات تزيد، ترتيب المعاملات (`Arguments`) بيبقى أصعب.
+- **الحل:** خزّن الاختيارات مؤقتًا في `RequestBuilder`. سمّي كل عملية باسم يوضح الاختيار اللي بتضبطه. في الآخر، الدالة `build` بتراجع القيم وترجع النتيجة من نوع `Request` بالقيمة.
+- **`Trade-off`:** فيه نوع زيادة هتصونه. الـ `constructor` بتاعة `Request` هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
 - **افتكر:** اختار الخطوات، وبعدها ابنِ.
 
 [السابق](../../creational/abstract-factory/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/factory-method/README.ar-EG.md)

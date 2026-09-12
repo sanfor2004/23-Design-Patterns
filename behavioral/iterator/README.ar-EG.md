@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -18,7 +18,7 @@
 
 ## The Problem
 
-الـ Client محتاج يقرأ أغاني القائمة من غير ما يدخل على التخزين الخاص.
+الـ `Client` محتاج يقرأ أغاني القائمة من غير ما يدخل على التخزين الخاص.
 
 ## Naive Solution
 
@@ -30,11 +30,11 @@ for (std::size_t i = 0; i < tracks.size(); ++i) {
 
 ## Why It Becomes a Problem
 
-كود الـ Index مربوط بـ std::vector عامة بيكشف التمثيل وبيوزع حساب الحدود.
+كود الـ `Index` مربوط بـ `std::vector` عامة بيكشف التمثيل وبيوزع حساب الحدود.
 
 ## The Idea
 
-وفّر begin و end وIterator بتدعم القراءة والزيادة والمقارنة.
+وفّر بداية النطاق ونهايته عن طريق `begin` و`end`. أداة المرور (`Iterator`) تدعم قراءة العنصر الحالي، والانتقال للي بعده، والمقارنة.
 
 ## Real-World Analogy
 
@@ -52,13 +52,13 @@ range-for client  -->  Playlist::Iterator  -->  private tracks
 
 ## Participants
 
-Playlist بتمتلك الأغاني؛ Iterator بتستعير الـ std::vector وبتحفظ الموضع. Range-for هي الـ Client ، و static_assert بتراجع forward_iterator في C++20.
+في المثال، `Playlist` بتمتلك الأغاني. أداة المرور `Iterator` بتستعير التخزين، من نوع `std::vector`، وبتحتفظ بالموضع. حلقة `range-for` هي المستدعي (`Client`). بنستخدم `static_assert` للتأكد من استيفاء متطلبات `std::forward_iterator` في `C++20`.
 
 الأدوار القياسية في المثال ده:
 
-- [`Aggregate`](../../GLOSSARY.md#aggregate) — المجموعة اللي بتوفر iterators للمرور عليها. هنا: `Playlist`.
-- [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — implementation بتحفظ مكان المرور في Aggregate معينة. هنا: `Playlist::Iterator`.
-- [`forward iterator`](../../GLOSSARY.md#forward-iterator) — iterator بتتحرك لقدام وتدعم multipass؛ نسخ مستقلة منها تقدر تمر على نفس النطاق. هنا: `std::forward_iterator`.
+- [`Aggregate`](../../GLOSSARY.md#aggregate) — المجموعة اللي بتوفر `iterators` للمرور عليها. هنا: `Playlist`.
+- [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — تنفيذ (`implementation`) بيحفظ موضع المرور في مجموعة محددة (`Aggregate`). هنا: `Playlist::Iterator`.
+- [`forward iterator`](../../GLOSSARY.md#forward-iterator) — أداة مرور (`iterator`) بتتحرك لقدام، وبتدعم المرور المستقل أكتر من مرة (`multipass`). يعني نسخها المستقلة تقدر تمر على نفس النطاق. هنا: `std::forward_iterator`.
 
 ## Modern C++20 Example
 
@@ -107,23 +107,23 @@ Track 18
 
 ## When to Use
 
-استخدم Iterators أو Ranges قياسية عشان تعرض المرور من غير كشف التخزين.
+استخدم `Iterators` أو `Ranges` قياسية عشان تعرض المرور من غير كشف التخزين.
 
 ### Use cases
 
-مناسب للمرور على الـ containers والشجر؛ اختار الفئة حسب العمليات والتكلفة الفعلية.
+مناسب للمرور على الـ `containers` والشجر؛ اختار الفئة حسب العمليات والتكلفة الفعلية.
 
 ## When NOT to Use
 
-بلاش Iterator مخصصة لو const iterators موجودة أو Range كفاية؛ الـ [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد interface) هنا للتعليم.
+بلاش `Iterator` مخصصة لو `const iterators` موجودة أو `Range` كفاية؛ الـ [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد `interface`) هنا للتعليم.
 
 ## Advantages
 
-الـ algorithms بتستخدم بروتوكول موحد، وكل Iterator ليها موضع مستقل.
+الـ `algorithms` بتستخدم بروتوكول موحد، وكل `Iterator` ليها موضع مستقل.
 
 ## Trade-offs
 
-الـ Iterator مش بتطوّل عمر المجموعة. نقل أو تدمير Playlist يبطل الافتراضات، وقراءة end غير صالحة زي القياسي.
+الـ `Iterator` مش بتطوّل عمر المجموعة. نقل أو تدمير `Playlist` يبطل الافتراضات، وقراءة `end` غير صالحة زي القياسي.
 
 ## Related Patterns
 
@@ -131,34 +131,34 @@ Track 18
 
 ## Common Confusion
 
-Visitor بتختار العملية حسب نوع العنصر. Iterator بتدير المرور من غير ما تعرف هتعمل إيه بالعنصر.
+الـ `Visitor` بتختار العملية حسب نوع العنصر. الـ `Iterator` بتدير المرور من غير ما تعرف هتعمل إيه بالعنصر.
 
 ## Terms to Remember
 
 - `Iterator` — لف على مجموعة من خلال طريقة وصول ثابتة.
-- `Aggregate` — المجموعة اللي بتوفر iterators للمرور عليها. مثال: `Playlist`.
-- `Concrete Iterator` — implementation بتحفظ مكان المرور في Aggregate معينة. مثال: `Playlist::Iterator`.
-- `forward iterator` — iterator بتتحرك لقدام وتدعم multipass؛ نسخ مستقلة منها تقدر تمر على نفس النطاق. مثال: `std::forward_iterator`.
+- `Aggregate` — المجموعة اللي بتوفر `iterators` للمرور عليها. مثال: `Playlist`.
+- `Concrete Iterator` — تنفيذ (`implementation`) بيحفظ موضع المرور في مجموعة محددة (`Aggregate`). مثال: `Playlist::Iterator`.
+- `forward iterator` — أداة مرور (`iterator`) بتتحرك لقدام، وبتدعم المرور المستقل أكتر من مرة (`multipass`). يعني نسخها المستقلة تقدر تمر على نفس النطاق. مثال: `std::forward_iterator`.
 
 ## Interview Vocabulary
 
 - [`encapsulation`](../../GLOSSARY.md#encapsulation) — بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة.
-- [`iterator invalidation`](../../GLOSSARY.md#iterator-invalidation) — عملية بتخلي iterator ما بقتش صالحة للاستخدام المقصود.
-- [`generic programming`](../../GLOSSARY.md#generic-programming) — بتكتب algorithms على أساس متطلبات النوع بدل ما تربطها بنوع واحد.
+- [`iterator invalidation`](../../GLOSSARY.md#iterator-invalidation) — عملية بتخلي `iterator` ما بقتش صالحة للاستخدام المقصود.
+- [`generic programming`](../../GLOSSARY.md#generic-programming) — بتكتب `algorithms` على أساس متطلبات النوع بدل ما تربطها بنوع واحد.
 
 ## Interview Question
 
-ليه المقارنة بتراجع pointer الـ std::vector كمان، مش الـ Index بس؟
+ليه المقارنة بتراجع `pointer` الـ `std::vector` كمان، مش الـ `Index` بس؟
 
 ## Mini Challenge
 
-اختبر قائمة فاضية وIterator اتنين مستقلين؛ تحريك واحدة ما يحركش التانية.
+اختبر قائمة فاضية و `Iterator` اتنين مستقلين؛ تحريك واحدة ما يحركش التانية.
 
 ## Quick Summary
 
-- **المشكلة:** الـ Client محتاج يقرأ أغاني القائمة من غير ما يدخل على التخزين الخاص.
-- **الحل:** وفّر begin و end وIterator بتدعم القراءة والزيادة والمقارنة.
-- **Trade-off:** الـ Iterator مش بتطوّل عمر المجموعة. نقل أو تدمير Playlist يبطل الافتراضات، وقراءة end غير صالحة زي القياسي.
-- **افتكر:** امشي على البيانات من غير ما تفتح الـ container.
+- **المشكلة:** الـ `Client` محتاج يقرأ أغاني القائمة من غير ما يدخل على التخزين الخاص.
+- **الحل:** وفّر بداية النطاق ونهايته عن طريق `begin` و`end`. أداة المرور (`Iterator`) تدعم قراءة العنصر الحالي، والانتقال للي بعده، والمقارنة.
+- **`Trade-off`:** الـ `Iterator` مش بتطوّل عمر المجموعة. نقل أو تدمير `Playlist` يبطل الافتراضات، وقراءة `end` غير صالحة زي القياسي.
+- **افتكر:** امشي على البيانات من غير ما تفتح الـ `container`.
 
 [السابق](../../behavioral/interpreter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/mediator/README.ar-EG.md)

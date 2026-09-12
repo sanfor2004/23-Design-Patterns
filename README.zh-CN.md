@@ -1,6 +1,6 @@
 ![Sanfor2004](assets/brand/logo.svg)
 
-# Design-Patterns-23
+# 23 Design Patterns
 
 23 Patterns · 4 Languages · Real Examples · Simple Explanations
 

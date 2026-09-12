@@ -2,158 +2,158 @@
 
 [دليل الأنماط](README.ar-EG.md)
 
-أشكال شبه بعض ممكن تحل مشاكل مختلفة. اختار حسب الهدف، وإيه اللي بيتغير، ومكان الـ responsibility.
+أشكال شبه بعض ممكن تحل مشاكل مختلفة. اختار حسب الهدف، وإيه اللي بيتغير، ومكان الـ `responsibility`.
 
 
 ## Strategy ↔ State
 
 ### المشكلة الأساسية
 
-الاتنين بيفوضوا الـ behavior ؛ Strategy لاختيار algorithm ، وState لرد حسب lifecycle.
+الاتنين بيفوضوا الـ `behavior`؛ الـ `Strategy` لاختيار `algorithm`، و `State` لرد حسب `lifecycle`.
 
 ### فرق التركيب
 
-Strategy عادة المستدعي بيختارها. State ممكن تبدأ انتقال الـ Context بعد حدث.
+الـ `Strategy` عادة المستدعي بيختارها. الـ `State` ممكن تبدأ انتقال الـ `Context` بعد حدث.
 
 ### استخدام شائع
 
-اختار رسوم الشحن بـ Strategy، ومثّل باب مفتوح أو مقفول أو متقفل بمفتاح بـ State.
+اختار رسوم الشحن بـ `Strategy`، ومثّل باب مفتوح أو مقفول أو متقفل بمفتاح بـ `State`.
 
 ### قاعدة الاختيار
 
-التغيير سببه اختيار سياسة؟ Strategy. حدث بيغيّر مرحلة حياة؟ State.
+التغيير سببه اختيار سياسة؟ `Strategy`. حدث بيغيّر مرحلة حياة؟ `State`.
 
 ### مثال تصميم صغير
 
-Checkout → ShippingRule مختارة؛ Door → DoorState حالية → حالة تالية.
+في `Checkout`، المستدعي بيختار طريقة حساب من نوع `ShippingRule`. أما الباب `Door`، فبيفوّض الاستجابة للحالة الحالية `DoorState`، واللي بتحدد الانتقال التالي.
 
 [Strategy](behavioral/strategy/README.ar-EG.md) · [State](behavioral/state/README.ar-EG.md)
 
 ### افتكر
 
-Strategy بتختار الطريقة؛ State بتربط التصرف بمرحلة الحياة.
+الـ `Strategy` بتختار الطريقة؛ الـ `State` بتربط التصرف بمرحلة الحياة.
 
 ## Adapter ↔ Facade
 
 ### المشكلة الأساسية
 
-Adapter بتحل عدم توافق interface ، وFacade بتقلل شغل استخدام نظام.
+الـ `Adapter` بتحل عدم توافق `interface`، و `Facade` بتقلل شغل استخدام نظام.
 
 ### فرق التركيب
 
-Adapter بتنّفذ العقد المطلوب حوالين API موجودة. Facade بتعرض Workflow أصغر فوق خدمات.
+الـ `Adapter` بتنّفذ العقد المطلوب حوالين `API` موجودة. الـ `Facade` بتعرض `Workflow` أصغر فوق خدمات.
 
 ### استخدام شائع
 
-حوّل Fahrenheit ل interface Celsius بـ Adapter، واجمع مخزون ودفع وشحن بـ Facade.
+حوّل `Fahrenheit` لعقد بيرجع الدرجة بوحدة `Celsius` بـ `Adapter`، واجمع مخزون ودفع وشحن بـ `Facade`.
 
 ### قاعدة الاختيار
 
-محتاج توافق مع عقد محدد؟ Adapter. محتاج مدخل أبسط؟ Facade، وممكن تستخدم Adapters جواها.
+محتاج توافق مع عقد محدد؟ `Adapter`. محتاج مدخل أبسط؟ `Facade`، وممكن تستخدم `Adapters` جواها.
 
 ### مثال تصميم صغير
 
-Temperature ← CelsiusAdapter → LegacyThermometer ؛ Client → Checkout → خدمات.
+طبقة `CelsiusAdapter` بتنفّذ العقد `Temperature` باستخدام الحساس القديم `LegacyThermometer`. أما المستدعي (`Client`) في مثال الشراء، فبيتعامل مع `Checkout` بدل ما ينسّق الخدمات بنفسه.
 
 [Adapter](structural/adapter/README.ar-EG.md) · [Facade](structural/facade/README.ar-EG.md)
 
 ### افتكر
 
-Adapter بتترجم interface ؛ Facade بتبسّط خطوات شغل.
+الـ `Adapter` بتترجم `interface`؛ الـ `Facade` بتبسّط خطوات شغل.
 
 ## Decorator ↔ Proxy
 
 ### المشكلة الأساسية
 
-Decorator بتضيف responsibilities ، وProxy بتتحكم في الوصول للأصل.
+الـ `Decorator` بتضيف `responsibilities`، و `Proxy` بتتحكم في الوصول للأصل.
 
 ### فرق التركيب
 
-الاتنين ممكن ينفذوا نفس الـ interface ويفوضوا لعنصر ملفوف. الهدف أدق من الشكل في التفريق.
+الاتنين ممكن ينفذوا نفس الـ `interface` ويفوضوا لعنصر ملفوف. الهدف أدق من الشكل في التفريق.
 
 ### استخدام شائع
 
-ضيف سعر اللبن أو ضغط بـ Decorator، وأجّل تحميل صورة أو افحص الوصول بـ Proxy.
+ضيف سعر اللبن أو ضغط بـ `Decorator`، وأجّل تحميل صورة أو افحص الوصول بـ `Proxy`.
 
 ### قاعدة الاختيار
 
-الطبقة بتضيف قدرة اختيارية ولا بتحكم الوصول؟ فيه Wrappers ممكن تعمل الاتنين.
+الطبقة بتضيف قدرة اختيارية ولا بتحكم الوصول؟ فيه `Wrappers` ممكن تعمل الاتنين.
 
 ### مثال تصميم صغير
 
-Milk(Drink) بتضيف سعر؛ LazyImage بتحدد إمتى DiskImage تتعمل.
+طبقة `Milk` بتضيف تكلفة على مشروب `Drink`. أما البديل `LazyImage`، فبيحدد إمتى ينشئ الصورة `DiskImage`.
 
 [Decorator](structural/decorator/README.ar-EG.md) · [Proxy](structural/proxy/README.ar-EG.md)
 
 ### افتكر
 
-Decorator بتزوّد إمكانيات؛ Proxy بتنظّم الوصول.
+الـ `Decorator` بتزوّد إمكانيات؛ الـ `Proxy` بتنظّم الوصول.
 
 ## Factory Method ↔ Abstract Factory
 
 ### المشكلة الأساسية
 
-Factory Method بتغيّر خطوة إنشاء؛ Abstract Factory بتوفر عيلة متوافقة من أنواع منتجات مختلفة.
+الـ `Factory Method` بتغيّر خطوة إنشاء؛ الـ `Abstract Factory` بتوفر عيلة متوافقة من أنواع منتجات مختلفة.
 
 ### فرق التركيب
 
-الأولى عملية قابلة للـ override جوه Workflow. التانية object بتعرض إنشاء منتجات مرتبطة.
+الأولى عملية قابلة للـ `override` جوه `Workflow`. التانية `object` بتعرض إنشاء منتجات مرتبطة.
 
 ### استخدام شائع
 
-اختار Sender جوه AlertJob بالأولى؛ اعمل Button و Panel متوافقين بالتانية.
+اختار `Sender` جوه `AlertJob` بالأولى؛ اعمل `Button` و `Panel` متوافقين بالتانية.
 
 ### قاعدة الاختيار
 
-لو نقطة التوسعة إنشاء منتج جوه خطوات، اختار Factory Method. لو عيلة كاملة قابلة للتبديل، فكّر في Abstract Factory.
+لو نقطة التوسعة إنشاء منتج جوه خطوات، اختار `Factory Method`. لو عيلة كاملة قابلة للتبديل، فكّر في `Abstract Factory`.
 
 ### مثال تصميم صغير
 
-AlertJob::run → make_sender()؛ render → Theme.button() + Theme.panel().
+الخطوات المشتركة في `AlertJob::run` بتنادي `make_sender()`. أما العرض في `render`، فبيطلب نوعين من المنتجات عن طريق `Theme::button()` و`Theme::panel()`.
 
 [Factory Method](creational/factory-method/README.ar-EG.md) · [Abstract Factory](creational/abstract-factory/README.ar-EG.md)
 
 ### افتكر
 
-Factory Method بتغيّر خطوة إنشاء؛ Abstract Factory بتطلّع عيلة متوافقة.
+الـ `Factory Method` بتغيّر خطوة إنشاء؛ الـ `Abstract Factory` بتطلّع عيلة متوافقة.
 
 ## Builder ↔ Factory Method
 
 ### المشكلة الأساسية
 
-Builder بتعالج إعداد معقد؛ Factory Method بتحدد نوع المنتج اللي Workflow بتعمله.
+الـ `Builder` بتعالج إعداد معقد؛ الـ `Factory Method` بتحدد نوع المنتج اللي `Workflow` بتعمله.
 
 ### فرق التركيب
 
-Builder بتجمع حالة على استدعاءات مسماة وبعدين ترجع النتيجة. Factory Method بتختار المنتج بـ override.
+الـ `Builder` بتجمع حالة على استدعاءات مسماة وبعدين ترجع النتيجة. الـ `Factory Method` بتختار المنتج بـ `override`.
 
 ### استخدام شائع
 
-جهّز Request بـ Timeout و Retry ؛ أو اختار Sender لخطوات تنبيه مشتركة.
+جهّز `Request` بـ `Timeout` و `Retry`؛ أو اختار `Sender` لخطوات تنبيه مشتركة.
 
 ### قاعدة الاختيار
 
-اختيارات إنشاء كتير تشير لـ Builder. اختيار منتج بالـ subclass يشير لـ Factory Method. constructor بسيطة مش محتاجة أي واحدة.
+اختيارات إنشاء كتير تشير لـ `Builder`. اختيار منتج بالـ `subclass` يشير لـ `Factory Method`. الـ `constructor` بسيطة مش محتاجة أي واحدة.
 
 ### مثال تصميم صغير
 
-RequestBuilder.endpoint(...).timeout(...).build()؛ EmailJob بتغيّر make_sender().
+في `Builder`، بتجهّز الاختيارات وبعدين تطلب النتيجة: `RequestBuilder.endpoint(...).timeout(...).build()`. أما النوع `EmailJob`، فبيغيّر تنفيذ خطوة الإنشاء `make_sender()`.
 
 [Builder](creational/builder/README.ar-EG.md) · [Factory Method](creational/factory-method/README.ar-EG.md)
 
 ### افتكر
 
-Builder بتجهّز خطوة خطوة؛ Factory Method بتسيب اختيار المنتج للـ subclass.
+الـ `Builder` بتجهّز خطوة خطوة؛ الـ `Factory Method` بتسيب اختيار المنتج للـ `subclass`.
 
 ## Observer ↔ Mediator
 
 ### المشكلة الأساسية
 
-Observer بتوزع إشعارات التغيير؛ Mediator بتنظم تعامل الزملاء.
+الـ `Observer` بتوزع إشعارات التغيير؛ الـ `Mediator` بتنظم تعامل الزملاء.
 
 ### فرق التركيب
 
-Observer بتدير اشتراكات من غير قواعد كل مشترك. Mediator عارفة قاعدة التنسيق وأدوار الزملاء.
+الـ `Observer` بتدير اشتراكات من غير قواعد كل مشترك. الـ `Mediator` عارفة قاعدة التنسيق وأدوار الزملاء.
 
 ### استخدام شائع
 
@@ -161,70 +161,70 @@ Observer بتدير اشتراكات من غير قواعد كل مشترك. Med
 
 ### قاعدة الاختيار
 
-ردود مستقلة على حدث تشير لـ Observer. قاعدة بتربط زملاء تشير لـ Mediator، وممكن تستقبل إشعارات Observer.
+ردود مستقلة على حدث تشير لـ `Observer`. قاعدة بتربط زملاء تشير لـ `Mediator`، وممكن تستقبل إشعارات `Observer`.
 
 ### مثال تصميم صغير
 
-Stock → مشتركين؛ Field → LoginForm → Button.
+المصدر `Stock` بيبلّغ المشتركين بالتغيير. أما الحقل `Field`، فبيبلّغ المنسّق `LoginForm`، وهو اللي بيحدد حالة الزر `Button`.
 
 [Observer](behavioral/observer/README.ar-EG.md) · [Mediator](behavioral/mediator/README.ar-EG.md)
 
 ### افتكر
 
-Observer بتعلن التغيير؛ Mediator بتنسّق قاعدة بين أطراف.
+الـ `Observer` بتعلن التغيير؛ الـ `Mediator` بتنسّق قاعدة بين أطراف.
 
 ## Template Method ↔ Strategy
 
 ### المشكلة الأساسية
 
-الاتنين بيعادوا استخدام خطوات مع تغيير behavior ، بس مكان التغيير مختلف.
+الاتنين بيعادوا استخدام خطوات مع تغيير `behavior`، بس مكان التغيير مختلف.
 
 ### فرق التركيب
 
-Template Method بتنادي Hooks في الابن من هيكل موروث ثابت. Strategy بتفوّض لمتعاون أو callable ممررة.
+الـ `Template Method` بتنادي `Hooks` في الابن من هيكل موروث ثابت. الـ `Strategy` بتفوّض لمتعاون أو `callable` ممررة.
 
 ### استخدام شائع
 
-ثبّت ترتيب التقرير بالـ Hooks ، أو بدّل قاعدة الشحن بـ callable.
+ثبّت ترتيب التقرير بالـ `Hooks`، أو بدّل قاعدة الشحن بـ `callable`.
 
 ### قاعدة الاختيار
 
-اختار Template Method لعقد توسعة بالـ inheritance ثابت. Strategy أنسب لو الـ behavior مستقل عن نوع الـ Context.
+اختار `Template Method` لعقد توسعة بالـ `inheritance` ثابت. الـ `Strategy` أنسب لو الـ `behavior` مستقل عن نوع الـ `Context`.
 
 ### مثال تصميم صغير
 
-Report::generate → virtual format()؛ Checkout::total → ShippingRule.
+الدالة `Report::generate` بتنادي خطوة تنسيق موروثة هي `format()`. أما `Checkout::total`، فبتفوّض حساب الرسوم لطريقة مستقلة من نوع `ShippingRule`.
 
 [Template Method](behavioral/template-method/README.ar-EG.md) · [Strategy](behavioral/strategy/README.ar-EG.md)
 
 ### افتكر
 
-Template Method بتورّث ترتيب الخطوات؛ Strategy بتستقبل الـ behavior.
+الـ `Template Method` بتورّث ترتيب الخطوات؛ الـ `Strategy` بتستقبل الـ `behavior`.
 
 ## Composite ↔ Decorator
 
 ### المشكلة الأساسية
 
-Composite بتمثل علاقة الجزء بالكل؛ Decorator بتضيف behavior لعنصر.
+الـ `Composite` بتمثل علاقة الجزء بالكل؛ الـ `Decorator` بتضيف `behavior` لعنصر.
 
 ### فرق التركيب
 
-Composite غالباً بتمتلك أطفال كتير وبتجمع عملية. Decorator بتلف واحد وتضيف على الـ delegation.
+الـ `Composite` غالباً بتمتلك أطفال كتير وبتجمع عملية. الـ `Decorator` بتلف واحد وتضيف على الـ `delegation`.
 
 ### استخدام شائع
 
-اجمع أحجام فولدر متداخل بـ Composite؛ ضيف سعر اللبن حوالين Drink بـ Decorator.
+اجمع أحجام فولدر متداخل بـ `Composite`؛ ضيف سعر اللبن حوالين `Drink` بـ `Decorator`.
 
 ### قاعدة الاختيار
 
-مجموعة تتعامل زي ورقة؟ Composite. طبقات اختيارية حوالين واحد؟ Decorator، وممكن تلف Composite كمان.
+مجموعة تتعامل زي ورقة؟ `Composite`. طبقات اختيارية حوالين واحد؟ `Decorator`، وممكن تلف `Composite` كمان.
 
 ### مثال تصميم صغير
 
-Folder[File, Folder[File]]؛ Milk(Milk(Coffee)).
+الفولدر `Folder` ممكن يحتوي ملف `File` وفولدر تاني جواه ملفات. أما مشروب `Coffee`، فممكن تلفّه بطبقتين من `Milk`؛ كل طبقة بتضيف على اللي جواها.
 
 [Composite](structural/composite/README.ar-EG.md) · [Decorator](structural/decorator/README.ar-EG.md)
 
 ### افتكر
 
-Composite بتجمع عناصر؛ Decorator بتضيف طبقات حوالين عنصر.
+الـ `Composite` بتجمع عناصر؛ الـ `Decorator` بتضيف طبقات حوالين عنصر.

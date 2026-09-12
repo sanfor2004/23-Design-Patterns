@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-مرّر algorithm قابلة للتبديل للـ object اللي محتاجاها.
+افصل طريقة الحساب (`algorithm`) عن الكائن اللي بيستخدمها، عشان تقدر تختار طريقة بديلة لنفس المهمة.
 
 ## The Problem
 
-إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه Checkout.
+إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه `Checkout`.
 
 ## Naive Solution
 
@@ -32,7 +32,7 @@ int fee = express ? (subtotal >= 100 ? 0 : 15) : 5;
 
 ## The Idea
 
-Checkout بتمتلك callable اسمها ShippingRule وبتسألها عن الرسوم؛ المستدعي بيختار القاعدة وقت الإنشاء.
+خلّي حساب الشراء `Checkout` يحتفظ بطريقة لحساب رسوم الشحن. بيمثلها عقد قابل للاستدعاء (`callable`) اسمه `ShippingRule`. المستدعي بيختار الطريقة وقت الإنشاء، وحساب الإجمالي بيستخدمها من غير ما يعرف تفاصيلها.
 
 ## Real-World Analogy
 
@@ -50,13 +50,13 @@ Checkout::total()  -->  ShippingRule  -->  standard / express lambda
 
 ## Participants
 
-Checkout هي الـ Context ، ShippingRule عقد الـ behavior ، والـ Lambdas بتنّفذ الشحن العادي والسريع.
+في المثال، حساب الشراء `Checkout` بيلعب دور `Context`. عقد طريقة الحساب هو `ShippingRule`. بننفّذ طريقتي الشحن العادي والسريع باستخدام دوال قصيرة (`lambdas`).
 
 الأدوار القياسية في المثال ده:
 
-- [`Context`](../../GLOSSARY.md#context) — الـ object اللي بتستخدم Strategy أو بتفوّض behavior للـ State الحالية. هنا: `Checkout`.
-- [`Strategy interface`](../../GLOSSARY.md#strategy-interface) — عقد الـ algorithms القابلة للتبديل اللي Context بتستخدمها. هنا: `ShippingRule`.
-- [`Concrete Strategy`](../../GLOSSARY.md#concrete-strategy) — implementation محددة لـ Strategy interface؛ ممكن تكون callable بدل class. هنا: `standard / express lambdas`.
+- [`Context`](../../GLOSSARY.md#context) — الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). هنا: `Checkout`.
+- [`Strategy interface`](../../GLOSSARY.md#strategy-interface) — عقد الـ `algorithms` القابلة للتبديل اللي `Context` بتستخدمها. هنا: `ShippingRule`.
+- [`Concrete Strategy`](../../GLOSSARY.md#concrete-strategy) — تنفيذ محدد لعقد `Strategy interface`. ممكن تمثّله بحاجة قابلة للاستدعاء (`callable`)، ومش لازم يكون `class` مستقلة. هنا: `standard / express lambdas`.
 
 ## Modern C++20 Example
 
@@ -97,7 +97,7 @@ Express large: 120
 
 ## When to Use
 
-استخدمه لما الـ algorithms بتتغير باستقلال والـ Client محتاج يختار سياسة.
+استخدمه لما الـ `algorithms` بتتغير باستقلال والـ `Client` محتاج يختار سياسة.
 
 ### Use cases
 
@@ -105,7 +105,7 @@ Express large: 120
 
 ## When NOT to Use
 
-بلاش لـ algorithm ثابتة واحدة أو شرط واضح مش محتاج توسعة فعلية.
+بلاش لـ `algorithm` ثابتة واحدة أو شرط واضح مش محتاج توسعة فعلية.
 
 ## Advantages
 
@@ -113,7 +113,7 @@ Express large: 120
 
 ## Trade-offs
 
-[`std::function`](../../GLOSSARY.md#stdfunction) (Wrapper بتخزن callable بتوقيع محدد وبتخفي نوعها الفعلي) فيها [`type erasure`](../../GLOSSARY.md#type-erasure) (بتخفي النوع الفعلي ورا interface موحدة وقت runtime، زي std::function مع callables) وممكن تخصص ذاكرة؛ template أو function pointer ممكن يناسبوا قيود تانية. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
+بنستخدم [`std::function`](../../GLOSSARY.md#stdfunction) لتخزين دالة قابلة للاستدعاء بتوقيع محدد، مع إخفاء نوعها الفعلي. ده اسمه [`type erasure`](../../GLOSSARY.md#type-erasure)، وليه تكلفة وممكن يحتاج حجز ذاكرة. حسب القيود، ممكن تختار `template` أو مؤشر دالة (`function pointer`) بدلها. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
 
 ## Related Patterns
 
@@ -121,26 +121,26 @@ Express large: 120
 
 ## Common Confusion
 
-State بتمثل [`lifecycle`](../../GLOSSARY.md#lifecycle) (المراحل والانتقالات اللي بنمثلها لكيان في المشكلة؛ مش نفس lifetime بتاعة object في C++) وانتقالات، Strategy بتختار algorithm. Template Method بتغيّر خطوات موروثة بدل callable محقونة.
+في `Strategy`، بنختار طريقة حل (`algorithm`) لنفس المهمة. أما `State`، فبتمثل مراحل وانتقالات دورة العمل ([`lifecycle`](../../GLOSSARY.md#lifecycle))؛ ودي مش نفس عمر الكائن في الذاكرة (`lifetime`). نمط `Template Method` بيغيّر خطوات موروثة، بدل ما يستقبل طريقة مستقلة قابلة للاستدعاء (`callable`).
 
 ## Terms to Remember
 
-- `Strategy` — مرّر algorithm قابلة للتبديل للـ object اللي محتاجاها.
-- `Context` — الـ object اللي بتستخدم Strategy أو بتفوّض behavior للـ State الحالية. مثال: `Checkout`.
-- `Strategy interface` — عقد الـ algorithms القابلة للتبديل اللي Context بتستخدمها. مثال: `ShippingRule`.
-- `Concrete Strategy` — implementation محددة لـ Strategy interface؛ ممكن تكون callable بدل class. مثال: `standard / express lambdas`.
+- `Strategy` — افصل طريقة الحساب (`algorithm`) عن الكائن اللي بيستخدمها، عشان تقدر تختار طريقة بديلة لنفس المهمة.
+- `Context` — الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). مثال: `Checkout`.
+- `Strategy interface` — عقد الـ `algorithms` القابلة للتبديل اللي `Context` بتستخدمها. مثال: `ShippingRule`.
+- `Concrete Strategy` — تنفيذ محدد لعقد `Strategy interface`. ممكن تمثّله بحاجة قابلة للاستدعاء (`callable`)، ومش لازم يكون `class` مستقلة. مثال: `standard / express lambdas`.
 
 ## Interview Vocabulary
 
-- [`interchangeable behavior`](../../GLOSSARY.md#interchangeable-behavior) — behaviors مختلفة تقدر تمرّر أي واحدة منها من نفس العقد.
-- [`encapsulate an algorithm`](../../GLOSSARY.md#encapsulate-an-algorithm) — حط algorithm ورا عملية بتخفي خطواتها الداخلية.
-- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل objects متعاونة لما تعبر عن التغيير أوضح من تكبير شجرة inheritance.
-- [`runtime selection`](../../GLOSSARY.md#runtime-selection) — اختيار implementation والبرنامج شغال.
+- [`interchangeable behavior`](../../GLOSSARY.md#interchangeable-behavior) — سلوكيات مختلفة (`behaviors`) تقدر تختار أي واحدة منها من خلال نفس العقد.
+- [`encapsulate an algorithm`](../../GLOSSARY.md#encapsulate-an-algorithm) — حط `algorithm` ورا عملية بتخفي خطواتها الداخلية.
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل تركيب الحل من كائنات متعاونة (`objects`)، لما ده يكون أوضح من توسيع شجرة الوراثة (`inheritance`).
+- [`runtime selection`](../../GLOSSARY.md#runtime-selection) — اختيار `implementation` والبرنامج شغال.
 - [`loose coupling`](../../GLOSSARY.md#loose-coupling) — كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
 
 ## Interview Question
 
-استبدال std::function بـ template Parameter هيأثر إزاي على الاختيار وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء) والترجمة؟
+استخدام معامل نوع (`template parameter`) بدل `std::function` هيأثر إزاي على الاختيار وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء) والترجمة؟
 
 ## Mini Challenge
 
@@ -148,9 +148,9 @@ State بتمثل [`lifecycle`](../../GLOSSARY.md#lifecycle) (المراحل وا
 
 ## Quick Summary
 
-- **المشكلة:** إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه Checkout.
-- **الحل:** Checkout بتمتلك callable اسمها ShippingRule وبتسألها عن الرسوم؛ المستدعي بيختار القاعدة وقت الإنشاء.
-- **Trade-off:** std::function فيها type erasure وممكن تخصص ذاكرة؛ template أو function pointer ممكن يناسبوا قيود تانية. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
-- **افتكر:** نفس المهمة، اختار الـ algorithm.
+- **المشكلة:** إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه `Checkout`.
+- **الحل:** خلّي حساب الشراء `Checkout` يحتفظ بطريقة لحساب رسوم الشحن. بيمثلها عقد قابل للاستدعاء (`callable`) اسمه `ShippingRule`. المستدعي بيختار الطريقة وقت الإنشاء، وحساب الإجمالي بيستخدمها من غير ما يعرف تفاصيلها.
+- **`Trade-off`:** بنستخدم `std::function` لتخزين دالة قابلة للاستدعاء بتوقيع محدد، مع إخفاء نوعها الفعلي. ده اسمه `type erasure`، وليه تكلفة وممكن يحتاج حجز ذاكرة. حسب القيود، ممكن تختار `template` أو مؤشر دالة (`function pointer`) بدلها. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
+- **افتكر:** نفس المهمة، اختار الـ `algorithm`.
 
 [السابق](../../behavioral/state/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/template-method/README.ar-EG.md)

@@ -1,6 +1,6 @@
 # Creational Pattern
 
-[Design-Patterns-23](../README.ar-EG.md)
+[23 Design Patterns](../README.ar-EG.md)
 
 - [Abstract Factory](abstract-factory/README.ar-EG.md)
 - [Builder](builder/README.ar-EG.md)

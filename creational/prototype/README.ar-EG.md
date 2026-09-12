@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-اعمل object مستقلة عن طريق نسخ نموذج متجهّز.
+انسخ نموذج متجهّز عشان تنشئ كائن مستقل (`object`) وتعدّله من غير ما تغيّر الأصل.
 
 ## The Problem
 
-اللعبة محتاجة أعداء من template جاهزة، وكود الـ Spawn مش عارف النوع الفعلي.
+اللعبة محتاجة تنسخ أعداء من نموذج جاهز، لكن كود إنشاء الأعداء (`spawn`) مش عارف النوع الفعلي. النموذج هنا مش `template` بالمعنى الخاص بلغة `C++`.
 
 ## Naive Solution
 
@@ -29,11 +29,11 @@ another.rename("gate guard"); // must repeat any custom setup
 
 ## Why It Becomes a Problem
 
-إنشاء Guard افتراضية كل مرة بيكرر التجهيز وبيضيّع أي معدات مخصصة في النموذج.
+إنشاء `Guard` افتراضية كل مرة بيكرر التجهيز وبيضيّع أي معدات مخصصة في النموذج.
 
 ## The Idea
 
-وفّر clone في Enemy. Guard بتنسخ الـ Value Members وترجع [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (smart pointer بملكية حصرية، بتحرر الـ object لما المالك يتدمر) لـ object مستقلة.
+وفّر العملية `clone` في العقد `Enemy`. عند نسخ `Guard`، انسخ البيانات المخزّنة بالقيمة (`value members`). ارجع الكائن المستقل داخل [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr)، وهو مؤشر بملكية حصرية بيحرر الكائن تلقائيًا مع المالك.
 
 ## Real-World Analogy
 
@@ -51,11 +51,11 @@ Client  -->  Enemy::clone()  -->  independent Guard
 
 ## Participants
 
-Enemy بتحدد polymorphic cloning ، و Guard بتنفذه؛ الـ Client بيمتلك النسخة ويغيّر اسمها.
+في المثال، `Enemy` بتحدد عقد النسخ حسب النوع الفعلي (`polymorphic cloning`)، و `Guard` بتنفّذه. المستدعي (`Client`) بيمتلك النسخة الجديدة ويغيّر اسمها.
 
 الأدوار القياسية في المثال ده:
 
-- [`Concrete Prototype`](../../GLOSSARY.md#concrete-prototype) — object فيها clone بتعمل object تانية من القيم المتجهّزة. هنا: `Guard`.
+- [`Concrete Prototype`](../../GLOSSARY.md#concrete-prototype) — كائن بيوفّر العملية `clone` لإنشاء كائن تاني (`object`) من القيم المتجهّزة. هنا: `Guard`.
 - [`deep copy`](../../GLOSSARY.md#deep-copy) — بتنسخ البيانات الداخلية المملوكة عشان تعديل النسخة ما يغيرش الأصل. هنا: `Guard::clone`.
 - [`value semantics`](../../GLOSSARY.md#value-semantics) — النسخ تتعامل كقيم مستقلة حسب عقد النوع. هنا: `name_, equipment_`.
 
@@ -102,11 +102,11 @@ gate guard: 2 items
 
 ## When to Use
 
-استخدمه لما الـ objects الموجودة شايلة إعداد مهم، والـ Client مش المفروض يعيد بناء نوعها الفعلي.
+استخدمه لما الـ `objects` الموجودة شايلة إعداد مهم، والـ `Client` مش المفروض يعيد بناء نوعها الفعلي.
 
 ### Use cases
 
-مناسب لقوالب كيانات الألعاب والمستندات؛ المثال بينسخ string و std::vector بالقيمة.
+مناسب لقوالب كيانات الألعاب والمستندات؛ المثال بينسخ `string` و `std::vector` بالقيمة.
 
 ## When NOT to Use
 
@@ -114,11 +114,11 @@ gate guard: 2 items
 
 ## Advantages
 
-بتعيد استخدام التجهيز من غير ما تكشف كل خطوات الإنشاء للـ Client.
+بتعيد استخدام التجهيز من غير ما تكشف كل خطوات الإنشاء للـ `Client`.
 
 ## Trade-offs
 
-لو فيه pointers لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. Socket مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
+لو فيه `pointers` لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. الـ `Socket` مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
 
 ## Related Patterns
 
@@ -126,19 +126,19 @@ gate guard: 2 items
 
 ## Common Confusion
 
-Memento بترجّع نفس الـ object ل state قديمة. Prototype بتعمل object تانية، والـ copy constructor لوحدها مش بتوفر polymorphic cloning.
+في `Memento`، بنرجّع نفس الكائن لحالة قديمة (`state`). أما `Prototype`، فبينشئ كائن تاني مستقل (`object`). دالة النسخ `copy constructor` لوحدها مش بتختار التنفيذ حسب النوع الفعلي؛ الميزة دي اسمها `polymorphic cloning`.
 
 ## Terms to Remember
 
-- `Prototype` — اعمل object مستقلة عن طريق نسخ نموذج متجهّز.
-- `Concrete Prototype` — object فيها clone بتعمل object تانية من القيم المتجهّزة. مثال: `Guard`.
+- `Prototype` — انسخ نموذج متجهّز عشان تنشئ كائن مستقل (`object`) وتعدّله من غير ما تغيّر الأصل.
+- `Concrete Prototype` — كائن بيوفّر العملية `clone` لإنشاء كائن تاني (`object`) من القيم المتجهّزة. مثال: `Guard`.
 - `deep copy` — بتنسخ البيانات الداخلية المملوكة عشان تعديل النسخة ما يغيرش الأصل. مثال: `Guard::clone`.
 - `value semantics` — النسخ تتعامل كقيم مستقلة حسب عقد النوع. مثال: `name_, equipment_`.
 
 ## Interview Vocabulary
 
-- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز القيم الأولية وبدء lifetime بتاعة object.
-- [`polymorphism`](../../GLOSSARY.md#polymorphism) — نفس interface تشتغل مع implementations مختلفة؛ C++ فيها أشكال وقت runtime وأشكال وقت compile time.
+- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز قيمه الأولية. من هنا بيبدأ عمر الكائن (`lifetime`).
+- [`polymorphism`](../../GLOSSARY.md#polymorphism) — نفس العقد (`interface`) يقبل تنفيذات مختلفة (`implementations`). في `C++`، فيه أشكال بتتحدد وقت التشغيل (`runtime`)، وأشكال وقت الترجمة (`compile time`).
 - [`ownership`](../../GLOSSARY.md#ownership) — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر.
 
 ## Interview Question
@@ -151,9 +151,9 @@ Memento بترجّع نفس الـ object ل state قديمة. Prototype بتع�
 
 ## Quick Summary
 
-- **المشكلة:** اللعبة محتاجة أعداء من template جاهزة، وكود الـ Spawn مش عارف النوع الفعلي.
-- **الحل:** وفّر clone في Enemy. Guard بتنسخ الـ Value Members وترجع std::unique_ptr لـ object مستقلة.
-- **Trade-off:** لو فيه pointers لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. Socket مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
+- **المشكلة:** اللعبة محتاجة تنسخ أعداء من نموذج جاهز، لكن كود إنشاء الأعداء (`spawn`) مش عارف النوع الفعلي. النموذج هنا مش `template` بالمعنى الخاص بلغة `C++`.
+- **الحل:** وفّر العملية `clone` في العقد `Enemy`. عند نسخ `Guard`، انسخ البيانات المخزّنة بالقيمة (`value members`). ارجع الكائن المستقل داخل `std::unique_ptr`، وهو مؤشر بملكية حصرية بيحرر الكائن تلقائيًا مع المالك.
+- **`Trade-off`:** لو فيه `pointers` لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. الـ `Socket` مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
 - **افتكر:** انسخ التجهيز، مش الهوية.
 
 [السابق](../../creational/factory-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/singleton/README.ar-EG.md)

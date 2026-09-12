@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,7 +14,7 @@
 
 ## In One Sentence
 
-مرّر الطلب على Handlers تقدر توقفه أو تكمّل.
+مرّر الطلب على سلسلة معالجات (`Handlers`)؛ كل واحدة تقدر توقفه أو تمرّره للي بعدها.
 
 ## The Problem
 
@@ -34,7 +34,7 @@ bool accept(Request r) {
 
 ## The Idea
 
-كل Handler تعمل فحصها وتكمّل بس لو نجح؛ آخر فحص ناجح يقبل الطلب.
+خلّي كل معالج (`Handler`) يعمل فحصه، ويمرّر الطلب للي بعده بس لو الفحص نجح. في المثال ده، الطلب بيتقبل بعد نجاح كل الفحوصات.
 
 ## Real-World Analogy
 
@@ -52,13 +52,13 @@ Request  -->  Auth  -->  Limit
 
 ## Participants
 
-Handler بتمتلك اللي بعدها. Auth بتراجع الهوية، Limit بتراجع المبلغ، والـ Client بيختار الترتيب.
+في المثال، كل `Handler` بتمتلك اللي بعدها. فحص الهوية موجود في `Auth`، وفحص المبلغ في `Limit`. المستدعي (`Client`) بيختار ترتيب السلسلة.
 
 الأدوار القياسية في المثال ده:
 
 - [`Handler`](../../GLOSSARY.md#handler) — دور بيعمل معالجة للطلب أو يبعته للي بعده. هنا: `Handler`.
-- [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — Handler بتنّفذ قاعدة معالجة معينة. هنا: `Auth, Limit`.
-- [`chain termination`](../../GLOSSARY.md#chain-termination) — القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر Handler. هنا: `Handler::handle`.
+- [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — معالج (`Handler`) بينفّذ قاعدة معينة. هنا: `Auth, Limit`.
+- [`chain termination`](../../GLOSSARY.md#chain-termination) — القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر `Handler`. هنا: `Handler::handle`.
 
 ## Modern C++20 Example
 
@@ -112,7 +112,7 @@ Accepted
 
 ### Use cases
 
-مناسب للـ Validation والـ Middleware. النسخة دي بتطلب موافقة الكل، مش أول Handler ناجحة بس.
+مناسب للـ `Validation` والـ `Middleware`. النسخة دي بتطلب موافقة الكل، مش أول `Handler` ناجحة بس.
 
 ## When NOT to Use
 
@@ -120,7 +120,7 @@ Accepted
 
 ## Advantages
 
-تقدر تعيد استخدام الفحوصات وترتبها من غير Conditional ضخمة.
+تقدر تعيد استخدام الفحوصات وترتبها من غير `Conditional` ضخمة.
 
 ## Trade-offs
 
@@ -132,24 +132,24 @@ Accepted
 
 ## Common Confusion
 
-Decorator بتضيف طبقات behavior ؛ السلسلة دي ممكن توقف قبل باقي الخطوات. Command بتمثل الطلب كـ object.
+الـ `Decorator` بتضيف طبقات `behavior`؛ السلسلة دي ممكن توقف قبل باقي الخطوات. الـ `Command` بتمثل الطلب كـ `object`.
 
 ## Terms to Remember
 
-- `Chain of Responsibility` — مرّر الطلب على Handlers تقدر توقفه أو تكمّل.
+- `Chain of Responsibility` — مرّر الطلب على سلسلة معالجات (`Handlers`)؛ كل واحدة تقدر توقفه أو تمرّره للي بعدها.
 - `Handler` — دور بيعمل معالجة للطلب أو يبعته للي بعده. مثال: `Handler`.
-- `Concrete Handler` — Handler بتنّفذ قاعدة معالجة معينة. مثال: `Auth, Limit`.
-- `chain termination` — القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر Handler. مثال: `Handler::handle`.
+- `Concrete Handler` — معالج (`Handler`) بينفّذ قاعدة معينة. مثال: `Auth, Limit`.
+- `chain termination` — القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر `Handler`. مثال: `Handler::handle`.
 
 ## Interview Vocabulary
 
-- [`delegation`](../../GLOSSARY.md#delegation) — object بتطلب من object متعاونة معاها تنفذ جزء من الشغل.
-- [`object composition`](../../GLOSSARY.md#object-composition) — بتوصل objects ببعض عشان تطلع behavior أو تركيب أكبر.
+- [`delegation`](../../GLOSSARY.md#delegation) — الكائن بيفوّض جزء من شغله لكائن متعاون معاه (`object`)، بدل ما ينفّذ كل حاجة بنفسه.
+- [`object composition`](../../GLOSSARY.md#object-composition) — بتوصل الكائنات (`objects`) ببعض عشان تبني سلوك متكامل (`behavior`) أو تركيب أكبر.
 - [`loose coupling`](../../GLOSSARY.md#loose-coupling) — كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
 
 ## Interview Question
 
-لو Limit مكلفة وجت الأول، إيه اللي هيحصل لطلب غير مسجل؟
+لو `Limit` مكلفة وجت الأول، إيه اللي هيحصل لطلب غير مسجل؟
 
 ## Mini Challenge
 
@@ -158,8 +158,8 @@ Decorator بتضيف طبقات behavior ؛ السلسلة دي ممكن توق�
 ## Quick Summary
 
 - **المشكلة:** الطلب لازم يعدّي فحص الهوية وحد الإنفاق، وكل مدخل ممكن يحتاج سياسة مختلفة.
-- **الحل:** كل Handler تعمل فحصها وتكمّل بس لو نجح؛ آخر فحص ناجح يقبل الطلب.
-- **Trade-off:** الترتيب بيأثر، ولازم سياسة واضحة لنهاية السلسلة. هنا بنقبل بعد نجاح الكل؛ سلاسل تانية ممكن ترفض الطلب غير المعالج.
+- **الحل:** خلّي كل معالج (`Handler`) يعمل فحصه، ويمرّر الطلب للي بعده بس لو الفحص نجح. في المثال ده، الطلب بيتقبل بعد نجاح كل الفحوصات.
+- **`Trade-off`:** الترتيب بيأثر، ولازم سياسة واضحة لنهاية السلسلة. هنا بنقبل بعد نجاح الكل؛ سلاسل تانية ممكن ترفض الطلب غير المعالج.
 - **افتكر:** عالجه، أو مرّره.
 
 [السابق](../../structural/proxy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/command/README.ar-EG.md)

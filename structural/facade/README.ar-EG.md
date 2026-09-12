@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,7 +14,7 @@
 
 ## In One Sentence
 
-وفّر مدخل صغير لخطوات شائعة جوه Subsystem.
+وفّر مدخل بسيط للخطوات الشائعة جوه نظام فرعي (`subsystem`).
 
 ## The Problem
 
@@ -33,7 +33,7 @@ shipping.dispatch(); // caller forgot to check stock
 
 ## The Idea
 
-Checkout بتوفر buy وبتنسق الخدمات الداخلية ورا العملية دي.
+وفّر عملية شراء واحدة اسمها `buy` في `Checkout`. جوه العملية، نسّق الخدمات الداخلية بالترتيب المطلوب.
 
 ## Real-World Analogy
 
@@ -51,13 +51,13 @@ Client  -->  Checkout::buy()  -->  Stock / Payment / Shipping
 
 ## Participants
 
-Stock بتراجع التوفر، Payment بتحاسب، Shipping بتشحن، و Checkout بتعرض الخطوات المشتركة.
+في المثال، مراجعة المخزون مسؤولية `Stock`، والدفع مسؤولية `Payment`، والشحن مسؤولية `Shipping`. المدخل المشترك `Checkout` بيرتب الخطوات دي للمستدعي.
 
 الأدوار القياسية في المثال ده:
 
-- [`subsystem`](../../GLOSSARY.md#subsystem) — مجموعة خدمات أو objects بتتعاون جوه نظام أكبر. هنا: `Stock, Payment, Shipping`.
+- [`subsystem`](../../GLOSSARY.md#subsystem) — مجموعة خدمات أو `objects` بتتعاون جوه نظام أكبر. هنا: `Stock, Payment, Shipping`.
 - [`interface`](../../GLOSSARY.md#interface) — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. هنا: `Checkout::buy`.
-- [`Client`](../../GLOSSARY.md#client-pattern-role) — الكود اللي بيستخدم interface أو بيتعامل مع objects بتاعة الـ Pattern. هنا: `main`.
+- [`Client`](../../GLOSSARY.md#client-pattern-role) — الكود اللي بيستخدم `interface` أو بيتعامل مع `objects` بتاعة الـ `Pattern`. هنا: `main`.
 
 ## Modern C++20 Example
 
@@ -106,19 +106,19 @@ Unavailable
 
 ### Use cases
 
-مناسب لمداخل SDK وحدود خدمات التطبيق؛ مفيش تكامل دفع حقيقي هنا.
+مناسب لمداخل `SDK` وحدود خدمات التطبيق؛ مفيش تكامل دفع حقيقي هنا.
 
 ## When NOT to Use
 
-بلاش لو مجرد تمرير لـ function من غير تبسيط حقيقي.
+بلاش لو مجرد تمرير لـ `function` من غير تبسيط حقيقي.
 
 ## Advantages
 
-الـ Callers بيعتمدوا على interface أصغر وترتيب موحد.
+الـ `Callers` بيعتمدوا على `interface` أصغر وترتيب موحد.
 
 ## Trade-offs
 
-الـ Facade ممكن تكبر وتعمل كل حاجة. المثال مش Transaction: فشل الدفع أو الشحن الحقيقي محتاج تعويض أو طريقة اتساق مناسبة.
+الـ `Facade` ممكن تكبر وتعمل كل حاجة. المثال مش `Transaction`: فشل الدفع أو الشحن الحقيقي محتاج تعويض أو طريقة اتساق مناسبة.
 
 ## Related Patterns
 
@@ -126,14 +126,14 @@ Unavailable
 
 ## Common Confusion
 
-Adapter بتعالج التوافق. Facade بتصغّر interface النظام ومش لازم تنفذ interface موجودة.
+الـ `Adapter` بتعالج التوافق. الـ `Facade` بتصغّر `interface` النظام ومش لازم تنفذ `interface` موجودة.
 
 ## Terms to Remember
 
-- `Facade` — وفّر مدخل صغير لخطوات شائعة جوه Subsystem.
-- `subsystem` — مجموعة خدمات أو objects بتتعاون جوه نظام أكبر. مثال: `Stock, Payment, Shipping`.
+- `Facade` — وفّر مدخل بسيط للخطوات الشائعة جوه نظام فرعي (`subsystem`).
+- `subsystem` — مجموعة خدمات أو `objects` بتتعاون جوه نظام أكبر. مثال: `Stock, Payment, Shipping`.
 - `interface` — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. مثال: `Checkout::buy`.
-- `Client` — الكود اللي بيستخدم interface أو بيتعامل مع objects بتاعة الـ Pattern. مثال: `main`.
+- `Client` — الكود اللي بيستخدم `interface` أو بيتعامل مع `objects` بتاعة الـ `Pattern`. مثال: `main`.
 
 ## Interview Vocabulary
 
@@ -143,17 +143,17 @@ Adapter بتعالج التوافق. Facade بتصغّر interface النظام 
 
 ## Interview Question
 
-لو الدفع نجح والشحن فشل، buy تقدر توعد بإيه فعلاً؟
+لو الدفع نجح والشحن فشل، `buy` تقدر توعد بإيه فعلاً؟
 
 ## Mini Challenge
 
-ضيف فشل شحن تجريبي وصمّم نتيجة Refund واضحة بدل نجاح وهمي.
+ضيف فشل شحن تجريبي وصمّم نتيجة `Refund` واضحة بدل نجاح وهمي.
 
 ## Quick Summary
 
 - **المشكلة:** كل مستدعي للشراء محتاج يراجع المخزون ويدفع ويطلب الشحن بالترتيب الصح.
-- **الحل:** Checkout بتوفر buy وبتنسق الخدمات الداخلية ورا العملية دي.
-- **Trade-off:** الـ Facade ممكن تكبر وتعمل كل حاجة. المثال مش Transaction: فشل الدفع أو الشحن الحقيقي محتاج تعويض أو طريقة اتساق مناسبة.
+- **الحل:** وفّر عملية شراء واحدة اسمها `buy` في `Checkout`. جوه العملية، نسّق الخدمات الداخلية بالترتيب المطلوب.
+- **`Trade-off`:** الـ `Facade` ممكن تكبر وتعمل كل حاجة. المثال مش `Transaction`: فشل الدفع أو الشحن الحقيقي محتاج تعويض أو طريقة اتساق مناسبة.
 - **افتكر:** باب واحد لكذا خدمة.
 
 [السابق](../../structural/decorator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/flyweight/README.ar-EG.md)

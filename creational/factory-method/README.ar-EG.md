@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-خلّي subclass تختار الـ object اللي Workflow مشتركة هتستخدمه.
+خلّي الـ `subclass` هي اللي تحدد الـ `concrete object` اللي خطوات الشغل المشتركة (`workflow`) هتستخدمه.
 
 ## The Problem
 
-مهمة التنبيه بتبعت نفس رسالة الانتهاء، بس كل بيئة محتاجة Sender مختلفة.
+مهمة التنبيه بتبعت نفس رسالة الانتهاء، بس كل بيئة محتاجة `Sender` مختلفة.
 
 ## Naive Solution
 
@@ -31,13 +31,13 @@ void run() {
 
 ## Why It Becomes a Problem
 
-تثبيت EmailSender جوه run بيربط الخطوات بالإيميل؛ نسخ run للـ Console بيكرر نفس المنطق.
+تثبيت `EmailSender` جوه `run` بيربط الخطوات بالإيميل؛ نسخ `run` للـ `Console` بيكرر نفس المنطق.
 
-ده `tight coupling`: خطوات الشغل مرتبطة بنوع Sender بعينه، فتغيير الإرسال ممكن يحتاج تعديل نفس الخطوات.
+ده `tight coupling`: خطوات الشغل مرتبطة بنوع `Sender` بعينه، فتغيير الإرسال ممكن يحتاج تعديل نفس الخطوات.
 
 ## The Idea
 
-حط الخطوات في AlertJob وخليها تنادي make_sender القابلة للتغيير بالـ override.
+حط خطوات الشغل المشتركة في `AlertJob`. خلّي إنشاء المرسِل مسؤولية الدالة `make_sender`، والأنواع المشتقة تغيّر تنفيذها باستخدام `override`.
 
 ## Real-World Analogy
 
@@ -55,13 +55,13 @@ AlertJob::run  -->  make_sender()  -->  Sender
 
 ## Participants
 
-AlertJob ماسكة الخطوات. EmailJob و ConsoleJob بيغيّروا الإنشاء. Sender بتحدد العملية، و [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (smart pointer بملكية حصرية، بتحرر الـ object لما المالك يتدمر) بتملك المنتج.
+في المثال، `AlertJob` ماسكة خطوات الشغل. اختيار طريقة الإنشاء بيتغير في `EmailJob` و `ConsoleJob`، وعقد الإرسال هو `Sender`. بنستخدم [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) لامتلاك المنتج وتحريره تلقائيًا لما المالك يتدمر.
 
 الأدوار القياسية في المثال ده:
 
 - [`Creator`](../../GLOSSARY.md#creator) — الدور الأساسي اللي ماسك الخطوات وبيعلن عملية الإنشاء اللي بيحتاجها. هنا: `AlertJob`.
-- [`Concrete Creator`](../../GLOSSARY.md#concrete-creator) — subclass من Creator بتوفر Product معينة. هنا: `EmailJob, ConsoleJob`.
-- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. هنا: `Sender`.
+- [`Concrete Creator`](../../GLOSSARY.md#concrete-creator) — نوع مشتق (`subclass`) من `Creator`، مسؤول عن إنشاء منتج معين (`Product`). هنا: `EmailJob, ConsoleJob`.
+- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. هنا: `Sender`.
 
 ## Modern C++20 Example
 
@@ -111,15 +111,15 @@ Console: build complete
 
 ## When to Use
 
-استخدمه لما Workflow مبنية أصلاً على الـ [`inheritance`](../../GLOSSARY.md#inheritance) (بتعرّف derived class انطلاقاً من base class عشان تعيد استخدام العقد أو تخصصه) ومحتاجة نقطة إنشاء قابلة للتوسيع.
+استخدمه لما `Workflow` مبنية أصلاً على الـ [`inheritance`](../../GLOSSARY.md#inheritance) (بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه) ومحتاجة نقطة إنشاء قابلة للتوسيع.
 
 ### Use cases
 
-مناسب لتصدير بصيغ مختلفة أو Jobs حسب البيئة؛ الـ Senders هنا بتطبع بس.
+مناسب لتصدير بصيغ مختلفة أو `Jobs` حسب البيئة؛ الـ `Senders` هنا بتطبع بس.
 
 ## When NOT to Use
 
-بلاش لو تمرير Sender جاهزة لـ function كفاية؛ الـ inheritance ساعتها زيادة.
+بلاش لو تمرير `Sender` جاهزة لـ `function` كفاية؛ الـ `inheritance` ساعتها زيادة.
 
 ## Advantages
 
@@ -127,7 +127,7 @@ Console: build complete
 
 ## Trade-offs
 
-كل اختيار جديد ممكن يحتاج subclass. استدعاء الـ virtual method من constructor بتاعة base class مش هيوصل لـ [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد interface) بتاعة derived class زي ما تتوقع.
+كل اختيار جديد ممكن يحتاج نوع مشتق (`subclass`). خد بالك من الاستدعاء أثناء الإنشاء: لو ناديت `virtual method` من دالة الإنشاء (`constructor`) في النوع الأساسي (`base class`)، النداء مش هيوصل لتنفيذ النوع المشتق (`derived class`). المقصود بـ [`implementation`](../../GLOSSARY.md#implementation) هو الكود الفعلي اللي بينفّذ العملية.
 
 ## Related Patterns
 
@@ -135,35 +135,35 @@ Console: build complete
 
 ## Common Confusion
 
-function عادية فيها switch اسمها Simple Factory ؛ هنا المقصود نقطة توسيع بالـ inheritance. Abstract Factory بتنظم عيلة منتجات.
+وجود دالة عادية (`function`) فيها `switch` لاختيار المنتج بنسميه `Simple Factory`. أما هنا، فبنستخدم نقطة توسعة بالوراثة (`inheritance`). نمط `Abstract Factory` بينظم إنشاء عيلة منتجات مرتبطة.
 
 ## Terms to Remember
 
-- `Factory Method` — خلّي subclass تختار الـ object اللي Workflow مشتركة هتستخدمه.
+- `Factory Method` — خلّي الـ `subclass` هي اللي تحدد الـ `concrete object` اللي خطوات الشغل المشتركة (`workflow`) هتستخدمه.
 - `Creator` — الدور الأساسي اللي ماسك الخطوات وبيعلن عملية الإنشاء اللي بيحتاجها. مثال: `AlertJob`.
-- `Concrete Creator` — subclass من Creator بتوفر Product معينة. مثال: `EmailJob, ConsoleJob`.
-- `Product` — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. مثال: `Sender`.
+- `Concrete Creator` — نوع مشتق (`subclass`) من `Creator`، مسؤول عن إنشاء منتج معين (`Product`). مثال: `EmailJob, ConsoleJob`.
+- `Product` — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. مثال: `Sender`.
 
 ## Interview Vocabulary
 
-- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز القيم الأولية وبدء lifetime بتاعة object.
+- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز قيمه الأولية. من هنا بيبدأ عمر الكائن (`lifetime`).
 - [`tight coupling`](../../GLOSSARY.md#tight-coupling) — الأجزاء معتمدة بقوة على التفاصيل الداخلية لبعض، فالتغيير في واحد بينتشر للباقي.
-- [`inheritance`](../../GLOSSARY.md#inheritance) — بتعرّف derived class انطلاقاً من base class عشان تعيد استخدام العقد أو تخصصه.
-- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — استهدف open for extension, closed for modification عند حدود مفيدة ومختارة بوضوح.
+- [`inheritance`](../../GLOSSARY.md#inheritance) — بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه.
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — خلّي التوسيع ممكن من غير تعديل الكود المستقر، عند حدود مختارة بوضوح. التعبير هو `open for extension, closed for modification`.
 
 ## Interview Question
 
-ليه run بتنادي make_sender بعد الإنشاء، مش من constructor بتاعة AlertJob ؟
+ليه `run` بتنادي `make_sender` بعد الإنشاء، مش من `constructor` بتاعة `AlertJob`؟
 
 ## Mini Challenge
 
-ضيف FileJob بتكتب في ملف مؤقت، واتأكد من محتواه.
+ضيف `FileJob` بتكتب في ملف مؤقت، واتأكد من محتواه.
 
 ## Quick Summary
 
-- **المشكلة:** مهمة التنبيه بتبعت نفس رسالة الانتهاء، بس كل بيئة محتاجة Sender مختلفة.
-- **الحل:** حط الخطوات في AlertJob وخليها تنادي make_sender القابلة للتغيير بالـ override.
-- **Trade-off:** كل اختيار جديد ممكن يحتاج subclass. استدعاء الـ virtual method من constructor بتاعة base class مش هيوصل لـ implementation بتاعة derived class زي ما تتوقع.
+- **المشكلة:** مهمة التنبيه بتبعت نفس رسالة الانتهاء، بس كل بيئة محتاجة `Sender` مختلفة.
+- **الحل:** حط خطوات الشغل المشتركة في `AlertJob`. خلّي إنشاء المرسِل مسؤولية الدالة `make_sender`، والأنواع المشتقة تغيّر تنفيذها باستخدام `override`.
+- **`Trade-off`:** كل اختيار جديد ممكن يحتاج نوع مشتق (`subclass`). خد بالك من الاستدعاء أثناء الإنشاء: لو ناديت `virtual method` من دالة الإنشاء (`constructor`) في النوع الأساسي (`base class`)، النداء مش هيوصل لتنفيذ النوع المشتق (`derived class`). المقصود بـ `implementation` هو الكود الفعلي اللي بينفّذ العملية.
 - **افتكر:** ثبّت الخطوات، وغيّر الإنشاء.
 
 [السابق](../../creational/builder/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/prototype/README.ar-EG.md)

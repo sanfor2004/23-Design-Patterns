@@ -4,14 +4,13 @@
 
 دي علاقات مفيدة، مش اعتماديات إجبارية. السهم بيشرح احتمال تصميم، مش شرط تستخدم النمطين مع بعض.
 
-- [Abstract Factory](creational/abstract-factory/README.ar-EG.md) → ممكن تنفّذ الإنشاء باستخدام → [Factory Method](creational/factory-method/README.ar-EG.md)
-- [State](behavioral/state/README.ar-EG.md) → شبهها في تركيب الـ delegation → [Strategy](behavioral/strategy/README.ar-EG.md)
-- [Decorator](structural/decorator/README.ar-EG.md) → بتشاركها تركيب المكونات المتكرر → [Composite](structural/composite/README.ar-EG.md)
-- [Proxy](structural/proxy/README.ar-EG.md) → ممكن تشبه تركيب الـ encapsulation بتاع → [Decorator](structural/decorator/README.ar-EG.md)
-- [Template Method](behavioral/template-method/README.ar-EG.md) → بديل بالـ inheritance لفكرة → [Strategy](behavioral/strategy/README.ar-EG.md)
-- [Command](behavioral/command/README.ar-EG.md) → ممكن تستخدم نسخة للتراجع من → [Memento](behavioral/memento/README.ar-EG.md)
-
-- [Observer](behavioral/observer/README.ar-EG.md) ↔ قارن الإشعار بالتنسيق ↔ [Mediator](behavioral/mediator/README.ar-EG.md)
+- ممكن [`Abstract Factory`](creational/abstract-factory/README.ar-EG.md) تستخدم [`Factory Method`](creational/factory-method/README.ar-EG.md) في خطوات الإنشاء.
+- فيه تشابه في تركيب التفويض (`delegation`) بين [`State`](behavioral/state/README.ar-EG.md) و[`Strategy`](behavioral/strategy/README.ar-EG.md)، لكن هدف كل نمط مختلف.
+- فيه تركيب متكرر للمكونات في كل من [`Decorator`](structural/decorator/README.ar-EG.md) و[`Composite`](structural/composite/README.ar-EG.md).
+- ممكن شكل طبقة التغليف في [`Proxy`](structural/proxy/README.ar-EG.md) يشبه [`Decorator`](structural/decorator/README.ar-EG.md)، لكن الأولى بتنظم الوصول والتانية بتضيف سلوك.
+- قارن التوسعة بالوراثة (`inheritance`) في [`Template Method`](behavioral/template-method/README.ar-EG.md) بالتركيب (`composition`) في [`Strategy`](behavioral/strategy/README.ar-EG.md).
+- ممكن [`Command`](behavioral/command/README.ar-EG.md) تستخدم نسخة محفوظة بنمط [`Memento`](behavioral/memento/README.ar-EG.md) عشان تدعم التراجع.
+- قارن الإشعار في [`Observer`](behavioral/observer/README.ar-EG.md) بالتنسيق في [`Mediator`](behavioral/mediator/README.ar-EG.md).
 
 ```mermaid
 flowchart LR

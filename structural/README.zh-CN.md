@@ -1,6 +1,6 @@
 # Structural Pattern
 
-[Design-Patterns-23](../README.zh-CN.md)
+[23 Design Patterns](../README.zh-CN.md)
 
 - [Adapter](adapter/README.zh-CN.md)
 - [Bridge](bridge/README.zh-CN.md)

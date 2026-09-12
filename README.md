@@ -1,8 +1,8 @@
 ![Sanfor2004](assets/brand/logo.svg)
 
-# Design-Patterns-23
+# 23 Design Patterns
 
-23 Patterns · 4 Languages · Real Examples · Simple Explanations
+Learn all 23 Gang of Four (GoF) design patterns with runnable C++20 examples, diagrams, and explanations in English, Egyptian Arabic, Simplified Chinese, and Italian.
 
 [Sanfor2004](https://github.com/Sanfor2004) · C++20
 
@@ -19,6 +19,25 @@ Start with a real problem. See where the simple solution bends. Learn the patter
 ## Why this repository exists
 
 Patterns are easier to understand when you can trace a concrete problem through a small program. This repository puts the motivation, code, output, and trade-offs together so you can judge when an abstraction earns its cost.
+
+## Learn design patterns in C++20
+
+- **New to object-oriented design?** Follow the [design patterns learning path](LEARNING_PATH.md).
+- **Comparing similar patterns?** Read [Strategy vs State, Adapter vs Facade, and other comparisons](COMPARISONS.md).
+- **Preparing for an interview?** Use the [design patterns cheat sheet](CHEATSHEET.md), then explain the trade-offs in each example.
+- **Want to run the code?** Follow the [C++20 build and test instructions](CPP_EXAMPLES.md). Each example includes expected output.
+
+## Run the examples
+
+With CMake 3.20+ and a C++20 compiler installed, run from the repository root:
+
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build --config Debug
+ctest --test-dir build -C Debug --output-on-failure
+```
+
+On Windows, use a Visual Studio developer shell. See the [compiler and build notes](CPP_EXAMPLES.md) for details.
 
 ## How to navigate
 
@@ -83,3 +102,7 @@ A pattern is a reusable design idea for a recurring problem—not a class diagra
 Translate the explanation, not the terminology. Pattern names, software terms, code identifiers, and interview expressions stay in English; each language explains their meaning.
 
 [Glossary](GLOSSARY.md)
+
+## Share and track the launch
+
+Use the [launch pack](Markting/README.md) for finished posts and images, including the [GitHub social preview](Markting/images/github-social-preview.png). The [keyword and SEO tracker](Markting/keyword-tracking.md) maps relevant search phrases to useful guides and records campaign results without assuming virality. Reproduce or adapt the campaign with the [social media launch framework](social_media_launch_framework.md).

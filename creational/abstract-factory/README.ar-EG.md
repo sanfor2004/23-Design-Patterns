@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-اعمل مجموعة objects متوافقة من خلال Factory واحدة.
+أنشئ مجموعة كائنات مرتبطة ومتوافقة مع بعض (`family of related objects`) باستخدام `Factory` واحدة.
 
 ## The Problem
 
-شاشة الإعدادات محتاجة Buttons و Panels من نفس الـ Theme.
+شاشة الإعدادات محتاجة أزرار ولوحات (`Buttons` و `Panels`) من نفس المظهر (`Theme`).
 
 ## Naive Solution
 
@@ -29,11 +29,11 @@ auto panel = LightPanel{}; // mixed theme
 
 ## Why It Becomes a Problem
 
-لما كل مكان يعمل الـ Widget بنفسه، ممكن Button غامق يطلع جنب Panel فاتح. كل Client بيضطر يفتكر قواعد التوافق.
+لما كل مكان يعمل الـ `Widget` بنفسه، ممكن `Button` غامق يطلع جنب `Panel` فاتح. كل `Client` بيضطر يفتكر قواعد التوافق.
 
 ## The Idea
 
-مرّر Theme واحدة لـ render. هي اللي بتعمل النوعين، فالـ Client مش محتاج يسمي الـ concrete classes.
+مرّر مصنع واحد من نوع `Theme` للدالة `render`. المصنع هو اللي بينشئ نوعي المنتجات، فالكود المستدعي (`Client`) مش محتاج يحدد الأنواع الفعلية (`concrete classes`).
 
 ## Real-World Analogy
 
@@ -51,13 +51,13 @@ render()  -->  Theme  -->  Button + Panel
 
 ## Participants
 
-Theme بتحدد المجموعة؛ DarkTheme و LightTheme بيعملوها. Button و Panel interfaces المنتجات، و render بيستخدمهم.
+في المثال، `Theme` بتحدد إزاي ننشئ المجموعة، و `DarkTheme` و `LightTheme` بينفّذوا الإنشاء. عقود المنتجات هي `Button` و `Panel`، والدالة `render` بتستخدمهم من غير ما تختار الأنواع الفعلية.
 
 الأدوار القياسية في المثال ده:
 
-- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. هنا: `Button, Panel`.
-- [`Concrete Product`](../../GLOSSARY.md#concrete-product) — implementation فعلية لعقد Product. هنا: `DarkButton, LightButton, DarkPanel, LightPanel`.
-- [`Concrete Factory`](../../GLOSSARY.md#concrete-factory) — implementation بتعمل عيلة Product متوافقة. هنا: `DarkTheme, LightTheme`.
+- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. هنا: `Button, Panel`.
+- [`Concrete Product`](../../GLOSSARY.md#concrete-product) — تنفيذ فعلي (`implementation`) لعقد المنتج (`Product`). هنا: `DarkButton, LightButton, DarkPanel, LightPanel`.
+- [`Concrete Factory`](../../GLOSSARY.md#concrete-factory) — تنفيذ فعلي (`implementation`) بينشئ عيلة منتجات متوافقة (`Product family`). هنا: `DarkTheme, LightTheme`.
 
 ## Modern C++20 Example
 
@@ -119,11 +119,11 @@ light button + light panel
 
 ## When to Use
 
-استخدمه لما كذا نوع من المنتجات لازم يتغيروا مع بعض، والـ Client ماينفعش يختار الـ classes بنفسه.
+استخدمه لما كذا نوع من المنتجات لازم يتغيروا مع بعض، والـ `Client` ماينفعش يختار الـ `classes` بنفسه.
 
 ### Use cases
 
-ينفع مع Themes أو مجموعات Database Drivers المتوافقة؛ المثال هنا بيطبع أسماء بس.
+ينفع مع `Themes` أو مجموعات `Database Drivers` المتوافقة؛ المثال هنا بيطبع أسماء بس.
 
 ## When NOT to Use
 
@@ -135,7 +135,7 @@ light button + light panel
 
 ## Trade-offs
 
-إضافة منتج زي Slider بتحتاج تعديل كل Factory. الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
+إضافة منتج زي `Slider` بتحتاج تعديل كل `Factory`. الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
 
 ## Related Patterns
 
@@ -143,34 +143,34 @@ light button + light panel
 
 ## Common Confusion
 
-Factory Method بتغيّر خطوة إنشاء واحدة. Abstract Factory بتنسّق أنواع منتجات مرتبطة، وممكن تستخدم Factory Methods جواها.
+الـ `Factory Method` بتغيّر خطوة إنشاء واحدة. الـ `Abstract Factory` بتنسّق أنواع منتجات مرتبطة، وممكن تستخدم `Factory Methods` جواها.
 
 ## Terms to Remember
 
-- `Abstract Factory` — اعمل مجموعة objects متوافقة من خلال Factory واحدة.
-- `Product` — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. مثال: `Button, Panel`.
-- `Concrete Product` — implementation فعلية لعقد Product. مثال: `DarkButton, LightButton, DarkPanel, LightPanel`.
-- `Concrete Factory` — implementation بتعمل عيلة Product متوافقة. مثال: `DarkTheme, LightTheme`.
+- `Abstract Factory` — أنشئ مجموعة كائنات مرتبطة ومتوافقة مع بعض (`family of related objects`) باستخدام `Factory` واحدة.
+- `Product` — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. مثال: `Button, Panel`.
+- `Concrete Product` — تنفيذ فعلي (`implementation`) لعقد المنتج (`Product`). مثال: `DarkButton, LightButton, DarkPanel, LightPanel`.
+- `Concrete Factory` — تنفيذ فعلي (`implementation`) بينشئ عيلة منتجات متوافقة (`Product family`). مثال: `DarkTheme, LightTheme`.
 
 ## Interview Vocabulary
 
-- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز القيم الأولية وبدء lifetime بتاعة object.
-- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — اعتمد على العقد المعلن بدل تفاصيل implementation بعينها.
+- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز قيمه الأولية. من هنا بيبدأ عمر الكائن (`lifetime`).
+- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — اعتمد على العقد المعلن بدل تفاصيل `implementation` بعينها.
 - [`encapsulate what varies`](../../GLOSSARY.md#encapsulate-what-varies) — حط القرار اللي بيتغير ورا حدود ثابتة وواضحة.
 
 ## Interview Question
 
-إيه اللي بيتغير لما تضيف Theme ، وإيه اللي بيتغير لما تضيف Widget جديدة؟
+إيه اللي بيتغير لما تضيف `Theme`، وإيه اللي بيتغير لما تضيف `Widget` جديدة؟
 
 ## Mini Challenge
 
-ضيف مجموعة High Contrast ، وبعدها ضيف Slider وقارن حجم التعديلات.
+ضيف مجموعة `High Contrast`، وبعدها ضيف `Slider` وقارن حجم التعديلات.
 
 ## Quick Summary
 
-- **المشكلة:** شاشة الإعدادات محتاجة Buttons و Panels من نفس الـ Theme.
-- **الحل:** مرّر Theme واحدة لـ render. هي اللي بتعمل النوعين، فالـ Client مش محتاج يسمي الـ concrete classes.
-- **Trade-off:** إضافة منتج زي Slider بتحتاج تعديل كل Factory. الـ interface لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
-- **افتكر:** Factory واحدة، طقم متوافق.
+- **المشكلة:** شاشة الإعدادات محتاجة أزرار ولوحات (`Buttons` و `Panels`) من نفس المظهر (`Theme`).
+- **الحل:** مرّر مصنع واحد من نوع `Theme` للدالة `render`. المصنع هو اللي بينشئ نوعي المنتجات، فالكود المستدعي (`Client`) مش محتاج يحدد الأنواع الفعلية (`concrete classes`).
+- **`Trade-off`:** إضافة منتج زي `Slider` بتحتاج تعديل كل `Factory`. الـ `interface` لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
+- **افتكر:** طقم متوافق من `Factory` واحدة.
 
 [الفئة](../README.ar-EG.md) · [التالي](../../creational/builder/README.ar-EG.md)

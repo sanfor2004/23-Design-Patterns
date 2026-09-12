@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,7 +14,7 @@
 
 ## In One Sentence
 
-حوّل الفعل لـ object تقدر تخزنها وتشغّلها بعدين.
+مثّل الفعل بكائن (`object`) تقدر تخزنه وتشغّله بعدين.
 
 ## The Problem
 
@@ -28,11 +28,11 @@ document.text += " world"; // no object records how to undo
 
 ## Why It Becomes a Problem
 
-التعديل المباشر بيغيّر النص، بس مابيسجلش الفعل ولا الـ state اللي قبله.
+التعديل المباشر بيغيّر النص، بس مابيسجلش الفعل ولا الـ `state` اللي قبله.
 
 ## The Idea
 
-Append بتحتفظ بالمستند والمعامل؛ execute بتحفظ النص القديم و undo بترجعه. History بتمتلك الأوامر المنفذة.
+خلّي الأمر `Append` يحتفظ بالمستند والمعامل المطلوب. عند التنفيذ، العملية `execute` بتحفظ النص القديم؛ وعند التراجع، العملية `undo` بترجّعه. السجل `History` بيمتلك الأوامر اللي اتنفّذت.
 
 ## Real-World Analogy
 
@@ -50,13 +50,13 @@ History  -->  Command  -->  Append → Document
 
 ## Participants
 
-Command بتحدد execute و undo ، Append بتعدل Document مستعارة، و History بتدير Stack الأوامر.
+في المثال، العقد `Command` بيحدد العمليتين `execute` و `undo`. الأمر `Append` بيعدل مستند مستعار من نوع `Document`، وسجل `History` بيدير الأوامر المنفذة بترتيب المكدّس (`stack`).
 
 الأدوار القياسية في المثال ده:
 
-- [`Receiver`](../../GLOSSARY.md#receiver) — الـ object اللي بيتنفذ عليها الشغل المطلوب من Command. هنا: `Document`.
-- [`Invoker`](../../GLOSSARY.md#invoker) — الدور اللي بيشغّل Commands أو بيخزنها من غير معرفة تفاصيل كل عملية. هنا: `History`.
-- [`Concrete Command`](../../GLOSSARY.md#concrete-command) — implementation لـ Command بتربط Receiver بفعل محدد. هنا: `Append`.
+- [`Receiver`](../../GLOSSARY.md#receiver) — الـ `object` اللي بيتنفذ عليها الشغل المطلوب من `Command`. هنا: `Document`.
+- [`Invoker`](../../GLOSSARY.md#invoker) — الدور اللي بيشغّل `Commands` أو بيخزنها من غير معرفة تفاصيل كل عملية. هنا: `History`.
+- [`Concrete Command`](../../GLOSSARY.md#concrete-command) — تنفيذ للأمر (`Command implementation`) بيربط الفعل المطلوب بالجهة اللي هتنفّذه (`Receiver`). هنا: `Append`.
 
 ## Modern C++20 Example
 
@@ -117,15 +117,15 @@ Hello
 
 ## When to Use
 
-استخدمه للأفعال المؤجلة والطوابير والـ Macros وتاريخ التراجع.
+استخدمه للأفعال المؤجلة والطوابير والـ `Macros` وتاريخ التراجع.
 
 ### Use cases
 
-مناسب للمحررات وطوابير الوظائف، بس الطابور الدائم محتاج Serialization و Idempotency زيادة.
+مناسب للمحررات وطوابير الوظائف، بس الطابور الدائم محتاج `Serialization` و `Idempotency` زيادة.
 
 ## When NOT to Use
 
-بلاش لـ function بتتنادي مرة ومش محتاجة تخزين نية أو جدولة.
+بلاش لـ `function` بتتنادي مرة ومش محتاجة تخزين نية أو جدولة.
 
 ## Advantages
 
@@ -133,7 +133,7 @@ Hello
 
 ## Trade-offs
 
-حفظ النص كله مكلف. المثال في Thread واحدة وبيفترض كل التعديلات عبر History ، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات undo.
+حفظ النص كله مكلف. المثال في `Thread` واحدة وبيفترض كل التعديلات عبر `History`، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات `undo`.
 
 ## Related Patterns
 
@@ -141,34 +141,34 @@ Hello
 
 ## Common Confusion
 
-Memento بتخزن state ، Command بتخزن فعل وممكن تستخدم Snapshot للتراجع. مش كل أمر قابل للعكس.
+الـ `Memento` بتخزن `state`، `Command` بتخزن فعل وممكن تستخدم `Snapshot` للتراجع. مش كل أمر قابل للعكس.
 
 ## Terms to Remember
 
-- `Command` — حوّل الفعل لـ object تقدر تخزنها وتشغّلها بعدين.
-- `Receiver` — الـ object اللي بيتنفذ عليها الشغل المطلوب من Command. مثال: `Document`.
-- `Invoker` — الدور اللي بيشغّل Commands أو بيخزنها من غير معرفة تفاصيل كل عملية. مثال: `History`.
-- `Concrete Command` — implementation لـ Command بتربط Receiver بفعل محدد. مثال: `Append`.
+- `Command` — مثّل الفعل بكائن (`object`) تقدر تخزنه وتشغّله بعدين.
+- `Receiver` — الـ `object` اللي بيتنفذ عليها الشغل المطلوب من `Command`. مثال: `Document`.
+- `Invoker` — الدور اللي بيشغّل `Commands` أو بيخزنها من غير معرفة تفاصيل كل عملية. مثال: `History`.
+- `Concrete Command` — تنفيذ للأمر (`Command implementation`) بيربط الفعل المطلوب بالجهة اللي هتنفّذه (`Receiver`). مثال: `Append`.
 
 ## Interview Vocabulary
 
-- [`undo`](../../GLOSSARY.md#undo) — بترجع لنتيجة سابقة باستخدام state محفوظة أو عملية عكسية لما ينفع.
+- [`undo`](../../GLOSSARY.md#undo) — بترجع لنتيجة سابقة باستخدام `state` محفوظة أو عملية عكسية لما ينفع.
 - [`encapsulation`](../../GLOSSARY.md#encapsulation) — بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة.
-- [`exception safety`](../../GLOSSARY.md#exception-safety) — الضمانات اللي العملية بتحافظ عليها لو فشلت ورمت exception.
+- [`exception safety`](../../GLOSSARY.md#exception-safety) — الضمانات اللي العملية بتحافظ عليها لو فشلت ورمت `exception`.
 
 ## Interview Question
 
-ينفع ترجع إرسال إيميل زي ما بترجع string ؟ فرّق بين التعويض والعكس.
+ينفع ترجع إرسال إيميل زي ما بترجع `string`؟ فرّق بين التعويض والعكس.
 
 ## Mini Challenge
 
-ضيف تعديلين، ارجع مرتين، واتأكد إن undo على تاريخ فاضي آمنة.
+ضيف تعديلين، ارجع مرتين، واتأكد إن `undo` على تاريخ فاضي آمنة.
 
 ## Quick Summary
 
 - **المشكلة:** المحرر محتاج ينفذ تعديلات ويرجع آخر تعديل من غير ما شريط الأدوات يعرف كل تفاصيل المستند.
-- **الحل:** Append بتحتفظ بالمستند والمعامل؛ execute بتحفظ النص القديم و undo بترجعه. History بتمتلك الأوامر المنفذة.
-- **Trade-off:** حفظ النص كله مكلف. المثال في Thread واحدة وبيفترض كل التعديلات عبر History ، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات undo.
+- **الحل:** خلّي الأمر `Append` يحتفظ بالمستند والمعامل المطلوب. عند التنفيذ، العملية `execute` بتحفظ النص القديم؛ وعند التراجع، العملية `undo` بترجّعه. السجل `History` بيمتلك الأوامر اللي اتنفّذت.
+- **`Trade-off`:** حفظ النص كله مكلف. المثال في `Thread` واحدة وبيفترض كل التعديلات عبر `History`، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات `undo`.
 - **افتكر:** فعل تقدر تحتفظ بيه.
 
 [السابق](../../behavioral/chain-of-responsibility/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/interpreter/README.ar-EG.md)

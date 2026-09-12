@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-بلّغ الـ objects المشتركة لما الحاجة اللي بيتابعوها تتغير.
+بلّغ المشتركين (`Observers`) لما يحصل تغيير في المصدر اللي بيتابعوه (`Subject`).
 
 ## The Problem
 
-تغيير المخزون لازم يحدّث الشاشات المهتمة من غير ما Stock تعرف كل نوع شاشة.
+تغيير المخزون لازم يحدّث الشاشات المهتمة من غير ما `Stock` تعرف كل نوع شاشة.
 
 ## Naive Solution
 
@@ -33,7 +33,7 @@ email.update(quantity); // publisher names every consumer
 
 ## The Idea
 
-Stock بتخزن weak references لـ Listener وبتبعت التحديث للنسخ اللي لسه عايشة.
+خلّي المصدر `Stock` يحتفظ بمراجع مش مالكة (`weak references`) للمشتركين من نوع `Listener`. عند التغيير، ابعت التحديث للمشتركين اللي لسه موجودين.
 
 ## Real-World Analogy
 
@@ -51,13 +51,13 @@ Stock::set()  -->  weak Listener subscriptions  -->  Display::update()
 
 ## Participants
 
-Stock المصدر، Listener [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) الاستقبال، و Display مشتركة. الـ Client بيمتلك المشتركين، و [`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr) (مرجع مش مالك لملكية مشتركة؛ lock بتحاول تجيب shared_ptr مؤقتة) مش بتطوّل عمرهم.
+في المثال، المصدر هو `Stock`، وعقد استقبال الإشعارات هو `Listener`، والشاشة المشتركة هي `Display`. المستدعي (`Client`) بيمتلك المشتركين. المصدر بيستخدم [`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr)، وهي مراجع مش مالكة، عشان ما يطوّلش عمر المشتركين.
 
 الأدوار القياسية في المثال ده:
 
-- [`Subject`](../../GLOSSARY.md#subject) — المصدر اللي بيعلن تغييراته للـ Observers المسجلين. هنا: `Stock`.
-- [`Observer interface`](../../GLOSSARY.md#observer-interface) — عقد callback اللي المشتركين بينفذوه. هنا: `Listener`.
-- [`Concrete Observer`](../../GLOSSARY.md#concrete-observer) — implementation لـ Observer بترد على notifications. هنا: `Display`.
+- [`Subject`](../../GLOSSARY.md#subject) — المصدر اللي بيعلن تغييراته للـ `Observers` المسجلين. هنا: `Stock`.
+- [`Observer interface`](../../GLOSSARY.md#observer-interface) — عقد `callback` اللي المشتركين بينفذوه. هنا: `Listener`.
+- [`Concrete Observer`](../../GLOSSARY.md#concrete-observer) — تنفيذ للمشترك (`Observer implementation`) بيحدد استجابته للإشعارات (`notifications`). هنا: `Display`.
 
 ## Modern C++20 Example
 
@@ -109,11 +109,11 @@ Expired listener skipped
 
 ### Use cases
 
-مناسب لتحديث UI والـ events المحلية؛ ضمانات الـ events الموزعة موضوع تاني.
+مناسب لتحديث `UI` والـ `events` المحلية؛ ضمانات الـ `events` الموزعة موضوع تاني.
 
 ## When NOT to Use
 
-بلاش لـ dependency ثابتة واحدة أو لما محتاج اتساق Transaction قوي.
+بلاش لـ `dependency` ثابتة واحدة أو لما محتاج اتساق `Transaction` قوي.
 
 ## Advantages
 
@@ -121,7 +121,7 @@ Expired listener skipped
 
 ## Trade-offs
 
-ترتيب الـ callbacks والـ Exceptions محتاج سياسة. المثال Sync بيمرر الاستثناء ومش Thread-safe. نسخة القائمة بتسمح بتغيير الاشتراكات بس مش بتمنع إشعارات Recursive.
+ترتيب الـ `callbacks` والـ `Exceptions` محتاج سياسة. المثال `Sync` بيمرر الاستثناء ومش `Thread-safe`. نسخة القائمة بتسمح بتغيير الاشتراكات بس مش بتمنع إشعارات `Recursive`.
 
 ## Related Patterns
 
@@ -129,24 +129,24 @@ Expired listener skipped
 
 ## Common Confusion
 
-Mediator بتحدد قواعد تنسيق زملاء معروفين. Observer بتذيع إشعار من غير فرض علاقة بينهم.
+الـ `Mediator` بتحدد قواعد تنسيق زملاء معروفين. الـ `Observer` بتذيع إشعار من غير فرض علاقة بينهم.
 
 ## Terms to Remember
 
-- `Observer` — بلّغ الـ objects المشتركة لما الحاجة اللي بيتابعوها تتغير.
-- `Subject` — المصدر اللي بيعلن تغييراته للـ Observers المسجلين. مثال: `Stock`.
-- `Observer interface` — عقد callback اللي المشتركين بينفذوه. مثال: `Listener`.
-- `Concrete Observer` — implementation لـ Observer بترد على notifications. مثال: `Display`.
+- `Observer` — بلّغ المشتركين (`Observers`) لما يحصل تغيير في المصدر اللي بيتابعوه (`Subject`).
+- `Subject` — المصدر اللي بيعلن تغييراته للـ `Observers` المسجلين. مثال: `Stock`.
+- `Observer interface` — عقد `callback` اللي المشتركين بينفذوه. مثال: `Listener`.
+- `Concrete Observer` — تنفيذ للمشترك (`Observer implementation`) بيحدد استجابته للإشعارات (`notifications`). مثال: `Display`.
 
 ## Interview Vocabulary
 
 - [`one-to-many dependency`](../../GLOSSARY.md#one-to-many-dependency) — مصدر واحد ليه أكتر من طرف بيتأثروا بتغييره.
 - [`loose coupling`](../../GLOSSARY.md#loose-coupling) — كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
-- [`subscription lifetime`](../../GLOSSARY.md#subscription-lifetime) — الفترة اللي المستمع فيها مسجل وينفع توصله notification.
+- [`subscription lifetime`](../../GLOSSARY.md#subscription-lifetime) — الفترة اللي المستمع فيها مسجل وينفع توصله `notification`.
 
 ## Interview Question
 
-ليه نخزن std::weak_ptr ونحوّلها لـ [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (smart pointer بتشارك ownership؛ الـ object بتتحرر لما آخر مرجع مالك يختفي) وقت الـ callback ؟
+ليه نخزن `std::weak_ptr` ونحوّلها لـ [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (مؤشر ذكي (`smart pointer`) بيشارك الملكية (`ownership`)؛ الكائن بيتحرر لما آخر مرجع مالك يختفي) وقت الـ `callback`؟
 
 ## Mini Challenge
 
@@ -154,9 +154,9 @@ Mediator بتحدد قواعد تنسيق زملاء معروفين. Observer ب
 
 ## Quick Summary
 
-- **المشكلة:** تغيير المخزون لازم يحدّث الشاشات المهتمة من غير ما Stock تعرف كل نوع شاشة.
-- **الحل:** Stock بتخزن weak references لـ Listener وبتبعت التحديث للنسخ اللي لسه عايشة.
-- **Trade-off:** ترتيب الـ callbacks والـ Exceptions محتاج سياسة. المثال Sync بيمرر الاستثناء ومش Thread-safe. نسخة القائمة بتسمح بتغيير الاشتراكات بس مش بتمنع إشعارات Recursive.
+- **المشكلة:** تغيير المخزون لازم يحدّث الشاشات المهتمة من غير ما `Stock` تعرف كل نوع شاشة.
+- **الحل:** خلّي المصدر `Stock` يحتفظ بمراجع مش مالكة (`weak references`) للمشتركين من نوع `Listener`. عند التغيير، ابعت التحديث للمشتركين اللي لسه موجودين.
+- **`Trade-off`:** ترتيب الـ `callbacks` والـ `Exceptions` محتاج سياسة. المثال `Sync` بيمرر الاستثناء ومش `Thread-safe`. نسخة القائمة بتسمح بتغيير الاشتراكات بس مش بتمنع إشعارات `Recursive`.
 - **افتكر:** انشر التغيير، وسيب المشترك يرد.
 
 [السابق](../../behavioral/memento/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/state/README.ar-EG.md)

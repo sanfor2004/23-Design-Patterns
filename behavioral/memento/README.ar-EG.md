@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,7 +14,7 @@
 
 ## In One Sentence
 
-احفظ state بتاعة object وارجعها من غير كشف تفاصيل النسخة المحفوظة.
+احفظ حالة الكائن (`state`) عشان تقدر ترجعها بعدين، من غير ما تكشف تفاصيل النسخة المحفوظة.
 
 ## The Problem
 
@@ -28,15 +28,15 @@ std::string old_text = editor.text(); // caretaker knows what state to copy
 
 ## Why It Becomes a Problem
 
-لو مدير التراجع بينسخ Fields عامة بنفسه، كل Field داخلية جديدة هتحتاج تعديله.
+لو مدير التراجع بينسخ `Fields` عامة بنفسه، كل `Field` داخلية جديدة هتحتاج تعديله.
 
 ## The Idea
 
-Editor بتعمل Snapshot بنص خاص، وبعدها تقرأها عشان ترجع نفسها.
+خلّي المحرر `Editor` ينشئ نسخة محفوظة (`Snapshot`) فيها النص بشكل خاص. لما تحتاج ترجع، المحرر نفسه هو اللي يقرأ النسخة ويستعيد حالته.
 
 ## Real-World Analogy
 
-Checkpoint اللعبة بترجعك لنقطة قديمة من غير ما تعرض لك صيغة البيانات.
+الـ `Checkpoint` اللعبة بترجعك لنقطة قديمة من غير ما تعرض لك صيغة البيانات.
 
 ## Structure
 
@@ -50,13 +50,13 @@ Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
 
 ## Participants
 
-Editor هي صاحبة الـ state ، Snapshot بتحفظها بشكل خاص، و main بتحتفظ بيها من غير ما تفتش جواها.
+في المثال، المحرر `Editor` هو صاحب الحالة (`state`). النسخة `Snapshot` بتحفظها بشكل خاص، والدالة `main` بتحتفظ بالنسخة من غير ما تقرأ تفاصيلها الداخلية.
 
 الأدوار القياسية في المثال ده:
 
-- [`Originator`](../../GLOSSARY.md#originator) — الـ object اللي عارفة تحفظ state بتاعتها وترجعها. هنا: `Editor`.
-- [`Caretaker`](../../GLOSSARY.md#caretaker) — الدور اللي بيحتفظ بـ Memento من غير ما يفتش في تمثيلها الداخلي. هنا: `main`.
-- [`snapshot`](../../GLOSSARY.md#snapshot) — صورة محفوظة لجزء محدد من state في لحظة معينة. هنا: `Editor::Snapshot`.
+- [`Originator`](../../GLOSSARY.md#originator) — الكائن اللي يعرف يحفظ حالته (`state`) ويسترجعها. هنا: `Editor`.
+- [`Caretaker`](../../GLOSSARY.md#caretaker) — الدور اللي بيحتفظ بـ `Memento` من غير ما يفتش في تمثيلها الداخلي. هنا: `main`.
+- [`snapshot`](../../GLOSSARY.md#snapshot) — صورة محفوظة لجزء محدد من `state` في لحظة معينة. هنا: `Editor::Snapshot`.
 
 ## Modern C++20 Example
 
@@ -98,23 +98,23 @@ Draft
 
 ## When to Use
 
-استخدمه لنقاط رجوع تقدر فيها الـ object تحدد نسخة متسقة من الـ state بتاعتها.
+استخدمه لنقاط رجوع تقدر فيها الـ `object` تحدد نسخة متسقة من الـ `state` بتاعتها.
 
 ### Use cases
 
-مناسب لنقاط حفظ المحرر والمحاكاة بشرط الـ state تكون كاملة ومتسقة.
+مناسب لنقاط حفظ المحرر والمحاكاة بشرط الـ `state` تكون كاملة ومتسقة.
 
 ## When NOT to Use
 
-بلاش لو الـ state ضخمة أو الموارد ماينفعش ترجع، أو تسجيل العملية العكسية أرخص.
+بلاش لو الـ `state` ضخمة أو الموارد ماينفعش ترجع، أو تسجيل العملية العكسية أرخص.
 
 ## Advantages
 
-شكل الـ state المحفوظة بيفضل خاص، ومدير الحفظ مش بينسخ الحقول بنفسه.
+شكل الـ `state` المحفوظة بيفضل خاص، ومدير الحفظ مش بينسخ الحقول بنفسه.
 
 ## Trade-offs
 
-النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع string مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
+النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع `string` مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
 
 ## Related Patterns
 
@@ -122,34 +122,34 @@ Draft
 
 ## Common Confusion
 
-Command بتسجل فعل، Memento بتسجل state. Prototype بتعمل object تانية بدل استرجاع دي.
+الـ `Command` بتسجل فعل، `Memento` بتسجل `state`. الـ `Prototype` بتعمل `object` تانية بدل استرجاع دي.
 
 ## Terms to Remember
 
-- `Memento` — احفظ state بتاعة object وارجعها من غير كشف تفاصيل النسخة المحفوظة.
-- `Originator` — الـ object اللي عارفة تحفظ state بتاعتها وترجعها. مثال: `Editor`.
-- `Caretaker` — الدور اللي بيحتفظ بـ Memento من غير ما يفتش في تمثيلها الداخلي. مثال: `main`.
-- `snapshot` — صورة محفوظة لجزء محدد من state في لحظة معينة. مثال: `Editor::Snapshot`.
+- `Memento` — احفظ حالة الكائن (`state`) عشان تقدر ترجعها بعدين، من غير ما تكشف تفاصيل النسخة المحفوظة.
+- `Originator` — الكائن اللي يعرف يحفظ حالته (`state`) ويسترجعها. مثال: `Editor`.
+- `Caretaker` — الدور اللي بيحتفظ بـ `Memento` من غير ما يفتش في تمثيلها الداخلي. مثال: `main`.
+- `snapshot` — صورة محفوظة لجزء محدد من `state` في لحظة معينة. مثال: `Editor::Snapshot`.
 
 ## Interview Vocabulary
 
 - [`encapsulation`](../../GLOSSARY.md#encapsulation) — بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة.
-- [`undo`](../../GLOSSARY.md#undo) — بترجع لنتيجة سابقة باستخدام state محفوظة أو عملية عكسية لما ينفع.
+- [`undo`](../../GLOSSARY.md#undo) — بترجع لنتيجة سابقة باستخدام `state` محفوظة أو عملية عكسية لما ينفع.
 - [`ownership`](../../GLOSSARY.md#ownership) — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر.
 
 ## Interview Question
 
-لو Editor ضافت مكان المؤشر، مين لازم يتعدل عشان الرجوع يفضل صح؟
+لو `Editor` ضافت مكان المؤشر، مين لازم يتعدل عشان الرجوع يفضل صح؟
 
 ## Mini Challenge
 
-ضيف مكان المؤشر لـ Snapshot واختبر رجوعه مع النص.
+ضيف مكان المؤشر لـ `Snapshot` واختبر رجوعه مع النص.
 
 ## Quick Summary
 
 - **المشكلة:** المحرر محتاج نقطة رجوع قبل تعديل تجريبي.
-- **الحل:** Editor بتعمل Snapshot بنص خاص، وبعدها تقرأها عشان ترجع نفسها.
-- **Trade-off:** النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع string مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
-- **افتكر:** افتكر الـ state من غير ما تكشفها.
+- **الحل:** خلّي المحرر `Editor` ينشئ نسخة محفوظة (`Snapshot`) فيها النص بشكل خاص. لما تحتاج ترجع، المحرر نفسه هو اللي يقرأ النسخة ويستعيد حالته.
+- **`Trade-off`:** النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع `string` مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
+- **افتكر:** افتكر الـ `state` من غير ما تكشفها.
 
 [السابق](../../behavioral/mediator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/observer/README.ar-EG.md)

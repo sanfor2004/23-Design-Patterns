@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-ضيف behavior بإنك تلف object بواحدة تانية عندها نفس الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها).
+ضيف سلوك جديد (`behavior`) عن طريق كائن بيغلّف الكائن الأصلي. حافظ على نفس [`interface`](../../GLOSSARY.md#interface)، يعني نفس العمليات المتاحة للمستدعي.
 
 ## The Problem
 
-طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير class لكل تركيبة.
+طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير `class` لكل تركيبة.
 
 ## Naive Solution
 
@@ -29,11 +29,11 @@ struct CoffeeWithDoubleMilk {}; // another combination
 
 ## Why It Becomes a Problem
 
-classes التركيبات بتكرر السعر الأساسي، وعددها بيزيد مع كل إضافة.
+الـ `classes` التركيبات بتكرر السعر الأساسي، وعددها بيزيد مع كل إضافة.
 
 ## The Idea
 
-Milk بتمتلك Drink وبتفوّض ليها قبل ما تضيف وصفها وسعرها.
+خلّي طبقة الإضافة `Milk` تمتلك مشروب من نوع `Drink`. الأول بتطلب منه الوصف والسعر، وبعدها بتضيف وصفها وتكلفتها على النتيجة.
 
 ## Real-World Analogy
 
@@ -51,13 +51,13 @@ Client  -->  Milk(Drink)  -->  Coffee or Milk
 
 ## Participants
 
-Drink العقد المشترك، Coffee الأساس، و Milk بتلف Drink واحدة. الـ Client بيمتلك الطبقة الخارجية.
+في المثال، العقد المشترك هو `Drink`، والتنفيذ الأساسي هو `Coffee`. طبقة الإضافة `Milk` بتغلّف مشروب واحد. المستدعي (`Client`) بيمتلك الطبقة الخارجية.
 
 الأدوار القياسية في المثال ده:
 
-- [`Component`](../../GLOSSARY.md#component) — العقد المشترك اللي العنصر أو المجموعة أو Wrapper بتوفره. هنا: `Drink`.
-- [`Concrete Component`](../../GLOSSARY.md#concrete-component) — الـ implementation الأساسية قبل إضافة طبقات اختيارية. هنا: `Coffee`.
-- [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — Wrapper بتحافظ على عقد Component وبتضيف responsibility محددة. هنا: `Milk`.
+- [`Component`](../../GLOSSARY.md#component) — العقد المشترك اللي العنصر أو المجموعة أو `Wrapper` بتوفره. هنا: `Drink`.
+- [`Concrete Component`](../../GLOSSARY.md#concrete-component) — الـ `implementation` الأساسية قبل إضافة طبقات اختيارية. هنا: `Coffee`.
+- [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — طبقة تغليف (`Wrapper`) بتحافظ على عقد `Component`، وبتضيف مسؤولية محددة (`responsibility`). هنا: `Milk`.
 
 ## Modern C++20 Example
 
@@ -102,11 +102,11 @@ coffee + milk + milk: 14
 
 ## When to Use
 
-استخدمه ل behavior اختياري قابل للتركيب وبيحافظ على عقد العنصر الأصلي.
+استخدمه لإضافة سلوك اختياري (`behavior`) قابل للتركيب وبيحافظ على عقد العنصر الأصلي.
 
 ### Use cases
 
-ينفع لطبقات ضغط وتشفير الـ Streams ، مع الانتباه للترتيب والأخطاء.
+ينفع لطبقات ضغط وتشفير الـ `Streams`، مع الانتباه للترتيب والأخطاء.
 
 ## When NOT to Use
 
@@ -114,11 +114,11 @@ coffee + milk + milk: 14
 
 ## Advantages
 
-الإضافات بتتركب وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء) ، والـ base [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد interface) بيفضل صغير.
+الإضافات بتتركب وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء)، والتنفيذ الأساسي ([`implementation`](../../GLOSSARY.md#implementation)) بيفضل صغير، يعني الكود المسؤول عن السلوك الأصلي بس.
 
 ## Trade-offs
 
-ترتيب الطبقات ممكن يغيّر الـ behavior ، وكتر الـ objects الصغيرة بيصعّب التتبع. نفس الـ interface مش ضمان لنفس الوعود المرتبطة بالـ behavior.
+ترتيب الطبقات ممكن يغيّر الـ `behavior`، وكتر الـ `objects` الصغيرة بيصعّب التتبع. نفس الـ `interface` مش ضمان لنفس الوعود المرتبطة بالـ `behavior`.
 
 ## Related Patterns
 
@@ -126,34 +126,34 @@ coffee + milk + milk: 14
 
 ## Common Confusion
 
-Proxy بتتحكم في الوصول، وDecorator بتضيف responsibilities ؛ شكل الـ Wrapper لوحده مش كفاية تعرف المقصود.
+الـ `Proxy` بتتحكم في الوصول، و `Decorator` بتضيف `responsibilities`؛ شكل طبقة التغليف (`Wrapper`) لوحده مش كفاية تعرف المقصود.
 
 ## Terms to Remember
 
-- `Decorator` — ضيف behavior بإنك تلف object بواحدة تانية عندها نفس الـ interface.
-- `Component` — العقد المشترك اللي العنصر أو المجموعة أو Wrapper بتوفره. مثال: `Drink`.
-- `Concrete Component` — الـ implementation الأساسية قبل إضافة طبقات اختيارية. مثال: `Coffee`.
-- `Concrete Decorator` — Wrapper بتحافظ على عقد Component وبتضيف responsibility محددة. مثال: `Milk`.
+- `Decorator` — ضيف سلوك جديد (`behavior`) عن طريق كائن بيغلّف الكائن الأصلي، مع الحفاظ على نفس العقد (`interface`).
+- `Component` — العقد المشترك اللي العنصر أو المجموعة أو `Wrapper` بتوفره. مثال: `Drink`.
+- `Concrete Component` — الـ `implementation` الأساسية قبل إضافة طبقات اختيارية. مثال: `Coffee`.
+- `Concrete Decorator` — طبقة تغليف (`Wrapper`) بتحافظ على عقد `Component`، وبتضيف مسؤولية محددة (`responsibility`). مثال: `Milk`.
 
 ## Interview Vocabulary
 
-- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل objects متعاونة لما تعبر عن التغيير أوضح من تكبير شجرة inheritance.
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل تركيب الحل من كائنات متعاونة (`objects`)، لما ده يكون أوضح من توسيع شجرة الوراثة (`inheritance`).
 - [`recursive composition`](../../GLOSSARY.md#recursive-composition) — بتبني تركيب من أجزاء بتوفر نفس عقد الكل.
 - [`single responsibility`](../../GLOSSARY.md#single-responsibility) — خلّي الجزء مركز على سبب واحد مترابط للتغيير.
 
 ## Interview Question
 
-هل Logging قبل التشفير هيشوف نفس البيانات بعد التشفير؟
+هل `Logging` قبل التشفير هيشوف نفس البيانات بعد التشفير؟
 
 ## Mini Challenge
 
-ضيف Syrup بسعر 3 وجرّب ترتيبين، واشرح اختلاف الوصف.
+ضيف `Syrup` بسعر 3 وجرّب ترتيبين، واشرح اختلاف الوصف.
 
 ## Quick Summary
 
-- **المشكلة:** طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير class لكل تركيبة.
-- **الحل:** Milk بتمتلك Drink وبتفوّض ليها قبل ما تضيف وصفها وسعرها.
-- **Trade-off:** ترتيب الطبقات ممكن يغيّر الـ behavior ، وكتر الـ objects الصغيرة بيصعّب التتبع. نفس الـ interface مش ضمان لنفس الوعود المرتبطة بالـ behavior.
+- **المشكلة:** طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير `class` لكل تركيبة.
+- **الحل:** خلّي طبقة الإضافة `Milk` تمتلك مشروب من نوع `Drink`. الأول بتطلب منه الوصف والسعر، وبعدها بتضيف وصفها وتكلفتها على النتيجة.
+- **`Trade-off`:** ترتيب الطبقات ممكن يغيّر الـ `behavior`، وكتر الـ `objects` الصغيرة بيصعّب التتبع. نفس الـ `interface` مش ضمان لنفس الوعود المرتبطة بالـ `behavior`.
 - **افتكر:** نفس العقد، وطبقة زيادة.
 
 [السابق](../../structural/composite/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/facade/README.ar-EG.md)

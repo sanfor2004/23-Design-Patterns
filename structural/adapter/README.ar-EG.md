@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-حوّل [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) موجودة للشكل اللي الـ Client مستنيه.
+وفّق طريقة التعامل الحالية مع العقد اللي الكود المستدعي (`Client`) محتاجه. العقد ده بنسميه [`interface`](../../GLOSSARY.md#interface): بيحدد العمليات المتاحة والنتيجة المتوقعة منها.
 
 ## The Problem
 
-لوحة العرض مستنية Celsius ، بس الحساس الموجود بيرجع Fahrenheit.
+لوحة العرض مستنية `Celsius`، بس الحساس الموجود بيرجع `Fahrenheit`.
 
 ## Naive Solution
 
@@ -32,7 +32,7 @@ double displayed = sensor.fahrenheit(); // UI expects Celsius
 
 ## The Idea
 
-اعمل Temperature حوالين LegacyThermometer مستعارة، وحوّل الوحدات عند الحد الفاصل.
+اعمل طبقة توافق من نوع `CelsiusAdapter` بتنفّذ العقد `Temperature`. الطبقة بتستعير الحساس القديم `LegacyThermometer`، وبتحوّل وحدات القياس عند الحد الفاصل.
 
 ## Real-World Analogy
 
@@ -50,12 +50,12 @@ display(Temperature)  -->  CelsiusAdapter  -->  LegacyThermometer
 
 ## Participants
 
-Temperature هي الـ interface المطلوبة، و LegacyThermometer هي القديمة. CelsiusAdapter بتستعيرها، و display بتعرف Temperature بس.
+في المثال، العقد المطلوب هو `Temperature`، والحساس القديم هو `LegacyThermometer`. طبقة التوافق `CelsiusAdapter` بتستعير الحساس وبتحوّل القيمة. دالة العرض `display` بتتعامل مع العقد المطلوب بس.
 
 الأدوار القياسية في المثال ده:
 
-- [`Target`](../../GLOSSARY.md#target) — الـ interface اللي Client متوقع يتعامل معاها. هنا: `Temperature`.
-- [`Adaptee`](../../GLOSSARY.md#adaptee) — الـ object الموجودة اللي interface بتاعتها محتاجة تتوافق مع المطلوب. هنا: `LegacyThermometer`.
+- [`Target`](../../GLOSSARY.md#target) — الـ `interface` اللي `Client` متوقع يتعامل معاها. هنا: `Temperature`.
+- [`Adaptee`](../../GLOSSARY.md#adaptee) — الـ `object` الموجودة اللي `interface` بتاعتها محتاجة تتوافق مع المطلوب. هنا: `LegacyThermometer`.
 - [`interface`](../../GLOSSARY.md#interface) — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. هنا: `Temperature`.
 
 ## Modern C++20 Example
@@ -96,23 +96,23 @@ int main() {
 
 ## When to Use
 
-استخدمه عند التعامل مع API موجودة مش قادر أو مش مناسب تغيّرها.
+استخدمه عند التعامل مع `API` موجودة مش قادر أو مش مناسب تغيّرها.
 
 ### Use cases
 
-مناسب لربط APIs قديمة وتحويل وحدات؛ الدقة والتعامل مع الأخطاء محتاجين اتفاق واضح.
+مناسب لربط `APIs` قديمة وتحويل وحدات؛ الدقة والتعامل مع الأخطاء محتاجين اتفاق واضح.
 
 ## When NOT to Use
 
-بلاش لو أنت مالك الطرفين وتوحيد الـ interface أبسط.
+بلاش لو أنت مالك الطرفين وتوحيد الـ `interface` أبسط.
 
 ## Advantages
 
-التحويل في مكان واحد، والعرض يقبل أي [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد interface) لـ Temperature.
+التحويل في مكان واحد، والعرض يقبل أي [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد `interface`) لـ `Temperature`.
 
 ## Trade-offs
 
-تغيير أسماء الـ methods بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ Adapter لأن الـ reference مش مالكة.
+تغيير أسماء الـ `methods` بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ `Adapter` لأن الـ `reference` مش مالكة.
 
 ## Related Patterns
 
@@ -120,34 +120,34 @@ int main() {
 
 ## Common Confusion
 
-Facade بتبسّط Subsystem. Adapter بتخلّي interface بعينها متوافقة مع عقد مطلوب.
+الـ `Facade` بتبسّط `Subsystem`. الـ `Adapter` بتخلّي `interface` بعينها متوافقة مع عقد مطلوب.
 
 ## Terms to Remember
 
-- `Adapter` — حوّل interface موجودة للشكل اللي الـ Client مستنيه.
-- `Target` — الـ interface اللي Client متوقع يتعامل معاها. مثال: `Temperature`.
-- `Adaptee` — الـ object الموجودة اللي interface بتاعتها محتاجة تتوافق مع المطلوب. مثال: `LegacyThermometer`.
+- `Adapter` — وفّق طريقة التعامل الحالية (`interface`) مع العقد اللي الكود المستدعي (`Client`) محتاجه.
+- `Target` — الـ `interface` اللي `Client` متوقع يتعامل معاها. مثال: `Temperature`.
+- `Adaptee` — الـ `object` الموجودة اللي `interface` بتاعتها محتاجة تتوافق مع المطلوب. مثال: `LegacyThermometer`.
 - `interface` — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. مثال: `Temperature`.
 
 ## Interview Vocabulary
 
-- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — اعتمد على العقد المعلن بدل تفاصيل implementation بعينها.
-- [`delegation`](../../GLOSSARY.md#delegation) — object بتطلب من object متعاونة معاها تنفذ جزء من الشغل.
-- [`lifetime`](../../GLOSSARY.md#lifetime) — الفترة اللي الـ object موجودة فيها وينفع تستخدمها حسب قواعدها.
+- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — اعتمد على العقد المعلن بدل تفاصيل `implementation` بعينها.
+- [`delegation`](../../GLOSSARY.md#delegation) — الكائن بيفوّض جزء من شغله لكائن متعاون معاه (`object`)، بدل ما ينفّذ كل حاجة بنفسه.
+- [`lifetime`](../../GLOSSARY.md#lifetime) — الفترة اللي الـ `object` موجودة فيها وينفع تستخدمها حسب قواعدها.
 
 ## Interview Question
 
-هل ينفع دايماً تحافظ على الـ behavior لو المصدر Async والـ interface المطلوبة Sync ؟
+هل ينفع دايماً تحافظ على الـ `behavior` لو المصدر `Async` والـ `interface` المطلوبة `Sync`؟
 
 ## Mini Challenge
 
-خلّي Fahrenheit قابلة للتغيير، واختبر نقطتي التجمد والغليان.
+خلّي `Fahrenheit` قابلة للتغيير، واختبر نقطتي التجمد والغليان.
 
 ## Quick Summary
 
-- **المشكلة:** لوحة العرض مستنية Celsius ، بس الحساس الموجود بيرجع Fahrenheit.
-- **الحل:** اعمل Temperature حوالين LegacyThermometer مستعارة، وحوّل الوحدات عند الحد الفاصل.
-- **Trade-off:** تغيير أسماء الـ methods بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ Adapter لأن الـ reference مش مالكة.
+- **المشكلة:** لوحة العرض مستنية `Celsius`، بس الحساس الموجود بيرجع `Fahrenheit`.
+- **الحل:** اعمل طبقة توافق من نوع `CelsiusAdapter` بتنفّذ العقد `Temperature`. الطبقة بتستعير الحساس القديم `LegacyThermometer`، وبتحوّل وحدات القياس عند الحد الفاصل.
+- **`Trade-off`:** تغيير أسماء الـ `methods` بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ `Adapter` لأن الـ `reference` مش مالكة.
 - **افتكر:** حوّل عند نقطة الاتصال.
 
 [السابق](../../creational/singleton/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/bridge/README.ar-EG.md)

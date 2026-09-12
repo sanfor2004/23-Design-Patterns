@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
-<title id="title">Design-Patterns-23 by Sanfor2004</title>
+<title id="title">23 Design Patterns by Sanfor2004</title>
 <desc id="desc">23 Patterns, 4 Languages, practical C++20 software design. The original orange Sanfor logo on warm paper.</desc>
 <rect width="1280" height="640" fill="#e7c99f"/>
 <g stroke="#c99e64" stroke-width="1"><path d="M48 0V640M1232 0V640M0 146H1280M0 584H1280"/></g>
@@ -11,7 +11,7 @@
 <text x="190" y="96" fill="#25170e" font-family="Arial, sans-serif" font-size="30" font-weight="700">Sanfor2004</text>
 <text x="1200" y="91" text-anchor="end" fill="#76583f" font-family="Consolas, monospace" font-size="19">[ SOFTWARE DESIGN / C++20 ]</text>
 <text x="80" y="231" fill="#c9521f" font-family="Consolas, monospace" font-size="23">PROBLEM → PATTERN → PRACTICE</text>
-<text x="76" y="327" fill="#25170e" font-family="Arial, sans-serif" font-size="88" font-weight="800" letter-spacing="-4">Design-Patterns-23</text>
+<text x="76" y="327" fill="#25170e" font-family="Arial, sans-serif" font-size="88" font-weight="800" letter-spacing="-4">23 Design Patterns</text>
 <text x="80" y="391" fill="#76583f" font-family="Arial, sans-serif" font-size="29">Real examples. Simple explanations.</text>
 <g fill="#25170e" font-family="Consolas, monospace" font-size="29">
 <text x="80" y="510">23 Patterns</text><text x="390" y="510">4 Languages</text><text x="730" y="510">C++20</text></g>

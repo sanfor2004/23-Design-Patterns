@@ -1,6 +1,6 @@
 ![Sanfor2004](assets/brand/logo.svg)
 
-# Design-Patterns-23
+# 23 Design Patterns
 
 23 Patterns · 4 Languages · Real Examples · Simple Explanations
 
@@ -8,7 +8,7 @@
 
 [English](README.md) · [العربية المصرية](README.ar-EG.md) · [简体中文](README.zh-CN.md) · [Italiano](README.it.md)
 
-ابدأ بمشكلة حقيقية. شوف الحل البسيط بيصعّب الدنيا فين. افهم النمط، شغّل C++، وقرر هل التنظيم الزيادة يستاهل.
+ابدأ بمشكلة حقيقية. شوف الحل البسيط بيصعّب الدنيا فين. افهم النمط، شغّل `C++`، وقرر هل التنظيم الزيادة يستاهل.
 
 - [مسار التعلّم](LEARNING_PATH.ar-EG.md)
 - [ورقة المراجعة](CHEATSHEET.ar-EG.md)
@@ -18,7 +18,7 @@
 
 ## ليه الريبو دي موجودة؟
 
-فهم الـ Patterns بيبقى أسهل لما تتبّع مشكلة حقيقية في برنامج صغير. هنا هتلاقي السبب والكود والناتج والمقايضات جنب بعض، عشان تعرف إمتى التنظيم الزيادة يستاهل.
+فهم الـ `Patterns` بيبقى أسهل لما تتبّع مشكلة حقيقية في برنامج صغير. هنا هتلاقي السبب والكود والناتج والمقايضات جنب بعض، عشان تعرف إمتى التنظيم الزيادة يستاهل.
 
 ## تتنقل إزاي؟
 
@@ -26,50 +26,50 @@
 
 ## Creational Pattern
 
-إزاي الـ objects بتتعمل
+إزاي بننشئ الكائنات؟ المصطلح هنا هو `object creation`.
 
-- [Abstract Factory](creational/abstract-factory/README.ar-EG.md) — اعمل مجموعة objects متوافقة من خلال Factory واحدة. (متوسط)
-- [Builder](creational/builder/README.ar-EG.md) — جهّز object بخطوات اسمها واضح، وبعدين طلّع النتيجة. (مبتدئ)
-- [Factory Method](creational/factory-method/README.ar-EG.md) — خلّي subclass تختار الـ object اللي Workflow مشتركة هتستخدمه. (مبتدئ)
-- [Prototype](creational/prototype/README.ar-EG.md) — اعمل object مستقلة عن طريق نسخ نموذج متجهّز. (متوسط)
-- [Singleton](creational/singleton/README.ar-EG.md) — قيّد النوع بـ instance واحدة متاحة، مع حساب تكلفة الـ shared global state. (متوسط)
+- [`Abstract Factory`](creational/abstract-factory/README.ar-EG.md) — أنشئ مجموعة كائنات مرتبطة ومتوافقة مع بعض (`family of related objects`) باستخدام `Factory` واحدة. (متوسط)
+- [`Builder`](creational/builder/README.ar-EG.md) — جهّز الكائن (`object`) بخطوات أساميها واضحة، وبعدين طلّع النتيجة. (مبتدئ)
+- [`Factory Method`](creational/factory-method/README.ar-EG.md) — خلّي الـ `subclass` هي اللي تحدد الـ `concrete object` اللي خطوات الشغل المشتركة (`workflow`) هتستخدمه. (مبتدئ)
+- [`Prototype`](creational/prototype/README.ar-EG.md) — انسخ نموذج متجهّز عشان تنشئ كائن مستقل (`object`) وتعدّله من غير ما تغيّر الأصل. (متوسط)
+- [`Singleton`](creational/singleton/README.ar-EG.md) — اسمح بوجود نسخة واحدة متاحة من النوع (`instance`)، وخد بالك من تكلفة الحالة العامة المشتركة (`shared global state`). (متوسط)
 
 ## Structural Pattern
 
-إزاي الـ objects بتركب مع بعض
+إزاي بنركّب الكائنات مع بعض؟ المصطلح هنا هو `object composition`.
 
-- [Adapter](structural/adapter/README.ar-EG.md) — حوّل interface موجودة للشكل اللي الـ Client مستنيه. (مبتدئ)
-- [Bridge](structural/bridge/README.ar-EG.md) — افصل ناحيتين بيتغيروا، واربطهم بالـ composition. (متوسط)
-- [Composite](structural/composite/README.ar-EG.md) — عامل العنصر الواحد وشجرة العناصر بنفس العملية. (مبتدئ)
-- [Decorator](structural/decorator/README.ar-EG.md) — ضيف behavior بإنك تلف object بواحدة تانية عندها نفس الـ interface. (مبتدئ)
-- [Facade](structural/facade/README.ar-EG.md) — وفّر مدخل صغير لخطوات شائعة جوه Subsystem. (مبتدئ)
-- [Flyweight](structural/flyweight/README.ar-EG.md) — شارك البيانات الثابتة، وخلي سياق كل ظهور منفصل. (متقدم)
-- [Proxy](structural/proxy/README.ar-EG.md) — تحكّم في الوصول لـ object عن طريق بديل بنفس الـ interface. (متوسط)
+- [`Adapter`](structural/adapter/README.ar-EG.md) — وفّق طريقة التعامل الحالية (`interface`) مع العقد اللي الكود المستدعي (`Client`) محتاجه. (مبتدئ)
+- [`Bridge`](structural/bridge/README.ar-EG.md) — افصل ناحيتين بيتغيروا بشكل مستقل، واربطهم عن طريق التركيب (`composition`). (متوسط)
+- [`Composite`](structural/composite/README.ar-EG.md) — عامل العنصر الواحد وشجرة العناصر بنفس العملية. (مبتدئ)
+- [`Decorator`](structural/decorator/README.ar-EG.md) — ضيف سلوك جديد (`behavior`) عن طريق كائن بيغلّف الكائن الأصلي، مع الحفاظ على نفس العقد (`interface`). (مبتدئ)
+- [`Facade`](structural/facade/README.ar-EG.md) — وفّر مدخل بسيط للخطوات الشائعة جوه نظام فرعي (`subsystem`). (مبتدئ)
+- [`Flyweight`](structural/flyweight/README.ar-EG.md) — شارك البيانات الثابتة، وخلي سياق كل ظهور منفصل. (متقدم)
+- [`Proxy`](structural/proxy/README.ar-EG.md) — تحكّم في الوصول للكائن (`object`) عن طريق بديل بيوفّر نفس العقد (`interface`). (متوسط)
 
 ## Behavioral Pattern
 
-إزاي الـ objects بتتواصل وتتصرف
+إزاي الكائنات بتتواصل، وإيه اللي بيحدد سلوكها؟ هنركز هنا على `behavior` والتعاون بينها.
 
-- [Chain of Responsibility](behavioral/chain-of-responsibility/README.ar-EG.md) — مرّر الطلب على Handlers تقدر توقفه أو تكمّل. (متوسط)
-- [Command](behavioral/command/README.ar-EG.md) — حوّل الفعل لـ object تقدر تخزنها وتشغّلها بعدين. (متوسط)
-- [Interpreter](behavioral/interpreter/README.ar-EG.md) — مثّل لغة صغيرة بـ objects بتقيّم قواعدها. (متقدم)
-- [Iterator](behavioral/iterator/README.ar-EG.md) — لف على مجموعة من خلال طريقة وصول ثابتة. (مبتدئ)
-- [Mediator](behavioral/mediator/README.ar-EG.md) — انقل التنسيق بين objects زميلة لـ object مخصصة. (متوسط)
-- [Memento](behavioral/memento/README.ar-EG.md) — احفظ state بتاعة object وارجعها من غير كشف تفاصيل النسخة المحفوظة. (متوسط)
-- [Observer](behavioral/observer/README.ar-EG.md) — بلّغ الـ objects المشتركة لما الحاجة اللي بيتابعوها تتغير. (مبتدئ)
-- [State](behavioral/state/README.ar-EG.md) — خلّي state بتاعة الـ object الحالية تحدد ردها وانتقالاتها. (متوسط)
-- [Strategy](behavioral/strategy/README.ar-EG.md) — مرّر algorithm قابلة للتبديل للـ object اللي محتاجاها. (مبتدئ)
-- [Template Method](behavioral/template-method/README.ar-EG.md) — ثبّت ترتيب الـ algorithm وخلي الـ subclasses تنفّذ خطوات مختارة. (متوسط)
-- [Visitor](behavioral/visitor/README.ar-EG.md) — ضيف عمليات على أنواع عناصر ثابتة عن طريق Visitor منفصلة. (متقدم)
+- [`Chain of Responsibility`](behavioral/chain-of-responsibility/README.ar-EG.md) — مرّر الطلب على سلسلة معالجات (`Handlers`)؛ كل واحدة تقدر توقفه أو تمرّره للي بعدها. (متوسط)
+- [`Command`](behavioral/command/README.ar-EG.md) — مثّل الفعل بكائن (`object`) تقدر تخزنه وتشغّله بعدين. (متوسط)
+- [`Interpreter`](behavioral/interpreter/README.ar-EG.md) — مثّل قواعد لغة صغيرة بكائنات (`objects`)، بحيث كل كائن يعرف يقيّم الجزء المسؤول عنه. (متقدم)
+- [`Iterator`](behavioral/iterator/README.ar-EG.md) — لف على مجموعة من خلال طريقة وصول ثابتة. (مبتدئ)
+- [`Mediator`](behavioral/mediator/README.ar-EG.md) — خلّي التنسيق بين الأطراف المتعاونة (`Colleagues`) مسؤولية منسّق مستقل (`Mediator`). (متوسط)
+- [`Memento`](behavioral/memento/README.ar-EG.md) — احفظ حالة الكائن (`state`) عشان تقدر ترجعها بعدين، من غير ما تكشف تفاصيل النسخة المحفوظة. (متوسط)
+- [`Observer`](behavioral/observer/README.ar-EG.md) — بلّغ المشتركين (`Observers`) لما يحصل تغيير في المصدر اللي بيتابعوه (`Subject`). (مبتدئ)
+- [`State`](behavioral/state/README.ar-EG.md) — خلّي الحالة الحالية للكائن (`state`) هي اللي تحدد استجابته والانتقالات المتاحة ليه. (متوسط)
+- [`Strategy`](behavioral/strategy/README.ar-EG.md) — افصل طريقة الحساب (`algorithm`) عن الكائن اللي بيستخدمها، عشان تقدر تختار طريقة بديلة لنفس المهمة. (مبتدئ)
+- [`Template Method`](behavioral/template-method/README.ar-EG.md) — ثبّت ترتيب خطوات الحل (`algorithm`)، وسيب تنفيذ خطوات معينة للأنواع المشتقة (`subclasses`). (متوسط)
+- [`Visitor`](behavioral/visitor/README.ar-EG.md) — ضيف عمليات جديدة على مجموعة أنواع ثابتة، وحط العمليات دي في `Visitor` منفصلة. (متقدم)
 
-## افهم المشكلة. وبعدها اختار الـ abstraction.
+## افهم المشكلة. وبعدها اختار الـ `abstraction`.
 
-النمط فكرة تصميم بتتكرر مع مشكلة معروفة، مش رسمة classes ننسخها في كل حتة. ابدأ ببساطة وضيف التنظيم لما تغيير حقيقي يحتاجه.
+النمط فكرة تصميم بتتكرر مع مشكلة معروفة، مش رسمة `classes` ننسخها في كل حتة. ابدأ ببساطة وضيف التنظيم لما تغيير حقيقي يحتاجه.
 
 1. **قابل المشكلة** — مثال ملموس يدي التصميم سبب.
 2. **اختبر الحل البسيط** — حدد الربط أو التكرار اللي عامل الصعوبة.
-3. **تتبّع التصميم** — تابع ال responsibilities والملكية والمقايضات.
-4. **شغّل وعدّل C++** — قارن الناتج وجرّب التحدي واختبر الحدود.
+3. **تتبّع التصميم** — تابع مسؤوليات الأجزاء (`responsibilities`)، والملكية (`ownership`)، والمقايضات (`trade-offs`).
+4. **شغّل وعدّل `C++`** — قارن الناتج وجرّب التحدي واختبر الحدود.
 
 ## موارد الريبو
 
@@ -80,6 +80,6 @@
 
 ## Terminology policy
 
-بنترجم الشرح، مش المصطلحات. أسماء الـ Patterns والمصطلحات التقنية وأسماء الكود وتعبيرات المقابلات بتفضل بالإنجليزي، ومعاها شرح طبيعي بالمصري.
+بنترجم الشرح، مش المصطلحات. أسماء الـ `Patterns` والمصطلحات التقنية وأسماء الكود وتعبيرات المقابلات بتفضل بالإنجليزي، ومعاها شرح طبيعي بالمصري.
 
-[Glossary — المصطلحات](GLOSSARY.md)
+[`Glossary` — المصطلحات](GLOSSARY.md)

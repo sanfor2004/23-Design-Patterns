@@ -1,6 +1,6 @@
 # Glossary
 
-[Design-Patterns-23](README.md)
+[23 Design Patterns](README.md)
 
 Translate the explanation, not the terminology. English labels are shared across all four languages. Pattern roles refer to the examples linked from each article; a role is not always a separate class.
 
@@ -20,7 +20,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A Design Pattern concerned with how objects are created and configured.
 
-**مصري:** Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
+**مصري:** بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
 
 **中文:** 关注如何创建和配置 object 的 Design Pattern。
 
@@ -30,7 +30,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A Design Pattern concerned with how objects and classes fit together.
 
-**مصري:** Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
+**مصري:** بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
 
 **中文:** 关注 object 与 class 如何组织在一起的 Design Pattern。
 
@@ -40,7 +40,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A Design Pattern concerned with behavior and collaboration among objects.
 
-**مصري:** Design Pattern بيركز على behavior وتعاون objects مع بعض.
+**مصري:** بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 **中文:** 关注 object 的 behavior 与协作方式的 Design Pattern。
 
@@ -70,7 +70,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The concrete code that fulfills an interface or performs an operation.
 
-**مصري:** الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد interface.
+**مصري:** الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد `interface`.
 
 **中文:** 实际完成操作或履行 interface 约定的代码。
 
@@ -80,7 +80,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Building behavior by connecting objects that use or contain other objects.
 
-**مصري:** بتركّب behavior من objects بتستخدم أو بتحتوي objects تانية.
+**مصري:** بتبني السلوك (`behavior`) عن طريق كائنات متعاونة (`objects`)، كل واحد منها بيستخدم أو بيحتوي كائنات تانية.
 
 **中文:** 通过连接使用或包含其他 object 的 object 来组合行为。
 
@@ -90,7 +90,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Defining a derived class from a base class to reuse or specialize its contract and implementation.
 
-**مصري:** بتعرّف derived class انطلاقاً من base class عشان تعيد استخدام العقد أو تخصصه.
+**مصري:** بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه.
 
 **中文:** 从 base class 定义 derived class，复用或扩展约定及实现。
 
@@ -110,7 +110,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Using one interface with different implementations; C++ supports runtime and compile-time forms.
 
-**مصري:** نفس interface تشتغل مع implementations مختلفة؛ C++ فيها أشكال وقت runtime وأشكال وقت compile time.
+**مصري:** نفس العقد (`interface`) يقبل تنفيذات مختلفة (`implementations`). في `C++`، فيه أشكال بتتحدد وقت التشغيل (`runtime`)، وأشكال وقت الترجمة (`compile time`).
 
 **中文:** 同一 interface 对应不同 implementation；C++ 同时支持 runtime 与 compile time 的形式。
 
@@ -170,7 +170,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Supplying a dependency from outside instead of choosing or constructing it inside the consumer.
 
-**مصري:** بتمرّر dependency من بره بدل ما الجزء اللي بيستخدمها يختارها أو يعملها بنفسه.
+**مصري:** بتمرّر `dependency` من بره بدل ما الجزء اللي بيستخدمها يختارها أو يعملها بنفسه.
 
 **中文:** 从外部传入 dependency，而不是由使用方自行选择或创建。
 
@@ -180,7 +180,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An object asks a collaborator to perform part of its work.
 
-**مصري:** object بتطلب من object متعاونة معاها تنفذ جزء من الشغل.
+**مصري:** الكائن بيفوّض جزء من شغله لكائن متعاون معاه (`object`)، بدل ما ينفّذ كل حاجة بنفسه.
 
 **中文:** 一个 object 把部分工作交给协作方完成。
 
@@ -210,7 +210,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Connecting objects to form a larger behavior or structure.
 
-**مصري:** بتوصل objects ببعض عشان تطلع behavior أو تركيب أكبر.
+**مصري:** بتوصل الكائنات (`objects`) ببعض عشان تبني سلوك متكامل (`behavior`) أو تركيب أكبر.
 
 **中文:** 连接多个 object，形成更大的行为或结构。
 
@@ -220,7 +220,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An entity with identity and lifetime; in C++, an object occupies storage.
 
-**مصري:** كيان له هوية وlifetime؛ في C++ الـ object بتشغل مساحة تخزين.
+**مصري:** كيان له هوية و `lifetime`؛ في `C++` الـ `object` بتشغل مساحة تخزين.
 
 **中文:** 具有身份和 lifetime 的实体；在 C++ 中 object 占用存储空间。
 
@@ -230,7 +230,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A C++ user-defined type that groups data and operations.
 
-**مصري:** نوع بتعرّفه في C++ وبتجمع فيه بيانات وعمليات مرتبطة.
+**مصري:** نوع بتعرّفه في `C++` وبتجمع فيه بيانات وعمليات مرتبطة.
 
 **中文:** 在 C++ 中把相关数据和操作组织起来的自定义类型。
 
@@ -240,7 +240,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A particular object of a type.
 
-**مصري:** object بعينها من نوع معين.
+**مصري:** كائن محدد (`object`) من نوع معين.
 
 **中文:** 某个类型的一个具体 object。
 
@@ -250,7 +250,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Code that uses an interface or collaborates with a pattern's objects.
 
-**مصري:** الكود اللي بيستخدم interface أو بيتعامل مع objects بتاعة الـ Pattern.
+**مصري:** الكود اللي بيستخدم `interface` أو بيتعامل مع `objects` بتاعة الـ `Pattern`.
 
 **中文:** 使用 interface 或与模式中的 object 协作的代码。
 
@@ -260,7 +260,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A class that can be instantiated and supplies the required operations.
 
-**مصري:** class ينفع تعمل منها instance وبتوفر العمليات المطلوبة.
+**مصري:** الـ `class` ينفع تعمل منها `instance` وبتوفر العمليات المطلوبة.
 
 **中文:** 可以创建 instance 并提供所需操作的 class。
 
@@ -270,7 +270,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A class that cannot be instantiated directly, typically because some virtual operations are pure.
 
-**مصري:** class ما ينفعش تعمل منها instance مباشرة؛ غالباً فيها عمليات pure virtual.
+**مصري:** الـ `class` ما ينفعش تعمل منها `instance` مباشرة؛ غالباً فيها عمليات `pure virtual`.
 
 **中文:** 不能直接创建 instance 的 class，通常包含 pure virtual 操作。
 
@@ -280,7 +280,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The class from which another class inherits.
 
-**مصري:** الـ class اللي class تانية بتورّث منها.
+**مصري:** الـ `class` اللي `class` تانية بتورّث منها.
 
 **中文:** 另一 class 所继承的 class。
 
@@ -290,7 +290,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A class that inherits from a base class; also called a subclass.
 
-**مصري:** class بتورّث من base class، واسمها كمان subclass.
+**مصري:** الـ `class` بتورّث من `base class`، واسمها كمان `subclass`.
 
 **中文:** 继承自 base class 的 class，也称 subclass。
 
@@ -300,7 +300,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The special operation that initializes a new class instance.
 
-**مصري:** العملية الخاصة اللي بتجهّز instance جديدة وقت إنشائها.
+**مصري:** العملية الخاصة اللي بتجهّز `instance` جديدة وقت إنشائها.
 
 **中文:** 创建 class instance 时负责初始化的特殊操作。
 
@@ -310,7 +310,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The special operation run when a class instance's lifetime ends.
 
-**مصري:** العملية الخاصة اللي بتتنفذ لما lifetime بتاعة instance تنتهي.
+**مصري:** العملية الخاصة اللي بتتنفذ لما `lifetime` بتاعة `instance` تنتهي.
 
 **中文:** class instance 的 lifetime 结束时执行的特殊操作。
 
@@ -320,7 +320,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An operation associated with an object or class; usually a member function in C++.
 
-**مصري:** عملية مرتبطة بـ object أو class؛ غالباً member function في C++.
+**مصري:** عملية مرتبطة بـ `object` أو `class`؛ غالباً `member function` في `C++`.
 
 **中文:** 与 object 或 class 关联的操作，在 C++ 中通常是 member function。
 
@@ -340,7 +340,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A function or operation supplied to be called when another operation needs it.
 
-**مصري:** function أو عملية بتمرّرها عشان جزء تاني يناديها وقت ما يحتاجها.
+**مصري:** دالة (`function`) أو عملية بتمرّرها لجزء تاني، عشان يناديها وقت ما يحتاجها.
 
 **中文:** 传给另一部分、在需要时由它调用的 function 或操作。
 
@@ -350,7 +350,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An occurrence that code can react to, such as an input or state change.
 
-**مصري:** حاجة حصلت والكود ممكن يرد عليها، زي مدخل جديد أو تغيير state.
+**مصري:** حاجة حصلت والكود ممكن يرد عليها، زي مدخل جديد أو تغيير `state`.
 
 **中文:** 代码可以响应的事情，例如输入或 state 变化。
 
@@ -360,7 +360,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The information that describes an object's current condition.
 
-**مصري:** المعلومات اللي بتوصف وضع الـ object دلوقتي.
+**مصري:** المعلومات اللي بتوصف وضع الـ `object` دلوقتي.
 
 **中文:** 描述 object 当前状况的信息。
 
@@ -370,7 +370,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** What an object or operation does in response to input and state.
 
-**مصري:** اللي object أو عملية بتعمله بناءً على المدخلات والـ state.
+**مصري:** اللي `object` أو عملية بتعمله بناءً على المدخلات والـ `state`.
 
 **中文:** object 或操作根据输入和 state 所执行的动作。
 
@@ -400,7 +400,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The period when source code is checked and translated into a program.
 
-**مصري:** المرحلة اللي فيها source code بيتراجع وبيتحول لبرنامج.
+**مصري:** المرحلة اللي فيها `source code` بيتراجع وبيتحول لبرنامج.
 
 **中文:** 检查 source code 并将其转换为程序的阶段。
 
@@ -430,7 +430,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The interval during which an object exists and may be used according to its rules.
 
-**مصري:** الفترة اللي الـ object موجودة فيها وينفع تستخدمها حسب قواعدها.
+**مصري:** الفترة اللي الـ `object` موجودة فيها وينفع تستخدمها حسب قواعدها.
 
 **中文:** object 存在且可按规则使用的时间区间。
 
@@ -440,7 +440,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An object that wraps pointer access with a lifetime or ownership policy.
 
-**مصري:** object بتغلف pointer ومعاها قواعد واضحة للـ ownership أو lifetime.
+**مصري:** الـ `object` بتغلف `pointer` ومعاها قواعد واضحة للـ `ownership` أو `lifetime`.
 
 **中文:** 为 pointer 的访问附加 lifetime 或 ownership 规则的 object。
 
@@ -450,7 +450,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Resource Acquisition Is Initialization: tie resource ownership to object lifetime so destruction releases it.
 
-**مصري:** Resource Acquisition Is Initialization: اربط المورد بعمر object، عشان destructor تحرره تلقائياً.
+**مصري:** اربط المورد بعمر الكائن، عشان `destructor` تحرره تلقائياً؛ والاسم الكامل هو `Resource Acquisition Is Initialization`.
 
 **中文:** Resource Acquisition Is Initialization：把资源 ownership 绑定到 object lifetime，在析构时释放资源。
 
@@ -460,7 +460,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Standard Template Library: the generic containers, iterators, and algorithms associated with the C++ standard library.
 
-**مصري:** Standard Template Library: الـ containers والـ iterators والـ algorithms العامة المرتبطة بمكتبة C++ القياسية.
+**مصري:** `Standard Template Library`: الـ `containers` والـ `iterators` والـ `algorithms` العامة المرتبطة بمكتبة `C++` القياسية.
 
 **中文:** Standard Template Library：与 C++ 标准库相关的通用 container、iterator 和 algorithm。
 
@@ -470,7 +470,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An object that stores a collection of elements.
 
-**مصري:** object بتخزّن مجموعة عناصر.
+**مصري:** الـ `object` بتخزّن مجموعة عناصر.
 
 **中文:** 保存一组元素的 object。
 
@@ -480,7 +480,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An object representing a traversal position and the operations valid at that position.
 
-**مصري:** object بتمثل مكانك أثناء المرور والعمليات المسموحة في المكان ده.
+**مصري:** الـ `object` بتمثل مكانك أثناء المرور والعمليات المسموحة في المكان ده.
 
 **中文:** 表示遍历位置及该位置上可用操作的 object。
 
@@ -490,7 +490,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A C++ facility for defining families of types or functions parameterized at compile time.
 
-**مصري:** وسيلة في C++ لتعريف عيلة types أو functions بمعاملات بتتحدد وقت compile time.
+**مصري:** وسيلة في `C++` لتعريف عيلة `types` أو `functions` بمعاملات بتتحدد وقت `compile time`.
 
 **中文:** C++ 中在 compile time 通过参数定义一组 type 或 function 的机制。
 
@@ -500,7 +500,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Writing algorithms against requirements on types rather than one concrete type.
 
-**مصري:** بتكتب algorithms على أساس متطلبات النوع بدل ما تربطها بنوع واحد.
+**مصري:** بتكتب `algorithms` على أساس متطلبات النوع بدل ما تربطها بنوع واحد.
 
 **中文:** 根据类型需要满足的要求编写 algorithm，而不是绑定一个具体类型。
 
@@ -530,7 +530,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** How readily new behavior can be added without disrupting existing code.
 
-**مصري:** سهولة إضافة behavior جديدة من غير ما تلخبط الكود الموجود.
+**مصري:** سهولة إضافة `behavior` جديدة من غير ما تلخبط الكود الموجود.
 
 **中文:** 增加新 behavior 而不破坏现有代码的容易程度。
 
@@ -550,7 +550,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** How readily behavior can be isolated, exercised, and checked.
 
-**مصري:** سهولة عزل behavior وتشغيلها والتأكد من نتيجتها.
+**مصري:** سهولة عزل `behavior` وتشغيلها والتأكد من نتيجتها.
 
 **中文:** 隔离、执行并检查 behavior 的容易程度。
 
@@ -570,7 +570,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Changing internal structure while preserving externally observable behavior.
 
-**مصري:** بتغيّر تركيب الكود من جوه مع الحفاظ على behavior اللي باينة للمستخدم.
+**مصري:** بتغيّر تركيب الكود من جوه مع الحفاظ على `behavior` اللي باينة للمستخدم.
 
 **中文:** 调整内部结构，同时保持对外可观察的 behavior。
 
@@ -600,7 +600,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Prefer collaborating objects when they express variation more clearly than extending a class hierarchy.
 
-**مصري:** فضّل objects متعاونة لما تعبر عن التغيير أوضح من تكبير شجرة inheritance.
+**مصري:** فضّل تركيب الحل من كائنات متعاونة (`objects`)، لما ده يكون أوضح من توسيع شجرة الوراثة (`inheritance`).
 
 **中文:** 当协作 object 能更清楚地表达变化时，优先使用它们而不是扩展 inheritance 层次。
 
@@ -610,7 +610,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Depend on the promised contract instead of a particular concrete implementation.
 
-**مصري:** اعتمد على العقد المعلن بدل تفاصيل implementation بعينها.
+**مصري:** اعتمد على العقد المعلن بدل تفاصيل `implementation` بعينها.
 
 **中文:** 依赖公开约定，而不是某个具体 implementation。
 
@@ -650,7 +650,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Organize a module around one responsibility so unrelated change pressures do not mix.
 
-**مصري:** نظّم الجزء حوالين responsibility واحدة عشان أسباب التغيير المختلفة ما تتخلطش.
+**مصري:** نظّم الجزء حوالين `responsibility` واحدة عشان أسباب التغيير المختلفة ما تتخلطش.
 
 **中文:** 围绕一种 responsibility 组织模块，避免混合互不相关的修改压力。
 
@@ -660,7 +660,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Aim for open for extension, closed for modification at a useful, chosen boundary.
 
-**مصري:** استهدف open for extension, closed for modification عند حدود مفيدة ومختارة بوضوح.
+**مصري:** خلّي التوسيع ممكن من غير تعديل الكود المستقر، عند حدود مختارة بوضوح. التعبير هو `open for extension, closed for modification`.
 
 **中文:** 在选定的有效边界上追求 open for extension, closed for modification。
 
@@ -670,7 +670,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Add intended variations through extension points without editing stable client logic.
 
-**مصري:** ضيف التغييرات المقصودة من نقاط توسعة بدل تعديل منطق client المستقر.
+**مصري:** ضيف التغييرات المقصودة من نقاط توسعة بدل تعديل منطق `client` المستقر.
 
 **中文:** 通过扩展点增加预期变化，而不修改稳定的 client 逻辑。
 
@@ -680,7 +680,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** High-level policy and low-level details depend on abstractions rather than policy depending directly on details.
 
-**مصري:** السياسة العامة والتفاصيل يعتمدوا على abstractions بدل ما السياسة تتربط بالتفاصيل مباشرة.
+**مصري:** السياسة العامة والتفاصيل يعتمدوا على `abstractions` بدل ما السياسة تتربط بالتفاصيل مباشرة.
 
 **中文:** 高层规则和底层细节都依赖 abstraction，而不是让高层规则直接依赖细节。
 
@@ -690,7 +690,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A group of five object-oriented design principles: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion.
 
-**مصري:** خمس مبادئ للتصميم: Single Responsibility وOpen/Closed وLiskov Substitution وInterface Segregation وDependency Inversion.
+**مصري:** خمس مبادئ للتصميم: `Single Responsibility` و `Open`/`Closed` و `Liskov Substitution` و `Interface Segregation` و `Dependency Inversion`.
 
 **中文:** 五项面向对象设计原则：Single Responsibility、Open/Closed、Liskov Substitution、Interface Segregation 和 Dependency Inversion。
 
@@ -700,7 +700,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Choosing a concrete type and establishing an object's initial values and lifetime.
 
-**مصري:** اختيار النوع الفعلي وتجهيز القيم الأولية وبدء lifetime بتاعة object.
+**مصري:** اختيار النوع الفعلي وتجهيز قيمه الأولية. من هنا بيبدأ عمر الكائن (`lifetime`).
 
 **中文:** 选择具体类型，建立 object 的初始值并开始其 lifetime。
 
@@ -710,7 +710,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** What the program does while executing, including behavior selected from runtime input.
 
-**مصري:** اللي البرنامج بيعمله وهو شغال، بما فيه behavior بتتحدد من المدخلات.
+**مصري:** اللي البرنامج بيعمله وهو شغال، بما فيه `behavior` بتتحدد من المدخلات.
 
 **中文:** 程序执行时实际发生的动作，包括由运行时输入选择的 behavior。
 
@@ -720,7 +720,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A dependency needed to compile a unit of code, such as a type declaration in a header.
 
-**مصري:** dependency لازمة عشان تترجم جزء كود، زي تعريف نوع في header.
+**مصري:** الـ `dependency` لازمة عشان تترجم جزء كود، زي تعريف نوع في `header`.
 
 **中文:** 编译一段代码所需的 dependency，例如 header 中的类型声明。
 
@@ -730,7 +730,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Different behaviors that can be supplied through the same contract.
 
-**مصري:** behaviors مختلفة تقدر تمرّر أي واحدة منها من نفس العقد.
+**مصري:** سلوكيات مختلفة (`behaviors`) تقدر تختار أي واحدة منها من خلال نفس العقد.
 
 **中文:** 可以通过同一约定提供的不同 behavior。
 
@@ -740,7 +740,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Put an algorithm behind an operation that hides its internal steps.
 
-**مصري:** حط algorithm ورا عملية بتخفي خطواتها الداخلية.
+**مصري:** حط `algorithm` ورا عملية بتخفي خطواتها الداخلية.
 
 **中文:** 把 algorithm 放在隐藏其内部步骤的操作之后。
 
@@ -750,7 +750,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Choosing an implementation while the program is executing.
 
-**مصري:** اختيار implementation والبرنامج شغال.
+**مصري:** اختيار `implementation` والبرنامج شغال.
 
 **中文:** 在程序执行期间选择 implementation。
 
@@ -760,7 +760,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Hiding a concrete type behind a uniform runtime interface, as std::function does for callables.
 
-**مصري:** بتخفي النوع الفعلي ورا interface موحدة وقت runtime، زي std::function مع callables.
+**مصري:** بتخفي النوع الفعلي ورا `interface` موحدة وقت `runtime`، زي `std::function` مع `callables`.
 
 **中文:** 把具体类型隐藏在统一的 runtime interface 后面，例如 std::function 对 callable 的处理。
 
@@ -780,7 +780,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The interval in which a listener is registered and eligible for notification.
 
-**مصري:** الفترة اللي المستمع فيها مسجل وينفع توصله notification.
+**مصري:** الفترة اللي المستمع فيها مسجل وينفع توصله `notification`.
 
 **中文:** 监听方已注册且可以接收通知的时间区间。
 
@@ -790,7 +790,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A move from one modeled condition to another after an event.
 
-**مصري:** انتقال من وضع ممثّل في التصميم لوضع تاني بعد event.
+**مصري:** انتقال من وضع ممثّل في التصميم لوضع تاني بعد `event`.
 
 **中文:** 在 event 后从一个建模状态转到另一个状态。
 
@@ -800,7 +800,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The fixed sequence of an algorithm whose selected steps can vary.
 
-**مصري:** ترتيب algorithm الثابت اللي بعض خطواته ممكن تتغير.
+**مصري:** ترتيب `algorithm` الثابت اللي بعض خطواته ممكن تتغير.
 
 **中文:** 某些步骤可以变化、整体顺序保持固定的 algorithm 框架。
 
@@ -810,7 +810,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An extension operation called by a fixed workflow; it may have a default implementation.
 
-**مصري:** عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها implementation افتراضية.
+**مصري:** عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها `implementation` افتراضية.
 
 **中文:** 由固定流程调用的扩展操作，可以有默认 implementation。
 
@@ -820,7 +820,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Selecting behavior using two runtime types; classic Visitor combines two virtual calls with overload resolution.
 
-**مصري:** اختيار behavior بناءً على نوعين وقت runtime؛ Visitor التقليدية بتجمع نداءين virtual مع overload resolution.
+**مصري:** اختيار `behavior` بناءً على نوعين وقت `runtime`؛ الـ `Visitor` التقليدية بتجمع نداءين `virtual` مع `overload resolution`.
 
 **中文:** 依据两个 runtime 类型选择 behavior；经典 Visitor 结合两次 virtual 调用与 overload resolution。
 
@@ -830,7 +830,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Compile-time selection among functions with the same name using the argument types.
 
-**مصري:** اختيار function من كذا واحدة بنفس الاسم حسب أنواع المعاملات وقت compile time.
+**مصري:** اختيار `function` من كذا واحدة بنفس الاسم حسب أنواع المعاملات وقت `compile time`.
 
 **中文:** 在 compile time 根据参数类型，从同名 function 中选择匹配项。
 
@@ -870,7 +870,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Initialization protected against concurrent construction; it does not make later operations thread-safe.
 
-**مصري:** حماية التهيئة من الإنشاء المتزامن؛ مش معناها إن كل العمليات بعد كده thread-safe.
+**مصري:** حماية التهيئة من الإنشاء المتزامن؛ مش معناها إن كل العمليات بعد كده `thread-safe`.
 
 **中文:** 避免并发重复构造的初始化保障，不代表后续操作也 thread-safe。
 
@@ -880,7 +880,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An interface shaped to read as a chain of calls; it does not by itself imply Builder.
 
-**مصري:** interface بتسمح بسلسلة نداءات مقروءة؛ ده لوحده مش معناه Builder.
+**مصري:** عقد (`interface`) بيسمح تكتب سلسلة استدعاءات بشكل مقروء؛ ده لوحده مش معناه إنك بتستخدم `Builder`.
 
 **中文:** 设计成链式调用的 interface；它本身并不等于 Builder。
 
@@ -890,7 +890,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Data independent of an occurrence's context that a Flyweight can share.
 
-**مصري:** بيانات مستقلة عن مكان الاستخدام، فالـ Flyweight تقدر تشاركها.
+**مصري:** بيانات مستقلة عن مكان الاستخدام، فالـ `Flyweight` تقدر تشاركها.
 
 **中文:** 不依赖具体使用位置、可由 Flyweight 共享的数据。
 
@@ -900,7 +900,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Per-occurrence data kept outside a shared Flyweight.
 
-**مصري:** بيانات تخص كل استخدام وبتفضل بره الـ Flyweight المشتركة.
+**مصري:** بيانات تخص كل استخدام وبتفضل بره الـ `Flyweight` المشتركة.
 
 **中文:** 每次使用独有、保存在共享 Flyweight 外部的数据。
 
@@ -910,7 +910,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Reusing one representation for equivalent values through a lookup pool.
 
-**مصري:** بتعيد استخدام تمثيل واحد للقيم المتساوية عن طريق pool للبحث.
+**مصري:** بتعيد استخدام تمثيل واحد للقيم المتساوية عن طريق `pool` للبحث.
 
 **中文:** 通过查找池为等价值复用同一个表示。
 
@@ -950,7 +950,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The rule for stopping a chain and deciding what happens after the last handler.
 
-**مصري:** القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر Handler.
+**مصري:** القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر `Handler`.
 
 **中文:** 决定处理链何时停止以及最后一个 Handler 之后如何处理的规则。
 
@@ -960,7 +960,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Restoring an earlier logical result, using saved state or an inverse operation when possible.
 
-**مصري:** بترجع لنتيجة سابقة باستخدام state محفوظة أو عملية عكسية لما ينفع.
+**مصري:** بترجع لنتيجة سابقة باستخدام `state` محفوظة أو عملية عكسية لما ينفع.
 
 **中文:** 在可行时用保存的 state 或逆操作恢复之前的逻辑结果。
 
@@ -970,7 +970,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The guarantees an operation preserves if it fails by throwing an exception.
 
-**مصري:** الضمانات اللي العملية بتحافظ عليها لو فشلت ورمت exception.
+**مصري:** الضمانات اللي العملية بتحافظ عليها لو فشلت ورمت `exception`.
 
 **中文:** 操作抛出 exception 时仍能保持的保证。
 
@@ -980,7 +980,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A captured representation of selected state at a point in time.
 
-**مصري:** صورة محفوظة لجزء محدد من state في لحظة معينة.
+**مصري:** صورة محفوظة لجزء محدد من `state` في لحظة معينة.
 
 **中文:** 某一时刻所选 state 的保存表示。
 
@@ -1010,7 +1010,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An operation makes an iterator no longer valid for its intended use.
 
-**مصري:** عملية بتخلي iterator ما بقتش صالحة للاستخدام المقصود.
+**مصري:** عملية بتخلي `iterator` ما بقتش صالحة للاستخدام المقصود.
 
 **中文:** 某个操作导致 iterator 不再适合原本的使用方式。
 
@@ -1020,7 +1020,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An iterator supporting forward traversal and the multipass guarantee, allowing independent copies to traverse the same range.
 
-**مصري:** iterator بتتحرك لقدام وتدعم multipass؛ نسخ مستقلة منها تقدر تمر على نفس النطاق.
+**مصري:** أداة مرور (`iterator`) بتتحرك لقدام، وبتدعم المرور المستقل أكتر من مرة (`multipass`). يعني نسخها المستقلة تقدر تمر على نفس النطاق.
 
 **中文:** 支持向前遍历与 multipass 保证的 iterator，独立副本可以遍历同一范围。
 
@@ -1030,7 +1030,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An object accumulating too many unrelated responsibilities.
 
-**مصري:** object بتلم مسؤوليات كتير مالهاش علاقة قوية ببعض.
+**مصري:** كائن (`object`) بيجمع مسؤوليات كتير مالهاش علاقة قوية ببعض.
 
 **中文:** 积累过多无关职责的 object。
 
@@ -1040,7 +1040,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Unified Modeling Language, a notation family for describing software structure and interactions.
 
-**مصري:** Unified Modeling Language: طرق رسم لوصف تركيب البرامج والتفاعلات بينها.
+**مصري:** `Unified Modeling Language`: طرق رسم لوصف تركيب البرامج والتفاعلات بينها.
 
 **中文:** Unified Modeling Language：描述软件结构与交互的一组建模记法。
 
@@ -1050,7 +1050,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A structural diagram showing classes, their contracts, and relationships.
 
-**مصري:** رسم بيوضح classes وعقودها والعلاقات بينها.
+**مصري:** رسم بيوضح `classes` وعقودها والعلاقات بينها.
 
 **中文:** 展示 class、约定及相互关系的结构图。
 
@@ -1070,7 +1070,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The modeled stages and transitions of a domain entity, distinct from a C++ object's lifetime.
 
-**مصري:** المراحل والانتقالات اللي بنمثلها لكيان في المشكلة؛ مش نفس lifetime بتاعة object في C++.
+**مصري:** المراحل والانتقالات اللي بنمثلها لكيان في المشكلة؛ مش نفس `lifetime` بتاعة `object` في `C++`.
 
 **中文:** 领域实体的建模阶段与转换，不等于 C++ object 的 lifetime。
 
@@ -1080,7 +1080,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A smart pointer with exclusive ownership that releases its object when the owner is destroyed.
 
-**مصري:** smart pointer بملكية حصرية، بتحرر الـ object لما المالك يتدمر.
+**مصري:** مؤشر ذكي (`smart pointer`) بملكية حصرية؛ بيحرر الكائن لما المالك يتدمر.
 
 **中文:** 具有独占 ownership 的 smart pointer，在所有者销毁时释放 object。
 
@@ -1090,7 +1090,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A smart pointer sharing ownership; the managed object is released when the last owning reference disappears.
 
-**مصري:** smart pointer بتشارك ownership؛ الـ object بتتحرر لما آخر مرجع مالك يختفي.
+**مصري:** مؤشر ذكي (`smart pointer`) بيشارك الملكية (`ownership`)؛ الكائن بيتحرر لما آخر مرجع مالك يختفي.
 
 **中文:** 共享 ownership 的 smart pointer，最后一个拥有引用消失时释放 object。
 
@@ -1100,7 +1100,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A non-owning observer of shared ownership; lock attempts to obtain a temporary shared_ptr.
 
-**مصري:** مرجع مش مالك لملكية مشتركة؛ lock بتحاول تجيب shared_ptr مؤقتة.
+**مصري:** مرجع مش مالك لملكية مشتركة؛ الـ `lock` بتحاول تجيب `shared_ptr` مؤقتة.
 
 **中文:** 观察共享 ownership 但不拥有 object；lock 尝试取得临时 shared_ptr。
 
@@ -1110,7 +1110,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A standard container storing elements contiguously with a size that can change.
 
-**مصري:** container قياسية بتخزن العناصر جنب بعض وحجمها ممكن يتغير.
+**مصري:** الـ `container` قياسية بتخزن العناصر جنب بعض وحجمها ممكن يتغير.
 
 **中文:** 连续保存元素、大小可变的标准 container。
 
@@ -1120,7 +1120,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A type-erased wrapper that stores a callable with a chosen signature.
 
-**مصري:** Wrapper بتخزن callable بتوقيع محدد وبتخفي نوعها الفعلي.
+**مصري:** الـ `Wrapper` بتخزن `callable` بتوقيع محدد وبتخفي نوعها الفعلي.
 
 **中文:** 保存指定签名 callable 并隐藏其具体类型的包装器。
 
@@ -1130,7 +1130,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A C++ keyword enabling derived implementations to be selected through a base interface.
 
-**مصري:** كلمة C++ بتسمح باختيار implementation من derived class من خلال interface الأساس.
+**مصري:** كلمة `C++` بتسمح باختيار `implementation` من `derived class` من خلال `interface` الأساس.
 
 **中文:** 允许通过 base interface 选择 derived implementation 的 C++ 关键字。
 
@@ -1140,7 +1140,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A C++ specifier asking the compiler to verify that a method overrides a base virtual method.
 
-**مصري:** محدد في C++ بيطلب من المترجم يتأكد إن method بتعيد تعريف virtual method في الأساس.
+**مصري:** محدد في `C++` بيطلب من المترجم يتأكد إن `method` بتعيد تعريف `virtual method` في الأساس.
 
 **中文:** 要求编译器确认 method 覆盖了 base virtual method 的 C++ 指定符。
 
@@ -1170,7 +1170,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A value that can refer to an object or function; a raw pointer does not by itself express ownership.
 
-**مصري:** قيمة ممكن تشير لـ object أو function؛ الـ raw pointer لوحدها ما بتحددش ownership.
+**مصري:** قيمة ممكن تشير لـ `object` أو `function`؛ الـ `raw pointer` لوحدها ما بتحددش `ownership`.
 
 **中文:** 可指向 object 或 function 的值；raw pointer 本身不表示 ownership。
 
@@ -1180,7 +1180,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An alias referring to an existing entity, not ownership by itself.
 
-**مصري:** اسم بديل لكيان موجود، مش ownership لوحده.
+**مصري:** اسم بديل لكيان موجود، مش `ownership` لوحده.
 
 **中文:** 现有实体的别名，本身不代表 ownership。
 
@@ -1190,7 +1190,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Something invocable with function-call syntax, such as a lambda or function object.
 
-**مصري:** حاجة ينفع تناديها بصيغة function، زي lambda أو function object.
+**مصري:** حاجة ينفع تناديها بصيغة `function`، زي `lambda` أو `function object`.
 
 **中文:** 可用 function 调用语法执行的实体，例如 lambda 或 function object。
 
@@ -1200,7 +1200,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A C++ expression that creates a callable and may capture surrounding values.
 
-**مصري:** تعبير C++ بيعمل callable وممكن يحتفظ بقيم من حواليه.
+**مصري:** تعبير `C++` بيعمل `callable` وممكن يحتفظ بقيم من حواليه.
 
 **中文:** 创建 callable、并可捕获周围值的 C++ 表达式。
 
@@ -1210,7 +1210,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The contract of an object returned by creation code.
 
-**مصري:** العقد بتاع الـ object اللي كود الإنشاء بيرجعها.
+**مصري:** العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه.
 
 **中文:** 创建代码返回的 object 所提供的约定。
 
@@ -1220,7 +1220,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A particular implementation of a Product contract.
 
-**مصري:** implementation فعلية لعقد Product.
+**مصري:** تنفيذ فعلي (`implementation`) لعقد المنتج (`Product`).
 
 **中文:** Product 约定的一种具体 implementation。
 
@@ -1230,7 +1230,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An implementation that creates one matching Product family.
 
-**مصري:** implementation بتعمل عيلة Product متوافقة.
+**مصري:** تنفيذ فعلي (`implementation`) بينشئ عيلة منتجات متوافقة (`Product family`).
 
 **中文:** 创建一组配套 Product 的 implementation。
 
@@ -1250,7 +1250,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A Creator subclass that supplies a particular Product.
 
-**مصري:** subclass من Creator بتوفر Product معينة.
+**مصري:** نوع مشتق (`subclass`) من `Creator`، مسؤول عن إنشاء منتج معين (`Product`).
 
 **中文:** 提供某种 Product 的 Creator subclass。
 
@@ -1260,7 +1260,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An object whose clone operation produces another object from its configured values.
 
-**مصري:** object فيها clone بتعمل object تانية من القيم المتجهّزة.
+**مصري:** كائن بيوفّر العملية `clone` لإنشاء كائن تاني (`object`) من القيم المتجهّزة.
 
 **中文:** 通过 clone 操作按已配置值创建另一 object 的 object。
 
@@ -1270,7 +1270,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The interface expected by the Client.
 
-**مصري:** الـ interface اللي Client متوقع يتعامل معاها.
+**مصري:** الـ `interface` اللي `Client` متوقع يتعامل معاها.
 
 **中文:** Client 期望使用的 interface。
 
@@ -1280,7 +1280,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The existing object whose interface needs adaptation.
 
-**مصري:** الـ object الموجودة اللي interface بتاعتها محتاجة تتوافق مع المطلوب.
+**مصري:** الـ `object` الموجودة اللي `interface` بتاعتها محتاجة تتوافق مع المطلوب.
 
 **中文:** 其现有 interface 需要适配的 object。
 
@@ -1290,7 +1290,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The high-level side of Bridge that delegates implementation work.
 
-**مصري:** الناحية اللي بتوفر العمليات الأساسية في Bridge وبتفوّض شغل التنفيذ.
+**مصري:** الناحية اللي بتوفر العمليات الأساسية في `Bridge` وبتفوّض شغل التنفيذ.
 
 **中文:** Bridge 中提供高层操作并委托实现工作的角色。
 
@@ -1300,7 +1300,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A specialization of Abstraction independent of the implementation side.
 
-**مصري:** تخصيص لـ Abstraction مستقل عن ناحية التنفيذ.
+**مصري:** تخصيص لـ `Abstraction` مستقل عن ناحية التنفيذ.
 
 **中文:** 独立于实现侧的 Abstraction 特化。
 
@@ -1310,7 +1310,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The contract used by a Bridge Abstraction for lower-level work.
 
-**مصري:** العقد اللي Abstraction بتستخدمه للشغل في الناحية التانية من Bridge.
+**مصري:** العقد اللي `Abstraction` بتستخدمه للشغل في الناحية التانية من `Bridge`.
 
 **中文:** Bridge 的 Abstraction 用于底层工作的约定。
 
@@ -1320,7 +1320,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A particular implementation of the Implementor contract.
 
-**مصري:** implementation محددة لعقد Implementor.
+**مصري:** تنفيذ محدد (`implementation`) لعقد `Implementor`.
 
 **中文:** Implementor 约定的一种具体 implementation。
 
@@ -1330,7 +1330,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The common contract exposed by leaves, groups, or wrappers.
 
-**مصري:** العقد المشترك اللي العنصر أو المجموعة أو Wrapper بتوفره.
+**مصري:** العقد المشترك اللي العنصر أو المجموعة أو `Wrapper` بتوفره.
 
 **中文:** 叶子、分组或包装层共同提供的约定。
 
@@ -1340,7 +1340,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A Component with no child Components.
 
-**مصري:** Component مافيهاش Components أطفال.
+**مصري:** عنصر (`Component`) مافيهوش عناصر تحته.
 
 **中文:** 不含子 Component 的 Component。
 
@@ -1350,7 +1350,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The basic implementation before optional wrappers are added.
 
-**مصري:** الـ implementation الأساسية قبل إضافة طبقات اختيارية.
+**مصري:** الـ `implementation` الأساسية قبل إضافة طبقات اختيارية.
 
 **中文:** 添加可选包装层之前的基础 implementation。
 
@@ -1360,7 +1360,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A wrapper that keeps the Component contract and adds a specific responsibility.
 
-**مصري:** Wrapper بتحافظ على عقد Component وبتضيف responsibility محددة.
+**مصري:** طبقة تغليف (`Wrapper`) بتحافظ على عقد `Component`، وبتضيف مسؤولية محددة (`responsibility`).
 
 **中文:** 保留 Component 约定并增加某项 responsibility 的包装层。
 
@@ -1370,7 +1370,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A group of cooperating services or objects within a larger system.
 
-**مصري:** مجموعة خدمات أو objects بتتعاون جوه نظام أكبر.
+**مصري:** مجموعة خدمات أو `objects` بتتعاون جوه نظام أكبر.
 
 **中文:** 较大系统中相互协作的一组服务或 object。
 
@@ -1380,7 +1380,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A lookup service that returns a shared Flyweight for a key.
 
-**مصري:** جزء بيبحث بالمفتاح ويرجع Flyweight مشتركة.
+**مصري:** جزء بيبحث بالمفتاح ويرجع `Flyweight` مشتركة.
 
 **中文:** 按键查找并返回共享 Flyweight 的服务。
 
@@ -1390,7 +1390,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The shared contract offered by a Proxy and its Real Subject.
 
-**مصري:** العقد المشترك اللي Proxy وReal Subject بيوفروه.
+**مصري:** العقد المشترك اللي `Proxy` و `Real Subject` بيوفروه.
 
 **中文:** Proxy 与 Real Subject 共同提供的约定。
 
@@ -1400,7 +1400,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The object that does the work behind a Proxy.
 
-**مصري:** الـ object اللي بتنفذ الشغل الحقيقي ورا Proxy.
+**مصري:** الـ `object` اللي بتنفذ الشغل الحقيقي ورا `Proxy`.
 
 **中文:** 在 Proxy 后面实际完成工作的 object。
 
@@ -1420,7 +1420,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A Handler implementing one particular processing rule.
 
-**مصري:** Handler بتنّفذ قاعدة معالجة معينة.
+**مصري:** معالج (`Handler`) بينفّذ قاعدة معينة.
 
 **中文:** 实现某项处理规则的 Handler。
 
@@ -1430,7 +1430,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The object that performs the work requested by a Command.
 
-**مصري:** الـ object اللي بيتنفذ عليها الشغل المطلوب من Command.
+**مصري:** الـ `object` اللي بيتنفذ عليها الشغل المطلوب من `Command`.
 
 **中文:** 执行 Command 所请求工作的 object。
 
@@ -1440,7 +1440,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The role that starts or stores Commands without knowing each operation's details.
 
-**مصري:** الدور اللي بيشغّل Commands أو بيخزنها من غير معرفة تفاصيل كل عملية.
+**مصري:** الدور اللي بيشغّل `Commands` أو بيخزنها من غير معرفة تفاصيل كل عملية.
 
 **中文:** 启动或保存 Command、无需了解每项操作细节的角色。
 
@@ -1450,7 +1450,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A Command implementation that binds a Receiver and an action.
 
-**مصري:** implementation لـ Command بتربط Receiver بفعل محدد.
+**مصري:** تنفيذ للأمر (`Command implementation`) بيربط الفعل المطلوب بالجهة اللي هتنفّذه (`Receiver`).
 
 **中文:** 把 Receiver 与动作绑定起来的 Command implementation。
 
@@ -1460,7 +1460,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The contract for evaluating nodes in an Interpreter grammar.
 
-**مصري:** عقد تقييم العقد اللي بتمثل قواعد Interpreter.
+**مصري:** عقد تقييم العقد اللي بتمثل قواعد `Interpreter`.
 
 **中文:** 对 Interpreter 语法节点求值的约定。
 
@@ -1490,7 +1490,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** In Strategy and State, the object that uses a Strategy or delegates behavior to its current State. In Interpreter, the data expressions consult during evaluation, such as variable values or available roles.
 
-**مصري:** في Strategy وState، دي الـ object اللي بتستخدم Strategy أو بتفوّض behavior للـ State الحالية. في Interpreter، ده البيانات اللي الـ expressions بترجع لها وقت التقييم، زي قيم المتغيرات أو الأدوار المتاحة.
+**مصري:** في `Strategy` و `State`، دي الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). في `Interpreter`، ده البيانات اللي الـ `expressions` بترجع لها وقت التقييم، زي قيم المتغيرات أو الأدوار المتاحة.
 
 **中文:** 在 Strategy 和 State 中，指使用 Strategy 或把 behavior 委托给当前 State 的 object。在 Interpreter 中，指 expressions 求值时读取的数据，例如变量值或可用角色。
 
@@ -1500,7 +1500,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The collection that provides access to iterators.
 
-**مصري:** المجموعة اللي بتوفر iterators للمرور عليها.
+**مصري:** المجموعة اللي بتوفر `iterators` للمرور عليها.
 
 **中文:** 提供 iterator 访问能力的集合。
 
@@ -1510,7 +1510,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An implementation that stores a traversal position for a particular Aggregate.
 
-**مصري:** implementation بتحفظ مكان المرور في Aggregate معينة.
+**مصري:** تنفيذ (`implementation`) بيحفظ موضع المرور في مجموعة محددة (`Aggregate`).
 
 **中文:** 为某种 Aggregate 保存遍历位置的 implementation。
 
@@ -1520,7 +1520,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An object whose interactions are coordinated by a Mediator.
 
-**مصري:** object بيتم تنسيق تعاملاتها عن طريق Mediator.
+**مصري:** كائن متعاون (`object`) بيتولى الـ `Mediator` تنسيق تعاملاته مع باقي الأطراف.
 
 **中文:** 其交互由 Mediator 协调的 object。
 
@@ -1530,7 +1530,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An implementation that contains the coordination rules for its Colleagues.
 
-**مصري:** implementation فيها قواعد التنسيق بين Colleagues.
+**مصري:** تنفيذ (`implementation`) بيجمع قواعد التنسيق بين الأطراف المتعاونة (`Colleagues`).
 
 **中文:** 保存 Colleague 之间协调规则的 implementation。
 
@@ -1540,7 +1540,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The object that knows how to capture and restore its own state.
 
-**مصري:** الـ object اللي عارفة تحفظ state بتاعتها وترجعها.
+**مصري:** الكائن اللي يعرف يحفظ حالته (`state`) ويسترجعها.
 
 **中文:** 知道如何保存和恢复自身 state 的 object。
 
@@ -1550,7 +1550,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The role that keeps a Memento without inspecting its private representation.
 
-**مصري:** الدور اللي بيحتفظ بـ Memento من غير ما يفتش في تمثيلها الداخلي.
+**مصري:** الدور اللي بيحتفظ بـ `Memento` من غير ما يفتش في تمثيلها الداخلي.
 
 **中文:** 保存 Memento、但不检查其私有表示的角色。
 
@@ -1560,7 +1560,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The publisher whose changes are announced to registered Observers.
 
-**مصري:** المصدر اللي بيعلن تغييراته للـ Observers المسجلين.
+**مصري:** المصدر اللي بيعلن تغييراته للـ `Observers` المسجلين.
 
 **中文:** 把自身变化通知给已注册 Observer 的发布方。
 
@@ -1570,7 +1570,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An Observer implementation that reacts to notifications.
 
-**مصري:** implementation لـ Observer بترد على notifications.
+**مصري:** تنفيذ للمشترك (`Observer implementation`) بيحدد استجابته للإشعارات (`notifications`).
 
 **中文:** 响应通知的 Observer implementation。
 
@@ -1580,7 +1580,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The contract for interchangeable algorithms used by a Context.
 
-**مصري:** عقد الـ algorithms القابلة للتبديل اللي Context بتستخدمها.
+**مصري:** عقد الـ `algorithms` القابلة للتبديل اللي `Context` بتستخدمها.
 
 **中文:** Context 所使用的可替换 algorithm 的约定。
 
@@ -1590,7 +1590,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A particular implementation of a Strategy interface, possibly a callable rather than a class.
 
-**مصري:** implementation محددة لـ Strategy interface؛ ممكن تكون callable بدل class.
+**مصري:** تنفيذ محدد لعقد `Strategy interface`. ممكن تمثّله بحاجة قابلة للاستدعاء (`callable`)، ومش لازم يكون `class` مستقلة.
 
 **中文:** Strategy interface 的一种具体 implementation，可以是 callable 而不必是 class。
 
@@ -1600,7 +1600,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An implementation defining behavior and transitions for one State.
 
-**مصري:** implementation بتحدد behavior والانتقالات لوضع State واحد.
+**مصري:** تنفيذ لحالة معينة (`Concrete State`) بيحدد سلوكها (`behavior`) والانتقالات المتاحة منها.
 
 **中文:** 为某个 State 定义 behavior 和转换规则的 implementation。
 
@@ -1610,7 +1610,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The Template Method role that owns the algorithm skeleton and declares variable steps.
 
-**مصري:** دور Template Method اللي ماسك algorithm skeleton وبيعلن الخطوات المتغيرة.
+**مصري:** دور `Template Method` اللي ماسك `algorithm skeleton` وبيعلن الخطوات المتغيرة.
 
 **中文:** Template Method 中拥有 algorithm skeleton 并声明可变步骤的角色。
 
@@ -1620,7 +1620,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The Template Method role that supplies the variable steps.
 
-**مصري:** دور Template Method اللي بيوفر الخطوات المتغيرة.
+**مصري:** دور `Template Method` اللي بيوفر الخطوات المتغيرة.
 
 **中文:** Template Method 中提供可变步骤的角色。
 
@@ -1630,7 +1630,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The contract for objects that accept a Visitor.
 
-**مصري:** عقد الـ objects اللي بتقبل Visitor.
+**مصري:** عقد الـ `objects` اللي بتقبل `Visitor`.
 
 **中文:** 接受 Visitor 的 object 所提供的约定。
 
@@ -1640,7 +1640,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** An Element implementation that selects its matching Visitor overload.
 
-**مصري:** implementation لـ Element بتختار Visitor overload المناسبة لنوعها.
+**مصري:** تنفيذ للعنصر (`Element implementation`) بيختار الاستدعاء المناسب لنوعه من عمليات الزيارة (`Visitor overload`).
 
 **中文:** 选择与自身类型匹配的 Visitor overload 的 Element implementation。
 
@@ -1650,7 +1650,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** A Visitor implementation containing one operation for every supported Element type.
 
-**مصري:** implementation لـ Visitor فيها عملية لكل نوع Element مدعوم.
+**مصري:** تنفيذ للزائر (`Visitor implementation`) فيه عملية لكل نوع عنصر مدعوم (`Element`).
 
 **中文:** 为每种受支持的 Element 类型提供操作的 Visitor implementation。
 
@@ -1660,7 +1660,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** Code that uses an interface or collaborates with a pattern's objects.
 
-**مصري:** الكود اللي بيستخدم interface أو بيتعامل مع objects بتاعة الـ Pattern.
+**مصري:** الكود اللي بيستخدم `interface` أو بيتعامل مع `objects` بتاعة الـ `Pattern`.
 
 **中文:** 使用 interface 或与模式中的 object 协作的代码。
 
@@ -1670,7 +1670,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The callback contract implemented by subscribers.
 
-**مصري:** عقد callback اللي المشتركين بينفذوه.
+**مصري:** عقد `callback` اللي المشتركين بينفذوه.
 
 **中文:** 订阅方实现的 callback 约定。
 
@@ -1680,7 +1680,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The contract through which a Context delegates state-dependent behavior.
 
-**مصري:** العقد اللي Context بتفوّض من خلاله behavior المعتمدة على state.
+**مصري:** العقد اللي `Context` بتفوّض من خلاله `behavior` المعتمدة على `state`.
 
 **中文:** Context 用于委托与 state 有关的 behavior 的约定。
 

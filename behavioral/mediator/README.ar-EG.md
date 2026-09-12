@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,7 +14,7 @@
 
 ## In One Sentence
 
-انقل التنسيق بين objects زميلة لـ object مخصصة.
+خلّي التنسيق بين الأطراف المتعاونة (`Colleagues`) مسؤولية منسّق مستقل (`Mediator`).
 
 ## The Problem
 
@@ -29,11 +29,11 @@ submit.enable(!username.empty() && !password.empty());
 
 ## Why It Becomes a Problem
 
-لو كل Field تعرف التانية والزر، قواعد الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) هتتوزع والـ dependencies هتتشابك.
+لو كل `Field` تعرف التانية والزر، قواعد الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) هتتوزع والـ `dependencies` هتتشابك.
 
 ## The Idea
 
-الحقول تبلغ LoginForm بـ changed ، وهي تراجع القيم وتحدّث الزر.
+خلّي الحقول تبلغ المنسّق `LoginForm` بالتغيير عن طريق `changed`. المنسّق يراجع القيم ويحدد هل الزر يبقى متاح.
 
 ## Real-World Analogy
 
@@ -51,13 +51,13 @@ Field::set()  -->  LoginForm(Mediator)  -->  Button::enable()
 
 ## Participants
 
-Mediator بتحدد الإشعار، Field بتبلّغ، Button بتخزن الـ state ، و LoginForm بتمتلك الزملاء وتنسقهم.
+في المثال، العقد `Mediator` بيحدد طريقة الإشعار. الحقل `Field` بيبلّغ عن التغيير، والزر `Button` بيخزن حالته (`state`). المنسّق `LoginForm` بيمتلك المكونات دي ويطبّق قواعد التعامل بينها.
 
 الأدوار القياسية في المثال ده:
 
-- [`Colleague`](../../GLOSSARY.md#colleague) — object بيتم تنسيق تعاملاتها عن طريق Mediator. هنا: `Field, Button`.
-- [`Concrete Mediator`](../../GLOSSARY.md#concrete-mediator) — implementation فيها قواعد التنسيق بين Colleagues. هنا: `LoginForm`.
-- [`callback`](../../GLOSSARY.md#callback) — function أو عملية بتمرّرها عشان جزء تاني يناديها وقت ما يحتاجها. هنا: `Mediator::changed`.
+- [`Colleague`](../../GLOSSARY.md#colleague) — كائن متعاون (`object`) بيتولى الـ `Mediator` تنسيق تعاملاته مع باقي الأطراف. هنا: `Field, Button`.
+- [`Concrete Mediator`](../../GLOSSARY.md#concrete-mediator) — تنفيذ (`implementation`) بيجمع قواعد التنسيق بين الأطراف المتعاونة (`Colleagues`). هنا: `LoginForm`.
+- [`callback`](../../GLOSSARY.md#callback) — دالة (`function`) أو عملية بتمرّرها لجزء تاني، عشان يناديها وقت ما يحتاجها. هنا: `Mediator::changed`.
 
 ## Modern C++20 Example
 
@@ -120,11 +120,11 @@ Ready: true
 
 ### Use cases
 
-مناسب لتنسيق Dialogs والـ Workflows ؛ تشغيل الزر مش Authentication ولا مراجعة باسورد.
+مناسب لتنسيق `Dialogs` والـ `Workflows`؛ تشغيل الزر مش `Authentication` ولا مراجعة باسورد.
 
 ## When NOT to Use
 
-بلاش لـ callback واحدة بسيطة أو مكونات مفيش بينها تنسيق حقيقي.
+بلاش لـ `callback` واحدة بسيطة أو مكونات مفيش بينها تنسيق حقيقي.
 
 ## Advantages
 
@@ -132,7 +132,7 @@ Ready: true
 
 ## Trade-offs
 
-الـ Mediator ممكن يكبر زيادة. LoginForm ممنوع نسخها عشان الحقول شايلة references ليها؛ النسخ هيخلّي الروابط غلط.
+الـ `Mediator` ممكن يكبر زيادة. الـ `LoginForm` ممنوع نسخها عشان الحقول شايلة `references` ليها؛ النسخ هيخلّي الروابط غلط.
 
 ## Related Patterns
 
@@ -140,34 +140,34 @@ Ready: true
 
 ## Common Confusion
 
-Observer بتذيع تغيير للمشتركين. Mediator بتحدد استجابة زملاء بعينهم لبعض، وممكن تستخدم Observer للإشعارات.
+الـ `Observer` بتذيع تغيير للمشتركين. الـ `Mediator` بتحدد استجابة زملاء بعينهم لبعض، وممكن تستخدم `Observer` للإشعارات.
 
 ## Terms to Remember
 
-- `Mediator` — انقل التنسيق بين objects زميلة لـ object مخصصة.
-- `Colleague` — object بيتم تنسيق تعاملاتها عن طريق Mediator. مثال: `Field, Button`.
-- `Concrete Mediator` — implementation فيها قواعد التنسيق بين Colleagues. مثال: `LoginForm`.
-- `callback` — function أو عملية بتمرّرها عشان جزء تاني يناديها وقت ما يحتاجها. مثال: `Mediator::changed`.
+- `Mediator` — خلّي التنسيق بين الأطراف المتعاونة (`Colleagues`) مسؤولية منسّق مستقل (`Mediator`).
+- `Colleague` — كائن متعاون (`object`) بيتولى الـ `Mediator` تنسيق تعاملاته مع باقي الأطراف. مثال: `Field, Button`.
+- `Concrete Mediator` — تنفيذ (`implementation`) بيجمع قواعد التنسيق بين الأطراف المتعاونة (`Colleagues`). مثال: `LoginForm`.
+- `callback` — دالة (`function`) أو عملية بتمرّرها لجزء تاني، عشان يناديها وقت ما يحتاجها. مثال: `Mediator::changed`.
 
 ## Interview Vocabulary
 
 - [`loose coupling`](../../GLOSSARY.md#loose-coupling) — كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
 - [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — بتفصل أنواع الشغل المختلفة عشان كل نوع يقدر يتغير لوحده.
-- [`god object`](../../GLOSSARY.md#god-object) — object بتلم مسؤوليات كتير مالهاش علاقة قوية ببعض.
+- [`god object`](../../GLOSSARY.md#god-object) — كائن (`object`) بيجمع مسؤوليات كتير مالهاش علاقة قوية ببعض.
 
 ## Interview Question
 
-ليه copy constructor تلقائية خطر في LoginForm ؟
+ليه `copy constructor` تلقائية خطر في `LoginForm`؟
 
 ## Mini Challenge
 
-ضيف Checkbox للشروط واطلب الشروط الثلاثة من غير ما Field تعرف الزر.
+ضيف `Checkbox` للشروط واطلب الشروط الثلاثة من غير ما `Field` تعرف الزر.
 
 ## Quick Summary
 
 - **المشكلة:** حقلي الاسم والباسورد مع بعض بيحددوا هل زر الدخول شغال.
-- **الحل:** الحقول تبلغ LoginForm بـ changed ، وهي تراجع القيم وتحدّث الزر.
-- **Trade-off:** الـ Mediator ممكن يكبر زيادة. LoginForm ممنوع نسخها عشان الحقول شايلة references ليها؛ النسخ هيخلّي الروابط غلط.
+- **الحل:** خلّي الحقول تبلغ المنسّق `LoginForm` بالتغيير عن طريق `changed`. المنسّق يراجع القيم ويحدد هل الزر يبقى متاح.
+- **`Trade-off`:** الـ `Mediator` ممكن يكبر زيادة. الـ `LoginForm` ممنوع نسخها عشان الحقول شايلة `references` ليها؛ النسخ هيخلّي الروابط غلط.
 - **افتكر:** الزملاء يتكلموا عن طريق منسق.
 
 [السابق](../../behavioral/iterator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/memento/README.ar-EG.md)

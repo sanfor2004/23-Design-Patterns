@@ -1,6 +1,6 @@
 # Creational Pattern
 
-[Design-Patterns-23](../README.zh-CN.md)
+[23 Design Patterns](../README.zh-CN.md)
 
 - [Abstract Factory](abstract-factory/README.zh-CN.md)
 - [Builder](builder/README.zh-CN.md)

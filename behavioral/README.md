@@ -1,6 +1,6 @@
 # Behavioral Pattern
 
-[Design-Patterns-23](../README.md)
+[23 Design Patterns](../README.md)
 
 - [Chain of Responsibility](chain-of-responsibility/README.md)
 - [Command](command/README.md)

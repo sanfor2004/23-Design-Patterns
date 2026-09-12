@@ -1,6 +1,6 @@
 # Structural Pattern
 
-[Design-Patterns-23](../README.ar-EG.md)
+[23 Design Patterns](../README.ar-EG.md)
 
 - [Adapter](adapter/README.ar-EG.md)
 - [Bridge](bridge/README.ar-EG.md)

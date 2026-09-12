@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-ضيف عمليات على أنواع عناصر ثابتة عن طريق Visitor منفصلة.
+ضيف عمليات جديدة على مجموعة أنواع ثابتة، وحط العمليات دي في `Visitor` منفصلة.
 
 ## The Problem
 
-السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل class.
+السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل `class`.
 
 ## Naive Solution
 
@@ -29,11 +29,11 @@
 
 ## Why It Becomes a Problem
 
-إضافة virtual Method لكل عملية بتطلب تعديل كل عناصر السلة مع كل مهمة جديدة.
+إضافة `virtual method` لكل عملية بتطلب تعديل كل عناصر السلة مع كل مهمة جديدة.
 
 ## The Idea
 
-كل Item فعلية بتنادي Visitor::visit المناسبة لنوعها من accept ، و Tax بتنّفذ العملية لكل نوع.
+خلّي كل نوع فعلي من `Item` ينفّذ العملية `accept` بحيث ينادي النسخة المناسبة لنوعه من `Visitor::visit`. الزائر `Tax` بيوفّر حساب الضريبة لكل نوع.
 
 ## Real-World Analogy
 
@@ -51,13 +51,13 @@ Item::accept(visitor)  -->  Visitor::visit(type)  -->  Tax(Book) / Tax(Food)
 
 ## Participants
 
-Item بتحدد accept ، Book و Food بيختاروا الـ Overload ، Visitor بتسرد الأنواع، Tax بتجمع النتيجة، والسلة بتمتلك العناصر.
+في المثال، العقد `Item` بيحدد العملية `accept`. كل من `Book` و `Food` بيختار الاستدعاء المناسب لنوعه (`overload`). عقد الزيارة `Visitor` بيسرد الأنواع المدعومة، و `Tax` بتجمع النتيجة. السلة بتمتلك العناصر.
 
 الأدوار القياسية في المثال ده:
 
-- [`Element`](../../GLOSSARY.md#element) — عقد الـ objects اللي بتقبل Visitor. هنا: `Item`.
-- [`Concrete Element`](../../GLOSSARY.md#concrete-element) — implementation لـ Element بتختار Visitor overload المناسبة لنوعها. هنا: `Book, Food`.
-- [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — implementation لـ Visitor فيها عملية لكل نوع Element مدعوم. هنا: `Tax`.
+- [`Element`](../../GLOSSARY.md#element) — عقد الـ `objects` اللي بتقبل `Visitor`. هنا: `Item`.
+- [`Concrete Element`](../../GLOSSARY.md#concrete-element) — تنفيذ للعنصر (`Element implementation`) بيختار الاستدعاء المناسب لنوعه من عمليات الزيارة (`Visitor overload`). هنا: `Book, Food`.
+- [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — تنفيذ للزائر (`Visitor implementation`) فيه عملية لكل نوع عنصر مدعوم (`Element`). هنا: `Tax`.
 
 ## Modern C++20 Example
 
@@ -112,7 +112,7 @@ Tax: 4
 
 ### Use cases
 
-مناسب لتحليل AST وتصدير المستندات مع عيلة عقد ثابتة؛ std::variant مع std::visit بديل لمجموعة أنواع مقفولة.
+مناسب لتحليل `AST` وتصدير المستندات مع عيلة عقد ثابتة؛ الـ `std::variant` مع `std::visit` بديل لمجموعة أنواع مقفولة.
 
 ## When NOT to Use
 
@@ -120,11 +120,11 @@ Tax: 4
 
 ## Advantages
 
-تضيف عملية في Visitor من غير تعديل classes العناصر الموجودة.
+تضيف عملية في `Visitor` من غير تعديل `classes` العناصر الموجودة.
 
 ## Trade-offs
 
-إضافة نوع عنصر بتطلب تعديل [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) Visitor وكل الزوار. نسب الضريبة هنا للتوضيح مش قواعد حقيقية، والتقريب محتاج سياسة من المجال.
+إضافة نوع عنصر جديد بتحتاج تعديل عقد الزيارة في `Visitor`، وكل تنفيذ للزائر. العقد ده هو الـ [`interface`](../../GLOSSARY.md#interface): العمليات اللي كل تنفيذ لازم يوفّرها. نسب الضريبة هنا للتوضيح، والتقريب محتاج قاعدة مناسبة للمجال.
 
 ## Related Patterns
 
@@ -132,34 +132,34 @@ Tax: 4
 
 ## Common Confusion
 
-Iterator بتلف على المجموعة، Visitor بتختار العملية حسب النوع، وComposite ممكن توفر الشجرة.
+الـ `Iterator` بتلف على المجموعة، `Visitor` بتختار العملية حسب النوع، و `Composite` ممكن توفر الشجرة.
 
 ## Terms to Remember
 
-- `Visitor` — ضيف عمليات على أنواع عناصر ثابتة عن طريق Visitor منفصلة.
-- `Element` — عقد الـ objects اللي بتقبل Visitor. مثال: `Item`.
-- `Concrete Element` — implementation لـ Element بتختار Visitor overload المناسبة لنوعها. مثال: `Book, Food`.
-- `Concrete Visitor` — implementation لـ Visitor فيها عملية لكل نوع Element مدعوم. مثال: `Tax`.
+- `Visitor` — ضيف عمليات جديدة على مجموعة أنواع ثابتة، وحط العمليات دي في `Visitor` منفصلة.
+- `Element` — عقد الـ `objects` اللي بتقبل `Visitor`. مثال: `Item`.
+- `Concrete Element` — تنفيذ للعنصر (`Element implementation`) بيختار الاستدعاء المناسب لنوعه من عمليات الزيارة (`Visitor overload`). مثال: `Book, Food`.
+- `Concrete Visitor` — تنفيذ للزائر (`Visitor implementation`) فيه عملية لكل نوع عنصر مدعوم (`Element`). مثال: `Tax`.
 
 ## Interview Vocabulary
 
-- [`double dispatch`](../../GLOSSARY.md#double-dispatch) — اختيار behavior بناءً على نوعين وقت runtime؛ Visitor التقليدية بتجمع نداءين virtual مع overload resolution.
-- [`overload resolution`](../../GLOSSARY.md#overload-resolution) — اختيار function من كذا واحدة بنفس الاسم حسب أنواع المعاملات وقت compile time.
-- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — استهدف open for extension, closed for modification عند حدود مفيدة ومختارة بوضوح.
+- [`double dispatch`](../../GLOSSARY.md#double-dispatch) — اختيار `behavior` بناءً على نوعين وقت `runtime`؛ الـ `Visitor` التقليدية بتجمع نداءين `virtual` مع `overload resolution`.
+- [`overload resolution`](../../GLOSSARY.md#overload-resolution) — اختيار `function` من كذا واحدة بنفس الاسم حسب أنواع المعاملات وقت `compile time`.
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — خلّي التوسيع ممكن من غير تعديل الكود المستقر، عند حدود مختارة بوضوح. التعبير هو `open for extension, closed for modification`.
 
 ## Interview Question
 
-ليه visitor.visit(*this) جوه Book تختار Overload الكتب، و Item reference لوحدها مش كفاية؟
+ليه `visitor.visit(*this)` جوه `Book` تختار `Overload` الكتب، و `Item reference` لوحدها مش كفاية؟
 
 ## Mini Challenge
 
-ضيف Label Visitor من غير تعديل Book أو Food ، وبعدها ضيف نوع ثالث وعدّ التغييرات.
+ضيف `Label Visitor` من غير تعديل `Book` أو `Food`، وبعدها ضيف نوع ثالث وعدّ التغييرات.
 
 ## Quick Summary
 
-- **المشكلة:** السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل class.
-- **الحل:** كل Item فعلية بتنادي Visitor::visit المناسبة لنوعها من accept ، و Tax بتنّفذ العملية لكل نوع.
-- **Trade-off:** إضافة نوع عنصر بتطلب تعديل interface Visitor وكل الزوار. نسب الضريبة هنا للتوضيح مش قواعد حقيقية، والتقريب محتاج سياسة من المجال.
+- **المشكلة:** السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل `class`.
+- **الحل:** خلّي كل نوع فعلي من `Item` ينفّذ العملية `accept` بحيث ينادي النسخة المناسبة لنوعه من `Visitor::visit`. الزائر `Tax` بيوفّر حساب الضريبة لكل نوع.
+- **`Trade-off`:** إضافة نوع عنصر جديد بتحتاج تعديل عقد الزيارة في `Visitor`، وكل تنفيذ للزائر. العقد ده هو الـ `interface`: العمليات اللي كل تنفيذ لازم يوفّرها. نسب الضريبة هنا للتوضيح، والتقريب محتاج قاعدة مناسبة للمجال.
 - **افتكر:** أنواع ثابتة، عمليات جديدة.
 
 [السابق](../../behavioral/template-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md)

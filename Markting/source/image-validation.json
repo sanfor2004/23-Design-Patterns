@@ -1,0 +1,62 @@
+[
+  {
+    "file": "github-social-preview.png",
+    "width": 1280,
+    "height": 640,
+    "bytes": 51323
+  },
+  {
+    "file": "social-preview-landscape.png",
+    "width": 1200,
+    "height": 630,
+    "bytes": 51001
+  },
+  {
+    "file": "social-preview-square.png",
+    "width": 1080,
+    "height": 1080,
+    "bytes": 59781
+  },
+  {
+    "file": "social-preview-portrait.png",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 61741
+  },
+  {
+    "file": "carousel-01.png",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 62667
+  },
+  {
+    "file": "carousel-02.png",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 68045
+  },
+  {
+    "file": "carousel-03.png",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 64582
+  },
+  {
+    "file": "carousel-04.png",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 72805
+  },
+  {
+    "file": "carousel-05.png",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 62853
+  },
+  {
+    "file": "carousel-06.png",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 62150
+  }
+]

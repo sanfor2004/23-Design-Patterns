@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -33,7 +33,7 @@ std::string shape2 = "A"; // repeated immutable data per placement
 
 ## The Idea
 
-خزّن Glyph حسب الحرف في Pool. PlacedGlyph بتشارك const Glyph وبتحتفظ بمكان x لوحدها.
+خزّن شكل الحرف `Glyph` مرة واحدة لكل مفتاح في مخزن مشترك (`pool`). كل ظهور، من نوع `PlacedGlyph`، بيشارك الشكل الثابت (`const Glyph`) وبيحتفظ بموضعه `x` لوحده.
 
 ## Real-World Analogy
 
@@ -51,13 +51,13 @@ PlacedGlyph(x)  -->  GlyphPool::get  -->  shared const Glyph
 
 ## Participants
 
-Glyph شايلة الشكل المشترك، GlyphPool بتوحّد نسخه، و PlacedGlyph شايلة الموضع و shared [`ownership`](../../GLOSSARY.md#ownership) (مين مسؤول يخلي المورد عايش ومين يحرره في الآخر).
+في المثال، `Glyph` بتحتفظ بالشكل المشترك، و `GlyphPool` بتعيد استخدامه بدل تكراره. كل ظهور، ممثّل بنوع `PlacedGlyph`، بيحتفظ بموضعه وبيشارك ملكية الشكل. المقصود بـ [`ownership`](../../GLOSSARY.md#ownership) هنا هو مسؤولية إبقاء المورد موجود وتحريره في الآخر.
 
 الأدوار القياسية في المثال ده:
 
-- [`intrinsic state`](../../GLOSSARY.md#intrinsic-state) — بيانات مستقلة عن مكان الاستخدام، فالـ Flyweight تقدر تشاركها. هنا: `Glyph::shape`.
-- [`extrinsic state`](../../GLOSSARY.md#extrinsic-state) — بيانات تخص كل استخدام وبتفضل بره الـ Flyweight المشتركة. هنا: `PlacedGlyph::x`.
-- [`Flyweight Factory`](../../GLOSSARY.md#flyweight-factory) — جزء بيبحث بالمفتاح ويرجع Flyweight مشتركة. هنا: `GlyphPool`.
+- [`intrinsic state`](../../GLOSSARY.md#intrinsic-state) — بيانات مستقلة عن مكان الاستخدام، فالـ `Flyweight` تقدر تشاركها. هنا: `Glyph::shape`.
+- [`extrinsic state`](../../GLOSSARY.md#extrinsic-state) — بيانات تخص كل استخدام وبتفضل بره الـ `Flyweight` المشتركة. هنا: `PlacedGlyph::x`.
+- [`Flyweight Factory`](../../GLOSSARY.md#flyweight-factory) — جزء بيبحث بالمفتاح ويرجع `Flyweight` مشتركة. هنا: `GlyphPool`.
 
 ## Modern C++20 Example
 
@@ -106,7 +106,7 @@ Shared shape: true
 
 ## When to Use
 
-استخدمه بعد قياس تكرار كبير لبيانات ثابتة بين objects كتير.
+استخدمه بعد قياس تكرار كبير لبيانات ثابتة بين `objects` كتير.
 
 ### Use cases
 
@@ -122,7 +122,7 @@ Shared shape: true
 
 ## Trade-offs
 
-الـ Pool بتحتفظ بالعناصر، والـ map والـ [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (smart pointer بتشارك ownership؛ الـ object بتتحرر لما آخر مرجع مالك يختفي) ليهم تكلفة. النص هنا صغير ومفيش ادعاء بقياس توفير ذاكرة؛ الوصول للـ Pool مش متزامن.
+المخزن المشترك (`pool`) بيحتفظ بالعناصر، والبحث في `map` ليه تكلفة. كمان [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) بتتابع الملكية المشتركة؛ الكائن بيتحرر لما آخر مرجع مالك يختفي. النص في المثال صغير، ومفيش قياس يثبت توفير ذاكرة هنا. الوصول للمخزن مش محمي من الاستخدام المتزامن.
 
 ## Related Patterns
 
@@ -130,24 +130,24 @@ Shared shape: true
 
 ## Common Confusion
 
-Prototype بتنسخ الإعداد لـ object جديدة. Flyweight بتشارك الـ intrinsic state عن قصد.
+الـ `Prototype` بتنسخ الإعداد لـ `object` جديدة. الـ `Flyweight` بتشارك الـ `intrinsic state` عن قصد.
 
 ## Terms to Remember
 
 - `Flyweight` — شارك البيانات الثابتة، وخلي سياق كل ظهور منفصل.
-- `intrinsic state` — بيانات مستقلة عن مكان الاستخدام، فالـ Flyweight تقدر تشاركها. مثال: `Glyph::shape`.
-- `extrinsic state` — بيانات تخص كل استخدام وبتفضل بره الـ Flyweight المشتركة. مثال: `PlacedGlyph::x`.
-- `Flyweight Factory` — جزء بيبحث بالمفتاح ويرجع Flyweight مشتركة. مثال: `GlyphPool`.
+- `intrinsic state` — بيانات مستقلة عن مكان الاستخدام، فالـ `Flyweight` تقدر تشاركها. مثال: `Glyph::shape`.
+- `extrinsic state` — بيانات تخص كل استخدام وبتفضل بره الـ `Flyweight` المشتركة. مثال: `PlacedGlyph::x`.
+- `Flyweight Factory` — جزء بيبحث بالمفتاح ويرجع `Flyweight` مشتركة. مثال: `GlyphPool`.
 
 ## Interview Vocabulary
 
-- [`interning`](../../GLOSSARY.md#interning) — بتعيد استخدام تمثيل واحد للقيم المتساوية عن طريق pool للبحث.
+- [`interning`](../../GLOSSARY.md#interning) — بتعيد استخدام تمثيل واحد للقيم المتساوية عن طريق `pool` للبحث.
 - [`ownership`](../../GLOSSARY.md#ownership) — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر.
 - [`memory allocation`](../../GLOSSARY.md#memory-allocation) — حجز مساحة للبيانات؛ تكلفته وطريقة فشله حسب الآلية المستخدمة.
 
 ## Interview Question
 
-لو الخط وحجمه بيغيّروا الشكل، إيه اللي لازم يدخل في مفتاح الـ Pool ؟
+لو الخط وحجمه بيغيّروا الشكل، إيه اللي لازم يدخل في مفتاح الـ `Pool`؟
 
 ## Mini Challenge
 
@@ -156,8 +156,8 @@ Prototype بتنسخ الإعداد لـ object جديدة. Flyweight بتشار
 ## Quick Summary
 
 - **المشكلة:** المستند فيه حروف مكررة كتير؛ تخزين شكل الحرف كامل لكل مكان بيهدر الذاكرة.
-- **الحل:** خزّن Glyph حسب الحرف في Pool. PlacedGlyph بتشارك const Glyph وبتحتفظ بمكان x لوحدها.
-- **Trade-off:** الـ Pool بتحتفظ بالعناصر، والـ map والـ std::shared_ptr ليهم تكلفة. النص هنا صغير ومفيش ادعاء بقياس توفير ذاكرة؛ الوصول للـ Pool مش متزامن.
+- **الحل:** خزّن شكل الحرف `Glyph` مرة واحدة لكل مفتاح في مخزن مشترك (`pool`). كل ظهور، من نوع `PlacedGlyph`، بيشارك الشكل الثابت (`const Glyph`) وبيحتفظ بموضعه `x` لوحده.
+- **`Trade-off`:** المخزن المشترك (`pool`) بيحتفظ بالعناصر، والبحث في `map` ليه تكلفة. كمان `std::shared_ptr` بتتابع الملكية المشتركة؛ الكائن بيتحرر لما آخر مرجع مالك يختفي. النص في المثال صغير، ومفيش قياس يثبت توفير ذاكرة هنا. الوصول للمخزن مش محمي من الاستخدام المتزامن.
 - **افتكر:** شارك الشكل، وافصل المكان.
 
 [السابق](../../structural/facade/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/proxy/README.ar-EG.md)

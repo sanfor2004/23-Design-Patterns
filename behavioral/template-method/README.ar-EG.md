@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,7 +14,7 @@
 
 ## In One Sentence
 
-ثبّت ترتيب الـ algorithm وخلي الـ subclasses تنفّذ خطوات مختارة.
+ثبّت ترتيب خطوات الحل (`algorithm`)، وسيب تنفيذ خطوات معينة للأنواع المشتقة (`subclasses`).
 
 ## The Problem
 
@@ -33,7 +33,7 @@ void html_report() { /* duplicated order, different format */ }
 
 ## The Idea
 
-Report::generate مش virtual ، وبتنادي read و format protected والـ virtual بالترتيب.
+ثبّت ترتيب الخطوات في `Report::generate`، وهي دالة مش `virtual`. جواها، نادِ `read` وبعدها `format`؛ الاتنين متعرّفين باستخدام `protected` و`virtual` عشان الأنواع المشتقة تقدر تغيّر تنفيذهم.
 
 ## Real-World Analogy
 
@@ -51,13 +51,13 @@ Report::generate()  -->  read() + format()  -->  TextReport overrides
 
 ## Participants
 
-Report ماسكة هيكل الخطوات، TextReport بتنّفذ الاختلاف، والـ Client بينادي generate.
+في المثال، `Report` بتحدد ترتيب خطوات الحل، و `TextReport` بتنفّذ الخطوات المتغيرة. المستدعي (`Client`) بيبدأ العملية عن طريق `generate`.
 
 الأدوار القياسية في المثال ده:
 
-- [`Abstract Class`](../../GLOSSARY.md#abstract-class-template-method-role) — دور Template Method اللي ماسك algorithm skeleton وبيعلن الخطوات المتغيرة. هنا: `Report`.
-- [`Concrete Class`](../../GLOSSARY.md#concrete-class-template-method-role) — دور Template Method اللي بيوفر الخطوات المتغيرة. هنا: `TextReport`.
-- [`hook method`](../../GLOSSARY.md#hook-method) — عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها implementation افتراضية. هنا: `read, format`.
+- [`Abstract Class`](../../GLOSSARY.md#abstract-class-template-method-role) — دور `Template Method` اللي ماسك `algorithm skeleton` وبيعلن الخطوات المتغيرة. هنا: `Report`.
+- [`Concrete Class`](../../GLOSSARY.md#concrete-class-template-method-role) — دور `Template Method` اللي بيوفر الخطوات المتغيرة. هنا: `TextReport`.
+- [`hook method`](../../GLOSSARY.md#hook-method) — عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها `implementation` افتراضية. هنا: `read, format`.
 
 ## Modern C++20 Example
 
@@ -96,7 +96,7 @@ End report
 
 ## When to Use
 
-استخدمه لتسلسل ثابت فيه نقاط توسعة قليلة وواضحة بالـ [`inheritance`](../../GLOSSARY.md#inheritance) (بتعرّف derived class انطلاقاً من base class عشان تعيد استخدام العقد أو تخصصه).
+استخدمه لتسلسل ثابت فيه نقاط توسعة قليلة وواضحة بالـ [`inheritance`](../../GLOSSARY.md#inheritance) (بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه).
 
 ### Use cases
 
@@ -104,7 +104,7 @@ End report
 
 ## When NOT to Use
 
-بلاش لو الخطوات لازم يتغير ترتيبها وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء) أو الـ [`composition`](../../GLOSSARY.md#composition) (بتركّب behavior من objects بتستخدم أو بتحتوي objects تانية) أوضح.
+بلاش لو الخطوات لازم يتغير ترتيبها وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء) أو الـ [`composition`](../../GLOSSARY.md#composition) (بتبني السلوك (`behavior`) عن طريق كائنات متعاونة (`objects`)، كل واحد منها بيستخدم أو بيحتوي كائنات تانية) أوضح.
 
 ## Advantages
 
@@ -112,7 +112,7 @@ End report
 
 ## Trade-offs
 
-الـ inheritance بتربط الابن بعقد الأساس. End مش مضمونة لو read أو format رمت Exception ؛ تنظيف الموارد الحقيقي محتاج [`RAII`](../../GLOSSARY.md#raii) (Resource Acquisition Is Initialization: اربط المورد بعمر object، عشان destructor تحرره تلقائياً) ، مش الاعتماد على آخر خطوة.
+الـ `inheritance` بتربط الابن بعقد الأساس. الـ `End` مش مضمونة لو `read` أو `format` رمت `Exception`؛ تنظيف الموارد الحقيقي محتاج [`RAII`](../../GLOSSARY.md#raii) (اربط المورد بعمر الكائن، عشان `destructor` تحرره تلقائياً؛ والاسم الكامل هو `Resource Acquisition Is Initialization`)، مش الاعتماد على آخر خطوة.
 
 ## Related Patterns
 
@@ -120,34 +120,34 @@ End report
 
 ## Common Confusion
 
-Strategy بتحقن behavior قابل للتبديل. Template Method بتستخدم Hooks موروثة، وممكن Factory Method تبقى خطوة إنشاء جوه الهيكل.
+الـ `Strategy` بتحقن `behavior` قابل للتبديل. الـ `Template Method` بتستخدم `Hooks` موروثة، وممكن `Factory Method` تبقى خطوة إنشاء جوه الهيكل.
 
 ## Terms to Remember
 
-- `Template Method` — ثبّت ترتيب الـ algorithm وخلي الـ subclasses تنفّذ خطوات مختارة.
-- `Abstract Class` — دور Template Method اللي ماسك algorithm skeleton وبيعلن الخطوات المتغيرة. مثال: `Report`.
-- `Concrete Class` — دور Template Method اللي بيوفر الخطوات المتغيرة. مثال: `TextReport`.
-- `hook method` — عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها implementation افتراضية. مثال: `read, format`.
+- `Template Method` — ثبّت ترتيب خطوات الحل (`algorithm`)، وسيب تنفيذ خطوات معينة للأنواع المشتقة (`subclasses`).
+- `Abstract Class` — دور `Template Method` اللي ماسك `algorithm skeleton` وبيعلن الخطوات المتغيرة. مثال: `Report`.
+- `Concrete Class` — دور `Template Method` اللي بيوفر الخطوات المتغيرة. مثال: `TextReport`.
+- `hook method` — عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها `implementation` افتراضية. مثال: `read, format`.
 
 ## Interview Vocabulary
 
-- [`algorithm skeleton`](../../GLOSSARY.md#algorithm-skeleton) — ترتيب algorithm الثابت اللي بعض خطواته ممكن تتغير.
-- [`inheritance`](../../GLOSSARY.md#inheritance) — بتعرّف derived class انطلاقاً من base class عشان تعيد استخدام العقد أو تخصصه.
-- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — استهدف open for extension, closed for modification عند حدود مفيدة ومختارة بوضوح.
+- [`algorithm skeleton`](../../GLOSSARY.md#algorithm-skeleton) — ترتيب `algorithm` الثابت اللي بعض خطواته ممكن تتغير.
+- [`inheritance`](../../GLOSSARY.md#inheritance) — بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه.
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — خلّي التوسيع ممكن من غير تعديل الكود المستقر، عند حدود مختارة بوضوح. التعبير هو `open for extension, closed for modification`.
 
 ## Interview Question
 
-ليه generate مش virtual و read و format virtual ؟ ده بيوضح ثوابت إيه؟
+ليه `generate` مش `virtual` و `read` و `format virtual`؟ ده بيوضح ثوابت إيه؟
 
 ## Mini Challenge
 
-ضيف CsvReport وراجع الترتيب، وبعدها جرّب Exception في التنسيق وناقش تنظيف الموارد.
+ضيف `CsvReport` وراجع الترتيب، وبعدها جرّب `Exception` في التنسيق وناقش تنظيف الموارد.
 
 ## Quick Summary
 
 - **المشكلة:** التقارير بتشترك في بداية وقراءة وتنسيق ونهاية، بس مصدر البيانات أو التنسيق مختلف.
-- **الحل:** Report::generate مش virtual ، وبتنادي read و format protected والـ virtual بالترتيب.
-- **Trade-off:** الـ inheritance بتربط الابن بعقد الأساس. End مش مضمونة لو read أو format رمت Exception ؛ تنظيف الموارد الحقيقي محتاج RAII ، مش الاعتماد على آخر خطوة.
+- **الحل:** ثبّت ترتيب الخطوات في `Report::generate`، وهي دالة مش `virtual`. جواها، نادِ `read` وبعدها `format`؛ الاتنين متعرّفين باستخدام `protected` و`virtual` عشان الأنواع المشتقة تقدر تغيّر تنفيذهم.
+- **`Trade-off`:** الـ `inheritance` بتربط الابن بعقد الأساس. الـ `End` مش مضمونة لو `read` أو `format` رمت `Exception`؛ تنظيف الموارد الحقيقي محتاج `RAII`، مش الاعتماد على آخر خطوة.
 - **افتكر:** ثبّت الوصفة، وغيّر الخطوات.
 
 [السابق](../../behavioral/strategy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/visitor/README.ar-EG.md)

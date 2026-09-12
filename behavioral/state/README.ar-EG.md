@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,7 +14,7 @@
 
 ## In One Sentence
 
-خلّي state بتاعة الـ object الحالية تحدد ردها وانتقالاتها.
+خلّي الحالة الحالية للكائن (`state`) هي اللي تحدد استجابته والانتقالات المتاحة ليه.
 
 ## The Problem
 
@@ -29,11 +29,11 @@ else open = true; // becomes scattered as states and events grow
 
 ## Why It Becomes a Problem
 
-Boolean كفاية لحالتين، بس نسخ شروط الـ state على events كتير بيخلّي الانتقالات تتعارض.
+الـ `Boolean` كفاية لحالتين، بس نسخ شروط الـ `state` على `events` كتير بيخلّي الانتقالات تتعارض.
 
 ## The Idea
 
-Door بتفوّض press للـ DoorState الحالية، والـ state تختار اللي بعدها.
+خلّي الباب `Door` يفوّض العملية `press` للحالة الحالية من نوع `DoorState`. تنفيذ الحالة هو اللي بيحدد الحالة التالية.
 
 ## Real-World Analogy
 
@@ -51,13 +51,13 @@ Door::press()  -->  DoorState  -->  Open ↔ Closed
 
 ## Participants
 
-Door هي الـ Context ، DoorState بتحدد press و name ، و Open و Closed شايلين روابط مش مالكة للـ state التالية. main بتخليهم عايشين أطول من الباب.
+في المثال، الباب `Door` بيلعب دور `Context`. العقد `DoorState` بيحدد العمليتين `press` و `name`. الحالتان `Open` و `Closed` بيحتفظوا بروابط مش مالكة للحالة التالية. الدالة `main` بتخلي الحالتين موجودتين لمدة أطول من الباب.
 
 الأدوار القياسية في المثال ده:
 
-- [`Context`](../../GLOSSARY.md#context) — الـ object اللي بتستخدم Strategy أو بتفوّض behavior للـ State الحالية. هنا: `Door`.
-- [`State interface`](../../GLOSSARY.md#state-interface) — العقد اللي Context بتفوّض من خلاله behavior المعتمدة على state. هنا: `DoorState`.
-- [`Concrete State`](../../GLOSSARY.md#concrete-state) — implementation بتحدد behavior والانتقالات لوضع State واحد. هنا: `Open, Closed`.
+- [`Context`](../../GLOSSARY.md#context) — الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). هنا: `Door`.
+- [`State interface`](../../GLOSSARY.md#state-interface) — العقد اللي `Context` بتفوّض من خلاله `behavior` المعتمدة على `state`. هنا: `DoorState`.
+- [`Concrete State`](../../GLOSSARY.md#concrete-state) — تنفيذ لحالة معينة (`Concrete State`) بيحدد سلوكها (`behavior`) والانتقالات المتاحة منها. هنا: `Open, Closed`.
 
 ## Modern C++20 Example
 
@@ -113,7 +113,7 @@ closed
 
 ## When to Use
 
-استخدمه لما الـ behavior حسب الـ state والانتقالات يتوزعوا على كذا عملية.
+استخدمه لما الـ `behavior` حسب الـ `state` والانتقالات يتوزعوا على كذا عملية.
 
 ### Use cases
 
@@ -121,15 +121,15 @@ closed
 
 ## When NOT to Use
 
-بلاش لـ Toggle بسيطة أو جدول enum واضح وصغير.
+بلاش لو المطلوب تبديل بسيط (`toggle`)، أو لو جدول صغير باستخدام `enum` بيعبّر عن الحالات بوضوح.
 
 ## Advantages
 
-الـ behavior متجمع حسب الـ state ، والانتقالات واضحة في مكانها.
+الـ `behavior` متجمع حسب الـ `state`، والانتقالات واضحة في مكانها.
 
 ## Trade-offs
 
-فيه classes وعلاقات [`lifetime`](../../GLOSSARY.md#lifetime) (الفترة اللي الـ object موجودة فيها وينفع تستخدمها حسب قواعدها) زيادة. الـ states هنا بره Door عشان الانتقال ما يدمرش الـ state وهي لسه بتنفذ؛ التصميم الأكبر لازم يحافظ على الأمان ده.
+التصميم بيضيف أنواع جديدة (`classes`)، ولازم تتابع عمر الكائنات وعلاقتها ببعض. المقصود بـ [`lifetime`](../../GLOSSARY.md#lifetime) هو الفترة اللي الكائن موجود فيها وينفع تستخدمه. الحالات في المثال موجودة بره الباب `Door`؛ عشان كده، الانتقال مش بيدمر الحالة وهي لسه بتنفّذ. حافظ على الضمان ده في التصميم الأكبر.
 
 ## Related Patterns
 
@@ -137,34 +137,34 @@ closed
 
 ## Common Confusion
 
-Strategy غالباً الـ Client بيختارها لـ algorithm. State بتمثل [`lifecycle`](../../GLOSSARY.md#lifecycle) (المراحل والانتقالات اللي بنمثلها لكيان في المشكلة؛ مش نفس lifetime بتاعة object في C++) وممكن تختار انتقالها بنفسها.
+في `Strategy`، المستدعي (`Client`) غالبًا بيختار طريقة الحل (`algorithm`). أما `State`، فبتمثل مرحلة من دورة عمل الكيان وممكن تحدد الانتقال التالي بنفسها. دورة العمل اسمها [`lifecycle`](../../GLOSSARY.md#lifecycle)، ودي مختلفة عن عمر الكائن في الذاكرة (`lifetime`).
 
 ## Terms to Remember
 
-- `State` — خلّي state بتاعة الـ object الحالية تحدد ردها وانتقالاتها.
-- `Context` — الـ object اللي بتستخدم Strategy أو بتفوّض behavior للـ State الحالية. مثال: `Door`.
-- `State interface` — العقد اللي Context بتفوّض من خلاله behavior المعتمدة على state. مثال: `DoorState`.
-- `Concrete State` — implementation بتحدد behavior والانتقالات لوضع State واحد. مثال: `Open, Closed`.
+- `State` — خلّي الحالة الحالية للكائن (`state`) هي اللي تحدد استجابته والانتقالات المتاحة ليه.
+- `Context` — الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). مثال: `Door`.
+- `State interface` — العقد اللي `Context` بتفوّض من خلاله `behavior` المعتمدة على `state`. مثال: `DoorState`.
+- `Concrete State` — تنفيذ لحالة معينة (`Concrete State`) بيحدد سلوكها (`behavior`) والانتقالات المتاحة منها. مثال: `Open, Closed`.
 
 ## Interview Vocabulary
 
-- [`state transition`](../../GLOSSARY.md#state-transition) — انتقال من وضع ممثّل في التصميم لوضع تاني بعد event.
-- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — اللي البرنامج بيعمله وهو شغال، بما فيه behavior بتتحدد من المدخلات.
-- [`delegation`](../../GLOSSARY.md#delegation) — object بتطلب من object متعاونة معاها تنفذ جزء من الشغل.
+- [`state transition`](../../GLOSSARY.md#state-transition) — انتقال من وضع ممثّل في التصميم لوضع تاني بعد `event`.
+- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — اللي البرنامج بيعمله وهو شغال، بما فيه `behavior` بتتحدد من المدخلات.
+- [`delegation`](../../GLOSSARY.md#delegation) — الكائن بيفوّض جزء من شغله لكائن متعاون معاه (`object`)، بدل ما ينفّذ كل حاجة بنفسه.
 
 ## Interview Question
 
-مين بيختار الـ state التالية هنا؟ وإيه الفرق عن اختيار Strategy للشحن؟
+مين بيختار الـ `state` التالية هنا؟ وإيه الفرق عن اختيار `Strategy` للشحن؟
 
 ## Mini Challenge
 
-ضيف Locked تخلي press ما تفتحش، وحدث unlock منفصل واختبر التسلسل.
+ضيف `Locked` تخلي `press` ما تفتحش، وحدث `unlock` منفصل واختبر التسلسل.
 
 ## Quick Summary
 
 - **المشكلة:** الباب بيرد على نفس الزر بشكل مختلف وهو مفتوح أو مقفول؛ أجهزة أكبر فيها قفل أو عطل.
-- **الحل:** Door بتفوّض press للـ DoorState الحالية، والـ state تختار اللي بعدها.
-- **Trade-off:** فيه classes وعلاقات lifetime زيادة. الـ states هنا بره Door عشان الانتقال ما يدمرش الـ state وهي لسه بتنفذ؛ التصميم الأكبر لازم يحافظ على الأمان ده.
-- **افتكر:** نفس الـ event ، حالة مختلفة، رد مختلف.
+- **الحل:** خلّي الباب `Door` يفوّض العملية `press` للحالة الحالية من نوع `DoorState`. تنفيذ الحالة هو اللي بيحدد الحالة التالية.
+- **`Trade-off`:** التصميم بيضيف أنواع جديدة (`classes`)، ولازم تتابع عمر الكائنات وعلاقتها ببعض. المقصود بـ `lifetime` هو الفترة اللي الكائن موجود فيها وينفع تستخدمه. الحالات في المثال موجودة بره الباب `Door`؛ عشان كده، الانتقال مش بيدمر الحالة وهي لسه بتنفّذ. حافظ على الضمان ده في التصميم الأكبر.
+- **افتكر:** نفس الـ `event`، حالة مختلفة، رد مختلف.
 
 [السابق](../../behavioral/observer/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/strategy/README.ar-EG.md)

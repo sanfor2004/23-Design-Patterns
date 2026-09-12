@@ -29,6 +29,17 @@ This repository is edited as plain Markdown, SVG, and C++20. Reading or editing 
 
 The glossary is the shared reference for definitions. When adding an entry, supply English, Egyptian Arabic, Simplified Chinese, and Italian explanations. Check meaning and grammar manually; automated checks cannot establish translation quality.
 
+### Egyptian Arabic and reading direction
+
+Write the explanation naturally in Egyptian Arabic, and keep English terminology visually separate with inline code. Prefer an Arabic sentence opening, then introduce the English term beside its meaning. For example: «خلّي الـ `subclass` هي اللي تحدد الـ `concrete object` اللي هيتعمل.»
+
+- Rewrite crowded sentences instead of inserting more English words into Arabic grammar. For example: «إزاي بننشئ الكائنات؟ المصطلح هنا هو `object creation`.»
+- Keep official pattern names, architectural roles, and code identifiers in English. Keep a whole expression or code snippet inside one code span, including its parentheses or operators.
+- English technical headings can remain English. In Arabic headings, isolate the English term in code or put it after the Arabic explanation in parentheses.
+- Use short sentences for responsibilities and comparisons. Describe relationships in Arabic prose; put directional arrows in the English diagram instead of between mixed Arabic/English fragments.
+- Check every `README.ar-EG.md`, the Arabic guides, and Egyptian Arabic glossary explanations for reading order. Review narrow-screen previews when available; source checks alone cannot guarantee GitHub mobile rendering.
+- Preserve fenced C++ examples, output, and English diagrams exactly during prose formatting edits. Do not insert invisible direction-control characters into code or identifiers.
+
 ## Pattern document template
 
 Use these English headings in all four pattern files. The body is written in the file's language. Existing technical use cases belong under `When to Use`, optionally in a `### Use cases` subsection.

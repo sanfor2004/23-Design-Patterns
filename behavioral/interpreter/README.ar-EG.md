@@ -6,7 +6,7 @@
 
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
 ## Difficulty
 
@@ -14,11 +14,11 @@
 
 ## In One Sentence
 
-مثّل لغة صغيرة بـ objects بتقيّم قواعدها.
+مثّل قواعد لغة صغيرة بكائنات (`objects`)، بحيث كل كائن يعرف يقيّم الجزء المسؤول عنه.
 
 ## The Problem
 
-قواعد السماح بتجمع أسماء Roles و AND ، ومحتاجين نبني القواعد كبيانات.
+قواعد السماح بتجمع أسماء `Roles` و `AND`، ومحتاجين نبني القواعد كبيانات.
 
 ## Naive Solution
 
@@ -28,15 +28,15 @@ bool allowed = roles.contains("editor") && roles.contains("verified");
 
 ## Why It Becomes a Problem
 
-تعبير Boolean ثابت بسيط، بس تغيير شكل قواعد متداخلة بيحتاج تعديل كود التطبيق.
+تعبير `Boolean` ثابت بسيط، بس تغيير شكل قواعد متداخلة بيحتاج تعديل كود التطبيق.
 
 ## The Idea
 
-Role تعبير نهائي، و Both تعبير مركب بيقيّم طفلين بـ AND مع Short Circuit.
+مثّل فحص الدور بتعبير نهائي (`Terminal Expression`) اسمه `Role`. التعبير المركّب `Both` بيجمع تعبيرين باستخدام `AND`. لو الأول رجع نتيجة سلبية، مش محتاج تقيّم التاني؛ ده اسمه `short-circuit evaluation`.
 
 ## Real-World Analogy
 
-الجملة بتجمع كلمات بقواعد؛ هنا القاعدة بتجمع Roles باستخدام AND.
+الجملة بتجمع كلمات بقواعد؛ هنا القاعدة بتجمع `Roles` باستخدام `AND`.
 
 ## Structure
 
@@ -50,11 +50,11 @@ Context  -->  Both(Expression, Expression)  -->  Role / nested Both
 
 ## Participants
 
-Expression بتحدد التقييم، Context بتوفر الأدوار، Role بتراجع العضوية، و Both بتمتلك التعبيرين.
+في المثال، `Expression` بتحدد عقد التقييم. بيانات التقييم موجودة في `Context`، والتعبير `Role` بيفحص وجود دور معين. التعبير المركّب `Both` بيمتلك التعبيرين اللي بيقيّمهم.
 
 الأدوار القياسية في المثال ده:
 
-- [`Abstract Expression`](../../GLOSSARY.md#abstract-expression) — عقد تقييم العقد اللي بتمثل قواعد Interpreter. هنا: `Expression`.
+- [`Abstract Expression`](../../GLOSSARY.md#abstract-expression) — عقد تقييم العقد اللي بتمثل قواعد `Interpreter`. هنا: `Expression`.
 - [`Terminal Expression`](../../GLOSSARY.md#terminal-expression) — تعبير مافيش جواه تعبيرات أطفال. هنا: `Role`.
 - [`Nonterminal Expression`](../../GLOSSARY.md#nonterminal-expression) — تعبير بيركب تعبيرات أصغر حسب قاعدة في اللغة. هنا: `Both`.
 - `Context` — البيانات اللي التعبيرات بتستخدمها وقت التقييم؛ هنا مجموعة أسماء الصلاحيات. `Context`.
@@ -111,19 +111,19 @@ true
 
 ### Use cases
 
-ينفع للغات فلترة أو أهلية صغيرة؛ مش نظام صلاحيات آمن ولا Parser عام.
+ينفع للغات فلترة أو أهلية صغيرة؛ مش نظام صلاحيات آمن ولا `Parser` عام.
 
 ## When NOT to Use
 
-بلاش للغة كبيرة محتاجة Parser قوي ورسائل أخطاء وتحسين؛ أدوات Parsing جاهزة أنسب.
+بلاش للغة كبيرة محتاجة `Parser` قوي ورسائل أخطاء وتحسين؛ أدوات `Parsing` جاهزة أنسب.
 
 ## Advantages
 
-القواعد بتتركب بشكل Recursive وتتقيّم مع Contexts مختلفة.
+القواعد بتتركب بشكل `Recursive` وتتقيّم مع `Contexts` مختلفة.
 
 ## Trade-offs
 
-كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ Stack ؛ مفيش Parser هنا، main بتبني الشجرة مباشرة.
+كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ `Stack`؛ مفيش `Parser` هنا، `main` بتبني الشجرة مباشرة.
 
 ## Related Patterns
 
@@ -131,12 +131,12 @@ true
 
 ## Common Confusion
 
-Composite بتوصف الشجرة، وInterpreter بتضيف معنى القواعد وتقييمها. Visitor ممكن تضيف عمليات عليها.
+الـ `Composite` بتوصف الشجرة، و `Interpreter` بتضيف معنى القواعد وتقييمها. الـ `Visitor` ممكن تضيف عمليات عليها.
 
 ## Terms to Remember
 
-- `Interpreter` — مثّل لغة صغيرة بـ objects بتقيّم قواعدها.
-- `Abstract Expression` — عقد تقييم العقد اللي بتمثل قواعد Interpreter. مثال: `Expression`.
+- `Interpreter` — مثّل قواعد لغة صغيرة بكائنات (`objects`)، بحيث كل كائن يعرف يقيّم الجزء المسؤول عنه.
+- `Abstract Expression` — عقد تقييم العقد اللي بتمثل قواعد `Interpreter`. مثال: `Expression`.
 - `Terminal Expression` — تعبير مافيش جواه تعبيرات أطفال. مثال: `Role`.
 - `Nonterminal Expression` — تعبير بيركب تعبيرات أصغر حسب قاعدة في اللغة. مثال: `Both`.
 - `Context` — البيانات اللي التعبيرات بتستخدمها وقت التقييم؛ هنا مجموعة أسماء الصلاحيات.
@@ -149,17 +149,17 @@ Composite بتوصف الشجرة، وInterpreter بتضيف معنى القوا
 
 ## Interview Question
 
-لو المستخدم كتب editor AND verified OR admin ، هتحدد أولوية العمليات فين؟
+لو المستخدم كتب `editor AND verified OR admin`، هتحدد أولوية العمليات فين؟
 
 ## Mini Challenge
 
-ضيف Either للـ OR واختبر قاعدة متداخلة مع ثلاث Contexts مختلفة.
+ضيف `Either` للـ `OR` واختبر قاعدة متداخلة مع ثلاث `Contexts` مختلفة.
 
 ## Quick Summary
 
-- **المشكلة:** قواعد السماح بتجمع أسماء Roles و AND ، ومحتاجين نبني القواعد كبيانات.
-- **الحل:** Role تعبير نهائي، و Both تعبير مركب بيقيّم طفلين بـ AND مع Short Circuit.
-- **Trade-off:** كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ Stack ؛ مفيش Parser هنا، main بتبني الشجرة مباشرة.
+- **المشكلة:** قواعد السماح بتجمع أسماء `Roles` و `AND`، ومحتاجين نبني القواعد كبيانات.
+- **الحل:** مثّل فحص الدور بتعبير نهائي (`Terminal Expression`) اسمه `Role`. التعبير المركّب `Both` بيجمع تعبيرين باستخدام `AND`. لو الأول رجع نتيجة سلبية، مش محتاج تقيّم التاني؛ ده اسمه `short-circuit evaluation`.
+- **`Trade-off`:** كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ `Stack`؛ مفيش `Parser` هنا، `main` بتبني الشجرة مباشرة.
 - **افتكر:** عقد القواعد بتدي معنى للتعبير.
 
 [السابق](../../behavioral/command/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/iterator/README.ar-EG.md)
