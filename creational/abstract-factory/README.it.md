@@ -1,59 +1,65 @@
-# Fabbrica astratta
+# Abstract Factory
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Categoria](../README.it.md) · [Successivo](../../creational/builder/README.it.md)
 
-## Categoria
+## Category
 
-Creazionali
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
 
-## Difficoltà
+## Difficulty
 
 Intermedio
 
-## In una frase
+## In One Sentence
 
-Crea oggetti compatibili attraverso un unico contratto di famiglia.
+Crea object compatibili attraverso un unico contratto di famiglia.
 
-## Il problema
+## The Problem
 
 Una schermata richiede pulsanti e pannelli dello stesso tema.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 auto button = DarkButton{};
 auto panel = LightPanel{}; // mixed theme
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Creare ogni widget direttamente permette di mescolare un pulsante scuro e un pannello chiaro. Ogni client deve ricordare le combinazioni valide.
 
-## Idea centrale
+## The Idea
 
-Passa un Theme a render: la fabbrica produce entrambi gli oggetti e il client usa soltanto le interfacce.
+Passa un Theme a render: la fabbrica produce entrambi gli object e il client usa soltanto le [`interface`](../../GLOSSARY.md#interface) (Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa).
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Un set di mobili coordinati evita di abbinare ogni pezzo a mano.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Fabbrica astratta](../../assets/diagrams/abstract-factory.svg)
+![Abstract Factory](../../assets/diagrams/abstract-factory.svg)
 
 ```text
 render()  -->  Theme  -->  Button + Panel
 ```
 
-## Partecipanti
+## Participants
 
 Theme definisce la famiglia; DarkTheme e LightTheme la realizzano. Button e Panel sono i prodotti astratti, render li utilizza.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Product`](../../GLOSSARY.md#product) — Il contratto dell'object restituito dal codice di creazione. Qui: `Button, Panel`.
+- [`Concrete Product`](../../GLOSSARY.md#concrete-product) — Una particolare implementation del contratto Product. Qui: `DarkButton, LightButton, DarkPanel, LightPanel`.
+- [`Concrete Factory`](../../GLOSSARY.md#concrete-factory) — Un'implementation che crea una famiglia coerente di Product. Qui: `DarkTheme, LightTheme`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -104,54 +110,67 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 dark button + dark panel
 light button + light panel
 ```
 
-## Quando usarlo
+## When to Use
 
-Usalo quando più tipi di prodotto devono cambiare insieme senza esporre le classi concrete al client.
+Usalo quando più tipi di prodotto devono cambiare insieme senza esporre le concrete class al client.
 
-## Quando NON usarlo
-
-Evitalo per un solo prodotto stabile o quando le combinazioni indipendenti sono desiderabili.
-
-## Vantaggi
-
-Puoi sostituire una famiglia completa senza modificare il flusso di rendering.
-
-## Svantaggi e compromessi
-
-Aggiungere un prodotto come Slider richiede modifiche a tutte le fabbriche. Il contratto non garantisce da solo la coerenza visiva delle implementazioni.
-
-## Applicazioni tecniche
+### Use cases
 
 Kit di temi e famiglie di driver per database sono contesti adatti; qui stampiamo soltanto nomi.
 
-## Pattern correlati
+## When NOT to Use
 
-[factory-method](../factory-method/README.it.md) · [builder](../builder/README.it.md)
+Evitalo per un solo prodotto stabile o quando le combinazioni indipendenti sono desiderabili.
 
-## Confusione comune
+## Advantages
 
-Factory Method varia un punto di creazione. Abstract Factory coordina più tipi correlati e può usare metodi fabbrica al proprio interno.
+Puoi sostituire una famiglia completa senza modificare il flusso di rendering.
 
-## Domanda da colloquio
+## Trade-offs
 
-Quali interfacce cambiano aggiungendo un tema? E aggiungendo un tipo di widget?
+Aggiungere un prodotto come Slider richiede modifiche a tutte le fabbriche. Il contratto non garantisce da solo la coerenza visiva delle [`implementation`](../../GLOSSARY.md#implementation) (Il codice concreto che esegue un'operazione o soddisfa un'interface).
 
-## Piccola sfida
+## Related Patterns
+
+[Factory Method](../factory-method/README.it.md) · [Builder](../builder/README.it.md)
+
+## Common Confusion
+
+Factory Method varia un punto di creazione. Abstract Factory coordina più tipi correlati e può usare factory methods al proprio interno.
+
+## Terms to Remember
+
+- `Abstract Factory` — Crea object compatibili attraverso un unico contratto di famiglia.
+- `Product` — Il contratto dell'object restituito dal codice di creazione. Esempio: `Button, Panel`.
+- `Concrete Product` — Una particolare implementation del contratto Product. Esempio: `DarkButton, LightButton, DarkPanel, LightPanel`.
+- `Concrete Factory` — Un'implementation che crea una famiglia coerente di Product. Esempio: `DarkTheme, LightTheme`.
+
+## Interview Vocabulary
+
+- [`object creation`](../../GLOSSARY.md#object-creation) — Scegliere il tipo concreto e stabilire valori iniziali e lifetime di un object.
+- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — Dipendere dal contratto promesso anziché da una particolare implementation concreta.
+- [`encapsulate what varies`](../../GLOSSARY.md#encapsulate-what-varies) — Racchiudere una decisione variabile dietro un confine stabile.
+
+## Interview Question
+
+Quali interface cambiano aggiungendo un tema? E aggiungendo un tipo di widget?
+
+## Mini Challenge
 
 Aggiungi una famiglia ad alto contrasto, poi un prodotto Slider. Confronta l'estensione delle modifiche.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Una schermata richiede pulsanti e pannelli dello stesso tema.
-- **Soluzione:** Passa un Theme a render: la fabbrica produce entrambi gli oggetti e il client usa soltanto le interfacce.
-- **Compromesso:** Aggiungere un prodotto come Slider richiede modifiche a tutte le fabbriche. Il contratto non garantisce da solo la coerenza visiva delle implementazioni.
+- **Soluzione:** Passa un Theme a render: la fabbrica produce entrambi gli object e il client usa soltanto le interface.
+- **Trade-off:** Aggiungere un prodotto come Slider richiede modifiche a tutte le fabbriche. Il contratto non garantisce da solo la coerenza visiva delle implementation.
 - **Da ricordare:** Una fabbrica, un insieme coordinato.
 
 [Categoria](../README.it.md) · [Successivo](../../creational/builder/README.it.md)

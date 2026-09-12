@@ -1,26 +1,26 @@
-# Ponte
+# Bridge
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../structural/adapter/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/composite/README.it.md)
 
-## Categoria
+## Category
 
-Strutturali
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
 
-## Difficoltà
+## Difficulty
 
 Intermedio
 
-## In una frase
+## In One Sentence
 
-Separa due dimensioni variabili e collegale tramite composizione.
+Separa due dimensioni variabili e collegale tramite [`composition`](../../GLOSSARY.md#composition) (Costruire behavior collegando object che usano o contengono altri object).
 
-## Il problema
+## The Problem
 
 Gli avvisi variano per urgenza e canale, con estensioni indipendenti.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 struct UrgentEmailNotice {};
@@ -29,33 +29,40 @@ struct NormalEmailNotice {};
 struct NormalSmsNotice {};
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-Una classe per ogni coppia moltiplica le combinazioni e duplica la consegna.
+Una class per ogni coppia moltiplica le combinazioni e duplica la consegna.
 
-## Idea centrale
+## The Idea
 
 Notice delega a Channel; UrgentNotice cambia il messaggio senza scegliere il trasporto.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Un telecomando e il collegamento radio possono evolvere separatamente attraverso un piccolo protocollo.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Ponte](../../assets/diagrams/bridge.svg)
+![Bridge](../../assets/diagrams/bridge.svg)
 
 ```text
 Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 ```
 
-## Partecipanti
+## Participants
 
-Notice è l'astrazione, UrgentNotice la raffina, Channel è il contratto d'implementazione, Email e Sms consegnano.
+Notice è l'[`abstraction`](../../GLOSSARY.md#abstraction) (Una vista che espone le operazioni necessarie e nasconde i dettagli irrilevanti per chi la usa), UrgentNotice la raffina, Channel è il contratto d'[`implementation`](../../GLOSSARY.md#implementation) (Il codice concreto che esegue un'operazione o soddisfa un'interface), Email e Sms consegnano.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Abstraction`](../../GLOSSARY.md#abstraction-bridge-role) — Il lato di alto livello di Bridge che delega il lavoro di implementazione. Qui: `Notice`.
+- [`Refined Abstraction`](../../GLOSSARY.md#refined-abstraction) — Una specializzazione di Abstraction indipendente dal lato implementativo. Qui: `UrgentNotice`.
+- [`Implementor`](../../GLOSSARY.md#implementor) — Il contratto usato dall'Abstraction di Bridge per il lavoro di livello inferiore. Qui: `Channel`.
+- [`Concrete Implementor`](../../GLOSSARY.md#concrete-implementor) — Una particolare implementation del contratto Implementor. Qui: `Email, Sms`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -93,7 +100,7 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Email: status normal
@@ -101,47 +108,61 @@ Email: URGENT: disk full
 SMS: URGENT: disk full
 ```
 
-## Quando usarlo
+## When to Use
 
-Usalo se due assi di variazione produrrebbero un prodotto cartesiano di sottoclassi.
+Usalo se due assi di variazione produrrebbero un prodotto cartesiano di subclass.
 
-## Quando NON usarlo
-
-Evitalo con una sola variazione semplice già gestibile da un parametro.
-
-## Vantaggi
-
-Un nuovo canale funziona con gli avvisi esistenti senza creare tutte le coppie.
-
-## Svantaggi e compromessi
-
-L'indirezione richiede un confine chiaro; i canali non posseduti devono vivere più degli avvisi.
-
-## Applicazioni tecniche
+### Use cases
 
 Forme e backend grafici, oppure tipi di notifica e canali, sono contesti adatti.
 
-## Pattern correlati
+## When NOT to Use
 
-[adapter](../adapter/README.it.md) · [strategy](../../behavioral/strategy/README.it.md)
+Evitalo con una sola variazione semplice già gestibile da un parametro.
 
-## Confusione comune
+## Advantages
 
-Adapter corregge un'incompatibilità esistente. Bridge separa intenzionalmente dimensioni indipendenti; Strategy riguarda comportamenti sostituibili.
+Un nuovo canale funziona con gli avvisi esistenti senza creare tutte le coppie.
 
-## Domanda da colloquio
+## Trade-offs
 
-Aggiungendo Push e ScheduledNotice, quante classi servono con e senza Bridge?
+L'indirezione richiede un confine chiaro; i canali non posseduti devono vivere più degli avvisi.
 
-## Piccola sfida
+## Related Patterns
+
+[Adapter](../adapter/README.it.md) · [Strategy](../../behavioral/strategy/README.it.md)
+
+## Common Confusion
+
+Adapter corregge un'incompatibilità esistente. Bridge separa intenzionalmente dimensioni indipendenti; Strategy riguarda behavior sostituibili.
+
+## Terms to Remember
+
+- `Bridge` — Separa due dimensioni variabili e collegale tramite composition.
+- `Abstraction` — Il lato di alto livello di Bridge che delega il lavoro di implementazione. Esempio: `Notice`.
+- `Refined Abstraction` — Una specializzazione di Abstraction indipendente dal lato implementativo. Esempio: `UrgentNotice`.
+- `Implementor` — Il contratto usato dall'Abstraction di Bridge per il lavoro di livello inferiore. Esempio: `Channel`.
+- `Concrete Implementor` — Una particolare implementation del contratto Implementor. Esempio: `Email, Sms`.
+
+## Interview Vocabulary
+
+- [`object composition`](../../GLOSSARY.md#object-composition) — Collegare object per costruire una struttura o un comportamento più ampio.
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — Preferire object collaboranti quando esprimono la variazione meglio di una gerarchia di inheritance.
+- [`encapsulate what varies`](../../GLOSSARY.md#encapsulate-what-varies) — Racchiudere una decisione variabile dietro un confine stabile.
+
+## Interview Question
+
+Aggiungendo Push e ScheduledNotice, quante class servono con e senza Bridge?
+
+## Mini Challenge
 
 Aggiungi Push e riutilizza entrambi gli avvisi senza modificarli.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Gli avvisi variano per urgenza e canale, con estensioni indipendenti.
 - **Soluzione:** Notice delega a Channel; UrgentNotice cambia il messaggio senza scegliere il trasporto.
-- **Compromesso:** L'indirezione richiede un confine chiaro; i canali non posseduti devono vivere più degli avvisi.
+- **Trade-off:** L'indirezione richiede un confine chiaro; i canali non posseduti devono vivere più degli avvisi.
 - **Da ricordare:** Due assi, un collegamento.
 
 [Precedente](../../structural/adapter/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/composite/README.it.md)

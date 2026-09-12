@@ -6,7 +6,7 @@
 
 ## Category
 
-Structural
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
 
 ## Difficulty
 
@@ -14,19 +14,19 @@ Beginner
 
 ## In One Sentence
 
-Translate an existing interface into the one a client expects.
+Translate an existing [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller) into the one a client expects.
 
 ## The Problem
 
 A dashboard expects Celsius but an existing sensor exposes Fahrenheit.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 double displayed = sensor.fahrenheit(); // UI expects Celsius
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Passing the raw number displays the wrong unit. Scattered conversion formulas duplicate a compatibility rule.
 
@@ -51,6 +51,12 @@ display(Temperature)  -->  CelsiusAdapter  -->  LegacyThermometer
 ## Participants
 
 Temperature is the target interface. LegacyThermometer is the existing API. CelsiusAdapter borrows it; display uses only Temperature.
+
+Canonical roles in this example:
+
+- [`Target`](../../GLOSSARY.md#target) — The interface expected by the Client. Here: `Temperature`.
+- [`Adaptee`](../../GLOSSARY.md#adaptee) — The existing object whose interface needs adaptation. Here: `LegacyThermometer`.
+- [`interface`](../../GLOSSARY.md#interface) — The contract of operations and observable behavior offered to a caller. Here: `Temperature`.
 
 ## Modern C++20 Example
 
@@ -88,11 +94,15 @@ int main() {
 25 C
 ```
 
-## When to Use It
+## When to Use
 
 Use it at a boundary to an existing API you cannot or should not change.
 
-## When NOT to Use It
+### Use cases
+
+Legacy API integration and unit conversion are common contexts; conversion accuracy and error handling still need explicit contracts.
+
+## When NOT to Use
 
 Avoid it when you own both sides and a single consistent interface would be simpler.
 
@@ -100,21 +110,30 @@ Avoid it when you own both sides and a single consistent interface would be simp
 
 Unit conversion lives in one place, and the display can accept other Temperature implementations.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 An adapter can hide semantic mismatches if it only renames methods. The sensor must outlive the adapter because the reference does not own it.
 
-## Technical Use Cases
-
-Legacy API integration and unit conversion are common contexts; conversion accuracy and error handling still need explicit contracts.
-
 ## Related Patterns
 
-[facade](../facade/README.md) · [bridge](../bridge/README.md)
+[Facade](../facade/README.md) · [Bridge](../bridge/README.md)
 
 ## Common Confusion
 
 Facade simplifies a subsystem. Adapter makes a specific existing interface compatible with a target contract.
+
+## Terms to Remember
+
+- `Adapter` — Translate an existing interface into the one a client expects.
+- `Target` — The interface expected by the Client. Example: `Temperature`.
+- `Adaptee` — The existing object whose interface needs adaptation. Example: `LegacyThermometer`.
+- `interface` — The contract of operations and observable behavior offered to a caller. Example: `Temperature`.
+
+## Interview Vocabulary
+
+- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — Depend on the promised contract instead of a particular concrete implementation.
+- [`delegation`](../../GLOSSARY.md#delegation) — An object asks a collaborator to perform part of its work.
+- [`lifetime`](../../GLOSSARY.md#lifetime) — The interval during which an object exists and may be used according to its rules.
 
 ## Interview Question
 

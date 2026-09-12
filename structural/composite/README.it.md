@@ -1,59 +1,65 @@
-# Composito
+# Composite
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../structural/bridge/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/decorator/README.it.md)
 
-## Categoria
+## Category
 
-Strutturali
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
 
-## Difficoltà
+## Difficulty
 
 Principiante
 
-## In una frase
+## In One Sentence
 
-Tratta una foglia e un albero di oggetti attraverso la stessa operazione.
+Tratta una foglia e un albero di object attraverso la stessa operazione.
 
-## Il problema
+## The Problem
 
 Un browser deve calcolare i byte di file e cartelle annidate.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 int total = file_size;
 for (int size : folder_sizes) total += size; // only one nesting level
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Cicli specifici per ogni profondità non reggono nuovi livelli e ripetono i controlli sul tipo.
 
-## Idea centrale
+## The Idea
 
 File e Folder implementano Entry; la cartella chiede ricorsivamente i byte ai figli.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Una scatola contiene pacchi o altre scatole: il peso si calcola con la stessa regola.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Composito](../../assets/diagrams/composite.svg)
+![Composite](../../assets/diagrams/composite.svg)
 
 ```text
 Client::bytes()  -->  Entry  -->  File / Folder[Entry]
 ```
 
-## Partecipanti
+## Participants
 
-Entry definisce bytes, File restituisce la dimensione, Folder possiede i figli con unique_ptr e somma i risultati.
+Entry definisce bytes, File restituisce la dimensione, Folder possiede i figli con [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (Uno smart pointer con ownership esclusiva che rilascia l'object alla distruzione del proprietario) e somma i risultati.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Component`](../../GLOSSARY.md#component) — Il contratto comune esposto da foglie, gruppi o wrapper. Qui: `Entry`.
+- [`Leaf`](../../GLOSSARY.md#leaf) — Un Component senza Component figli. Qui: `File`.
+- [`ownership`](../../GLOSSARY.md#ownership) — La responsabilità di mantenere una risorsa valida e infine rilasciarla. Qui: `Folder::children_`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -97,53 +103,66 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Total: 30 bytes
 ```
 
-## Quando usarlo
+## When to Use
 
 Usalo per veri alberi parte-tutto con un'operazione utile sia alle foglie sia ai gruppi.
 
-## Quando NON usarlo
-
-Evitalo per liste piatte o grafi con condivisioni e cicli: l'ownership ad albero sarebbe scorretta.
-
-## Vantaggi
-
-Il client calcola un sottoalbero senza conoscerne profondità e forma.
-
-## Svantaggi e compromessi
-
-Alberi profondi possono esaurire lo stack, le somme possono traboccare e le operazioni dei gruppi non vanno imposte alle foglie.
-
-## Applicazioni tecniche
+### Use cases
 
 Alberi di file, scene senza nodi condivisi e gerarchie di menu.
 
-## Pattern correlati
+## When NOT to Use
 
-[decorator](../decorator/README.it.md) · [iterator](../../behavioral/iterator/README.it.md)
+Evitalo per liste piatte o grafi con condivisioni e cicli: l'ownership ad albero sarebbe scorretta.
 
-## Confusione comune
+## Advantages
 
-Decorator avvolge un oggetto per aggiungere comportamento; Composite riunisce figli per rappresentare un insieme.
+Il client calcola un sottoalbero senza conoscerne profondità e forma.
 
-## Domanda da colloquio
+## Trade-offs
+
+Alberi profondi possono esaurire lo stack, le somme possono traboccare e le operazioni dei gruppi non vanno imposte alle foglie.
+
+## Related Patterns
+
+[Decorator](../decorator/README.it.md) · [Iterator](../../behavioral/iterator/README.it.md)
+
+## Common Confusion
+
+Decorator avvolge un object per aggiungere behavior; Composite riunisce figli per rappresentare un insieme.
+
+## Terms to Remember
+
+- `Composite` — Tratta una foglia e un albero di object attraverso la stessa operazione.
+- `Component` — Il contratto comune esposto da foglie, gruppi o wrapper. Esempio: `Entry`.
+- `Leaf` — Un Component senza Component figli. Esempio: `File`.
+- `ownership` — La responsabilità di mantenere una risorsa valida e infine rilasciarla. Esempio: `Folder::children_`.
+
+## Interview Vocabulary
+
+- [`part-whole hierarchy`](../../GLOSSARY.md#part-whole-hierarchy) — Una struttura ricorsiva in cui gruppi contengono foglie o gruppi più piccoli.
+- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — Costruire ricorsivamente una struttura con parti che espongono il contratto dell'insieme.
+- [`polymorphism`](../../GLOSSARY.md#polymorphism) — Usare un'interface con implementation diverse; C++ offre forme a runtime e a compile time.
+
+## Interview Question
 
 Perché add appartiene a Folder e non a Entry? Che significato avrebbe File.add?
 
-## Piccola sfida
+## Mini Challenge
 
 Aggiungi una cartella vuota e un livello annidato, verifica i totali e valuta un tipo numerico più ampio.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Un browser deve calcolare i byte di file e cartelle annidate.
 - **Soluzione:** File e Folder implementano Entry; la cartella chiede ricorsivamente i byte ai figli.
-- **Compromesso:** Alberi profondi possono esaurire lo stack, le somme possono traboccare e le operazioni dei gruppi non vanno imposte alle foglie.
+- **Trade-off:** Alberi profondi possono esaurire lo stack, le somme possono traboccare e le operazioni dei gruppi non vanno imposte alle foglie.
 - **Da ricordare:** Il gruppo risponde come un elemento.
 
 [Precedente](../../structural/bridge/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/decorator/README.it.md)

@@ -6,7 +6,7 @@
 
 ## Category
 
-Behavioral
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
 
 ## Difficulty
 
@@ -20,14 +20,14 @@ Move coordination between peer objects into a dedicated object.
 
 Username and password fields jointly determine whether a login button is enabled.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 // Each field directly updates the button and reads its sibling.
 submit.enable(!username.empty() && !password.empty());
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 If each field knows the other field and the button, UI rules spread across components and create mutual dependencies.
 
@@ -52,6 +52,12 @@ Field::set()  -->  LoginForm(Mediator)  -->  Button::enable()
 ## Participants
 
 Mediator defines notifications. Field reports changes. Button stores enabled state. LoginForm owns colleagues and coordinates them.
+
+Canonical roles in this example:
+
+- [`Colleague`](../../GLOSSARY.md#colleague) — An object whose interactions are coordinated by a Mediator. Here: `Field, Button`.
+- [`Concrete Mediator`](../../GLOSSARY.md#concrete-mediator) — An implementation that contains the coordination rules for its Colleagues. Here: `LoginForm`.
+- [`callback`](../../GLOSSARY.md#callback) — A function or operation supplied to be called when another operation needs it. Here: `Mediator::changed`.
 
 ## Modern C++20 Example
 
@@ -108,11 +114,15 @@ Ready: false
 Ready: true
 ```
 
-## When to Use It
+## When to Use
 
 Use it when interaction rules between several peers are becoming tangled.
 
-## When NOT to Use It
+### Use cases
+
+Dialog coordination and workflow controllers fit; enabling a button is not authentication or password validation.
+
+## When NOT to Use
 
 Avoid it for one simple callback or when components have no meaningful coordination rules.
 
@@ -120,21 +130,30 @@ Avoid it for one simple callback or when components have no meaningful coordinat
 
 Fields no longer know siblings or the button, and the coordination rule has one home.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 The mediator can become too large. LoginForm is noncopyable because its fields hold references back to it; copying would leave incorrect links.
 
-## Technical Use Cases
-
-Dialog coordination and workflow controllers fit; enabling a button is not authentication or password validation.
-
 ## Related Patterns
 
-[observer](../observer/README.md) · [facade](../../structural/facade/README.md)
+[Observer](../observer/README.md) · [Facade](../../structural/facade/README.md)
 
 ## Common Confusion
 
 Observer broadcasts a change to subscribers. Mediator encodes how particular peers should respond to one another; it can use Observer for notifications.
+
+## Terms to Remember
+
+- `Mediator` — Move coordination between peer objects into a dedicated object.
+- `Colleague` — An object whose interactions are coordinated by a Mediator. Example: `Field, Button`.
+- `Concrete Mediator` — An implementation that contains the coordination rules for its Colleagues. Example: `LoginForm`.
+- `callback` — A function or operation supplied to be called when another operation needs it. Example: `Mediator::changed`.
+
+## Interview Vocabulary
+
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Parts know only the small contracts needed to cooperate, limiting change propagation.
+- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — Keeping distinct kinds of responsibility apart so they can change independently.
+- [`god object`](../../GLOSSARY.md#god-object) — An object accumulating too many unrelated responsibilities.
 
 ## Interview Question
 

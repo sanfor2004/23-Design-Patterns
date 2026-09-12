@@ -1,58 +1,64 @@
-# الأمر
+# Command
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../behavioral/chain-of-responsibility/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/interpreter/README.ar-EG.md)
 
-## الفئة
+## Category
 
-السلوك
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
 
-## المستوى
+## Difficulty
 
 متوسط
 
-## في جملة واحدة
+## In One Sentence
 
-حوّل الفعل لـ Object تقدر تخزنها وتشغّلها بعدين.
+حوّل الفعل لـ object تقدر تخزنها وتشغّلها بعدين.
 
-## المشكلة
+## The Problem
 
 المحرر محتاج ينفذ تعديلات ويرجع آخر تعديل من غير ما شريط الأدوات يعرف كل تفاصيل المستند.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 document.text += " world"; // no object records how to undo
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
-التعديل المباشر بيغيّر النص، بس مابيسجلش الفعل ولا الحالة اللي قبله.
+التعديل المباشر بيغيّر النص، بس مابيسجلش الفعل ولا الـ state اللي قبله.
 
-## الفكرة الأساسية
+## The Idea
 
-Append بتحتفظ بالمستند والمعامل؛ execute بتحفظ النص القديم وundo بترجعه. History بتمتلك الأوامر المنفذة.
+Append بتحتفظ بالمستند والمعامل؛ execute بتحفظ النص القديم و undo بترجعه. History بتمتلك الأوامر المنفذة.
 
-## مثال من الحياة
+## Real-World Analogy
 
 تذكرة طلب المطعم بتسجل المطلوب بعيد عن الجرسون اللي سلّمها.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![الأمر](../../assets/diagrams/command.svg)
+![Command](../../assets/diagrams/command.svg)
 
 ```text
 History  -->  Command  -->  Append → Document
 ```
 
-## الأدوار
+## Participants
 
-Command بتحدد execute وundo، Append بتعدل Document مستعارة، وHistory بتدير Stack الأوامر.
+Command بتحدد execute و undo ، Append بتعدل Document مستعارة، و History بتدير Stack الأوامر.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Receiver`](../../GLOSSARY.md#receiver) — الـ object اللي بيتنفذ عليها الشغل المطلوب من Command. هنا: `Document`.
+- [`Invoker`](../../GLOSSARY.md#invoker) — الدور اللي بيشغّل Commands أو بيخزنها من غير معرفة تفاصيل كل عملية. هنا: `History`.
+- [`Concrete Command`](../../GLOSSARY.md#concrete-command) — implementation لـ Command بتربط Receiver بفعل محدد. هنا: `Append`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -102,54 +108,67 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Hello world
 Hello
 ```
 
-## إمتى تستخدمه
+## When to Use
 
 استخدمه للأفعال المؤجلة والطوابير والـ Macros وتاريخ التراجع.
 
-## إمتى ما تستخدموش
+### Use cases
 
-بلاش لدالة بتتنادي مرة ومش محتاجة تخزين نية أو جدولة.
+مناسب للمحررات وطوابير الوظائف، بس الطابور الدائم محتاج Serialization و Idempotency زيادة.
 
-## المميزات
+## When NOT to Use
+
+بلاش لـ function بتتنادي مرة ومش محتاجة تخزين نية أو جدولة.
+
+## Advantages
 
 اللي بينادي مش مرتبط بكل عملية فعلية، ويقدر يحتفظ بتاريخها.
 
-## العيوب والمقايضات
+## Trade-offs
 
-حفظ النص كله مكلف. المثال في Thread واحدة وبيفترض كل التعديلات عبر History، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات undo.
+حفظ النص كله مكلف. المثال في Thread واحدة وبيفترض كل التعديلات عبر History ، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات undo.
 
-## استخدامات تقنية
+## Related Patterns
 
-مناسب للمحررات وطوابير الوظائف، بس الطابور الدائم محتاج Serialization وIdempotency زيادة.
+[Memento](../memento/README.ar-EG.md) · [Chain of Responsibility](../chain-of-responsibility/README.ar-EG.md)
 
-## أنماط مرتبطة
+## Common Confusion
 
-[memento](../memento/README.ar-EG.md) · [chain-of-responsibility](../chain-of-responsibility/README.ar-EG.md)
+Memento بتخزن state ، Command بتخزن فعل وممكن تستخدم Snapshot للتراجع. مش كل أمر قابل للعكس.
 
-## لخبطة شائعة
+## Terms to Remember
 
-Memento بتخزن حالة، Command بتخزن فعل وممكن تستخدم Snapshot للتراجع. مش كل أمر قابل للعكس.
+- `Command` — حوّل الفعل لـ object تقدر تخزنها وتشغّلها بعدين.
+- `Receiver` — الـ object اللي بيتنفذ عليها الشغل المطلوب من Command. مثال: `Document`.
+- `Invoker` — الدور اللي بيشغّل Commands أو بيخزنها من غير معرفة تفاصيل كل عملية. مثال: `History`.
+- `Concrete Command` — implementation لـ Command بتربط Receiver بفعل محدد. مثال: `Append`.
 
-## سؤال انترفيو
+## Interview Vocabulary
 
-ينفع ترجع إرسال إيميل زي ما بترجع string؟ فرّق بين التعويض والعكس.
+- [`undo`](../../GLOSSARY.md#undo) — بترجع لنتيجة سابقة باستخدام state محفوظة أو عملية عكسية لما ينفع.
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة.
+- [`exception safety`](../../GLOSSARY.md#exception-safety) — الضمانات اللي العملية بتحافظ عليها لو فشلت ورمت exception.
 
-## تحدي صغير
+## Interview Question
+
+ينفع ترجع إرسال إيميل زي ما بترجع string ؟ فرّق بين التعويض والعكس.
+
+## Mini Challenge
 
 ضيف تعديلين، ارجع مرتين، واتأكد إن undo على تاريخ فاضي آمنة.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** المحرر محتاج ينفذ تعديلات ويرجع آخر تعديل من غير ما شريط الأدوات يعرف كل تفاصيل المستند.
-- **الحل:** Append بتحتفظ بالمستند والمعامل؛ execute بتحفظ النص القديم وundo بترجعه. History بتمتلك الأوامر المنفذة.
-- **المقايضة:** حفظ النص كله مكلف. المثال في Thread واحدة وبيفترض كل التعديلات عبر History، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات undo.
+- **الحل:** Append بتحتفظ بالمستند والمعامل؛ execute بتحفظ النص القديم و undo بترجعه. History بتمتلك الأوامر المنفذة.
+- **Trade-off:** حفظ النص كله مكلف. المثال في Thread واحدة وبيفترض كل التعديلات عبر History ، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات undo.
 - **افتكر:** فعل تقدر تحتفظ بيه.
 
 [السابق](../../behavioral/chain-of-responsibility/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/interpreter/README.ar-EG.md)

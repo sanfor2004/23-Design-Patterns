@@ -13,6 +13,56 @@ This repository is edited as plain Markdown, SVG, and C++20. Reading or editing 
 - Write original explanations, code, exercises, and diagrams. Do not copy book passages or diagrams; cite conceptual references in [REFERENCES.md](REFERENCES.md).
 - Keep English simple, Arabic naturally Egyptian, Chinese in natural Simplified Chinese, and Italian idiomatic. Preserve technical meaning, ownership details, and caveats in every translation.
 
+## Terminology policy
+
+**Translate the explanation, not the terminology.** This applies to every language, including root READMEs, guides, tables, image alternatives, and individual pattern pages.
+
+- Always use official English pattern names, including in headings and link labels. Use `Creational Pattern`, `Structural Pattern`, and `Behavioral Pattern` for the categories.
+- Keep software-engineering terms in English: for example, `interface`, `implementation`, `coupling`, `composition`, `inheritance`, `ownership`, and `lifetime`.
+- Keep canonical roles such as `Context`, `Concrete Strategy`, `Subject`, `Creator`, and `Receiver` in English. Map them to the actual example's identifiers without renaming its classes.
+- Preserve code identifiers, C++ keywords, and standard-library names exactly. Use code formatting for identifiers and expressions where it helps reading. Never change fenced code as part of a terminology edit.
+- Keep interview expressions such as `composition over inheritance`, `encapsulate what varies`, and `program to an interface, not an implementation` visible in English, with a short explanation in the current language.
+- Explain an unfamiliar term at first use. Keep explanations brief and avoid redefining the same term throughout the page. Use [GLOSSARY.md](GLOSSARY.md) links for concepts a beginner may want to revisit.
+- Keep ordinary prose natural. Verbs and everyday examples can remain localized. Do not replace a word in an analogy merely because it also has a technical meaning.
+- Distinguish `State` (the pattern) from `state` (an object's current condition), and `lifecycle` (modeled stages) from `lifetime` (the interval in which an object exists).
+- Include pattern-specific `Terms to Remember` and `Interview Vocabulary` entries in all four versions. Explain the same English terms in each language, including any constraints of the actual implementation.
+
+The glossary is the shared reference for definitions. When adding an entry, supply English, Egyptian Arabic, Simplified Chinese, and Italian explanations. Check meaning and grammar manually; automated checks cannot establish translation quality.
+
+## Pattern document template
+
+Use these English headings in all four pattern files. The body is written in the file's language. Existing technical use cases belong under `When to Use`, optionally in a `### Use cases` subsection.
+
+```markdown
+# Official English Pattern Name
+
+## Category
+## Difficulty
+## In One Sentence
+## The Problem
+## Naive Solution
+## Why It Becomes a Problem
+## The Idea
+## Real-World Analogy
+## Structure
+## Participants
+## Modern C++20 Example
+## Example Output
+## When to Use
+## When NOT to Use
+## Advantages
+## Trade-offs
+## Related Patterns
+## Common Confusion
+## Terms to Remember
+## Interview Vocabulary
+## Interview Question
+## Mini Challenge
+## Quick Summary
+```
+
+In `Terms to Remember`, explain the pattern and map its canonical roles to the sample code. In `Interview Vocabulary`, explain relevant expressions and why they matter to this pattern; avoid a generic list pasted into every page.
+
 ## Report a mistake
 
 Open an [issue](https://github.com/Sanfor2004/Design-Patterns-23/issues) or a pull request. Identify the pattern and language, quote the small section at issue, and explain the correction. For code failures, include the compiler version, command, and actual output. Translation corrections and clearer diagrams are welcome alongside code fixes.
@@ -27,7 +77,7 @@ An optional check uses Python 3.9 or newer and only the standard library:
 python scripts/validate_docs.py
 ```
 
-It checks local Markdown links and images, all 23 patterns in all four languages, shared diagrams, and agreement between article examples and executable sources/expected outputs.
+It checks local Markdown links and glossary anchors, all 23 English pattern names in all four languages, the required headings and vocabulary sections, four-language glossary entries, shared diagrams, and agreement between article examples and executable sources/expected outputs. Review localized prose separately for natural phrasing and technical accuracy.
 
 For code changes, also [build the examples and run CTest](CPP_EXAMPLES.md). Preview edited Markdown in your editor or on GitHub, especially tables, diagrams, and Arabic text.
 

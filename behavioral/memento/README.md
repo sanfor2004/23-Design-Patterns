@@ -6,7 +6,7 @@
 
 ## Category
 
-Behavioral
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
 
 ## Difficulty
 
@@ -20,13 +20,13 @@ Save and restore an object's state without exposing snapshot internals.
 
 An editor needs a checkpoint before an experimental edit.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 std::string old_text = editor.text(); // caretaker knows what state to copy
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 If the undo manager copies public fields itself, every new internal field requires changes in the manager.
 
@@ -51,6 +51,12 @@ Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
 ## Participants
 
 Editor is the originator. Snapshot is the memento with private state. main is the caretaker holding it without inspecting its contents.
+
+Canonical roles in this example:
+
+- [`Originator`](../../GLOSSARY.md#originator) — The object that knows how to capture and restore its own state. Here: `Editor`.
+- [`Caretaker`](../../GLOSSARY.md#caretaker) — The role that keeps a Memento without inspecting its private representation. Here: `main`.
+- [`snapshot`](../../GLOSSARY.md#snapshot) — A captured representation of selected state at a point in time. Here: `Editor::Snapshot`.
 
 ## Modern C++20 Example
 
@@ -90,11 +96,15 @@ Broken edit
 Draft
 ```
 
-## When to Use It
+## When to Use
 
 Use it for checkpoints where the originator can define a consistent state snapshot.
 
-## When NOT to Use It
+### Use cases
+
+Editor checkpoints and simulation snapshots fit when the saved state is complete and consistent.
+
+## When NOT to Use
 
 Avoid it when state is huge, resources cannot be restored, or recording inverse operations is cheaper.
 
@@ -102,21 +112,30 @@ Avoid it when state is huge, resources cannot be restored, or recording inverse 
 
 Snapshot representation stays private to the originator, so the caretaker does not copy fields manually.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 Full snapshots cost memory and copying time. External effects such as files or network calls are not undone by restoring this string.
 
-## Technical Use Cases
-
-Editor checkpoints and simulation snapshots fit when the saved state is complete and consistent.
-
 ## Related Patterns
 
-[command](../command/README.md) · [prototype](../../creational/prototype/README.md)
+[Command](../command/README.md) · [Prototype](../../creational/prototype/README.md)
 
 ## Common Confusion
 
 Command records an action; Memento records state. Prototype makes a separate object rather than restoring this one.
+
+## Terms to Remember
+
+- `Memento` — Save and restore an object's state without exposing snapshot internals.
+- `Originator` — The object that knows how to capture and restore its own state. Example: `Editor`.
+- `Caretaker` — The role that keeps a Memento without inspecting its private representation. Example: `main`.
+- `snapshot` — A captured representation of selected state at a point in time. Example: `Editor::Snapshot`.
+
+## Interview Vocabulary
+
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — Keeping representation and invariants behind controlled operations.
+- [`undo`](../../GLOSSARY.md#undo) — Restoring an earlier logical result, using saved state or an inverse operation when possible.
+- [`ownership`](../../GLOSSARY.md#ownership) — Responsibility for keeping a resource alive and eventually releasing it.
 
 ## Interview Question
 

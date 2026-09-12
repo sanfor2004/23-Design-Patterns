@@ -1,58 +1,64 @@
-# 建造者
+# Builder
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../creational/abstract-factory/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../creational/factory-method/README.zh-CN.md)
 
-## 类别
+## Category
 
-创建型
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — 关注如何创建和配置 object 的 Design Pattern。
 
-## 难度
+## Difficulty
 
 入门
 
-## 一句话说明
+## In One Sentence
 
-用具名步骤配置对象，最后一次性生成结果。
+用具名步骤配置 object，最后一次性生成结果。
 
-## 问题
+## The Problem
 
 请求包含地址、超时和重试选项；选项越多，位置参数越难理解。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 Request request{"/orders", 5, true}; // what does true mean?
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
-构造函数能用，但连续的数字和布尔值隐藏了意图，传错位置不容易发现。
+constructor 能用，但连续的数字和布尔值隐藏了意图，传错位置不容易发现。
 
-## 核心思路
+## The Idea
 
-RequestBuilder 保存配置过程。具名方法收集选项，build 检查必要值并按值返回 Request。
+RequestBuilder 保存配置过程。具名 method 收集选项，build 检查必要值并按值返回 Request。
 
-## 生活类比
+## Real-World Analogy
 
 点三明治时先说清配料，厨房再制作成品。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![建造者](../../assets/diagrams/builder.svg)
+![Builder](../../assets/diagrams/builder.svg)
 
 ```text
 Client  -->  RequestBuilder  -->  Request
 ```
 
-## 参与者
+## Participants
 
-RequestBuilder 保存和校验临时配置，Request 拥有最终数据，调用方决定可选步骤的顺序。
+RequestBuilder 保存和校验临时配置，Request 拥有最终数据， Client 决定可选步骤的顺序。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`Product`](../../GLOSSARY.md#product) — 创建代码返回的 object 所提供的约定。 对应代码： `Request`。
+- [`fluent interface`](../../GLOSSARY.md#fluent-interface) — 设计成链式调用的 interface；它本身并不等于 Builder。 对应代码： `RequestBuilder.endpoint().timeout().retry()`。
+- [`constructor`](../../GLOSSARY.md#constructor) — 创建 class instance 时负责初始化的特殊操作。 对应代码： `Request::Request`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -92,54 +98,67 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 /orders timeout=5 retry=1
 Invalid request rejected
 ```
 
-## 何时使用
+## When to Use
 
-适合独立选项较多，或需要明确构建校验阶段的对象。
+适合独立选项较多，或需要明确构建校验阶段的 object。
 
-## 何时不该使用
-
-只有两个直观参数时，普通构造函数或小型聚合类型更简单。
-
-## 优点
-
-调用点更易读，构建阶段可以拒绝不完整的配置。
-
-## 缺点与权衡
-
-需要维护额外类型。示例中 Request 构造函数仍是公开的；生产代码应在构造函数中也校验，或限制直接访问。
-
-## 技术应用场景
+### Use cases
 
 适合 HTTP 请求配置和测试数据构建；示例不发送网络请求。
 
-## 相关模式
+## When NOT to Use
 
-[factory-method](../factory-method/README.zh-CN.md) · [abstract-factory](../abstract-factory/README.zh-CN.md)
+只有两个直观参数时，普通 constructor 或小型聚合 type 更简单。
 
-## 常见混淆
+## Advantages
 
-工厂方法在继承流程中选择具体产品，建造者分步骤配置一个结果。
+调用点更易读，构建阶段可以拒绝不完整的配置。
 
-## 面试问题
+## Trade-offs
 
-链式调用一定是建造者吗？请说明构建何时结束。
+需要维护额外 type。示例中 Request constructor 仍是 public 的；生产代码应在 constructor 中也校验，或限制直接访问。
 
-## 小练习
+## Related Patterns
+
+[Factory Method](../factory-method/README.zh-CN.md) · [Abstract Factory](../abstract-factory/README.zh-CN.md)
+
+## Common Confusion
+
+Factory Method 在 [`inheritance`](../../GLOSSARY.md#inheritance)（从 base class 定义 derived class，复用或扩展约定及实现） 流程中选择 Concrete Product， Builder 分步骤配置一个结果。
+
+## Terms to Remember
+
+- `Builder` — 用具名步骤配置 object，最后一次性生成结果。
+- `Product` — 创建代码返回的 object 所提供的约定。 示例： `Request`。
+- `fluent interface` — 设计成链式调用的 interface；它本身并不等于 Builder。 示例： `RequestBuilder.endpoint().timeout().retry()`。
+- `constructor` — 创建 class instance 时负责初始化的特殊操作。 示例： `Request::Request`。
+
+## Interview Vocabulary
+
+- [`object creation`](../../GLOSSARY.md#object-creation) — 选择具体类型，建立 object 的初始值并开始其 lifetime。
+- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — 把不同关注点分开，使它们能够独立变化。
+- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — 让一个模块围绕一个连贯的变化原因组织职责。
+
+## Interview Question
+
+链式调用一定是 Builder 吗？请说明构建何时结束。
+
+## Mini Challenge
 
 拒绝大于 120 的超时值，测试边界值及紧邻的非法值。
 
-## 小结
+## Quick Summary
 
 - **问题:** 请求包含地址、超时和重试选项；选项越多，位置参数越难理解。
-- **方案:** RequestBuilder 保存配置过程。具名方法收集选项，build 检查必要值并按值返回 Request。
-- **权衡:** 需要维护额外类型。示例中 Request 构造函数仍是公开的；生产代码应在构造函数中也校验，或限制直接访问。
-- **记忆提示:** 先选配置，再生成对象。
+- **方案:** RequestBuilder 保存配置过程。具名 method 收集选项，build 检查必要值并按值返回 Request。
+- **权衡:** 需要维护额外 type。示例中 Request constructor 仍是 public 的；生产代码应在 constructor 中也校验，或限制直接访问。
+- **记忆提示:** 先选配置，再生成 object。
 
 [上一个](../../creational/abstract-factory/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../creational/factory-method/README.zh-CN.md)

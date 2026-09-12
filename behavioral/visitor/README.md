@@ -6,7 +6,7 @@
 
 ## Category
 
-Behavioral
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
 
 ## Difficulty
 
@@ -20,14 +20,14 @@ Add operations across a stable set of element types using a separate visitor.
 
 A basket contains books and food, and new operations such as tax or export should not fill every item class.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 // For each new operation, add another virtual method to every Item.
 // tax(), export_json(), print_label(), ...
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Adding every operation as another virtual Item method requires editing all item classes for each new task.
 
@@ -52,6 +52,12 @@ Item::accept(visitor)  -->  Visitor::visit(type)  -->  Tax(Book) / Tax(Food)
 ## Participants
 
 Item defines accept. Book and Food select their typed overload. Visitor lists supported types. Tax accumulates the result; the basket owns items.
+
+Canonical roles in this example:
+
+- [`Element`](../../GLOSSARY.md#element) — The contract for objects that accept a Visitor. Here: `Item`.
+- [`Concrete Element`](../../GLOSSARY.md#concrete-element) — An Element implementation that selects its matching Visitor overload. Here: `Book, Food`.
+- [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — A Visitor implementation containing one operation for every supported Element type. Here: `Tax`.
 
 ## Modern C++20 Example
 
@@ -100,33 +106,46 @@ int main() {
 Tax: 4
 ```
 
-## When to Use It
+## When to Use
 
 Use it when element types are stable but new operations are frequent.
 
-## When NOT to Use It
+### Use cases
 
-Avoid it when new element types are frequent or exposing their details would break encapsulation.
+AST analyses and document exports fit a stable node family; std::variant with std::visit is another option for closed type sets.
+
+## When NOT to Use
+
+Avoid it when new element types are frequent or exposing their details would break [`encapsulation`](../../GLOSSARY.md#encapsulation) (Keeping representation and invariants behind controlled operations).
 
 ## Advantages
 
 A new operation can be added in a visitor without changing existing element classes.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
-Adding an element type requires updating the Visitor interface and all visitors. Integer tax rates here are illustrative, not real tax rules; rounding needs a domain policy.
-
-## Technical Use Cases
-
-AST analyses and document exports fit a stable node family; std::variant with std::visit is another option for closed type sets.
+Adding an element type requires updating the Visitor [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller) and all visitors. Integer tax rates here are illustrative, not real tax rules; rounding needs a domain policy.
 
 ## Related Patterns
 
-[composite](../../structural/composite/README.md) · [iterator](../iterator/README.md)
+[Composite](../../structural/composite/README.md) · [Iterator](../iterator/README.md)
 
 ## Common Confusion
 
 Iterator traverses a collection; Visitor dispatches an operation by element type. Composite can supply the tree on which visitors work.
+
+## Terms to Remember
+
+- `Visitor` — Add operations across a stable set of element types using a separate visitor.
+- `Element` — The contract for objects that accept a Visitor. Example: `Item`.
+- `Concrete Element` — An Element implementation that selects its matching Visitor overload. Example: `Book, Food`.
+- `Concrete Visitor` — A Visitor implementation containing one operation for every supported Element type. Example: `Tax`.
+
+## Interview Vocabulary
+
+- [`double dispatch`](../../GLOSSARY.md#double-dispatch) — Selecting behavior using two runtime types; classic Visitor combines two virtual calls with overload resolution.
+- [`overload resolution`](../../GLOSSARY.md#overload-resolution) — Compile-time selection among functions with the same name using the argument types.
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — Aim for open for extension, closed for modification at a useful, chosen boundary.
 
 ## Interview Question
 

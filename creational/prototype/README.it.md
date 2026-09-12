@@ -1,59 +1,65 @@
-# Prototipo
+# Prototype
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../creational/factory-method/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../creational/singleton/README.it.md)
 
-## Categoria
+## Category
 
-Creazionali
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
 
-## Difficoltà
+## Difficulty
 
 Intermedio
 
-## In una frase
+## In One Sentence
 
-Crea un oggetto indipendente copiando un modello già configurato.
+Crea un object indipendente copiando un modello già configurato.
 
-## Il problema
+## The Problem
 
-Un gioco genera nemici da un modello configurato senza conoscere il tipo concreto.
+Un gioco genera nemici da un modello configurato senza conoscere il concrete type.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 Guard another;
 another.rename("gate guard"); // must repeat any custom setup
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Ricostruire un Guard predefinito ripete la preparazione e perde l'equipaggiamento personalizzato del modello.
 
-## Idea centrale
+## The Idea
 
-Enemy espone clone; Guard copia i membri per valore e restituisce un unique_ptr a un nuovo oggetto.
+Enemy espone clone; Guard copia i membri per valore e restituisce un [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (Uno smart pointer con ownership esclusiva che rilascia l'object alla distruzione del proprietario) a un nuovo object.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Duplica un documento pronto e rinomina la copia senza modificare l'originale.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Prototipo](../../assets/diagrams/prototype.svg)
+![Prototype](../../assets/diagrams/prototype.svg)
 
 ```text
 Client  -->  Enemy::clone()  -->  independent Guard
 ```
 
-## Partecipanti
+## Participants
 
-Enemy definisce la clonazione polimorfica, Guard la realizza, il client possiede e rinomina la copia.
+Enemy definisce la polymorphic cloning, Guard la realizza, il client possiede e rinomina la copia.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Concrete Prototype`](../../GLOSSARY.md#concrete-prototype) — Un object la cui operazione clone crea un altro object dai valori configurati. Qui: `Guard`.
+- [`deep copy`](../../GLOSSARY.md#deep-copy) — Copiare i dati interni posseduti perché il nuovo object non condivida quei dati modificabili con l'originale. Qui: `Guard::clone`.
+- [`value semantics`](../../GLOSSARY.md#value-semantics) — Le copie si comportano come valori indipendenti secondo il contratto del tipo. Qui: `name_, equipment_`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -87,54 +93,67 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 template: 2 items
 gate guard: 2 items
 ```
 
-## Quando usarlo
+## When to Use
 
-Usalo quando oggetti esistenti contengono configurazioni utili e il client non deve ricostruire i tipi concreti.
+Usalo quando object esistenti contengono configurazioni utili e il client non deve ricostruire i concrete type.
 
-## Quando NON usarlo
+### Use cases
+
+Modelli di entità di gioco e documenti preconfigurati; qui string e std::vector hanno value semantics.
+
+## When NOT to Use
 
 Evitalo quando una normale copia per valore esprime già bene il bisogno.
 
-## Vantaggi
+## Advantages
 
 Riutilizzi la configurazione senza esporre tutti i passi di costruzione.
 
-## Svantaggi e compromessi
+## Trade-offs
 
-I puntatori richiedono una scelta fra copia profonda e condivisione. Socket attivi e risorse esclusive possono non essere duplicabili.
+I pointer richiedono una scelta fra deep copy e condivisione. Socket attivi e risorse esclusive possono non essere duplicabili.
 
-## Applicazioni tecniche
+## Related Patterns
 
-Modelli di entità di gioco e documenti preconfigurati; qui string e vector hanno semantica di valore.
+[Abstract Factory](../abstract-factory/README.it.md) · [Memento](../../behavioral/memento/README.it.md)
 
-## Pattern correlati
+## Common Confusion
 
-[abstract-factory](../abstract-factory/README.it.md) · [memento](../../behavioral/memento/README.it.md)
+Memento ripristina uno state precedente dello stesso object. Prototype ne crea un altro; il solo copy constructor non fornisce polymorphic cloning.
 
-## Confusione comune
+## Terms to Remember
 
-Memento ripristina uno stato precedente dello stesso oggetto. Prototype ne crea un altro; il solo costruttore di copia non fornisce clonazione polimorfica.
+- `Prototype` — Crea un object indipendente copiando un modello già configurato.
+- `Concrete Prototype` — Un object la cui operazione clone crea un altro object dai valori configurati. Esempio: `Guard`.
+- `deep copy` — Copiare i dati interni posseduti perché il nuovo object non condivida quei dati modificabili con l'originale. Esempio: `Guard::clone`.
+- `value semantics` — Le copie si comportano come valori indipendenti secondo il contratto del tipo. Esempio: `name_, equipment_`.
 
-## Domanda da colloquio
+## Interview Vocabulary
 
-Con vector<shared_ptr<Item>>, la copia sarebbe ancora indipendente? Spiega gli alias.
+- [`object creation`](../../GLOSSARY.md#object-creation) — Scegliere il tipo concreto e stabilire valori iniziali e lifetime di un object.
+- [`polymorphism`](../../GLOSSARY.md#polymorphism) — Usare un'interface con implementation diverse; C++ offre forme a runtime e a compile time.
+- [`ownership`](../../GLOSSARY.md#ownership) — La responsabilità di mantenere una risorsa valida e infine rilasciarla.
 
-## Piccola sfida
+## Interview Question
 
-Rendi modificabile l'equipaggiamento e verifica che cambiare la copia non tocchi il prototipo.
+Con `std::vector<std::shared_ptr<Item>>`, la copia sarebbe ancora indipendente? Spiega gli alias.
 
-## Riepilogo
+## Mini Challenge
 
-- **Problema:** Un gioco genera nemici da un modello configurato senza conoscere il tipo concreto.
-- **Soluzione:** Enemy espone clone; Guard copia i membri per valore e restituisce un unique_ptr a un nuovo oggetto.
-- **Compromesso:** I puntatori richiedono una scelta fra copia profonda e condivisione. Socket attivi e risorse esclusive possono non essere duplicabili.
+Rendi modificabile l'equipaggiamento e verifica che cambiare la copia non tocchi il Prototype.
+
+## Quick Summary
+
+- **Problema:** Un gioco genera nemici da un modello configurato senza conoscere il concrete type.
+- **Soluzione:** Enemy espone clone; Guard copia i membri per valore e restituisce un std::unique_ptr a un nuovo object.
+- **Trade-off:** I pointer richiedono una scelta fra deep copy e condivisione. Socket attivi e risorse esclusive possono non essere duplicabili.
 - **Da ricordare:** Copia la configurazione, non l'identità.
 
 [Precedente](../../creational/factory-method/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../creational/singleton/README.it.md)

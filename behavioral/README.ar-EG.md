@@ -1,15 +1,15 @@
-# السلوك
+# Behavioral Pattern
 
 [Design-Patterns-23](../README.ar-EG.md)
 
-- [سلسلة المسؤولية](chain-of-responsibility/README.ar-EG.md)
-- [الأمر](command/README.ar-EG.md)
-- [المفسّر](interpreter/README.ar-EG.md)
-- [المكرّر](iterator/README.ar-EG.md)
-- [الوسيط](mediator/README.ar-EG.md)
-- [التذكار](memento/README.ar-EG.md)
-- [المراقب](observer/README.ar-EG.md)
-- [الحالة](state/README.ar-EG.md)
-- [الاستراتيجية](strategy/README.ar-EG.md)
-- [طريقة القالب](template-method/README.ar-EG.md)
-- [الزائر](visitor/README.ar-EG.md)
+- [Chain of Responsibility](chain-of-responsibility/README.ar-EG.md)
+- [Command](command/README.ar-EG.md)
+- [Interpreter](interpreter/README.ar-EG.md)
+- [Iterator](iterator/README.ar-EG.md)
+- [Mediator](mediator/README.ar-EG.md)
+- [Memento](memento/README.ar-EG.md)
+- [Observer](observer/README.ar-EG.md)
+- [State](state/README.ar-EG.md)
+- [Strategy](strategy/README.ar-EG.md)
+- [Template Method](template-method/README.ar-EG.md)
+- [Visitor](visitor/README.ar-EG.md)

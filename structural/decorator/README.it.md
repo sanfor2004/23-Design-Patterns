@@ -1,59 +1,65 @@
-# Decoratore
+# Decorator
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../structural/composite/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/facade/README.it.md)
 
-## Categoria
+## Category
 
-Strutturali
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
 
-## Difficoltà
+## Difficulty
 
 Principiante
 
-## In una frase
+## In One Sentence
 
-Aggiungi comportamento avvolgendo un oggetto con la stessa interfaccia.
+Aggiungi behavior avvolgendo un object con la stessa [`interface`](../../GLOSSARY.md#interface) (Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa).
 
-## Il problema
+## The Problem
 
-Un caffè può avere una o più dosi di latte senza creare una classe per ogni combinazione.
+Un caffè può avere una o più dosi di latte senza creare una class per ogni combinazione.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 struct CoffeeWithMilk {};
 struct CoffeeWithDoubleMilk {}; // another combination
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-Le classi dedicate duplicano il prezzo base e crescono con gli extra.
+Le class dedicate duplicano il prezzo base e crescono con gli extra.
 
-## Idea centrale
+## The Idea
 
 Milk possiede un Drink, delega e aggiunge descrizione e prezzo.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Ogni strato di carta avvolge il pacco precedente, che rimane un pacco.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Decoratore](../../assets/diagrams/decorator.svg)
+![Decorator](../../assets/diagrams/decorator.svg)
 
 ```text
 Client  -->  Milk(Drink)  -->  Coffee or Milk
 ```
 
-## Partecipanti
+## Participants
 
-Drink è il contratto, Coffee il comportamento base, Milk avvolge un solo Drink; il client possiede lo strato esterno.
+Drink è il contratto, Coffee il behavior base, Milk avvolge un solo Drink; il client possiede lo strato esterno.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Component`](../../GLOSSARY.md#component) — Il contratto comune esposto da foglie, gruppi o wrapper. Qui: `Drink`.
+- [`Concrete Component`](../../GLOSSARY.md#concrete-component) — L'implementation di base prima dell'aggiunta di wrapper facoltativi. Qui: `Coffee`.
+- [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — Un wrapper che mantiene il contratto Component e aggiunge una responsibility specifica. Qui: `Milk`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -88,53 +94,66 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 coffee + milk + milk: 14
 ```
 
-## Quando usarlo
+## When to Use
 
-Usalo per comportamenti facoltativi e componibili che rispettano il contratto originale.
+Usalo per behavior facoltativi e componibili che rispettano il contratto originale.
 
-## Quando NON usarlo
-
-Evitalo se bastano una lista di ingredienti e una somma; qui lo scopo è mostrare la struttura.
-
-## Vantaggi
-
-Componi gli extra a runtime mantenendo piccola l'implementazione base.
-
-## Svantaggi e compromessi
-
-L'ordine può cambiare il comportamento. Molti piccoli oggetti complicano il debug; la stessa interfaccia non garantisce tutte le promesse semantiche.
-
-## Applicazioni tecniche
+### Use cases
 
 Stream con compressione o cifratura: ordine e gestione degli errori sono essenziali.
 
-## Pattern correlati
+## When NOT to Use
 
-[proxy](../proxy/README.it.md) · [composite](../composite/README.it.md)
+Evitalo se bastano una lista di ingredienti e una somma; qui lo scopo è mostrare la struttura.
 
-## Confusione comune
+## Advantages
 
-Proxy controlla l'accesso, Decorator aggiunge responsabilità. La forma del wrapper non basta a riconoscerne l'intento.
+Componi gli extra a [`runtime`](../../GLOSSARY.md#runtime) (Il periodo in cui il programma compilato è in esecuzione) mantenendo piccola l'[`implementation`](../../GLOSSARY.md#implementation) (Il codice concreto che esegue un'operazione o soddisfa un'interface) base.
 
-## Domanda da colloquio
+## Trade-offs
+
+L'ordine può cambiare il behavior. Molti piccoli object complicano il debug; la stessa interface non garantisce tutte le promesse semantiche.
+
+## Related Patterns
+
+[Proxy](../proxy/README.it.md) · [Composite](../composite/README.it.md)
+
+## Common Confusion
+
+Proxy controlla l'accesso, Decorator aggiunge responsibility. La forma del wrapper non basta a riconoscerne l'intento.
+
+## Terms to Remember
+
+- `Decorator` — Aggiungi behavior avvolgendo un object con la stessa interface.
+- `Component` — Il contratto comune esposto da foglie, gruppi o wrapper. Esempio: `Drink`.
+- `Concrete Component` — L'implementation di base prima dell'aggiunta di wrapper facoltativi. Esempio: `Coffee`.
+- `Concrete Decorator` — Un wrapper che mantiene il contratto Component e aggiunge una responsibility specifica. Esempio: `Milk`.
+
+## Interview Vocabulary
+
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — Preferire object collaboranti quando esprimono la variazione meglio di una gerarchia di inheritance.
+- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — Costruire ricorsivamente una struttura con parti che espongono il contratto dell'insieme.
+- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — Concentrare un modulo su un motivo coerente di cambiamento.
+
+## Interview Question
 
 Registrare dati prima e dopo la cifratura mostra le stesse informazioni?
 
-## Piccola sfida
+## Mini Challenge
 
 Aggiungi Syrup con costo 3, prova due ordini e spiega le descrizioni ottenute.
 
-## Riepilogo
+## Quick Summary
 
-- **Problema:** Un caffè può avere una o più dosi di latte senza creare una classe per ogni combinazione.
+- **Problema:** Un caffè può avere una o più dosi di latte senza creare una class per ogni combinazione.
 - **Soluzione:** Milk possiede un Drink, delega e aggiunge descrizione e prezzo.
-- **Compromesso:** L'ordine può cambiare il comportamento. Molti piccoli oggetti complicano il debug; la stessa interfaccia non garantisce tutte le promesse semantiche.
+- **Trade-off:** L'ordine può cambiare il behavior. Molti piccoli object complicano il debug; la stessa interface non garantisce tutte le promesse semantiche.
 - **Da ricordare:** Stesso contratto, uno strato in più.
 
 [Precedente](../../structural/composite/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/facade/README.it.md)

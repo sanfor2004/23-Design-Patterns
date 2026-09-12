@@ -1,59 +1,65 @@
-# الواجهة المبسّطة
+# Facade
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../structural/decorator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/flyweight/README.ar-EG.md)
 
-## الفئة
+## Category
 
-التركيب
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
 
-## المستوى
+## Difficulty
 
 مبتدئ
 
-## في جملة واحدة
+## In One Sentence
 
 وفّر مدخل صغير لخطوات شائعة جوه Subsystem.
 
-## المشكلة
+## The Problem
 
 كل مستدعي للشراء محتاج يراجع المخزون ويدفع ويطلب الشحن بالترتيب الصح.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 payment.charge(20);
 shipping.dispatch(); // caller forgot to check stock
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 الاستدعاءات المباشرة ممكن تنسى المخزون أو تكرر ترتيب الخطوات بشكل مختلف.
 
-## الفكرة الأساسية
+## The Idea
 
 Checkout بتوفر buy وبتنسق الخدمات الداخلية ورا العملية دي.
 
-## مثال من الحياة
+## Real-World Analogy
 
 استقبال المطعم بينسق الحجز بدل ما تكلم كل قسم.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![الواجهة المبسّطة](../../assets/diagrams/facade.svg)
+![Facade](../../assets/diagrams/facade.svg)
 
 ```text
 Client  -->  Checkout::buy()  -->  Stock / Payment / Shipping
 ```
 
-## الأدوار
+## Participants
 
-Stock بتراجع التوفر، Payment بتحاسب، Shipping بتشحن، وCheckout بتعرض الخطوات المشتركة.
+Stock بتراجع التوفر، Payment بتحاسب، Shipping بتشحن، و Checkout بتعرض الخطوات المشتركة.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`subsystem`](../../GLOSSARY.md#subsystem) — مجموعة خدمات أو objects بتتعاون جوه نظام أكبر. هنا: `Stock, Payment, Shipping`.
+- [`interface`](../../GLOSSARY.md#interface) — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. هنا: `Checkout::buy`.
+- [`Client`](../../GLOSSARY.md#client-pattern-role) — الكود اللي بيستخدم interface أو بيتعامل مع objects بتاعة الـ Pattern. هنا: `main`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -86,7 +92,7 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Charged 20
@@ -94,47 +100,60 @@ Dispatched
 Unavailable
 ```
 
-## إمتى تستخدمه
+## When to Use
 
 استخدمه لما مستدعين كتير محتاجين نفس الجزء المفيد من نظام معقد.
 
-## إمتى ما تستخدموش
-
-بلاش لو مجرد تمرير لدالة من غير تبسيط حقيقي.
-
-## المميزات
-
-الـ Callers بيعتمدوا على واجهة أصغر وترتيب موحد.
-
-## العيوب والمقايضات
-
-الـ Facade ممكن تكبر وتعمل كل حاجة. المثال مش Transaction: فشل الدفع أو الشحن الحقيقي محتاج تعويض أو طريقة اتساق مناسبة.
-
-## استخدامات تقنية
+### Use cases
 
 مناسب لمداخل SDK وحدود خدمات التطبيق؛ مفيش تكامل دفع حقيقي هنا.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[adapter](../adapter/README.ar-EG.md) · [mediator](../../behavioral/mediator/README.ar-EG.md)
+بلاش لو مجرد تمرير لـ function من غير تبسيط حقيقي.
 
-## لخبطة شائعة
+## Advantages
 
-Adapter بتعالج التوافق. Facade بتصغّر واجهة النظام ومش لازم تنفذ واجهة موجودة.
+الـ Callers بيعتمدوا على interface أصغر وترتيب موحد.
 
-## سؤال انترفيو
+## Trade-offs
+
+الـ Facade ممكن تكبر وتعمل كل حاجة. المثال مش Transaction: فشل الدفع أو الشحن الحقيقي محتاج تعويض أو طريقة اتساق مناسبة.
+
+## Related Patterns
+
+[Adapter](../adapter/README.ar-EG.md) · [Mediator](../../behavioral/mediator/README.ar-EG.md)
+
+## Common Confusion
+
+Adapter بتعالج التوافق. Facade بتصغّر interface النظام ومش لازم تنفذ interface موجودة.
+
+## Terms to Remember
+
+- `Facade` — وفّر مدخل صغير لخطوات شائعة جوه Subsystem.
+- `subsystem` — مجموعة خدمات أو objects بتتعاون جوه نظام أكبر. مثال: `Stock, Payment, Shipping`.
+- `interface` — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. مثال: `Checkout::buy`.
+- `Client` — الكود اللي بيستخدم interface أو بيتعامل مع objects بتاعة الـ Pattern. مثال: `main`.
+
+## Interview Vocabulary
+
+- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — بتفصل أنواع الشغل المختلفة عشان كل نوع يقدر يتغير لوحده.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
+- [`trade-off`](../../GLOSSARY.md#trade-off) — ميزة بتكسبها قصاد تكلفة أو تنازل في ناحية تانية.
+
+## Interview Question
 
 لو الدفع نجح والشحن فشل، buy تقدر توعد بإيه فعلاً؟
 
-## تحدي صغير
+## Mini Challenge
 
 ضيف فشل شحن تجريبي وصمّم نتيجة Refund واضحة بدل نجاح وهمي.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** كل مستدعي للشراء محتاج يراجع المخزون ويدفع ويطلب الشحن بالترتيب الصح.
 - **الحل:** Checkout بتوفر buy وبتنسق الخدمات الداخلية ورا العملية دي.
-- **المقايضة:** الـ Facade ممكن تكبر وتعمل كل حاجة. المثال مش Transaction: فشل الدفع أو الشحن الحقيقي محتاج تعويض أو طريقة اتساق مناسبة.
+- **Trade-off:** الـ Facade ممكن تكبر وتعمل كل حاجة. المثال مش Transaction: فشل الدفع أو الشحن الحقيقي محتاج تعويض أو طريقة اتساق مناسبة.
 - **افتكر:** باب واحد لكذا خدمة.
 
 [السابق](../../structural/decorator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/flyweight/README.ar-EG.md)

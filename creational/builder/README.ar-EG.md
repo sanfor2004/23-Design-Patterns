@@ -1,58 +1,64 @@
-# البنّاء
+# Builder
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../creational/abstract-factory/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/factory-method/README.ar-EG.md)
 
-## الفئة
+## Category
 
-الإنشاء
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
 
-## المستوى
+## Difficulty
 
 مبتدئ
 
-## في جملة واحدة
+## In One Sentence
 
-جهّز Object بخطوات اسمها واضح، وبعدين طلّع النتيجة.
+جهّز object بخطوات اسمها واضح، وبعدين طلّع النتيجة.
 
-## المشكلة
+## The Problem
 
-الـ Request فيها Endpoint وTimeout واختيار Retry؛ كل ما الخيارات تزيد، ترتيب الـ Arguments بيبقى أصعب.
+الـ Request فيها Endpoint و Timeout واختيار Retry ؛ كل ما الخيارات تزيد، ترتيب الـ Arguments بيبقى أصعب.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 Request request{"/orders", 5, true}; // what does true mean?
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
-الـ Constructor شغال، بس شوية أرقام وBooleans جنب بعض مش بيوضحوا المقصود، والغلط في ترتيبهم سهل يفوت.
+الـ constructor شغال، بس شوية أرقام و Booleans جنب بعض مش بيوضحوا المقصود، والغلط في ترتيبهم سهل يفوت.
 
-## الفكرة الأساسية
+## The Idea
 
-خزّن الاختيارات مؤقتاً في RequestBuilder. الدوال اسمها يوضح الاختيار، وbuild تراجع القيم وترجع Request بالقيمة.
+خزّن الاختيارات مؤقتاً في RequestBuilder. الـ methods اسمها يوضح الاختيار، و build تراجع القيم وترجع Request بالقيمة.
 
-## مثال من الحياة
+## Real-World Analogy
 
 زي طلب ساندوتش: بتحدد الإضافات قبل ما المطبخ يجهزه.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![البنّاء](../../assets/diagrams/builder.svg)
+![Builder](../../assets/diagrams/builder.svg)
 
 ```text
 Client  -->  RequestBuilder  -->  Request
 ```
 
-## الأدوار
+## Participants
 
 RequestBuilder بتجمع الاختيارات وتراجعها. Request بتمتلك القيم النهائية، والـ Client بيختار ترتيب الخطوات الاختيارية.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. هنا: `Request`.
+- [`fluent interface`](../../GLOSSARY.md#fluent-interface) — interface بتسمح بسلسلة نداءات مقروءة؛ ده لوحده مش معناه Builder. هنا: `RequestBuilder.endpoint().timeout().retry()`.
+- [`constructor`](../../GLOSSARY.md#constructor) — العملية الخاصة اللي بتجهّز instance جديدة وقت إنشائها. هنا: `Request::Request`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -92,54 +98,67 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 /orders timeout=5 retry=1
 Invalid request rejected
 ```
 
-## إمتى تستخدمه
+## When to Use
 
 استخدمه لما الخيارات المستقلة كتير، أو محتاج نقطة واضحة لمراجعة الإنشاء.
 
-## إمتى ما تستخدموش
-
-بلاش مع معاملين واضحين؛ Struct صغيرة ممكن تكون أبسط.
-
-## المميزات
-
-مكان الاستدعاء بيوضح النية، وبتقدر ترفض إعداد ناقص قبل إخراج النتيجة.
-
-## العيوب والمقايضات
-
-فيه نوع زيادة هتصونه. Constructor بتاعة Request هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
-
-## استخدامات تقنية
+### Use cases
 
 مناسب لإعداد HTTP Requests وتجهيز بيانات الاختبار؛ المثال مش بيعمل اتصال بالشبكة.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[factory-method](../factory-method/README.ar-EG.md) · [abstract-factory](../abstract-factory/README.ar-EG.md)
+بلاش مع معاملين واضحين؛ struct صغيرة ممكن تكون أبسط.
 
-## لخبطة شائعة
+## Advantages
+
+مكان الاستدعاء بيوضح النية، وبتقدر ترفض إعداد ناقص قبل إخراج النتيجة.
+
+## Trade-offs
+
+فيه نوع زيادة هتصونه. constructor بتاعة Request هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
+
+## Related Patterns
+
+[Factory Method](../factory-method/README.ar-EG.md) · [Abstract Factory](../abstract-factory/README.ar-EG.md)
+
+## Common Confusion
 
 Factory Method بتختار نوع المنتج جوه Workflow موروث. Builder بتجمع إعداد النتيجة على كذا خطوة.
 
-## سؤال انترفيو
+## Terms to Remember
 
-هل أي Fluent Interface تعتبر Builder؟ وضّح فين الإنشاء بينتهي.
+- `Builder` — جهّز object بخطوات اسمها واضح، وبعدين طلّع النتيجة.
+- `Product` — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. مثال: `Request`.
+- `fluent interface` — interface بتسمح بسلسلة نداءات مقروءة؛ ده لوحده مش معناه Builder. مثال: `RequestBuilder.endpoint().timeout().retry()`.
+- `constructor` — العملية الخاصة اللي بتجهّز instance جديدة وقت إنشائها. مثال: `Request::Request`.
 
-## تحدي صغير
+## Interview Vocabulary
 
-ارفض Timeout أكبر من 120، وجرّب آخر قيمة مقبولة وأول قيمة مرفوضة.
+- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز القيم الأولية وبدء lifetime بتاعة object.
+- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — بتفصل أنواع الشغل المختلفة عشان كل نوع يقدر يتغير لوحده.
+- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — خلّي الجزء مركز على سبب واحد مترابط للتغيير.
 
-## الخلاصة
+## Interview Question
 
-- **المشكلة:** الـ Request فيها Endpoint وTimeout واختيار Retry؛ كل ما الخيارات تزيد، ترتيب الـ Arguments بيبقى أصعب.
-- **الحل:** خزّن الاختيارات مؤقتاً في RequestBuilder. الدوال اسمها يوضح الاختيار، وbuild تراجع القيم وترجع Request بالقيمة.
-- **المقايضة:** فيه نوع زيادة هتصونه. Constructor بتاعة Request هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
+هل أي fluent interface تعتبر Builder؟ وضّح فين الإنشاء بينتهي.
+
+## Mini Challenge
+
+ارفض Timeout أكبر من 120 ، وجرّب آخر قيمة مقبولة وأول قيمة مرفوضة.
+
+## Quick Summary
+
+- **المشكلة:** الـ Request فيها Endpoint و Timeout واختيار Retry ؛ كل ما الخيارات تزيد، ترتيب الـ Arguments بيبقى أصعب.
+- **الحل:** خزّن الاختيارات مؤقتاً في RequestBuilder. الـ methods اسمها يوضح الاختيار، و build تراجع القيم وترجع Request بالقيمة.
+- **Trade-off:** فيه نوع زيادة هتصونه. constructor بتاعة Request هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
 - **افتكر:** اختار الخطوات، وبعدها ابنِ.
 
 [السابق](../../creational/abstract-factory/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/factory-method/README.ar-EG.md)

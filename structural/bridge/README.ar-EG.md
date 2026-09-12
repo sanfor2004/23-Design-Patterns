@@ -1,26 +1,26 @@
-# الجسر
+# Bridge
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../structural/adapter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/composite/README.ar-EG.md)
 
-## الفئة
+## Category
 
-التركيب
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
 
-## المستوى
+## Difficulty
 
 متوسط
 
-## في جملة واحدة
+## In One Sentence
 
-افصل ناحيتين بيتغيروا، واربطهم بالـ Composition.
+افصل ناحيتين بيتغيروا، واربطهم بالـ [`composition`](../../GLOSSARY.md#composition) (بتركّب behavior من objects بتستخدم أو بتحتوي objects تانية).
 
-## المشكلة
+## The Problem
 
 التنبيه بيتغير حسب الأولوية وقناة الإرسال، وكل ناحية محتاجة تتوسع لوحدها.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 struct UrgentEmailNotice {};
@@ -29,33 +29,40 @@ struct NormalEmailNotice {};
 struct NormalSmsNotice {};
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
-Class لكل تركيبة أولوية وقناة بتزوّد التركيبات وبتكرر منطق الإرسال.
+class لكل تركيبة أولوية وقناة بتزوّد التركيبات وبتكرر منطق الإرسال.
 
-## الفكرة الأساسية
+## The Idea
 
 Notice بتفوّض الإرسال لـ Channel. UrgentNotice بتغيّر الرسالة من غير ما تختار وسيلة النقل.
 
-## مثال من الحياة
+## Real-World Analogy
 
 الريموت ووصلة الاتصال بتاعته ممكن يتطوروا لوحدهم طالما بينهم بروتوكول صغير.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![الجسر](../../assets/diagrams/bridge.svg)
+![Bridge](../../assets/diagrams/bridge.svg)
 
 ```text
 Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 ```
 
-## الأدوار
+## Participants
 
-Notice هي التجريد، وUrgentNotice تطوير ليه. Channel عقد الإرسال، وEmail وSms بينفذوه.
+Notice هي الـ [`abstraction`](../../GLOSSARY.md#abstraction) (بتظهر العمليات اللي المستدعي محتاجها وبتخفي التفاصيل اللي مش محتاج يعرفها) ، و UrgentNotice تطوير ليه. Channel عقد الإرسال، و Email و Sms بينفذوه.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Abstraction`](../../GLOSSARY.md#abstraction-bridge-role) — الناحية اللي بتوفر العمليات الأساسية في Bridge وبتفوّض شغل التنفيذ. هنا: `Notice`.
+- [`Refined Abstraction`](../../GLOSSARY.md#refined-abstraction) — تخصيص لـ Abstraction مستقل عن ناحية التنفيذ. هنا: `UrgentNotice`.
+- [`Implementor`](../../GLOSSARY.md#implementor) — العقد اللي Abstraction بتستخدمه للشغل في الناحية التانية من Bridge. هنا: `Channel`.
+- [`Concrete Implementor`](../../GLOSSARY.md#concrete-implementor) — implementation محددة لعقد Implementor. هنا: `Email, Sms`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -93,7 +100,7 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Email: status normal
@@ -101,47 +108,61 @@ Email: URGENT: disk full
 SMS: URGENT: disk full
 ```
 
-## إمتى تستخدمه
+## When to Use
 
-استخدمه لما ناحيتين من التغيير هيعملوا عدد كبير من الـ Subclasses لكل التركيبات.
+استخدمه لما ناحيتين من التغيير هيعملوا عدد كبير من الـ subclasses لكل التركيبات.
 
-## إمتى ما تستخدموش
-
-بلاش لو فيه ناحية بسيطة واحدة ومتغير لدالة كفاية.
-
-## المميزات
-
-القناة الجديدة تشتغل مع أنواع التنبيه الموجودة من غير Classes لكل تركيبة.
-
-## العيوب والمقايضات
-
-فيه طبقة تفويض زيادة، ولازم الحد الفاصل يبقى واضح. القناة المستعارة لازم تعيش أطول من التنبيه.
-
-## استخدامات تقنية
+### Use cases
 
 مناسب لأشكال رسم مع Backends مختلفة، أو أنواع تنبيه بقنوات متنوعة.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[adapter](../adapter/README.ar-EG.md) · [strategy](../../behavioral/strategy/README.ar-EG.md)
+بلاش لو فيه ناحية بسيطة واحدة ومتغير لـ function كفاية.
 
-## لخبطة شائعة
+## Advantages
 
-Adapter بتصلح عدم توافق موجود. Bridge فصل مقصود لاتجاهين بيتطوروا لوحدهم، وStrategy مركزة على سلوك قابل للتبديل.
+القناة الجديدة تشتغل مع أنواع التنبيه الموجودة من غير classes لكل تركيبة.
 
-## سؤال انترفيو
+## Trade-offs
 
-لو ضفت Push وScheduledNotice، هتحتاج كام Class بالجسر ومن غيره؟
+فيه طبقة delegation زيادة، ولازم الحد الفاصل يبقى واضح. القناة المستعارة لازم تعيش أطول من التنبيه.
 
-## تحدي صغير
+## Related Patterns
+
+[Adapter](../adapter/README.ar-EG.md) · [Strategy](../../behavioral/strategy/README.ar-EG.md)
+
+## Common Confusion
+
+Adapter بتصلح عدم توافق موجود. Bridge فصل مقصود لاتجاهين بيتطوروا لوحدهم، وStrategy مركزة على behavior قابل للتبديل.
+
+## Terms to Remember
+
+- `Bridge` — افصل ناحيتين بيتغيروا، واربطهم بالـ composition.
+- `Abstraction` — الناحية اللي بتوفر العمليات الأساسية في Bridge وبتفوّض شغل التنفيذ. مثال: `Notice`.
+- `Refined Abstraction` — تخصيص لـ Abstraction مستقل عن ناحية التنفيذ. مثال: `UrgentNotice`.
+- `Implementor` — العقد اللي Abstraction بتستخدمه للشغل في الناحية التانية من Bridge. مثال: `Channel`.
+- `Concrete Implementor` — implementation محددة لعقد Implementor. مثال: `Email, Sms`.
+
+## Interview Vocabulary
+
+- [`object composition`](../../GLOSSARY.md#object-composition) — بتوصل objects ببعض عشان تطلع behavior أو تركيب أكبر.
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل objects متعاونة لما تعبر عن التغيير أوضح من تكبير شجرة inheritance.
+- [`encapsulate what varies`](../../GLOSSARY.md#encapsulate-what-varies) — حط القرار اللي بيتغير ورا حدود ثابتة وواضحة.
+
+## Interview Question
+
+لو ضفت Push و ScheduledNotice ، هتحتاج كام class باستخدام Bridge ومن غيره؟
+
+## Mini Challenge
 
 ضيف Push واستخدم نوعي التنبيه من غير تعديلهم.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** التنبيه بيتغير حسب الأولوية وقناة الإرسال، وكل ناحية محتاجة تتوسع لوحدها.
 - **الحل:** Notice بتفوّض الإرسال لـ Channel. UrgentNotice بتغيّر الرسالة من غير ما تختار وسيلة النقل.
-- **المقايضة:** فيه طبقة تفويض زيادة، ولازم الحد الفاصل يبقى واضح. القناة المستعارة لازم تعيش أطول من التنبيه.
+- **Trade-off:** فيه طبقة delegation زيادة، ولازم الحد الفاصل يبقى واضح. القناة المستعارة لازم تعيش أطول من التنبيه.
 - **افتكر:** ناحيتين، ووصلة واحدة.
 
 [السابق](../../structural/adapter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/composite/README.ar-EG.md)

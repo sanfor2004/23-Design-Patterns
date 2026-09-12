@@ -1,26 +1,26 @@
-# سلسلة المسؤولية
+# Chain of Responsibility
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../structural/proxy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/command/README.ar-EG.md)
 
-## الفئة
+## Category
 
-السلوك
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
 
-## المستوى
+## Difficulty
 
 متوسط
 
-## في جملة واحدة
+## In One Sentence
 
 مرّر الطلب على Handlers تقدر توقفه أو تكمّل.
 
-## المشكلة
+## The Problem
 
 الطلب لازم يعدّي فحص الهوية وحد الإنفاق، وكل مدخل ممكن يحتاج سياسة مختلفة.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 bool accept(Request r) {
@@ -28,33 +28,39 @@ bool accept(Request r) {
 }
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 شرط واحد كويس في الأول؛ نسخه وتعديله لكذا مسار بيصعّب إعادة الاستخدام وترتيب السياسات.
 
-## الفكرة الأساسية
+## The Idea
 
 كل Handler تعمل فحصها وتكمّل بس لو نجح؛ آخر فحص ناجح يقبل الطلب.
 
-## مثال من الحياة
+## Real-World Analogy
 
 الدعم الفني يحل الطلب أو يبعته للمختص اللي بعده.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![سلسلة المسؤولية](../../assets/diagrams/chain-of-responsibility.svg)
+![Chain of Responsibility](../../assets/diagrams/chain-of-responsibility.svg)
 
 ```text
 Request  -->  Auth  -->  Limit
 ```
 
-## الأدوار
+## Participants
 
 Handler بتمتلك اللي بعدها. Auth بتراجع الهوية، Limit بتراجع المبلغ، والـ Client بيختار الترتيب.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Handler`](../../GLOSSARY.md#handler) — دور بيعمل معالجة للطلب أو يبعته للي بعده. هنا: `Handler`.
+- [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — Handler بتنّفذ قاعدة معالجة معينة. هنا: `Auth, Limit`.
+- [`chain termination`](../../GLOSSARY.md#chain-termination) — القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر Handler. هنا: `Handler::handle`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <initializer_list>
@@ -92,7 +98,7 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Rejected
@@ -100,47 +106,60 @@ Rejected
 Accepted
 ```
 
-## إمتى تستخدمه
+## When to Use
 
 استخدمه لما ترتيب الفحوصات أو اختيارها محتاج تركيب مستقل.
 
-## إمتى ما تستخدموش
-
-بلاش لو فحصين ثابتين في مكان واحد؛ الشرط الأول أبسط.
-
-## المميزات
-
-تقدر تعيد استخدام الفحوصات وترتبها من غير Conditional ضخمة.
-
-## العيوب والمقايضات
-
-الترتيب بيأثر، ولازم سياسة واضحة لنهاية السلسلة. هنا بنقبل بعد نجاح الكل؛ سلاسل تانية ممكن ترفض الطلب غير المعالج.
-
-## استخدامات تقنية
+### Use cases
 
 مناسب للـ Validation والـ Middleware. النسخة دي بتطلب موافقة الكل، مش أول Handler ناجحة بس.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[decorator](../../structural/decorator/README.ar-EG.md) · [command](../command/README.ar-EG.md)
+بلاش لو فحصين ثابتين في مكان واحد؛ الشرط الأول أبسط.
 
-## لخبطة شائعة
+## Advantages
 
-Decorator بتضيف طبقات سلوك؛ السلسلة دي ممكن توقف قبل باقي الخطوات. Command بتمثل الطلب كـ Object.
+تقدر تعيد استخدام الفحوصات وترتبها من غير Conditional ضخمة.
 
-## سؤال انترفيو
+## Trade-offs
+
+الترتيب بيأثر، ولازم سياسة واضحة لنهاية السلسلة. هنا بنقبل بعد نجاح الكل؛ سلاسل تانية ممكن ترفض الطلب غير المعالج.
+
+## Related Patterns
+
+[Decorator](../../structural/decorator/README.ar-EG.md) · [Command](../command/README.ar-EG.md)
+
+## Common Confusion
+
+Decorator بتضيف طبقات behavior ؛ السلسلة دي ممكن توقف قبل باقي الخطوات. Command بتمثل الطلب كـ object.
+
+## Terms to Remember
+
+- `Chain of Responsibility` — مرّر الطلب على Handlers تقدر توقفه أو تكمّل.
+- `Handler` — دور بيعمل معالجة للطلب أو يبعته للي بعده. مثال: `Handler`.
+- `Concrete Handler` — Handler بتنّفذ قاعدة معالجة معينة. مثال: `Auth, Limit`.
+- `chain termination` — القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر Handler. مثال: `Handler::handle`.
+
+## Interview Vocabulary
+
+- [`delegation`](../../GLOSSARY.md#delegation) — object بتطلب من object متعاونة معاها تنفذ جزء من الشغل.
+- [`object composition`](../../GLOSSARY.md#object-composition) — بتوصل objects ببعض عشان تطلع behavior أو تركيب أكبر.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
+
+## Interview Question
 
 لو Limit مكلفة وجت الأول، إيه اللي هيحصل لطلب غير مسجل؟
 
-## تحدي صغير
+## Mini Challenge
 
 ضيف فحص وضع الصيانة، واتأكد إن المرفوض ما يوصلش للفحوصات اللي بعده.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** الطلب لازم يعدّي فحص الهوية وحد الإنفاق، وكل مدخل ممكن يحتاج سياسة مختلفة.
 - **الحل:** كل Handler تعمل فحصها وتكمّل بس لو نجح؛ آخر فحص ناجح يقبل الطلب.
-- **المقايضة:** الترتيب بيأثر، ولازم سياسة واضحة لنهاية السلسلة. هنا بنقبل بعد نجاح الكل؛ سلاسل تانية ممكن ترفض الطلب غير المعالج.
+- **Trade-off:** الترتيب بيأثر، ولازم سياسة واضحة لنهاية السلسلة. هنا بنقبل بعد نجاح الكل؛ سلاسل تانية ممكن ترفض الطلب غير المعالج.
 - **افتكر:** عالجه، أو مرّره.
 
 [السابق](../../structural/proxy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/command/README.ar-EG.md)

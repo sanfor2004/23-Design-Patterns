@@ -1,58 +1,64 @@
-# Comando
+# Command
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../behavioral/chain-of-responsibility/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/interpreter/README.it.md)
 
-## Categoria
+## Category
 
-Comportamentali
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
 
-## Difficoltà
+## Difficulty
 
 Intermedio
 
-## In una frase
+## In One Sentence
 
-Trasforma un'azione in un oggetto conservabile e invocabile in seguito.
+Trasforma un'azione in un object conservabile e invocabile in seguito.
 
-## Il problema
+## The Problem
 
 Un editor deve applicare e annullare modifiche senza insegnare ogni operazione alla barra degli strumenti.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 document.text += " world"; // no object records how to undo
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-La modifica diretta non registra né l'azione né lo stato precedente.
+La modifica diretta non registra né l'azione né lo state precedente.
 
-## Idea centrale
+## The Idea
 
 Append cattura destinatario e argomento; execute salva il testo precedente, undo lo ripristina. History possiede i comandi.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 La comanda del ristorante conserva l'azione separatamente dal cameriere.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Comando](../../assets/diagrams/command.svg)
+![Command](../../assets/diagrams/command.svg)
 
 ```text
 History  -->  Command  -->  Append → Document
 ```
 
-## Partecipanti
+## Participants
 
 Command definisce execute e undo, Append modifica un Document non posseduto, History conserva i comandi come stack.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Receiver`](../../GLOSSARY.md#receiver) — L'object che svolge il lavoro richiesto da un Command. Qui: `Document`.
+- [`Invoker`](../../GLOSSARY.md#invoker) — Il ruolo che avvia o conserva Command senza conoscere i dettagli delle singole operazioni. Qui: `History`.
+- [`Concrete Command`](../../GLOSSARY.md#concrete-command) — Un'implementation di Command che collega un Receiver a un'azione. Qui: `Append`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -102,54 +108,67 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Hello world
 Hello
 ```
 
-## Quando usarlo
+## When to Use
 
 Usalo per azioni differite, code, macro e annullamento.
 
-## Quando NON usarlo
+### Use cases
+
+Azioni di editor e code di job; una coda durevole richiede anche serialization e idempotency.
+
+## When NOT to Use
 
 Evitalo per una chiamata isolata senza necessità di memorizzare o pianificare l'intento.
 
-## Vantaggi
+## Advantages
 
-L'invocatore resta indipendente dalle operazioni concrete e ne conserva la storia.
+L'Invoker resta indipendente dalle operazioni concrete e ne conserva la storia.
 
-## Svantaggi e compromessi
+## Trade-offs
 
 Salvare tutto il testo costa memoria. Il demo a thread singolo presume modifiche tramite History e un Document più longevo; modifiche esterne rompono l'annullamento atteso.
 
-## Applicazioni tecniche
+## Related Patterns
 
-Azioni di editor e code di job; una coda durevole richiede anche serializzazione e idempotenza.
+[Memento](../memento/README.it.md) · [Chain of Responsibility](../chain-of-responsibility/README.it.md)
 
-## Pattern correlati
+## Common Confusion
 
-[memento](../memento/README.it.md) · [chain-of-responsibility](../chain-of-responsibility/README.it.md)
+Memento conserva state, Command conserva un'azione e può usare uno snapshot. Non ogni comando è reversibile.
 
-## Confusione comune
+## Terms to Remember
 
-Memento conserva stato, Command conserva un'azione e può usare uno snapshot. Non ogni comando è reversibile.
+- `Command` — Trasforma un'azione in un object conservabile e invocabile in seguito.
+- `Receiver` — L'object che svolge il lavoro richiesto da un Command. Esempio: `Document`.
+- `Invoker` — Il ruolo che avvia o conserva Command senza conoscere i dettagli delle singole operazioni. Esempio: `History`.
+- `Concrete Command` — Un'implementation di Command che collega un Receiver a un'azione. Esempio: `Append`.
 
-## Domanda da colloquio
+## Interview Vocabulary
+
+- [`undo`](../../GLOSSARY.md#undo) — Ripristinare un risultato precedente con state salvato o un'operazione inversa, quando possibile.
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — Proteggere rappresentazione interna e invarianti mediante operazioni controllate.
+- [`exception safety`](../../GLOSSARY.md#exception-safety) — Le garanzie mantenute da un'operazione quando fallisce lanciando un'exception.
+
+## Interview Question
 
 Inviare un'email è annullabile come ripristinare una stringa? Distingui compensazione e inversione.
 
-## Piccola sfida
+## Mini Challenge
 
 Esegui due append, annulla due volte e verifica che annullare una storia vuota sia innocuo.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Un editor deve applicare e annullare modifiche senza insegnare ogni operazione alla barra degli strumenti.
 - **Soluzione:** Append cattura destinatario e argomento; execute salva il testo precedente, undo lo ripristina. History possiede i comandi.
-- **Compromesso:** Salvare tutto il testo costa memoria. Il demo a thread singolo presume modifiche tramite History e un Document più longevo; modifiche esterne rompono l'annullamento atteso.
+- **Trade-off:** Salvare tutto il testo costa memoria. Il demo a thread singolo presume modifiche tramite History e un Document più longevo; modifiche esterne rompono l'annullamento atteso.
 - **Da ricordare:** Un'azione da conservare.
 
 [Precedente](../../behavioral/chain-of-responsibility/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/interpreter/README.it.md)

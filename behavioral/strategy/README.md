@@ -6,7 +6,7 @@
 
 ## Category
 
-Behavioral
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
 
 ## Difficulty
 
@@ -20,13 +20,13 @@ Supply an interchangeable algorithm to the object that needs it.
 
 Checkout totals need different shipping policies without mixing every policy into checkout logic.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 int fee = express ? (subtotal >= 100 ? 0 : 15) : 5;
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 One conditional is readable; repeated policy branches across checkout paths make adding and testing rules harder.
 
@@ -51,6 +51,12 @@ Checkout::total()  -->  ShippingRule  -->  standard / express lambda
 ## Participants
 
 Checkout is the context, ShippingRule the behavioral contract, and lambdas implement standard and express fees.
+
+Canonical roles in this example:
+
+- [`Context`](../../GLOSSARY.md#context) — The object that uses a Strategy or delegates behavior to its current State. Here: `Checkout`.
+- [`Strategy interface`](../../GLOSSARY.md#strategy-interface) — The contract for interchangeable algorithms used by a Context. Here: `ShippingRule`.
+- [`Concrete Strategy`](../../GLOSSARY.md#concrete-strategy) — A particular implementation of a Strategy interface, possibly a callable rather than a class. Here: `standard / express lambdas`.
 
 ## Modern C++20 Example
 
@@ -89,11 +95,15 @@ Express: 55
 Express large: 120
 ```
 
-## When to Use It
+## When to Use
 
 Use it when algorithms vary independently and callers need to select a policy.
 
-## When NOT to Use It
+### Use cases
+
+Pricing rules, ranking functions and retry policies are appropriate design contexts.
+
+## When NOT to Use
 
 Avoid it for one stable algorithm or a single readable conditional that has no real extension pressure.
 
@@ -101,25 +111,36 @@ Avoid it for one stable algorithm or a single readable conditional that has no r
 
 Each policy can be tested independently while total calculation stays shared.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
-std::function adds type erasure and may allocate; templates or a function pointer can be better with different constraints. Validate policy results if external code can return invalid fees.
-
-## Technical Use Cases
-
-Pricing rules, ranking functions and retry policies are appropriate design contexts.
+[`std::function`](../../GLOSSARY.md#stdfunction) (A type-erased wrapper that stores a callable with a chosen signature) adds [`type erasure`](../../GLOSSARY.md#type-erasure) (Hiding a concrete type behind a uniform runtime interface, as std::function does for callables) and may allocate; templates or a function pointer can be better with different constraints. Validate policy results if external code can return invalid fees.
 
 ## Related Patterns
 
-[state](../state/README.md) · [template-method](../template-method/README.md)
+[State](../state/README.md) · [Template Method](../template-method/README.md)
 
 ## Common Confusion
 
-State represents lifecycle and transitions; Strategy chooses an algorithm. Template Method customizes inherited steps rather than an injected callable.
+State represents [`lifecycle`](../../GLOSSARY.md#lifecycle) (The modeled stages and transitions of a domain entity, distinct from a C++ object's lifetime) and transitions; Strategy chooses an algorithm. Template Method customizes inherited steps rather than an injected callable.
+
+## Terms to Remember
+
+- `Strategy` — Supply an interchangeable algorithm to the object that needs it.
+- `Context` — The object that uses a Strategy or delegates behavior to its current State. Example: `Checkout`.
+- `Strategy interface` — The contract for interchangeable algorithms used by a Context. Example: `ShippingRule`.
+- `Concrete Strategy` — A particular implementation of a Strategy interface, possibly a callable rather than a class. Example: `standard / express lambdas`.
+
+## Interview Vocabulary
+
+- [`interchangeable behavior`](../../GLOSSARY.md#interchangeable-behavior) — Different behaviors that can be supplied through the same contract.
+- [`encapsulate an algorithm`](../../GLOSSARY.md#encapsulate-an-algorithm) — Put an algorithm behind an operation that hides its internal steps.
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — Prefer collaborating objects when they express variation more clearly than extending a class hierarchy.
+- [`runtime selection`](../../GLOSSARY.md#runtime-selection) — Choosing an implementation while the program is executing.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Parts know only the small contracts needed to cooperate, limiting change propagation.
 
 ## Interview Question
 
-How would replacing std::function with a template parameter affect runtime selection and compilation?
+How would replacing std::function with a template parameter affect [`runtime`](../../GLOSSARY.md#runtime) (The period when a compiled program is executing) selection and compilation?
 
 ## Mini Challenge
 

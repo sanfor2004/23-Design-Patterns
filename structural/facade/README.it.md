@@ -1,59 +1,65 @@
-# Facciata
+# Facade
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../structural/decorator/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/flyweight/README.it.md)
 
-## Categoria
+## Category
 
-Strutturali
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
 
-## Difficoltà
+## Difficulty
 
 Principiante
 
-## In una frase
+## In One Sentence
 
-Offre un ingresso semplice al flusso comune di un sottosistema.
+Offre un ingresso semplice al flusso comune di un subsystem.
 
-## Il problema
+## The Problem
 
 Ogni client deve controllare disponibilità, addebitare e spedire nell'ordine giusto.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 payment.charge(20);
 shipping.dispatch(); // caller forgot to check stock
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Le chiamate dirette possono saltare i controlli o duplicare l'orchestrazione in modo incoerente.
 
-## Idea centrale
+## The Idea
 
 Checkout espone buy e coordina i servizi interni.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 La reception coordina una prenotazione senza farti chiamare ogni reparto.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Facciata](../../assets/diagrams/facade.svg)
+![Facade](../../assets/diagrams/facade.svg)
 
 ```text
 Client  -->  Checkout::buy()  -->  Stock / Payment / Shipping
 ```
 
-## Partecipanti
+## Participants
 
 Stock verifica la disponibilità, Payment addebita, Shipping spedisce e Checkout presenta il flusso.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`subsystem`](../../GLOSSARY.md#subsystem) — Un gruppo di servizi o object collaboranti dentro un sistema più ampio. Qui: `Stock, Payment, Shipping`.
+- [`interface`](../../GLOSSARY.md#interface) — Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa. Qui: `Checkout::buy`.
+- [`Client`](../../GLOSSARY.md#client-pattern-role) — Il codice che usa un'interface o collabora con gli object del pattern. Qui: `main`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -86,7 +92,7 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Charged 20
@@ -94,47 +100,60 @@ Dispatched
 Unavailable
 ```
 
-## Quando usarlo
+## When to Use
 
 Usala quando molti client richiedono lo stesso sottoinsieme utile di un sistema complesso.
 
-## Quando NON usarlo
-
-Evitala per un semplice inoltro che non semplifica nulla.
-
-## Vantaggi
-
-I client dipendono da un contratto ridotto e da una regola d'ordine condivisa.
-
-## Svantaggi e compromessi
-
-Può diventare un oggetto onnipotente. L'esempio non è transazionale: errori reali richiedono compensazioni o altre strategie di consistenza.
-
-## Applicazioni tecniche
+### Use cases
 
 Punti d'ingresso di SDK e servizi applicativi; non c'è un'integrazione di pagamento reale.
 
-## Pattern correlati
+## When NOT to Use
 
-[adapter](../adapter/README.it.md) · [mediator](../../behavioral/mediator/README.it.md)
+Evitala per un semplice inoltro che non semplifica nulla.
 
-## Confusione comune
+## Advantages
 
-Adapter risolve compatibilità, Facade riduce la superficie del sottosistema senza dover rispettare un'interfaccia preesistente.
+I client dipendono da un contratto ridotto e da una regola d'ordine condivisa.
 
-## Domanda da colloquio
+## Trade-offs
+
+Può diventare un object onnipotente. L'esempio non è transazionale: errori reali richiedono compensazioni o altre strategie di consistenza.
+
+## Related Patterns
+
+[Adapter](../adapter/README.it.md) · [Mediator](../../behavioral/mediator/README.it.md)
+
+## Common Confusion
+
+Adapter risolve compatibilità, Facade riduce la superficie del subsystem senza dover rispettare un'interface preesistente.
+
+## Terms to Remember
+
+- `Facade` — Offre un ingresso semplice al flusso comune di un subsystem.
+- `subsystem` — Un gruppo di servizi o object collaboranti dentro un sistema più ampio. Esempio: `Stock, Payment, Shipping`.
+- `interface` — Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa. Esempio: `Checkout::buy`.
+- `Client` — Il codice che usa un'interface o collabora con gli object del pattern. Esempio: `main`.
+
+## Interview Vocabulary
+
+- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — Tenere separate responsabilità di natura diversa perché possano cambiare indipendentemente.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Le parti conoscono solo i contratti necessari a collaborare, limitando la propagazione delle modifiche.
+- [`trade-off`](../../GLOSSARY.md#trade-off) — Un vantaggio ottenuto rinunciando a un'altra proprietà desiderabile.
+
+## Interview Question
 
 Se l'addebito riesce e la spedizione fallisce, cosa può garantire buy?
 
-## Piccola sfida
+## Mini Challenge
 
 Simula un errore di spedizione e progetta un esito esplicito del rimborso.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Ogni client deve controllare disponibilità, addebitare e spedire nell'ordine giusto.
 - **Soluzione:** Checkout espone buy e coordina i servizi interni.
-- **Compromesso:** Può diventare un oggetto onnipotente. L'esempio non è transazionale: errori reali richiedono compensazioni o altre strategie di consistenza.
+- **Trade-off:** Può diventare un object onnipotente. L'esempio non è transazionale: errori reali richiedono compensazioni o altre strategie di consistenza.
 - **Da ricordare:** Un ingresso per più servizi.
 
 [Precedente](../../structural/decorator/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/flyweight/README.it.md)

@@ -1,58 +1,65 @@
-# Interprete
+# Interpreter
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../behavioral/command/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/iterator/README.it.md)
 
-## Categoria
+## Category
 
-Comportamentali
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
 
-## Difficoltà
+## Difficulty
 
 Avanzato
 
-## In una frase
+## In One Sentence
 
-Rappresenta un piccolo linguaggio con oggetti che valutano le regole grammaticali.
+Rappresenta un piccolo linguaggio con object che valutano le regole grammaticali.
 
-## Il problema
+## The Problem
 
 Le regole combinano ruoli e congiunzioni e devono essere costruibili come dati.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 bool allowed = roles.contains("editor") && roles.contains("verified");
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Una condizione fissa è semplice, ma cambiare regole annidate richiede modifiche all'applicazione.
 
-## Idea centrale
+## The Idea
 
 Role è un terminale; Both è un non terminale che valuta due figli con AND a cortocircuito.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Una frase combina parole secondo una grammatica; una regola combina ruoli con AND.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Interprete](../../assets/diagrams/interpreter.svg)
+![Interpreter](../../assets/diagrams/interpreter.svg)
 
 ```text
 Context  -->  Both(Expression, Expression)  -->  Role / nested Both
 ```
 
-## Partecipanti
+## Participants
 
 Expression definisce la valutazione, Context fornisce ruoli, Role verifica appartenenza, Both possiede i figli.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Abstract Expression`](../../GLOSSARY.md#abstract-expression) — Il contratto per valutare i nodi della grammatica di Interpreter. Qui: `Expression`.
+- [`Terminal Expression`](../../GLOSSARY.md#terminal-expression) — Un'espressione senza espressioni figlie. Qui: `Role`.
+- [`Nonterminal Expression`](../../GLOSSARY.md#nonterminal-expression) — Un'espressione che combina espressioni figlie secondo una regola grammaticale. Qui: `Both`.
+- `Context` — I dati usati durante la valutazione delle espressioni; qui l’insieme dei nomi dei ruoli. `Context`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -91,54 +98,68 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 false
 true
 ```
 
-## Quando usarlo
+## When to Use
 
 Usalo per grammatiche piccole e stabili con un albero utile da costruire e ispezionare.
 
-## Quando NON usarlo
-
-Evitalo per linguaggi grandi che richiedono parsing robusto, diagnostica e ottimizzazione.
-
-## Vantaggi
-
-Le regole si compongono ricorsivamente e si valutano su contesti diversi.
-
-## Svantaggi e compromessi
-
-Ogni forma grammaticale aggiunge codice; alberi profondi rischiano lo stack. Non c'è parser: main costruisce direttamente l'albero.
-
-## Applicazioni tecniche
+### Use cases
 
 Piccoli linguaggi di filtro o idoneità; non è un sistema sicuro di autorizzazione né un parser generale.
 
-## Pattern correlati
+## When NOT to Use
 
-[composite](../../structural/composite/README.it.md) · [visitor](../visitor/README.it.md)
+Evitalo per linguaggi grandi che richiedono parsing robusto, diagnostica e ottimizzazione.
 
-## Confusione comune
+## Advantages
+
+Le regole si compongono ricorsivamente e si valutano su contesti diversi.
+
+## Trade-offs
+
+Ogni forma grammaticale aggiunge codice; alberi profondi rischiano lo stack. Non c'è parser: main costruisce direttamente l'albero.
+
+## Related Patterns
+
+[Composite](../../structural/composite/README.it.md) · [Visitor](../visitor/README.it.md)
+
+## Common Confusion
 
 Composite descrive l'albero, Interpreter aggiunge semantica e valutazione. Visitor può aggiungere altre operazioni.
 
-## Domanda da colloquio
+## Terms to Remember
+
+- `Interpreter` — Rappresenta un piccolo linguaggio con object che valutano le regole grammaticali.
+- `Abstract Expression` — Il contratto per valutare i nodi della grammatica di Interpreter. Esempio: `Expression`.
+- `Terminal Expression` — Un'espressione senza espressioni figlie. Esempio: `Role`.
+- `Nonterminal Expression` — Un'espressione che combina espressioni figlie secondo una regola grammaticale. Esempio: `Both`.
+- `Context` — I dati usati durante la valutazione delle espressioni; qui l’insieme dei nomi dei ruoli.
+
+## Interview Vocabulary
+
+- [`abstract syntax tree`](../../GLOSSARY.md#abstract-syntax-tree) — Un albero che rappresenta la struttura grammaticale anziché la forma testuale originale.
+- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — Costruire ricorsivamente una struttura con parti che espongono il contratto dell'insieme.
+- [`short-circuit evaluation`](../../GLOSSARY.md#short-circuit-evaluation) — Saltare gli operandi successivi quando un risultato precedente determina già la risposta.
+
+## Interview Question
 
 Dove gestiresti la precedenza nell'input editor AND verified OR admin?
 
-## Piccola sfida
+## Mini Challenge
 
 Aggiungi Either per OR e prova una regola annidata su tre contesti.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Le regole combinano ruoli e congiunzioni e devono essere costruibili come dati.
 - **Soluzione:** Role è un terminale; Both è un non terminale che valuta due figli con AND a cortocircuito.
-- **Compromesso:** Ogni forma grammaticale aggiunge codice; alberi profondi rischiano lo stack. Non c'è parser: main costruisce direttamente l'albero.
+- **Trade-off:** Ogni forma grammaticale aggiunge codice; alberi profondi rischiano lo stack. Non c'è parser: main costruisce direttamente l'albero.
 - **Da ricordare:** I nodi grammaticali danno significato.
 
 [Precedente](../../behavioral/command/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/iterator/README.it.md)

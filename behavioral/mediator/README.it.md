@@ -1,59 +1,65 @@
-# Mediatore
+# Mediator
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../behavioral/iterator/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/memento/README.it.md)
 
-## Categoria
+## Category
 
-Comportamentali
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
 
-## Difficoltà
+## Difficulty
 
 Intermedio
 
-## In una frase
+## In One Sentence
 
-Sposta la coordinazione fra oggetti pari in un oggetto dedicato.
+Sposta la coordinazione fra object pari in un object dedicato.
 
-## Il problema
+## The Problem
 
 Username e password determinano insieme se il pulsante di accesso è attivo.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 // Each field directly updates the button and reads its sibling.
 submit.enable(!username.empty() && !password.empty());
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-Se ogni campo conosce l'altro e il pulsante, le regole si disperdono e le dipendenze si intrecciano.
+Se ogni campo conosce l'altro e il pulsante, le regole si disperdono e le dependency si intrecciano.
 
-## Idea centrale
+## The Idea
 
 I campi notificano changed a LoginForm, che verifica i valori e aggiorna il pulsante.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Il controllo aereo coordina le interazioni senza negoziazioni fra ogni coppia di piloti.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Mediatore](../../assets/diagrams/mediator.svg)
+![Mediator](../../assets/diagrams/mediator.svg)
 
 ```text
 Field::set()  -->  LoginForm(Mediator)  -->  Button::enable()
 ```
 
-## Partecipanti
+## Participants
 
-Mediator definisce le notifiche, Field le invia, Button conserva lo stato, LoginForm possiede e coordina i colleghi.
+Mediator definisce le notifiche, Field le invia, Button conserva lo state, LoginForm possiede e coordina i colleghi.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Colleague`](../../GLOSSARY.md#colleague) — Un object le cui interazioni vengono coordinate da un Mediator. Qui: `Field, Button`.
+- [`Concrete Mediator`](../../GLOSSARY.md#concrete-mediator) — Un'implementation che contiene le regole di coordinazione dei Colleague. Qui: `LoginForm`.
+- [`callback`](../../GLOSSARY.md#callback) — Una function o operazione fornita perché un'altra parte possa richiamarla quando serve. Qui: `Mediator::changed`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -101,54 +107,67 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Ready: false
 Ready: true
 ```
 
-## Quando usarlo
+## When to Use
 
 Usalo quando le interazioni fra più pari diventano intricate.
 
-## Quando NON usarlo
-
-Evitalo per un semplice callback o in assenza di regole di coordinazione.
-
-## Vantaggi
-
-I campi non conoscono fratelli o pulsante e la regola vive in un punto.
-
-## Svantaggi e compromessi
-
-Il mediatore può ingrandirsi troppo. LoginForm non è copiabile: i campi conservano riferimenti al form e una copia avrebbe collegamenti sbagliati.
-
-## Applicazioni tecniche
+### Use cases
 
 Dialoghi e controllori di flusso; abilitare un pulsante non autentica né valida password.
 
-## Pattern correlati
+## When NOT to Use
 
-[observer](../observer/README.it.md) · [facade](../../structural/facade/README.it.md)
+Evitalo per un semplice callback o in assenza di regole di coordinazione.
 
-## Confusione comune
+## Advantages
+
+I campi non conoscono fratelli o pulsante e la regola vive in un punto.
+
+## Trade-offs
+
+Il Mediator può ingrandirsi troppo. LoginForm non è copiabile: i campi conservano reference al form e una copia avrebbe collegamenti sbagliati.
+
+## Related Patterns
+
+[Observer](../observer/README.it.md) · [Facade](../../structural/facade/README.it.md)
+
+## Common Confusion
 
 Observer diffonde cambiamenti; Mediator stabilisce come specifici colleghi collaborano e può usare Observer per le notifiche.
 
-## Domanda da colloquio
+## Terms to Remember
 
-Perché un costruttore di copia automatico sarebbe pericoloso per LoginForm?
+- `Mediator` — Sposta la coordinazione fra object pari in un object dedicato.
+- `Colleague` — Un object le cui interazioni vengono coordinate da un Mediator. Esempio: `Field, Button`.
+- `Concrete Mediator` — Un'implementation che contiene le regole di coordinazione dei Colleague. Esempio: `LoginForm`.
+- `callback` — Una function o operazione fornita perché un'altra parte possa richiamarla quando serve. Esempio: `Mediator::changed`.
 
-## Piccola sfida
+## Interview Vocabulary
+
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Le parti conoscono solo i contratti necessari a collaborare, limitando la propagazione delle modifiche.
+- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — Tenere separate responsabilità di natura diversa perché possano cambiare indipendentemente.
+- [`god object`](../../GLOSSARY.md#god-object) — Un object che accumula troppe responsabilità non correlate.
+
+## Interview Question
+
+Perché un copy constructor automatico sarebbe pericoloso per LoginForm?
+
+## Mini Challenge
 
 Aggiungi l'accettazione dei termini senza far conoscere il pulsante a Field.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Username e password determinano insieme se il pulsante di accesso è attivo.
 - **Soluzione:** I campi notificano changed a LoginForm, che verifica i valori e aggiorna il pulsante.
-- **Compromesso:** Il mediatore può ingrandirsi troppo. LoginForm non è copiabile: i campi conservano riferimenti al form e una copia avrebbe collegamenti sbagliati.
+- **Trade-off:** Il Mediator può ingrandirsi troppo. LoginForm non è copiabile: i campi conservano reference al form e una copia avrebbe collegamenti sbagliati.
 - **Da ricordare:** I colleghi passano dal coordinatore.
 
 [Precedente](../../behavioral/iterator/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/memento/README.it.md)

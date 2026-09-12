@@ -1,26 +1,26 @@
-# طريقة المصنع
+# Factory Method
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../creational/builder/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/prototype/README.ar-EG.md)
 
-## الفئة
+## Category
 
-الإنشاء
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
 
-## المستوى
+## Difficulty
 
 مبتدئ
 
-## في جملة واحدة
+## In One Sentence
 
-خلّي Subclass تختار الـ Object اللي Workflow مشتركة هتستخدمه.
+خلّي subclass تختار الـ object اللي Workflow مشتركة هتستخدمه.
 
-## المشكلة
+## The Problem
 
 مهمة التنبيه بتبعت نفس رسالة الانتهاء، بس كل بيئة محتاجة Sender مختلفة.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 void run() {
@@ -29,33 +29,41 @@ void run() {
 }
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 تثبيت EmailSender جوه run بيربط الخطوات بالإيميل؛ نسخ run للـ Console بيكرر نفس المنطق.
 
-## الفكرة الأساسية
+ده `tight coupling`: خطوات الشغل مرتبطة بنوع Sender بعينه، فتغيير الإرسال ممكن يحتاج تعديل نفس الخطوات.
 
-حط الخطوات في AlertJob وخليها تنادي make_sender القابلة للتغيير بالـ Override.
+## The Idea
 
-## مثال من الحياة
+حط الخطوات في AlertJob وخليها تنادي make_sender القابلة للتغيير بالـ override.
+
+## Real-World Analogy
 
 مكتب التوصيل عنده نفس خطوات الشحن، وكل فرع بيختار وسيلة النقل.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![طريقة المصنع](../../assets/diagrams/factory-method.svg)
+![Factory Method](../../assets/diagrams/factory-method.svg)
 
 ```text
 AlertJob::run  -->  make_sender()  -->  Sender
 ```
 
-## الأدوار
+## Participants
 
-AlertJob ماسكة الخطوات. EmailJob وConsoleJob بيغيّروا الإنشاء. Sender بتحدد العملية، وunique_ptr بتملك المنتج.
+AlertJob ماسكة الخطوات. EmailJob و ConsoleJob بيغيّروا الإنشاء. Sender بتحدد العملية، و [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (smart pointer بملكية حصرية، بتحرر الـ object لما المالك يتدمر) بتملك المنتج.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Creator`](../../GLOSSARY.md#creator) — الدور الأساسي اللي ماسك الخطوات وبيعلن عملية الإنشاء اللي بيحتاجها. هنا: `AlertJob`.
+- [`Concrete Creator`](../../GLOSSARY.md#concrete-creator) — subclass من Creator بتوفر Product معينة. هنا: `EmailJob, ConsoleJob`.
+- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. هنا: `Sender`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -94,54 +102,68 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Email: build complete
 Console: build complete
 ```
 
-## إمتى تستخدمه
+## When to Use
 
-استخدمه لما Workflow مبنية أصلاً على الوراثة ومحتاجة نقطة إنشاء قابلة للتوسيع.
+استخدمه لما Workflow مبنية أصلاً على الـ [`inheritance`](../../GLOSSARY.md#inheritance) (بتعرّف derived class انطلاقاً من base class عشان تعيد استخدام العقد أو تخصصه) ومحتاجة نقطة إنشاء قابلة للتوسيع.
 
-## إمتى ما تستخدموش
-
-بلاش لو تمرير Sender جاهزة لدالة كفاية؛ الوراثة ساعتها زيادة.
-
-## المميزات
-
-الخطوات بتفضل في مكان واحد، واختيار المنتج بيتغير.
-
-## العيوب والمقايضات
-
-كل اختيار جديد ممكن يحتاج Subclass. استدعاء الدالة الافتراضية من Constructor الأساس مش هيوصل لتنفيذ الابن زي ما تتوقع.
-
-## استخدامات تقنية
+### Use cases
 
 مناسب لتصدير بصيغ مختلفة أو Jobs حسب البيئة؛ الـ Senders هنا بتطبع بس.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[abstract-factory](../abstract-factory/README.ar-EG.md) · [template-method](../../behavioral/template-method/README.ar-EG.md)
+بلاش لو تمرير Sender جاهزة لـ function كفاية؛ الـ inheritance ساعتها زيادة.
 
-## لخبطة شائعة
+## Advantages
 
-دالة عادية فيها switch اسمها Simple Factory؛ هنا المقصود نقطة توسيع بالوراثة. Abstract Factory بتنظم عيلة منتجات.
+الخطوات بتفضل في مكان واحد، واختيار المنتج بيتغير.
 
-## سؤال انترفيو
+## Trade-offs
 
-ليه run بتنادي make_sender بعد الإنشاء، مش من Constructor بتاعة AlertJob؟
+كل اختيار جديد ممكن يحتاج subclass. استدعاء الـ virtual method من constructor بتاعة base class مش هيوصل لـ [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد interface) بتاعة derived class زي ما تتوقع.
 
-## تحدي صغير
+## Related Patterns
+
+[Abstract Factory](../abstract-factory/README.ar-EG.md) · [Template Method](../../behavioral/template-method/README.ar-EG.md)
+
+## Common Confusion
+
+function عادية فيها switch اسمها Simple Factory ؛ هنا المقصود نقطة توسيع بالـ inheritance. Abstract Factory بتنظم عيلة منتجات.
+
+## Terms to Remember
+
+- `Factory Method` — خلّي subclass تختار الـ object اللي Workflow مشتركة هتستخدمه.
+- `Creator` — الدور الأساسي اللي ماسك الخطوات وبيعلن عملية الإنشاء اللي بيحتاجها. مثال: `AlertJob`.
+- `Concrete Creator` — subclass من Creator بتوفر Product معينة. مثال: `EmailJob, ConsoleJob`.
+- `Product` — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. مثال: `Sender`.
+
+## Interview Vocabulary
+
+- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز القيم الأولية وبدء lifetime بتاعة object.
+- [`tight coupling`](../../GLOSSARY.md#tight-coupling) — الأجزاء معتمدة بقوة على التفاصيل الداخلية لبعض، فالتغيير في واحد بينتشر للباقي.
+- [`inheritance`](../../GLOSSARY.md#inheritance) — بتعرّف derived class انطلاقاً من base class عشان تعيد استخدام العقد أو تخصصه.
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — استهدف open for extension, closed for modification عند حدود مفيدة ومختارة بوضوح.
+
+## Interview Question
+
+ليه run بتنادي make_sender بعد الإنشاء، مش من constructor بتاعة AlertJob ؟
+
+## Mini Challenge
 
 ضيف FileJob بتكتب في ملف مؤقت، واتأكد من محتواه.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** مهمة التنبيه بتبعت نفس رسالة الانتهاء، بس كل بيئة محتاجة Sender مختلفة.
-- **الحل:** حط الخطوات في AlertJob وخليها تنادي make_sender القابلة للتغيير بالـ Override.
-- **المقايضة:** كل اختيار جديد ممكن يحتاج Subclass. استدعاء الدالة الافتراضية من Constructor الأساس مش هيوصل لتنفيذ الابن زي ما تتوقع.
+- **الحل:** حط الخطوات في AlertJob وخليها تنادي make_sender القابلة للتغيير بالـ override.
+- **Trade-off:** كل اختيار جديد ممكن يحتاج subclass. استدعاء الـ virtual method من constructor بتاعة base class مش هيوصل لـ implementation بتاعة derived class زي ما تتوقع.
 - **افتكر:** ثبّت الخطوات، وغيّر الإنشاء.
 
 [السابق](../../creational/builder/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/prototype/README.ar-EG.md)

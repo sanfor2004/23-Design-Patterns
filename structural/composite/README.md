@@ -6,7 +6,7 @@
 
 ## Category
 
-Structural
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
 
 ## Difficulty
 
@@ -20,20 +20,20 @@ Treat a leaf and a tree of objects through the same operation.
 
 A file browser must compute bytes for a file or a folder containing nested folders.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 int total = file_size;
 for (int size : folder_sizes) total += size; // only one nesting level
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Special loops for each depth break as nesting grows and repeat file-versus-folder checks.
 
 ## The Idea
 
-Give File and Folder the Entry interface. A folder recursively asks its children for bytes.
+Give File and Folder the Entry [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller). A folder recursively asks its children for bytes.
 
 ## Real-World Analogy
 
@@ -51,7 +51,13 @@ Client::bytes()  -->  Entry  -->  File / Folder[Entry]
 
 ## Participants
 
-Entry defines bytes. File returns its size; Folder owns children with unique_ptr and aggregates their results.
+Entry defines bytes. File returns its size; Folder owns children with [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (A smart pointer with exclusive ownership that releases its object when the owner is destroyed) and aggregates their results.
+
+Canonical roles in this example:
+
+- [`Component`](../../GLOSSARY.md#component) — The common contract exposed by leaves, groups, or wrappers. Here: `Entry`.
+- [`Leaf`](../../GLOSSARY.md#leaf) — A Component with no child Components. Here: `File`.
+- [`ownership`](../../GLOSSARY.md#ownership) — Responsibility for keeping a resource alive and eventually releasing it. Here: `Folder::children_`.
 
 ## Modern C++20 Example
 
@@ -103,11 +109,15 @@ int main() {
 Total: 30 bytes
 ```
 
-## When to Use It
+## When to Use
 
 Use it for genuine part-whole trees where a useful operation applies to both leaves and groups.
 
-## When NOT to Use It
+### Use cases
+
+File trees, scene graphs without sharing, and menu hierarchies are suitable contexts.
+
+## When NOT to Use
 
 Avoid it for a flat list or a graph with shared parents and cycles; tree ownership would misrepresent the domain.
 
@@ -115,21 +125,30 @@ Avoid it for a flat list or a graph with shared parents and cycles; tree ownersh
 
 Clients calculate a subtree total without knowing its depth or concrete shape.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 Very deep trees can overflow the call stack, integer sums can overflow, and group-only operations should not be forced onto leaves.
 
-## Technical Use Cases
-
-File trees, scene graphs without sharing, and menu hierarchies are suitable contexts.
-
 ## Related Patterns
 
-[decorator](../decorator/README.md) · [iterator](../../behavioral/iterator/README.md)
+[Decorator](../decorator/README.md) · [Iterator](../../behavioral/iterator/README.md)
 
 ## Common Confusion
 
 Decorator wraps one object to add behavior. Composite normally owns multiple children to represent a whole; both can recurse through an interface.
+
+## Terms to Remember
+
+- `Composite` — Treat a leaf and a tree of objects through the same operation.
+- `Component` — The common contract exposed by leaves, groups, or wrappers. Example: `Entry`.
+- `Leaf` — A Component with no child Components. Example: `File`.
+- `ownership` — Responsibility for keeping a resource alive and eventually releasing it. Example: `Folder::children_`.
+
+## Interview Vocabulary
+
+- [`part-whole hierarchy`](../../GLOSSARY.md#part-whole-hierarchy) — A recursive structure in which groups contain leaves or smaller groups.
+- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — Building a structure from parts that expose the same contract as the whole.
+- [`polymorphism`](../../GLOSSARY.md#polymorphism) — Using one interface with different implementations; C++ supports runtime and compile-time forms.
 
 ## Interview Question
 

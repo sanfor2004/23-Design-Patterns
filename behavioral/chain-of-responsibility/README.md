@@ -6,7 +6,7 @@
 
 ## Category
 
-Behavioral
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
 
 ## Difficulty
 
@@ -20,7 +20,7 @@ Pass a request along handlers that can stop or continue processing.
 
 A request must pass authentication and spending checks, and different entry points need different policies.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 bool accept(Request r) {
@@ -28,7 +28,7 @@ bool accept(Request r) {
 }
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 One expression is fine initially; duplicating and editing it for several pipelines makes policy order and reuse difficult.
 
@@ -53,6 +53,12 @@ Request  -->  Auth  -->  Limit
 ## Participants
 
 Handler owns its successor. Auth checks identity, Limit checks amount. The client chooses the chain order.
+
+Canonical roles in this example:
+
+- [`Handler`](../../GLOSSARY.md#handler) — A role that handles a request or passes it to its successor. Here: `Handler`.
+- [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — A Handler implementing one particular processing rule. Here: `Auth, Limit`.
+- [`chain termination`](../../GLOSSARY.md#chain-termination) — The rule for stopping a chain and deciding what happens after the last handler. Here: `Handler::handle`.
 
 ## Modern C++20 Example
 
@@ -100,11 +106,15 @@ Rejected
 Accepted
 ```
 
-## When to Use It
+## When to Use
 
 Use it when request handling order or membership must be composed independently.
 
-## When NOT to Use It
+### Use cases
+
+Validation pipelines and request middleware fit. This variant requires every handler to approve, rather than stopping at the first successful handler.
+
+## When NOT to Use
 
 Avoid it for two fixed checks in one place; the initial expression is then clearer.
 
@@ -112,21 +122,30 @@ Avoid it for two fixed checks in one place; the initial expression is then clear
 
 Checks can be reused and reordered without a giant conditional.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 Order affects behavior. A chain needs an explicit end policy; this example accepts after all checks, while other chains may reject unhandled requests.
 
-## Technical Use Cases
-
-Validation pipelines and request middleware fit. This variant requires every handler to approve, rather than stopping at the first successful handler.
-
 ## Related Patterns
 
-[decorator](../../structural/decorator/README.md) · [command](../command/README.md)
+[Decorator](../../structural/decorator/README.md) · [Command](../command/README.md)
 
 ## Common Confusion
 
 Decorator layers behavior around a component; this chain may terminate without reaching later handlers. Command represents the request as an object.
+
+## Terms to Remember
+
+- `Chain of Responsibility` — Pass a request along handlers that can stop or continue processing.
+- `Handler` — A role that handles a request or passes it to its successor. Example: `Handler`.
+- `Concrete Handler` — A Handler implementing one particular processing rule. Example: `Auth, Limit`.
+- `chain termination` — The rule for stopping a chain and deciding what happens after the last handler. Example: `Handler::handle`.
+
+## Interview Vocabulary
+
+- [`delegation`](../../GLOSSARY.md#delegation) — An object asks a collaborator to perform part of its work.
+- [`object composition`](../../GLOSSARY.md#object-composition) — Connecting objects to form a larger behavior or structure.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Parts know only the small contracts needed to cooperate, limiting change propagation.
 
 ## Interview Question
 

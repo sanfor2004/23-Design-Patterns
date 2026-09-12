@@ -1,26 +1,26 @@
-# Iteratore
+# Iterator
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../behavioral/interpreter/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/mediator/README.it.md)
 
-## Categoria
+## Category
 
-Comportamentali
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
 
-## Difficoltà
+## Difficulty
 
 Principiante
 
-## In una frase
+## In One Sentence
 
 Attraversa una collezione tramite un protocollo stabile.
 
-## Il problema
+## The Problem
 
 Il client deve leggere una playlist senza accedere alla memoria privata.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 for (std::size_t i = 0; i < tracks.size(); ++i) {
@@ -28,33 +28,39 @@ for (std::size_t i = 0; i < tracks.size(); ++i) {
 }
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-Gli indici su un vector pubblico espongono la rappresentazione e distribuiscono i controlli dei limiti.
+Gli indici su un std::vector public espongono la rappresentazione e distribuiscono i controlli dei limiti.
 
-## Idea centrale
+## The Idea
 
-Fornisci begin, end e un iteratore con dereferenziazione, incremento e uguaglianza.
+Fornisci begin, end e un iterator con dereferenziazione, incremento e uguaglianza.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Segui un percorso museale senza conoscere il database interno delle sale.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Iteratore](../../assets/diagrams/iterator.svg)
+![Iterator](../../assets/diagrams/iterator.svg)
 
 ```text
 range-for client  -->  Playlist::Iterator  -->  private tracks
 ```
 
-## Partecipanti
+## Participants
 
-Playlist possiede le tracce; Iterator prende in prestito il vector e conserva una posizione. Range-for è il client; static_assert verifica forward_iterator di C++20.
+Playlist possiede le tracce; Iterator prende in prestito il container std::vector e conserva una posizione. Range-for è il client; static_assert verifica forward_iterator di C++20.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Aggregate`](../../GLOSSARY.md#aggregate) — La raccolta che fornisce accesso tramite iterator. Qui: `Playlist`.
+- [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — Un'implementation che conserva una posizione di attraversamento per un particolare Aggregate. Qui: `Playlist::Iterator`.
+- [`forward iterator`](../../GLOSSARY.md#forward-iterator) — Un iterator con avanzamento e garanzia multipass: copie indipendenti possono percorrere lo stesso intervallo. Qui: `std::forward_iterator`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <cstddef>
@@ -91,7 +97,7 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Track 7
@@ -99,47 +105,60 @@ Track 12
 Track 18
 ```
 
-## Quando usarlo
+## When to Use
 
-Preferisci iteratori standard o ranges per esporre il percorso senza esporre lo storage.
+Preferisci iterator standard o ranges per esporre il percorso senza esporre lo storage.
 
-## Quando NON usarlo
+### Use cases
 
-Evita un iteratore personalizzato quando bastano const_iterator esistenti o un range; qui è didattico.
+Attraversamento di container e alberi; la categoria deve rispettare operazioni e complessità reali.
 
-## Vantaggi
+## When NOT to Use
 
-Gli algoritmi condividono un protocollo e più iteratori mantengono posizioni indipendenti.
+Evita un iterator personalizzato quando bastano const_iterator esistenti o un range; qui è didattico.
 
-## Svantaggi e compromessi
+## Advantages
 
-L'iteratore non prolunga la vita della collezione. Spostare o distruggere Playlist invalida le premesse; dereferenziare end non è valido.
+Gli algorithm condividono un protocollo e più iterator mantengono posizioni indipendenti.
 
-## Applicazioni tecniche
+## Trade-offs
 
-Attraversamento di contenitori e alberi; la categoria deve rispettare operazioni e complessità reali.
+L'iterator non prolunga la [`lifetime`](../../GLOSSARY.md#lifetime) (L'intervallo in cui un object esiste e può essere usato secondo le sue regole) della raccolta. Spostare o distruggere Playlist invalida le premesse; dereferenziare end non è valido.
 
-## Pattern correlati
+## Related Patterns
 
-[composite](../../structural/composite/README.it.md) · [visitor](../visitor/README.it.md)
+[Composite](../../structural/composite/README.it.md) · [Visitor](../visitor/README.it.md)
 
-## Confusione comune
+## Common Confusion
 
 Visitor seleziona operazioni in base al tipo, Iterator gestisce il percorso senza conoscere l'elaborazione.
 
-## Domanda da colloquio
+## Terms to Remember
 
-Perché l'uguaglianza confronta anche il puntatore al vector oltre all'indice?
+- `Iterator` — Attraversa una collezione tramite un protocollo stabile.
+- `Aggregate` — La raccolta che fornisce accesso tramite iterator. Esempio: `Playlist`.
+- `Concrete Iterator` — Un'implementation che conserva una posizione di attraversamento per un particolare Aggregate. Esempio: `Playlist::Iterator`.
+- `forward iterator` — Un iterator con avanzamento e garanzia multipass: copie indipendenti possono percorrere lo stesso intervallo. Esempio: `std::forward_iterator`.
 
-## Piccola sfida
+## Interview Vocabulary
 
-Prova una playlist vuota e due iteratori indipendenti: avanzarne uno non deve muovere l'altro.
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — Proteggere rappresentazione interna e invarianti mediante operazioni controllate.
+- [`iterator invalidation`](../../GLOSSARY.md#iterator-invalidation) — Un'operazione rende un iterator non più valido per l'uso previsto.
+- [`generic programming`](../../GLOSSARY.md#generic-programming) — Scrivere algorithm basati sui requisiti dei tipi invece che su un solo tipo concreto.
 
-## Riepilogo
+## Interview Question
+
+Perché l'uguaglianza confronta anche il pointer al std::vector oltre all'indice?
+
+## Mini Challenge
+
+Prova una playlist vuota e due iterator indipendenti: avanzarne uno non deve muovere l'altro.
+
+## Quick Summary
 
 - **Problema:** Il client deve leggere una playlist senza accedere alla memoria privata.
-- **Soluzione:** Fornisci begin, end e un iteratore con dereferenziazione, incremento e uguaglianza.
-- **Compromesso:** L'iteratore non prolunga la vita della collezione. Spostare o distruggere Playlist invalida le premesse; dereferenziare end non è valido.
-- **Da ricordare:** Percorri i dati senza aprire il contenitore.
+- **Soluzione:** Fornisci begin, end e un iterator con dereferenziazione, incremento e uguaglianza.
+- **Trade-off:** L'iterator non prolunga la lifetime della raccolta. Spostare o distruggere Playlist invalida le premesse; dereferenziare end non è valido.
+- **Da ricordare:** Percorri i dati senza aprire il container.
 
 [Precedente](../../behavioral/interpreter/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/mediator/README.it.md)

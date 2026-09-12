@@ -6,7 +6,7 @@
 
 ## Category
 
-Creational
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
 
 ## Difficulty
 
@@ -20,20 +20,20 @@ Create an independent object by cloning an existing configured object.
 
 A game needs several enemies based on a configured template whose concrete type the spawning code does not know.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 Guard another;
 another.rename("gate guard"); // must repeat any custom setup
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Reconstructing a default Guard repeats setup and loses any custom equipment on the template.
 
 ## The Idea
 
-Expose clone on Enemy. Guard copies its value members and returns a unique_ptr to an independent object.
+Expose clone on Enemy. Guard copies its value members and returns a [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (A smart pointer with exclusive ownership that releases its object when the owner is destroyed) to an independent object.
 
 ## Real-World Analogy
 
@@ -52,6 +52,12 @@ Client  -->  Enemy::clone()  -->  independent Guard
 ## Participants
 
 Enemy defines polymorphic cloning; Guard implements the copy; the client owns the clone and changes its name.
+
+Canonical roles in this example:
+
+- [`Concrete Prototype`](../../GLOSSARY.md#concrete-prototype) — An object whose clone operation produces another object from its configured values. Here: `Guard`.
+- [`deep copy`](../../GLOSSARY.md#deep-copy) — Copying owned nested data so the new object does not share that mutable data with the original. Here: `Guard::clone`.
+- [`value semantics`](../../GLOSSARY.md#value-semantics) — Copies behave as independent values according to the type's contract. Here: `name_, equipment_`.
 
 ## Modern C++20 Example
 
@@ -94,11 +100,15 @@ template: 2 items
 gate guard: 2 items
 ```
 
-## When to Use It
+## When to Use
 
-Use it when runtime objects carry useful configuration and clients should not reconstruct their concrete types.
+Use it when [`runtime`](../../GLOSSARY.md#runtime) (The period when a compiled program is executing) objects carry useful configuration and clients should not reconstruct their concrete types.
 
-## When NOT to Use It
+### Use cases
+
+Game entity templates and editable document presets fit; this example copies a string and std::vector with value semantics.
+
+## When NOT to Use
 
 Avoid it when ordinary value copying already expresses the requirement clearly.
 
@@ -106,25 +116,34 @@ Avoid it when ordinary value copying already expresses the requirement clearly.
 
 Configured state can be reused without exposing each construction step to the client.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 Pointers require a deliberate deep-versus-shared-copy policy. Copying live sockets or unique external resources may be impossible or misleading.
 
-## Technical Use Cases
-
-Game entity templates and editable document presets fit; this example copies a string and vector with value semantics.
-
 ## Related Patterns
 
-[abstract-factory](../abstract-factory/README.md) · [memento](../../behavioral/memento/README.md)
+[Abstract Factory](../abstract-factory/README.md) · [Memento](../../behavioral/memento/README.md)
 
 ## Common Confusion
 
 Memento restores a previous state of an object. Prototype creates another object; a copy constructor alone does not provide polymorphic cloning.
 
+## Terms to Remember
+
+- `Prototype` — Create an independent object by cloning an existing configured object.
+- `Concrete Prototype` — An object whose clone operation produces another object from its configured values. Example: `Guard`.
+- `deep copy` — Copying owned nested data so the new object does not share that mutable data with the original. Example: `Guard::clone`.
+- `value semantics` — Copies behave as independent values according to the type's contract. Example: `name_, equipment_`.
+
+## Interview Vocabulary
+
+- [`object creation`](../../GLOSSARY.md#object-creation) — Choosing a concrete type and establishing an object's initial values and lifetime.
+- [`polymorphism`](../../GLOSSARY.md#polymorphism) — Using one interface with different implementations; C++ supports runtime and compile-time forms.
+- [`ownership`](../../GLOSSARY.md#ownership) — Responsibility for keeping a resource alive and eventually releasing it.
+
 ## Interview Question
 
-If equipment becomes vector<shared_ptr<Item>>, will clone still be independent? Explain the aliasing.
+If equipment becomes `std::vector<std::shared_ptr<Item>>`, will clone still be independent? Explain the aliasing.
 
 ## Mini Challenge
 
@@ -133,7 +152,7 @@ Add editable equipment and verify that changing the clone's equipment leaves the
 ## Quick Summary
 
 - **Problem:** A game needs several enemies based on a configured template whose concrete type the spawning code does not know.
-- **Solution:** Expose clone on Enemy. Guard copies its value members and returns a unique_ptr to an independent object.
+- **Solution:** Expose clone on Enemy. Guard copies its value members and returns a std::unique_ptr to an independent object.
 - **Trade-off:** Pointers require a deliberate deep-versus-shared-copy policy. Copying live sockets or unique external resources may be impossible or misleading.
 - **Remember:** Copy the setup, not the identity.
 

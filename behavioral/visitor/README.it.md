@@ -1,59 +1,65 @@
-# Visitatore
+# Visitor
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../behavioral/template-method/README.it.md) · [Categoria](../README.it.md)
 
-## Categoria
+## Category
 
-Comportamentali
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
 
-## Difficoltà
+## Difficulty
 
 Avanzato
 
-## In una frase
+## In One Sentence
 
-Aggiungi operazioni a tipi di elemento stabili tramite un visitatore separato.
+Aggiungi operazioni a tipi di elemento stabili tramite un Visitor separato.
 
-## Il problema
+## The Problem
 
-Un carrello contiene libri e cibo; nuove operazioni come imposte ed export non devono riempire ogni classe.
+Un carrello contiene libri e cibo; nuove operazioni come imposte ed export non devono riempire ogni class.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 // For each new operation, add another virtual method to every Item.
 // tax(), export_json(), print_label(), ...
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-Aggiungere metodi virtuali per ogni attività obbliga a modificare tutti gli elementi.
+Aggiungere method virtual per ogni attività obbliga a modificare tutti gli elementi.
 
-## Idea centrale
+## The Idea
 
 Ogni Item concreto chiama da accept l'overload Visitor::visit corrispondente; Tax realizza l'operazione.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Un ispettore visita stazioni diverse e applica una lista specifica al tipo.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Visitatore](../../assets/diagrams/visitor.svg)
+![Visitor](../../assets/diagrams/visitor.svg)
 
 ```text
 Item::accept(visitor)  -->  Visitor::visit(type)  -->  Tax(Book) / Tax(Food)
 ```
 
-## Partecipanti
+## Participants
 
 Item definisce accept; Book e Food selezionano l'overload; Visitor elenca i tipi; Tax accumula il risultato e il carrello possiede gli elementi.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Element`](../../GLOSSARY.md#element) — Il contratto degli object che accettano un Visitor. Qui: `Item`.
+- [`Concrete Element`](../../GLOSSARY.md#concrete-element) — Un'implementation di Element che seleziona l'overload di Visitor adatto al proprio tipo. Qui: `Book, Food`.
+- [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — Un'implementation di Visitor con un'operazione per ogni tipo Element supportato. Qui: `Tax`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -94,53 +100,66 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Tax: 4
 ```
 
-## Quando usarlo
+## When to Use
 
 Usalo con tipi stabili e operazioni nuove frequenti.
 
-## Quando NON usarlo
-
-Evitalo se aumentano spesso i tipi o esporre dettagli rompe l'incapsulamento.
-
-## Vantaggi
-
-Una nuova operazione richiede un visitatore, senza cambiare gli elementi esistenti.
-
-## Svantaggi e compromessi
-
-Un nuovo tipo richiede modifiche al contratto Visitor e a tutti i visitatori. Le aliquote intere sono illustrative, non fiscali reali; l'arrotondamento richiede una politica.
-
-## Applicazioni tecniche
+### Use cases
 
 Analisi di AST ed export di documenti con tipi stabili; std::variant e std::visit sono un'alternativa per insiemi chiusi.
 
-## Pattern correlati
+## When NOT to Use
 
-[composite](../../structural/composite/README.it.md) · [iterator](../iterator/README.it.md)
+Evitalo se aumentano spesso i tipi o esporre dettagli rompe l'[`encapsulation`](../../GLOSSARY.md#encapsulation) (Proteggere rappresentazione interna e invarianti mediante operazioni controllate).
 
-## Confusione comune
+## Advantages
+
+Una nuova operazione richiede un Visitor, senza cambiare gli elementi esistenti.
+
+## Trade-offs
+
+Un nuovo tipo richiede modifiche al contratto Visitor e a tutti i Visitor. Le aliquote intere sono illustrative, non fiscali reali; l'arrotondamento richiede una politica.
+
+## Related Patterns
+
+[Composite](../../structural/composite/README.it.md) · [Iterator](../iterator/README.it.md)
+
+## Common Confusion
 
 Iterator attraversa, Visitor seleziona operazioni per tipo, Composite può fornire l'albero.
 
-## Domanda da colloquio
+## Terms to Remember
 
-Perché visit(*this) dentro Book sceglie l'overload Book mentre un riferimento Item non basta?
+- `Visitor` — Aggiungi operazioni a tipi di elemento stabili tramite un Visitor separato.
+- `Element` — Il contratto degli object che accettano un Visitor. Esempio: `Item`.
+- `Concrete Element` — Un'implementation di Element che seleziona l'overload di Visitor adatto al proprio tipo. Esempio: `Book, Food`.
+- `Concrete Visitor` — Un'implementation di Visitor con un'operazione per ogni tipo Element supportato. Esempio: `Tax`.
 
-## Piccola sfida
+## Interview Vocabulary
+
+- [`double dispatch`](../../GLOSSARY.md#double-dispatch) — Selezionare behavior usando due tipi a runtime; il Visitor classico combina due chiamate virtual con overload resolution.
+- [`overload resolution`](../../GLOSSARY.md#overload-resolution) — La scelta a compile time fra function omonime in base ai tipi degli argomenti.
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — Mirare a open for extension, closed for modification lungo un confine scelto e utile.
+
+## Interview Question
+
+Perché visit(*this) dentro Book sceglie l'overload Book mentre un reference Item non basta?
+
+## Mini Challenge
 
 Aggiungi Label senza modificare Book e Food, poi un terzo tipo e conta le modifiche.
 
-## Riepilogo
+## Quick Summary
 
-- **Problema:** Un carrello contiene libri e cibo; nuove operazioni come imposte ed export non devono riempire ogni classe.
+- **Problema:** Un carrello contiene libri e cibo; nuove operazioni come imposte ed export non devono riempire ogni class.
 - **Soluzione:** Ogni Item concreto chiama da accept l'overload Visitor::visit corrispondente; Tax realizza l'operazione.
-- **Compromesso:** Un nuovo tipo richiede modifiche al contratto Visitor e a tutti i visitatori. Le aliquote intere sono illustrative, non fiscali reali; l'arrotondamento richiede una politica.
+- **Trade-off:** Un nuovo tipo richiede modifiche al contratto Visitor e a tutti i Visitor. Le aliquote intere sono illustrative, non fiscali reali; l'arrotondamento richiede una politica.
 - **Da ricordare:** Tipi stabili, operazioni nuove.
 
 [Precedente](../../behavioral/template-method/README.it.md) · [Categoria](../README.it.md)

@@ -1,59 +1,65 @@
-# Istanza unica
+# Singleton
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../creational/prototype/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/adapter/README.it.md)
 
-## Categoria
+## Category
 
-Creazionali
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
 
-## Difficoltà
+## Difficulty
 
 Intermedio
 
-## In una frase
+## In One Sentence
 
-Limita un tipo a un'unica istanza accessibile, accettando il costo dello stato globale.
+Limita un tipo a un'unica instance accessibile, accettando il costo dello state globale.
 
-## Il problema
+## The Problem
 
 Due contatori creati separatamente dividono un totale che dovrebbe appartenere all'intero processo.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 Metrics first;
 Metrics second; // separate counters; assumes a public constructor
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-Un costruttore pubblico consente a ogni client di creare il proprio contatore e perdere la condivisione desiderata.
+Un constructor public consente a ogni client di creare il proprio contatore e perdere la condivisione desiderata.
 
-## Idea centrale
+## The Idea
 
-Nascondi la costruzione, vieta la copia e restituisci un oggetto statico locale da instance.
+Nascondi la costruzione, vieta la copia e restituisci un object statico locale da instance.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Un piccolo ufficio usa un solo registro visitatori, condiviso da tutti gli sportelli.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Istanza unica](../../assets/diagrams/singleton.svg)
+![Singleton](../../assets/diagrams/singleton.svg)
 
 ```text
 Client A + B  -->  Metrics::instance()  -->  one Metrics
 ```
 
-## Partecipanti
+## Participants
 
-Metrics controlla il proprio ciclo di vita e conserva il conteggio. instance restituisce un riferimento non proprietario, da non eliminare.
+Metrics controlla il proprio [`lifetime`](../../GLOSSARY.md#lifetime) (L'intervallo in cui un object esiste e può essere usato secondo le sue regole) e conserva il conteggio. instance restituisce un non-owning reference, da non eliminare.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`instance`](../../GLOSSARY.md#instance) — Un particolare object appartenente a un tipo. Qui: `Metrics::instance()`.
+- [`global state`](../../GLOSSARY.md#global-state) — Dati accessibili da molte parti del programma, le cui modifiche possono influire su codice distante. Qui: `Metrics::requests_`.
+- [`thread-safe initialization`](../../GLOSSARY.md#thread-safe-initialization) — Inizializzazione protetta dalla costruzione concorrente; non rende thread-safe le operazioni successive. Qui: `static Metrics metrics`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -81,54 +87,67 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Same instance: true
 Requests: 2
 ```
 
-## Quando usarlo
+## When to Use
 
-Consideralo solo se l'unicità è davvero un vincolo del processo e il ciclo di vita è appropriato.
+Consideralo solo se l'unicità è davvero un vincolo del processo e il lifetime è appropriato.
 
-## Quando NON usarlo
-
-Evitalo per rendere comodo l'accesso alle dipendenze: passa un riferimento esplicito per isolare i test.
-
-## Vantaggi
-
-L'inizializzazione ha un punto definito e tutti raggiungono lo stesso oggetto.
-
-## Svantaggi e compromessi
-
-L'accesso globale nasconde dipendenze e mescola i test. L'inizializzazione statica locale è sicura fra thread, record no: serve sincronizzazione. Anche l'ordine di distruzione può contare.
-
-## Applicazioni tecniche
+### Use cases
 
 Il contatore diagnostico a thread singolo mostra il meccanismo, non una raccomandazione per metriche di produzione.
 
-## Pattern correlati
+## When NOT to Use
 
-[abstract-factory](../abstract-factory/README.it.md) · [facade](../../structural/facade/README.it.md)
+Evitalo per rendere comodo l'accesso alle dependency: passa un reference esplicito per isolare i test.
 
-## Confusione comune
+## Advantages
 
-Un solo oggetto gestito tramite dependency injection non implica Singleton: il tipo può non imporre l'unicità.
+L'inizializzazione ha un punto definito e tutti raggiungono lo stesso object.
 
-## Domanda da colloquio
+## Trade-offs
+
+L'accesso globale nasconde dependency e mescola i test. L'inizializzazione statica locale è sicura fra thread, record no: serve sincronizzazione. Anche l'ordine di distruzione può contare.
+
+## Related Patterns
+
+[Abstract Factory](../abstract-factory/README.it.md) · [Facade](../../structural/facade/README.it.md)
+
+## Common Confusion
+
+Un solo object gestito tramite [`dependency injection`](../../GLOSSARY.md#dependency-injection) (Fornire una dependency dall'esterno invece di sceglierla o costruirla nel codice che la usa) non implica Singleton: il tipo può non imporre l'unicità.
+
+## Terms to Remember
+
+- `Singleton` — Limita un tipo a un'unica instance accessibile, accettando il costo dello state globale.
+- `instance` — Un particolare object appartenente a un tipo. Esempio: `Metrics::instance()`.
+- `global state` — Dati accessibili da molte parti del programma, le cui modifiche possono influire su codice distante. Esempio: `Metrics::requests_`.
+- `thread-safe initialization` — Inizializzazione protetta dalla costruzione concorrente; non rende thread-safe le operazioni successive. Esempio: `static Metrics metrics`.
+
+## Interview Vocabulary
+
+- [`dependency injection`](../../GLOSSARY.md#dependency-injection) — Fornire una dependency dall'esterno invece di sceglierla o costruirla nel codice che la usa.
+- [`testability`](../../GLOSSARY.md#testability) — Quanto è facile isolare, esercitare e verificare un behavior.
+- [`lifetime`](../../GLOSSARY.md#lifetime) — L'intervallo in cui un object esiste e può essere usato secondo le sue regole.
+
+## Interview Question
 
 L'inizializzazione sicura fra thread rende sicuro requests_? Distingui le operazioni.
 
-## Piccola sfida
+## Mini Challenge
 
 Passa esplicitamente un contatore a due job, poi prova due contatori isolati.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Due contatori creati separatamente dividono un totale che dovrebbe appartenere all'intero processo.
-- **Soluzione:** Nascondi la costruzione, vieta la copia e restituisci un oggetto statico locale da instance.
-- **Compromesso:** L'accesso globale nasconde dipendenze e mescola i test. L'inizializzazione statica locale è sicura fra thread, record no: serve sincronizzazione. Anche l'ordine di distruzione può contare.
-- **Da ricordare:** Una sola istanza può creare molti problemi.
+- **Soluzione:** Nascondi la costruzione, vieta la copia e restituisci un object statico locale da instance.
+- **Trade-off:** L'accesso globale nasconde dependency e mescola i test. L'inizializzazione statica locale è sicura fra thread, record no: serve sincronizzazione. Anche l'ordine di distruzione può contare.
+- **Da ricordare:** Una sola instance può creare molti problemi.
 
 [Precedente](../../creational/prototype/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/adapter/README.it.md)

@@ -1,4 +1,4 @@
-# Structural
+# Structural Pattern
 
 [Design-Patterns-23](../README.md)
 

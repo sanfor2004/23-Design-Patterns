@@ -1,59 +1,65 @@
-# المصنع المجرّد
+# Abstract Factory
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [الفئة](../README.ar-EG.md) · [التالي](../../creational/builder/README.ar-EG.md)
 
-## الفئة
+## Category
 
-الإنشاء
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
 
-## المستوى
+## Difficulty
 
 متوسط
 
-## في جملة واحدة
+## In One Sentence
 
-اعمل مجموعة Objects متوافقة من خلال Factory واحدة.
+اعمل مجموعة objects متوافقة من خلال Factory واحدة.
 
-## المشكلة
+## The Problem
 
-شاشة الإعدادات محتاجة Buttons وPanels من نفس الـ Theme.
+شاشة الإعدادات محتاجة Buttons و Panels من نفس الـ Theme.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 auto button = DarkButton{};
 auto panel = LightPanel{}; // mixed theme
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 لما كل مكان يعمل الـ Widget بنفسه، ممكن Button غامق يطلع جنب Panel فاتح. كل Client بيضطر يفتكر قواعد التوافق.
 
-## الفكرة الأساسية
+## The Idea
 
-مرّر Theme واحدة لـ render. هي اللي بتعمل النوعين، فالـ Client مش محتاج يسمي الكلاسات الفعلية.
+مرّر Theme واحدة لـ render. هي اللي بتعمل النوعين، فالـ Client مش محتاج يسمي الـ concrete classes.
 
-## مثال من الحياة
+## Real-World Analogy
 
 زي ما تطلب طقم أثاث كامل بدل ما تختار كل قطعة لوحدها.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![المصنع المجرّد](../../assets/diagrams/abstract-factory.svg)
+![Abstract Factory](../../assets/diagrams/abstract-factory.svg)
 
 ```text
 render()  -->  Theme  -->  Button + Panel
 ```
 
-## الأدوار
+## Participants
 
-Theme بتحدد المجموعة؛ DarkTheme وLightTheme بيعملوها. Button وPanel واجهات المنتجات، وrender بيستخدمهم.
+Theme بتحدد المجموعة؛ DarkTheme و LightTheme بيعملوها. Button و Panel interfaces المنتجات، و render بيستخدمهم.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. هنا: `Button, Panel`.
+- [`Concrete Product`](../../GLOSSARY.md#concrete-product) — implementation فعلية لعقد Product. هنا: `DarkButton, LightButton, DarkPanel, LightPanel`.
+- [`Concrete Factory`](../../GLOSSARY.md#concrete-factory) — implementation بتعمل عيلة Product متوافقة. هنا: `DarkTheme, LightTheme`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -104,54 +110,67 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 dark button + dark panel
 light button + light panel
 ```
 
-## إمتى تستخدمه
+## When to Use
 
-استخدمه لما كذا نوع من المنتجات لازم يتغيروا مع بعض، والـ Client ماينفعش يختار الكلاسات بنفسه.
+استخدمه لما كذا نوع من المنتجات لازم يتغيروا مع بعض، والـ Client ماينفعش يختار الـ classes بنفسه.
 
-## إمتى ما تستخدموش
-
-بلاش لو عندك نوع واحد ثابت، أو لو الاختيارات المستقلة مطلوبة أصلاً.
-
-## المميزات
-
-تقدر تبدّل المجموعة كلها من غير ما تغيّر خطوات العرض.
-
-## العيوب والمقايضات
-
-إضافة منتج زي Slider بتحتاج تعديل كل Factory. الواجهة لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
-
-## استخدامات تقنية
+### Use cases
 
 ينفع مع Themes أو مجموعات Database Drivers المتوافقة؛ المثال هنا بيطبع أسماء بس.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[factory-method](../factory-method/README.ar-EG.md) · [builder](../builder/README.ar-EG.md)
+بلاش لو عندك نوع واحد ثابت، أو لو الاختيارات المستقلة مطلوبة أصلاً.
 
-## لخبطة شائعة
+## Advantages
+
+تقدر تبدّل المجموعة كلها من غير ما تغيّر خطوات العرض.
+
+## Trade-offs
+
+إضافة منتج زي Slider بتحتاج تعديل كل Factory. الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
+
+## Related Patterns
+
+[Factory Method](../factory-method/README.ar-EG.md) · [Builder](../builder/README.ar-EG.md)
+
+## Common Confusion
 
 Factory Method بتغيّر خطوة إنشاء واحدة. Abstract Factory بتنسّق أنواع منتجات مرتبطة، وممكن تستخدم Factory Methods جواها.
 
-## سؤال انترفيو
+## Terms to Remember
 
-إيه اللي بيتغير لما تضيف Theme، وإيه اللي بيتغير لما تضيف Widget جديدة؟
+- `Abstract Factory` — اعمل مجموعة objects متوافقة من خلال Factory واحدة.
+- `Product` — العقد بتاع الـ object اللي كود الإنشاء بيرجعها. مثال: `Button, Panel`.
+- `Concrete Product` — implementation فعلية لعقد Product. مثال: `DarkButton, LightButton, DarkPanel, LightPanel`.
+- `Concrete Factory` — implementation بتعمل عيلة Product متوافقة. مثال: `DarkTheme, LightTheme`.
 
-## تحدي صغير
+## Interview Vocabulary
 
-ضيف مجموعة High Contrast، وبعدها ضيف Slider وقارن حجم التعديلات.
+- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز القيم الأولية وبدء lifetime بتاعة object.
+- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — اعتمد على العقد المعلن بدل تفاصيل implementation بعينها.
+- [`encapsulate what varies`](../../GLOSSARY.md#encapsulate-what-varies) — حط القرار اللي بيتغير ورا حدود ثابتة وواضحة.
 
-## الخلاصة
+## Interview Question
 
-- **المشكلة:** شاشة الإعدادات محتاجة Buttons وPanels من نفس الـ Theme.
-- **الحل:** مرّر Theme واحدة لـ render. هي اللي بتعمل النوعين، فالـ Client مش محتاج يسمي الكلاسات الفعلية.
-- **المقايضة:** إضافة منتج زي Slider بتحتاج تعديل كل Factory. الواجهة لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
+إيه اللي بيتغير لما تضيف Theme ، وإيه اللي بيتغير لما تضيف Widget جديدة؟
+
+## Mini Challenge
+
+ضيف مجموعة High Contrast ، وبعدها ضيف Slider وقارن حجم التعديلات.
+
+## Quick Summary
+
+- **المشكلة:** شاشة الإعدادات محتاجة Buttons و Panels من نفس الـ Theme.
+- **الحل:** مرّر Theme واحدة لـ render. هي اللي بتعمل النوعين، فالـ Client مش محتاج يسمي الـ concrete classes.
+- **Trade-off:** إضافة منتج زي Slider بتحتاج تعديل كل Factory. الـ interface لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
 - **افتكر:** Factory واحدة، طقم متوافق.
 
 [الفئة](../README.ar-EG.md) · [التالي](../../creational/builder/README.ar-EG.md)

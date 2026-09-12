@@ -6,7 +6,7 @@
 
 ## Category
 
-Creational
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
 
 ## Difficulty
 
@@ -20,7 +20,7 @@ Let a subclass choose the object used by a shared workflow.
 
 An alert job always sends a completion message, but different environments need different senders.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 void run() {
@@ -29,9 +29,11 @@ void run() {
 }
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Hardcoding EmailSender inside run couples the workflow to email; copying run for console delivery duplicates the workflow.
+
+This is `tight coupling`: the workflow knows a concrete sender type, so changing delivery can require changing that workflow.
 
 ## The Idea
 
@@ -53,7 +55,13 @@ AlertJob::run  -->  make_sender()  -->  Sender
 
 ## Participants
 
-AlertJob owns the workflow. EmailJob and ConsoleJob override creation. Sender supplies the operation and the returned unique_ptr owns the product.
+AlertJob owns the workflow. EmailJob and ConsoleJob override creation. Sender supplies the operation and the returned [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (A smart pointer with exclusive ownership that releases its object when the owner is destroyed) owns the product.
+
+Canonical roles in this example:
+
+- [`Creator`](../../GLOSSARY.md#creator) — The base role that owns a workflow and declares its creation operation. Here: `AlertJob`.
+- [`Concrete Creator`](../../GLOSSARY.md#concrete-creator) — A Creator subclass that supplies a particular Product. Here: `EmailJob, ConsoleJob`.
+- [`Product`](../../GLOSSARY.md#product) — The contract of an object returned by creation code. Here: `Sender`.
 
 ## Modern C++20 Example
 
@@ -101,11 +109,15 @@ Email: build complete
 Console: build complete
 ```
 
-## When to Use It
+## When to Use
 
-Use it when an existing inheritance-based workflow needs an extensible creation step.
+Use it when an existing [`inheritance`](../../GLOSSARY.md#inheritance) (Defining a derived class from a base class to reuse or specialize its contract and implementation)-based workflow needs an extensible creation step.
 
-## When NOT to Use It
+### Use cases
+
+Pluggable exporters and environment-specific job runners are plausible applications; the senders here only print text.
+
+## When NOT to Use
 
 Avoid it when passing a ready-made Sender into a function is sufficient; inheritance would add needless structure.
 
@@ -113,21 +125,31 @@ Avoid it when passing a ready-made Sender into a function is sufficient; inherit
 
 The workflow stays in one place while product selection varies.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 Each new selection may need a subclass. Calling virtual creation from a base constructor would not dispatch to a derived override as intended.
 
-## Technical Use Cases
-
-Pluggable exporters and environment-specific job runners are plausible applications; the senders here only print text.
-
 ## Related Patterns
 
-[abstract-factory](../abstract-factory/README.md) · [template-method](../../behavioral/template-method/README.md)
+[Abstract Factory](../abstract-factory/README.md) · [Template Method](../../behavioral/template-method/README.md)
 
 ## Common Confusion
 
 A free function containing a switch is a simple factory, not this GoF subclass extension point. Abstract Factory instead coordinates a family.
+
+## Terms to Remember
+
+- `Factory Method` — Let a subclass choose the object used by a shared workflow.
+- `Creator` — The base role that owns a workflow and declares its creation operation. Example: `AlertJob`.
+- `Concrete Creator` — A Creator subclass that supplies a particular Product. Example: `EmailJob, ConsoleJob`.
+- `Product` — The contract of an object returned by creation code. Example: `Sender`.
+
+## Interview Vocabulary
+
+- [`object creation`](../../GLOSSARY.md#object-creation) — Choosing a concrete type and establishing an object's initial values and lifetime.
+- [`tight coupling`](../../GLOSSARY.md#tight-coupling) — Parts depend heavily on each other's concrete details, so changes tend to spread.
+- [`inheritance`](../../GLOSSARY.md#inheritance) — Defining a derived class from a base class to reuse or specialize its contract and implementation.
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — Aim for open for extension, closed for modification at a useful, chosen boundary.
 
 ## Interview Question
 

@@ -1,58 +1,64 @@
-# المحوّل
+# Adapter
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../creational/singleton/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/bridge/README.ar-EG.md)
 
-## الفئة
+## Category
 
-التركيب
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
 
-## المستوى
+## Difficulty
 
 مبتدئ
 
-## في جملة واحدة
+## In One Sentence
 
-حوّل واجهة موجودة للشكل اللي الـ Client مستنيه.
+حوّل [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) موجودة للشكل اللي الـ Client مستنيه.
 
-## المشكلة
+## The Problem
 
-لوحة العرض مستنية Celsius، بس الحساس الموجود بيرجع Fahrenheit.
+لوحة العرض مستنية Celsius ، بس الحساس الموجود بيرجع Fahrenheit.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 double displayed = sensor.fahrenheit(); // UI expects Celsius
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 تمرير الرقم زي ما هو بيعرض وحدة غلط. وتكرار معادلة التحويل في كذا مكان بيكرر قاعدة التوافق.
 
-## الفكرة الأساسية
+## The Idea
 
 اعمل Temperature حوالين LegacyThermometer مستعارة، وحوّل الوحدات عند الحد الفاصل.
 
-## مثال من الحياة
+## Real-World Analogy
 
 زي وصلة كهربا للسفر؛ هنا الوصلة بتحوّل معنى القيمة كمان.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![المحوّل](../../assets/diagrams/adapter.svg)
+![Adapter](../../assets/diagrams/adapter.svg)
 
 ```text
 display(Temperature)  -->  CelsiusAdapter  -->  LegacyThermometer
 ```
 
-## الأدوار
+## Participants
 
-Temperature هي الواجهة المطلوبة، وLegacyThermometer هي القديمة. CelsiusAdapter بتستعيرها، وdisplay بتعرف Temperature بس.
+Temperature هي الـ interface المطلوبة، و LegacyThermometer هي القديمة. CelsiusAdapter بتستعيرها، و display بتعرف Temperature بس.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Target`](../../GLOSSARY.md#target) — الـ interface اللي Client متوقع يتعامل معاها. هنا: `Temperature`.
+- [`Adaptee`](../../GLOSSARY.md#adaptee) — الـ object الموجودة اللي interface بتاعتها محتاجة تتوافق مع المطلوب. هنا: `LegacyThermometer`.
+- [`interface`](../../GLOSSARY.md#interface) — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. هنا: `Temperature`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -82,53 +88,66 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 25 C
 ```
 
-## إمتى تستخدمه
+## When to Use
 
 استخدمه عند التعامل مع API موجودة مش قادر أو مش مناسب تغيّرها.
 
-## إمتى ما تستخدموش
-
-بلاش لو أنت مالك الطرفين وتوحيد الواجهة أبسط.
-
-## المميزات
-
-التحويل في مكان واحد، والعرض يقبل أي تنفيذ لـ Temperature.
-
-## العيوب والمقايضات
-
-تغيير أسماء الدوال بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ Adapter لأن الـ Reference مش مالكة.
-
-## استخدامات تقنية
+### Use cases
 
 مناسب لربط APIs قديمة وتحويل وحدات؛ الدقة والتعامل مع الأخطاء محتاجين اتفاق واضح.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[facade](../facade/README.ar-EG.md) · [bridge](../bridge/README.ar-EG.md)
+بلاش لو أنت مالك الطرفين وتوحيد الـ interface أبسط.
 
-## لخبطة شائعة
+## Advantages
 
-Facade بتبسّط Subsystem. Adapter بتخلّي واجهة بعينها متوافقة مع عقد مطلوب.
+التحويل في مكان واحد، والعرض يقبل أي [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد interface) لـ Temperature.
 
-## سؤال انترفيو
+## Trade-offs
 
-هل ينفع دايماً تحافظ على السلوك لو المصدر Async والواجهة المطلوبة Sync؟
+تغيير أسماء الـ methods بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ Adapter لأن الـ reference مش مالكة.
 
-## تحدي صغير
+## Related Patterns
+
+[Facade](../facade/README.ar-EG.md) · [Bridge](../bridge/README.ar-EG.md)
+
+## Common Confusion
+
+Facade بتبسّط Subsystem. Adapter بتخلّي interface بعينها متوافقة مع عقد مطلوب.
+
+## Terms to Remember
+
+- `Adapter` — حوّل interface موجودة للشكل اللي الـ Client مستنيه.
+- `Target` — الـ interface اللي Client متوقع يتعامل معاها. مثال: `Temperature`.
+- `Adaptee` — الـ object الموجودة اللي interface بتاعتها محتاجة تتوافق مع المطلوب. مثال: `LegacyThermometer`.
+- `interface` — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. مثال: `Temperature`.
+
+## Interview Vocabulary
+
+- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — اعتمد على العقد المعلن بدل تفاصيل implementation بعينها.
+- [`delegation`](../../GLOSSARY.md#delegation) — object بتطلب من object متعاونة معاها تنفذ جزء من الشغل.
+- [`lifetime`](../../GLOSSARY.md#lifetime) — الفترة اللي الـ object موجودة فيها وينفع تستخدمها حسب قواعدها.
+
+## Interview Question
+
+هل ينفع دايماً تحافظ على الـ behavior لو المصدر Async والـ interface المطلوبة Sync ؟
+
+## Mini Challenge
 
 خلّي Fahrenheit قابلة للتغيير، واختبر نقطتي التجمد والغليان.
 
-## الخلاصة
+## Quick Summary
 
-- **المشكلة:** لوحة العرض مستنية Celsius، بس الحساس الموجود بيرجع Fahrenheit.
+- **المشكلة:** لوحة العرض مستنية Celsius ، بس الحساس الموجود بيرجع Fahrenheit.
 - **الحل:** اعمل Temperature حوالين LegacyThermometer مستعارة، وحوّل الوحدات عند الحد الفاصل.
-- **المقايضة:** تغيير أسماء الدوال بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ Adapter لأن الـ Reference مش مالكة.
+- **Trade-off:** تغيير أسماء الـ methods بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ Adapter لأن الـ reference مش مالكة.
 - **افتكر:** حوّل عند نقطة الاتصال.
 
 [السابق](../../creational/singleton/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/bridge/README.ar-EG.md)

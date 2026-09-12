@@ -6,7 +6,7 @@
 
 ## Category
 
-Structural
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
 
 ## Difficulty
 
@@ -20,14 +20,14 @@ Offer a small entry point to a subsystem's common workflow.
 
 Every checkout caller must check stock, charge payment and request shipping in the right order.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 payment.charge(20);
 shipping.dispatch(); // caller forgot to check stock
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Direct calls let callers forget stock checks or duplicate orchestration inconsistently.
 
@@ -52,6 +52,12 @@ Client  -->  Checkout::buy()  -->  Stock / Payment / Shipping
 ## Participants
 
 Stock checks availability, Payment charges, Shipping dispatches, and Checkout presents the common workflow.
+
+Canonical roles in this example:
+
+- [`subsystem`](../../GLOSSARY.md#subsystem) — A group of cooperating services or objects within a larger system. Here: `Stock, Payment, Shipping`.
+- [`interface`](../../GLOSSARY.md#interface) — The contract of operations and observable behavior offered to a caller. Here: `Checkout::buy`.
+- [`Client`](../../GLOSSARY.md#client-pattern-role) — Code that uses an interface or collaborates with a pattern's objects. Here: `main`.
 
 ## Modern C++20 Example
 
@@ -94,11 +100,15 @@ Dispatched
 Unavailable
 ```
 
-## When to Use It
+## When to Use
 
 Use it when many callers need the same useful subset of a complicated subsystem.
 
-## When NOT to Use It
+### Use cases
+
+SDK entry points and application service boundaries fit; the example has no real payment integration.
+
+## When NOT to Use
 
 Avoid it for a trivial pass-through that adds no meaningful simplification.
 
@@ -106,21 +116,30 @@ Avoid it for a trivial pass-through that adds no meaningful simplification.
 
 Callers depend on a smaller interface and a shared ordering rule.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 The facade can grow into a god object. This example is not transactional: real payment and shipping failures require compensation or another consistency strategy.
 
-## Technical Use Cases
-
-SDK entry points and application service boundaries fit; the example has no real payment integration.
-
 ## Related Patterns
 
-[adapter](../adapter/README.md) · [mediator](../../behavioral/mediator/README.md)
+[Adapter](../adapter/README.md) · [Mediator](../../behavioral/mediator/README.md)
 
 ## Common Confusion
 
 Adapter changes compatibility. Facade reduces the surface area of a subsystem and need not implement an existing interface.
+
+## Terms to Remember
+
+- `Facade` — Offer a small entry point to a subsystem's common workflow.
+- `subsystem` — A group of cooperating services or objects within a larger system. Example: `Stock, Payment, Shipping`.
+- `interface` — The contract of operations and observable behavior offered to a caller. Example: `Checkout::buy`.
+- `Client` — Code that uses an interface or collaborates with a pattern's objects. Example: `main`.
+
+## Interview Vocabulary
+
+- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — Keeping distinct kinds of responsibility apart so they can change independently.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Parts know only the small contracts needed to cooperate, limiting change propagation.
+- [`trade-off`](../../GLOSSARY.md#trade-off) — A benefit gained at the cost of another desirable property.
 
 ## Interview Question
 

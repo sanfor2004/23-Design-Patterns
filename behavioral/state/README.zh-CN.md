@@ -1,59 +1,65 @@
-# 状态
+# State
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../behavioral/observer/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/strategy/README.zh-CN.md)
 
-## 类别
+## Category
 
-行为型
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
 
-## 难度
+## Difficulty
 
 中级
 
-## 一句话说明
+## In One Sentence
 
-由对象的当前状态决定响应和状态转换。
+由 object 的当前 state 决定响应和 state transition。
 
-## 问题
+## The Problem
 
-门在开启与关闭时对同一按钮反应不同，更复杂设备还会有锁定或故障状态。
+门在开启与关闭时对同一按钮反应不同，更复杂设备还会有锁定或故障 state。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 if (open) open = false;
 else open = true; // becomes scattered as states and events grow
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
-两态切换用布尔值足够，但多个事件复制状态判断后，转换规则容易不一致。
+两态切换用布尔值足够，但多个 event 复制 state 判断后，转换规则容易不一致。
 
-## 核心思路
+## The Idea
 
-Door 把 press 委托给当前 DoorState，由状态选择下一状态。
+Door 把 press 委托给当前 DoorState，由 state 选择下一 state。
 
-## 生活类比
+## Real-World Analogy
 
 自动售货机在付款前后对同一输入做不同处理。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![状态](../../assets/diagrams/state.svg)
+![State](../../assets/diagrams/state.svg)
 
 ```text
 Door::press()  -->  DoorState  -->  Open ↔ Closed
 ```
 
-## 参与者
+## Participants
 
-Door 是上下文，DoorState 定义 press 和 name；Open、Closed 保存非拥有的后继链接，main 保证两者比 Door 活得更久。
+Door 是 Context，DoorState 定义 press 和 name；Open、Closed 保存 non-owning 的 后继链接，main 保证两者比 Door 活得更久。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`Context`](../../GLOSSARY.md#context) — 使用 Strategy 或把 behavior 委托给当前 State 的 object。 对应代码： `Door`。
+- [`State interface`](../../GLOSSARY.md#state-interface) — Context 用于委托与 state 有关的 behavior 的约定。 对应代码： `DoorState`。
+- [`Concrete State`](../../GLOSSARY.md#concrete-state) — 为某个 State 定义 behavior 和转换规则的 implementation。 对应代码： `Open, Closed`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -97,7 +103,7 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 closed
@@ -105,47 +111,60 @@ open
 closed
 ```
 
-## 何时使用
+## When to Use
 
-状态相关行为和转换分散在多个操作时使用。
+state 相关 behavior 和转换分散在多个操作时使用。
 
-## 何时不该使用
-
-简单开关或清晰的小型枚举转换表，不必换成类层次。
-
-## 优点
-
-行为按状态集中，转换可在局部检查。
-
-## 缺点与权衡
-
-增加类型和生命周期关系。状态对象在 Door 外部，转换不会销毁仍在执行的状态；复杂设计也需保持这一安全条件。
-
-## 技术应用场景
+### Use cases
 
 适合协议会话和设备流程，前提是转换规则明确。
 
-## 相关模式
+## When NOT to Use
 
-[strategy](../strategy/README.zh-CN.md) · [observer](../observer/README.zh-CN.md)
+简单开关或清晰的小型 enum 转换表，不必换成 class hierarchy。
 
-## 常见混淆
+## Advantages
 
-策略通常由调用方选择算法；状态表示生命周期，并可能自行决定转换。
+behavior 按 state 集中，转换可在局部检查。
 
-## 面试问题
+## Trade-offs
 
-这里由谁选择下个状态？与选择运费策略有什么不同？
+增加 type 和 [`lifetime`](../../GLOSSARY.md#lifetime)（object 存在且可按规则使用的时间区间） 关系。 state object 在 Door 外部，转换不会销毁仍在执行的 state；复杂设计也需保持这一安全条件。
 
-## 小练习
+## Related Patterns
 
-增加 Locked，使 press 不解锁，再添加独立 unlock 事件并测试转换序列。
+[Strategy](../strategy/README.zh-CN.md) · [Observer](../observer/README.zh-CN.md)
 
-## 小结
+## Common Confusion
 
-- **问题:** 门在开启与关闭时对同一按钮反应不同，更复杂设备还会有锁定或故障状态。
-- **方案:** Door 把 press 委托给当前 DoorState，由状态选择下一状态。
-- **权衡:** 增加类型和生命周期关系。状态对象在 Door 外部，转换不会销毁仍在执行的状态；复杂设计也需保持这一安全条件。
-- **记忆提示:** 事件相同，状态不同，响应不同。
+Strategy 通常由 Client 选择 algorithm；State 表示 [`lifecycle`](../../GLOSSARY.md#lifecycle)（领域实体的建模阶段与转换，不等于 C++ object 的 lifetime），并可能自行决定转换。
+
+## Terms to Remember
+
+- `State` — 由 object 的当前 state 决定响应和 state transition。
+- `Context` — 使用 Strategy 或把 behavior 委托给当前 State 的 object。 示例： `Door`。
+- `State interface` — Context 用于委托与 state 有关的 behavior 的约定。 示例： `DoorState`。
+- `Concrete State` — 为某个 State 定义 behavior 和转换规则的 implementation。 示例： `Open, Closed`。
+
+## Interview Vocabulary
+
+- [`state transition`](../../GLOSSARY.md#state-transition) — 在 event 后从一个建模状态转到另一个状态。
+- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — 程序执行时实际发生的动作，包括由运行时输入选择的 behavior。
+- [`delegation`](../../GLOSSARY.md#delegation) — 一个 object 把部分工作交给协作方完成。
+
+## Interview Question
+
+这里由谁选择下个 state？与选择运费 Strategy 有什么不同？
+
+## Mini Challenge
+
+增加 Locked，使 press 不解锁，再添加独立 unlock event 并测试转换序列。
+
+## Quick Summary
+
+- **问题:** 门在开启与关闭时对同一按钮反应不同，更复杂设备还会有锁定或故障 state。
+- **方案:** Door 把 press 委托给当前 DoorState，由 state 选择下一 state。
+- **权衡:** 增加 type 和 lifetime 关系。 state object 在 Door 外部，转换不会销毁仍在执行的 state；复杂设计也需保持这一安全条件。
+- **记忆提示:** event 相同， state 不同，响应不同。
 
 [上一个](../../behavioral/observer/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/strategy/README.zh-CN.md)

@@ -1,9 +1,9 @@
-# Creazionali
+# Creational Pattern
 
 [Design-Patterns-23](../README.it.md)
 
-- [Fabbrica astratta](abstract-factory/README.it.md)
-- [Costruttore graduale](builder/README.it.md)
-- [Metodo fabbrica](factory-method/README.it.md)
-- [Prototipo](prototype/README.it.md)
-- [Istanza unica](singleton/README.it.md)
+- [Abstract Factory](abstract-factory/README.it.md)
+- [Builder](builder/README.it.md)
+- [Factory Method](factory-method/README.it.md)
+- [Prototype](prototype/README.it.md)
+- [Singleton](singleton/README.it.md)

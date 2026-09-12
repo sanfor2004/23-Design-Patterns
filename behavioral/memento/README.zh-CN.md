@@ -1,58 +1,64 @@
-# 备忘录
+# Memento
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../behavioral/mediator/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/observer/README.zh-CN.md)
 
-## 类别
+## Category
 
-行为型
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
 
-## 难度
+## Difficulty
 
 中级
 
-## 一句话说明
+## In One Sentence
 
-在不公开快照内部数据的情况下保存和恢复对象状态。
+在不 暴露 snapshot 内部数据 的情况下保存和恢复 object state。
 
-## 问题
+## The Problem
 
 编辑器在尝试修改前需要一个检查点。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 std::string old_text = editor.text(); // caretaker knows what state to copy
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
-撤销管理器自己复制公开字段时，每增加一个内部字段都得跟着修改。
+撤销管理器自己复制 public 字段时，每增加一个内部字段都得跟着修改。
 
-## 核心思路
+## The Idea
 
-Editor 创建保存私有文本的 Snapshot，需要时读取快照并恢复自身。
+Editor 创建保存 private 文本的 Snapshot，需要时读取 snapshot 并恢复自身。
 
-## 生活类比
+## Real-World Analogy
 
 游戏存档能返回早先进度，玩家不必了解其数据格式。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![备忘录](../../assets/diagrams/memento.svg)
+![Memento](../../assets/diagrams/memento.svg)
 
 ```text
 Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
 ```
 
-## 参与者
+## Participants
 
-Editor 是发起者，Snapshot 是保存私有状态的备忘录，main 是只持有快照的管理者。
+Editor 是 Originator，Snapshot 是保存 private state 的 Memento，main 是只持有 snapshot 的 Caretaker。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`Originator`](../../GLOSSARY.md#originator) — 知道如何保存和恢复自身 state 的 object。 对应代码： `Editor`。
+- [`Caretaker`](../../GLOSSARY.md#caretaker) — 保存 Memento、但不检查其私有表示的角色。 对应代码： `main`。
+- [`snapshot`](../../GLOSSARY.md#snapshot) — 某一时刻所选 state 的保存表示。 对应代码： `Editor::Snapshot`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -83,54 +89,67 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 Broken edit
 Draft
 ```
 
-## 何时使用
+## When to Use
 
-对象能定义一致快照，且需要检查点时使用。
+object 能定义一致 snapshot，且需要检查点时使用。
 
-## 何时不该使用
+### Use cases
 
-状态巨大、资源不可恢复，或逆操作记录更便宜时避免。
+适合编辑器检查点和模拟 snapshot，前提是保存 state 完整且一致。
 
-## 优点
+## When NOT to Use
 
-状态表示保留在发起者内部，管理者无需手动复制字段。
+state 巨大、资源不可恢复，或逆操作记录更便宜时避免。
 
-## 缺点与权衡
+## Advantages
 
-完整快照占用内存和复制时间；恢复字符串无法撤销文件、网络等外部副作用。
+State 表示 保留在 Originator 内部，Caretaker 无需手动复制字段。
 
-## 技术应用场景
+## Trade-offs
 
-适合编辑器检查点和模拟快照，前提是保存状态完整且一致。
+完整 snapshot 占用内存和复制时间；恢复字符串无法撤销文件、网络等外部 side effect。
 
-## 相关模式
+## Related Patterns
 
-[command](../command/README.zh-CN.md) · [prototype](../../creational/prototype/README.zh-CN.md)
+[Command](../command/README.zh-CN.md) · [Prototype](../../creational/prototype/README.zh-CN.md)
 
-## 常见混淆
+## Common Confusion
 
-命令保存动作，备忘录保存状态；原型创建另一个对象，而不是恢复当前对象。
+Command 保存动作， Memento 保存 state； Prototype 创建另一个 object，而不是恢复当前 object。
 
-## 面试问题
+## Terms to Remember
+
+- `Memento` — 在不 暴露 snapshot 内部数据 的情况下保存和恢复 object state。
+- `Originator` — 知道如何保存和恢复自身 state 的 object。 示例： `Editor`。
+- `Caretaker` — 保存 Memento、但不检查其私有表示的角色。 示例： `main`。
+- `snapshot` — 某一时刻所选 state 的保存表示。 示例： `Editor::Snapshot`。
+
+## Interview Vocabulary
+
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — 把内部表示和必须保持的规则放在受控操作之后。
+- [`undo`](../../GLOSSARY.md#undo) — 在可行时用保存的 state 或逆操作恢复之前的逻辑结果。
+- [`ownership`](../../GLOSSARY.md#ownership) — 负责维持资源存活并最终释放资源的责任。
+
+## Interview Question
 
 Editor 增加光标位置后，哪些地方必须修改才能正确恢复？
 
-## 小练习
+## Mini Challenge
 
 在 Snapshot 中保存光标，验证文本和光标一起恢复。
 
-## 小结
+## Quick Summary
 
 - **问题:** 编辑器在尝试修改前需要一个检查点。
-- **方案:** Editor 创建保存私有文本的 Snapshot，需要时读取快照并恢复自身。
-- **权衡:** 完整快照占用内存和复制时间；恢复字符串无法撤销文件、网络等外部副作用。
-- **记忆提示:** 保存状态，不公开细节。
+- **方案:** Editor 创建保存 private 文本的 Snapshot，需要时读取 snapshot 并恢复自身。
+- **权衡:** 完整 snapshot 占用内存和复制时间；恢复字符串无法撤销文件、网络等外部 side effect。
+- **记忆提示:** 保存 state，不 public 细节。
 
 [上一个](../../behavioral/mediator/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/observer/README.zh-CN.md)

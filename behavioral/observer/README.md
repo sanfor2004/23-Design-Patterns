@@ -6,7 +6,7 @@
 
 ## Category
 
-Behavioral
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
 
 ## Difficulty
 
@@ -20,14 +20,14 @@ Notify subscribed objects when something they follow changes.
 
 Stock changes should update interested displays without making Stock know every concrete display type.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 display.update(quantity);
 email.update(quantity); // publisher names every consumer
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Calling each concrete consumer directly couples the publisher to the current list and requires edits whenever consumers change.
 
@@ -51,7 +51,13 @@ Stock::set()  -->  weak Listener subscriptions  -->  Display::update()
 
 ## Participants
 
-Stock is the subject, Listener the callback interface, Display a subscriber. The client owns subscribers; weak_ptr avoids extending their lifetime.
+Stock is the subject, Listener the callback [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller), Display a subscriber. The client owns subscribers; [`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr) (A non-owning observer of shared ownership; lock attempts to obtain a temporary shared_ptr) avoids extending their [`lifetime`](../../GLOSSARY.md#lifetime) (The interval during which an object exists and may be used according to its rules).
+
+Canonical roles in this example:
+
+- [`Subject`](../../GLOSSARY.md#subject) — The publisher whose changes are announced to registered Observers. Here: `Stock`.
+- [`Observer interface`](../../GLOSSARY.md#observer-interface) — The callback contract implemented by subscribers. Here: `Listener`.
+- [`Concrete Observer`](../../GLOSSARY.md#concrete-observer) — An Observer implementation that reacts to notifications. Here: `Display`.
 
 ## Modern C++20 Example
 
@@ -97,11 +103,15 @@ Stock: 4
 Expired listener skipped
 ```
 
-## When to Use It
+## When to Use
 
 Use it when one change has several independently registered consumers.
 
-## When NOT to Use It
+### Use cases
+
+UI updates and local event subscriptions fit; delivery guarantees of distributed event systems are separate concerns.
+
+## When NOT to Use
 
 Avoid it for one fixed dependency where a direct call is clearer, or when strict transactional consistency is required.
 
@@ -109,25 +119,34 @@ Avoid it for one fixed dependency where a direct call is clearer, or when strict
 
 Subscribers can come and go without changing publisher code.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 Callback order and exceptions need a policy. This synchronous example propagates exceptions and is not thread-safe. Snapshotting tolerates subscription changes but does not prevent recursive notifications.
 
-## Technical Use Cases
-
-UI updates and local event subscriptions fit; delivery guarantees of distributed event systems are separate concerns.
-
 ## Related Patterns
 
-[mediator](../mediator/README.md) · [state](../state/README.md)
+[Mediator](../mediator/README.md) · [State](../state/README.md)
 
 ## Common Confusion
 
 Mediator defines coordination rules among known peers. Observer broadcasts notifications and does not prescribe the subscribers' relationship.
 
+## Terms to Remember
+
+- `Observer` — Notify subscribed objects when something they follow changes.
+- `Subject` — The publisher whose changes are announced to registered Observers. Example: `Stock`.
+- `Observer interface` — The callback contract implemented by subscribers. Example: `Listener`.
+- `Concrete Observer` — An Observer implementation that reacts to notifications. Example: `Display`.
+
+## Interview Vocabulary
+
+- [`one-to-many dependency`](../../GLOSSARY.md#one-to-many-dependency) — One source has multiple dependents that react to its changes.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Parts know only the small contracts needed to cooperate, limiting change propagation.
+- [`subscription lifetime`](../../GLOSSARY.md#subscription-lifetime) — The interval in which a listener is registered and eligible for notification.
+
 ## Interview Question
 
-Why use weak_ptr for stored listeners but lock it into shared_ptr during the callback?
+Why use std::weak_ptr for stored listeners but lock it into [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (A smart pointer sharing ownership; the managed object is released when the last owning reference disappears) during the callback?
 
 ## Mini Challenge
 

@@ -1,59 +1,65 @@
-# Stato
+# State
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../behavioral/observer/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/strategy/README.it.md)
 
-## Categoria
+## Category
 
-Comportamentali
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
 
-## Difficoltà
+## Difficulty
 
 Intermedio
 
-## In una frase
+## In One Sentence
 
-Lascia che lo stato corrente determini risposta e transizioni.
+Lascia che lo state corrente determini risposta e transizioni.
 
-## Il problema
+## The Problem
 
 Una porta reagisce allo stesso pulsante diversamente da aperta o chiusa; dispositivi più ricchi aggiungono blocchi e guasti.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 if (open) open = false;
 else open = true; // becomes scattered as states and events grow
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-Un booleano basta per due stati, ma condizioni ripetute su molti eventi rendono incoerenti le transizioni.
+Un booleano basta per due state, ma condizioni ripetute su molti event rendono incoerenti le transizioni.
 
-## Idea centrale
+## The Idea
 
 Door delega press al DoorState corrente, che sceglie il successivo.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Un distributore interpreta l'input diversamente prima e dopo il pagamento.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Stato](../../assets/diagrams/state.svg)
+![State](../../assets/diagrams/state.svg)
 
 ```text
 Door::press()  -->  DoorState  -->  Open ↔ Closed
 ```
 
-## Partecipanti
+## Participants
 
-Door è il contesto; DoorState definisce press e name. Open e Closed hanno collegamenti non proprietari; main li mantiene vivi più di Door.
+Door è il Context; DoorState definisce press e name. Open e Closed hanno collegamenti non proprietari; main li mantiene vivi più di Door.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Context`](../../GLOSSARY.md#context) — L'object che usa una Strategy o delega il behavior allo State corrente. Qui: `Door`.
+- [`State interface`](../../GLOSSARY.md#state-interface) — Il contratto con cui un Context delega il behavior dipendente dallo state. Qui: `DoorState`.
+- [`Concrete State`](../../GLOSSARY.md#concrete-state) — Un'implementation che definisce behavior e transizioni di uno State. Qui: `Open, Closed`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -97,7 +103,7 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 closed
@@ -105,47 +111,60 @@ open
 closed
 ```
 
-## Quando usarlo
+## When to Use
 
-Usalo quando comportamenti e transizioni dipendenti dallo stato si disperdono fra operazioni.
+Usalo quando behavior e transizioni dipendenti dallo state si disperdono fra operazioni.
 
-## Quando NON usarlo
-
-Evitalo per un toggle banale o una piccola tabella enum leggibile.
-
-## Vantaggi
-
-Il comportamento è raccolto per stato e le transizioni sono ispezionabili localmente.
-
-## Svantaggi e compromessi
-
-Aggiunge classi e vincoli di vita. Gli stati esterni a Door non vengono distrutti durante la transizione: preserva questa sicurezza in progetti più grandi.
-
-## Applicazioni tecniche
+### Use cases
 
 Sessioni di protocollo e flussi di dispositivi con transizioni esplicite.
 
-## Pattern correlati
+## When NOT to Use
 
-[strategy](../strategy/README.it.md) · [observer](../observer/README.it.md)
+Evitalo per un toggle banale o una piccola tabella enum leggibile.
 
-## Confusione comune
+## Advantages
 
-Strategy è solitamente scelta dal client per un algoritmo; State rappresenta il ciclo di vita e può decidere le transizioni.
+Il behavior è raccolto per state e le transizioni sono ispezionabili localmente.
 
-## Domanda da colloquio
+## Trade-offs
 
-Chi sceglie lo stato successivo e perché è diverso da scegliere una Strategy di spedizione?
+Aggiunge class e vincoli di [`lifetime`](../../GLOSSARY.md#lifetime) (L'intervallo in cui un object esiste e può essere usato secondo le sue regole). Gli state esterni a Door non vengono distrutti durante la transizione: preserva questa sicurezza in progetti più grandi.
 
-## Piccola sfida
+## Related Patterns
 
-Aggiungi Locked che ignora press e un evento unlock separato; verifica la sequenza.
+[Strategy](../strategy/README.it.md) · [Observer](../observer/README.it.md)
 
-## Riepilogo
+## Common Confusion
+
+Strategy è solitamente scelta dal client per un algorithm; State rappresenta il [`lifecycle`](../../GLOSSARY.md#lifecycle) (Le fasi e transizioni modellate di un'entità del dominio, distinte dalla lifetime di un object C++) e può decidere le transizioni.
+
+## Terms to Remember
+
+- `State` — Lascia che lo state corrente determini risposta e transizioni.
+- `Context` — L'object che usa una Strategy o delega il behavior allo State corrente. Esempio: `Door`.
+- `State interface` — Il contratto con cui un Context delega il behavior dipendente dallo state. Esempio: `DoorState`.
+- `Concrete State` — Un'implementation che definisce behavior e transizioni di uno State. Esempio: `Open, Closed`.
+
+## Interview Vocabulary
+
+- [`state transition`](../../GLOSSARY.md#state-transition) — Il passaggio fra due condizioni modellate in seguito a un event.
+- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — Ciò che il programma fa durante l'esecuzione, incluso il behavior scelto dagli input.
+- [`delegation`](../../GLOSSARY.md#delegation) — Un object affida parte del proprio lavoro a un collaboratore.
+
+## Interview Question
+
+Chi sceglie lo state successivo e perché è diverso da scegliere una Strategy di spedizione?
+
+## Mini Challenge
+
+Aggiungi Locked che ignora press e un event unlock separato; verifica la sequenza.
+
+## Quick Summary
 
 - **Problema:** Una porta reagisce allo stesso pulsante diversamente da aperta o chiusa; dispositivi più ricchi aggiungono blocchi e guasti.
 - **Soluzione:** Door delega press al DoorState corrente, che sceglie il successivo.
-- **Compromesso:** Aggiunge classi e vincoli di vita. Gli stati esterni a Door non vengono distrutti durante la transizione: preserva questa sicurezza in progetti più grandi.
-- **Da ricordare:** Stesso evento, stato diverso, risposta diversa.
+- **Trade-off:** Aggiunge class e vincoli di lifetime. Gli state esterni a Door non vengono distrutti durante la transizione: preserva questa sicurezza in progetti più grandi.
+- **Da ricordare:** Stesso event, state diverso, risposta diversa.
 
 [Precedente](../../behavioral/observer/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/strategy/README.it.md)

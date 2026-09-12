@@ -1,11 +1,11 @@
-# التركيب
+# Structural Pattern
 
 [Design-Patterns-23](../README.ar-EG.md)
 
-- [المحوّل](adapter/README.ar-EG.md)
-- [الجسر](bridge/README.ar-EG.md)
-- [المركّب](composite/README.ar-EG.md)
-- [المزيّن](decorator/README.ar-EG.md)
-- [الواجهة المبسّطة](facade/README.ar-EG.md)
-- [الكائن خفيف الوزن](flyweight/README.ar-EG.md)
-- [الوكيل](proxy/README.ar-EG.md)
+- [Adapter](adapter/README.ar-EG.md)
+- [Bridge](bridge/README.ar-EG.md)
+- [Composite](composite/README.ar-EG.md)
+- [Decorator](decorator/README.ar-EG.md)
+- [Facade](facade/README.ar-EG.md)
+- [Flyweight](flyweight/README.ar-EG.md)
+- [Proxy](proxy/README.ar-EG.md)

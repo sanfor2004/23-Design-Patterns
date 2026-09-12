@@ -6,7 +6,7 @@
 
 ## Category
 
-Behavioral
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
 
 ## Difficulty
 
@@ -20,7 +20,7 @@ Traverse a collection through a stable access protocol.
 
 Clients need to read playlist entries without reaching into its private storage.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 for (std::size_t i = 0; i < tracks.size(); ++i) {
@@ -28,9 +28,9 @@ for (std::size_t i = 0; i < tracks.size(); ++i) {
 }
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
-Index-based code tied to a public vector exposes representation and spreads boundary handling.
+Index-based code tied to a public std::vector exposes representation and spreads boundary handling.
 
 ## The Idea
 
@@ -52,7 +52,13 @@ range-for client  -->  Playlist::Iterator  -->  private tracks
 
 ## Participants
 
-Playlist owns tracks; Iterator borrows the vector and stores a position. Range-for is the client. A static_assert checks the C++20 forward_iterator concept.
+Playlist owns tracks; Iterator borrows the std::vector and stores a position. Range-for is the client. A static_assert checks the C++20 forward_iterator concept.
+
+Canonical roles in this example:
+
+- [`Aggregate`](../../GLOSSARY.md#aggregate) — The collection that provides access to iterators. Here: `Playlist`.
+- [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — An implementation that stores a traversal position for a particular Aggregate. Here: `Playlist::Iterator`.
+- [`forward iterator`](../../GLOSSARY.md#forward-iterator) — An iterator supporting forward traversal and the multipass guarantee, allowing independent copies to traverse the same range. Here: `std::forward_iterator`.
 
 ## Modern C++20 Example
 
@@ -99,37 +105,50 @@ Track 12
 Track 18
 ```
 
-## When to Use It
+## When to Use
 
 Use standard iterators or ranges to expose traversal without exposing storage details.
 
-## When NOT to Use It
+### Use cases
 
-Avoid a custom iterator when returning existing const iterators or a standard range is sufficient; this custom implementation is educational.
+Container traversal and tree walks fit; choose iterator category according to actual operations and complexity.
+
+## When NOT to Use
+
+Avoid a custom iterator when returning existing const iterators or a standard range is sufficient; this custom [`implementation`](../../GLOSSARY.md#implementation) (The concrete code that fulfills an interface or performs an operation) is educational.
 
 ## Advantages
 
 Algorithms can use a common protocol, and multiple iterators maintain independent positions.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
-Iterators do not extend the collection lifetime. Moving or destroying this Playlist invalidates assumptions; dereferencing end is invalid, just as with standard iterators.
-
-## Technical Use Cases
-
-Container traversal and tree walks fit; choose iterator category according to actual operations and complexity.
+Iterators do not extend the collection [`lifetime`](../../GLOSSARY.md#lifetime) (The interval during which an object exists and may be used according to its rules). Moving or destroying this Playlist invalidates assumptions; dereferencing end is invalid, just as with standard iterators.
 
 ## Related Patterns
 
-[composite](../../structural/composite/README.md) · [visitor](../visitor/README.md)
+[Composite](../../structural/composite/README.md) · [Visitor](../visitor/README.md)
 
 ## Common Confusion
 
 Visitor chooses operations by element type. Iterator controls traversal and need not know what the client does with an element.
 
+## Terms to Remember
+
+- `Iterator` — Traverse a collection through a stable access protocol.
+- `Aggregate` — The collection that provides access to iterators. Example: `Playlist`.
+- `Concrete Iterator` — An implementation that stores a traversal position for a particular Aggregate. Example: `Playlist::Iterator`.
+- `forward iterator` — An iterator supporting forward traversal and the multipass guarantee, allowing independent copies to traverse the same range. Example: `std::forward_iterator`.
+
+## Interview Vocabulary
+
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — Keeping representation and invariants behind controlled operations.
+- [`iterator invalidation`](../../GLOSSARY.md#iterator-invalidation) — An operation makes an iterator no longer valid for its intended use.
+- [`generic programming`](../../GLOSSARY.md#generic-programming) — Writing algorithms against requirements on types rather than one concrete type.
+
 ## Interview Question
 
-Why does the equality check include the vector pointer as well as the index?
+Why does the equality check include the std::vector pointer as well as the index?
 
 ## Mini Challenge
 

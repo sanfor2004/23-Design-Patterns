@@ -6,7 +6,7 @@
 
 ## Category
 
-Behavioral
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
 
 ## Difficulty
 
@@ -20,14 +20,14 @@ Let an object's current state determine its response and transitions.
 
 A door reacts to the same button differently when open and closed; richer devices add locked or jammed states.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 if (open) open = false;
 else open = true; // becomes scattered as states and events grow
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 A boolean toggle is enough for two states, but copying state conditionals across many events makes transitions inconsistent.
 
@@ -52,6 +52,12 @@ Door::press()  -->  DoorState  -->  Open ↔ Closed
 ## Participants
 
 Door is the context. DoorState defines press and name. Open and Closed hold non-owning links to the next state; main keeps both alive longer than Door.
+
+Canonical roles in this example:
+
+- [`Context`](../../GLOSSARY.md#context) — The object that uses a Strategy or delegates behavior to its current State. Here: `Door`.
+- [`State interface`](../../GLOSSARY.md#state-interface) — The contract through which a Context delegates state-dependent behavior. Here: `DoorState`.
+- [`Concrete State`](../../GLOSSARY.md#concrete-state) — An implementation defining behavior and transitions for one State. Here: `Open, Closed`.
 
 ## Modern C++20 Example
 
@@ -105,11 +111,15 @@ open
 closed
 ```
 
-## When to Use It
+## When to Use
 
 Use it when state-dependent behavior and transitions spread across several operations.
 
-## When NOT to Use It
+### Use cases
+
+Protocol sessions and device workflows are suitable contexts when transition rules are explicit.
+
+## When NOT to Use
 
 Avoid it for a trivial toggle or a small explicit enum transition table that stays readable.
 
@@ -117,21 +127,30 @@ Avoid it for a trivial toggle or a small explicit enum transition table that sta
 
 Behavior is grouped by state and transitions can be inspected locally.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
-Classes and lifetime relationships add complexity. The demo keeps state objects outside Door, so transitions never destroy the currently executing state; larger designs must preserve that safety.
-
-## Technical Use Cases
-
-Protocol sessions and device workflows are suitable contexts when transition rules are explicit.
+Classes and [`lifetime`](../../GLOSSARY.md#lifetime) (The interval during which an object exists and may be used according to its rules) relationships add complexity. The demo keeps state objects outside Door, so transitions never destroy the currently executing state; larger designs must preserve that safety.
 
 ## Related Patterns
 
-[strategy](../strategy/README.md) · [observer](../observer/README.md)
+[Strategy](../strategy/README.md) · [Observer](../observer/README.md)
 
 ## Common Confusion
 
-Strategy is usually selected by a client to choose an algorithm. State represents lifecycle and may choose its own transitions.
+Strategy is usually selected by a client to choose an algorithm. State represents [`lifecycle`](../../GLOSSARY.md#lifecycle) (The modeled stages and transitions of a domain entity, distinct from a C++ object's lifetime) and may choose its own transitions.
+
+## Terms to Remember
+
+- `State` — Let an object's current state determine its response and transitions.
+- `Context` — The object that uses a Strategy or delegates behavior to its current State. Example: `Door`.
+- `State interface` — The contract through which a Context delegates state-dependent behavior. Example: `DoorState`.
+- `Concrete State` — An implementation defining behavior and transitions for one State. Example: `Open, Closed`.
+
+## Interview Vocabulary
+
+- [`state transition`](../../GLOSSARY.md#state-transition) — A move from one modeled condition to another after an event.
+- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — What the program does while executing, including behavior selected from runtime input.
+- [`delegation`](../../GLOSSARY.md#delegation) — An object asks a collaborator to perform part of its work.
 
 ## Interview Question
 

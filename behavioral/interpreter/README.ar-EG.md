@@ -1,58 +1,65 @@
-# المفسّر
+# Interpreter
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../behavioral/command/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/iterator/README.ar-EG.md)
 
-## الفئة
+## Category
 
-السلوك
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
 
-## المستوى
+## Difficulty
 
 متقدم
 
-## في جملة واحدة
+## In One Sentence
 
-مثّل لغة صغيرة بـ Objects بتقيّم قواعدها.
+مثّل لغة صغيرة بـ objects بتقيّم قواعدها.
 
-## المشكلة
+## The Problem
 
-قواعد السماح بتجمع أسماء Roles وAND، ومحتاجين نبني القواعد كبيانات.
+قواعد السماح بتجمع أسماء Roles و AND ، ومحتاجين نبني القواعد كبيانات.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 bool allowed = roles.contains("editor") && roles.contains("verified");
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 تعبير Boolean ثابت بسيط، بس تغيير شكل قواعد متداخلة بيحتاج تعديل كود التطبيق.
 
-## الفكرة الأساسية
+## The Idea
 
-Role تعبير نهائي، وBoth تعبير مركب بيقيّم طفلين بـ AND مع Short Circuit.
+Role تعبير نهائي، و Both تعبير مركب بيقيّم طفلين بـ AND مع Short Circuit.
 
-## مثال من الحياة
+## Real-World Analogy
 
 الجملة بتجمع كلمات بقواعد؛ هنا القاعدة بتجمع Roles باستخدام AND.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![المفسّر](../../assets/diagrams/interpreter.svg)
+![Interpreter](../../assets/diagrams/interpreter.svg)
 
 ```text
 Context  -->  Both(Expression, Expression)  -->  Role / nested Both
 ```
 
-## الأدوار
+## Participants
 
-Expression بتحدد التقييم، Context بتوفر الأدوار، Role بتراجع العضوية، وBoth بتمتلك التعبيرين.
+Expression بتحدد التقييم، Context بتوفر الأدوار، Role بتراجع العضوية، و Both بتمتلك التعبيرين.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Abstract Expression`](../../GLOSSARY.md#abstract-expression) — عقد تقييم العقد اللي بتمثل قواعد Interpreter. هنا: `Expression`.
+- [`Terminal Expression`](../../GLOSSARY.md#terminal-expression) — تعبير مافيش جواه تعبيرات أطفال. هنا: `Role`.
+- [`Nonterminal Expression`](../../GLOSSARY.md#nonterminal-expression) — تعبير بيركب تعبيرات أصغر حسب قاعدة في اللغة. هنا: `Both`.
+- `Context` — البيانات اللي التعبيرات بتستخدمها وقت التقييم؛ هنا مجموعة أسماء الصلاحيات. `Context`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -91,54 +98,68 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 false
 true
 ```
 
-## إمتى تستخدمه
+## When to Use
 
 استخدمه للغة صغيرة مستقرة، وشجرة التعبير مفيدة للبناء والفحص.
 
-## إمتى ما تستخدموش
-
-بلاش للغة كبيرة محتاجة Parser قوي ورسائل أخطاء وتحسين؛ أدوات Parsing جاهزة أنسب.
-
-## المميزات
-
-القواعد بتتركب بشكل Recursive وتتقيّم مع Contexts مختلفة.
-
-## العيوب والمقايضات
-
-كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ Stack؛ مفيش Parser هنا، main بتبني الشجرة مباشرة.
-
-## استخدامات تقنية
+### Use cases
 
 ينفع للغات فلترة أو أهلية صغيرة؛ مش نظام صلاحيات آمن ولا Parser عام.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[composite](../../structural/composite/README.ar-EG.md) · [visitor](../visitor/README.ar-EG.md)
+بلاش للغة كبيرة محتاجة Parser قوي ورسائل أخطاء وتحسين؛ أدوات Parsing جاهزة أنسب.
 
-## لخبطة شائعة
+## Advantages
+
+القواعد بتتركب بشكل Recursive وتتقيّم مع Contexts مختلفة.
+
+## Trade-offs
+
+كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ Stack ؛ مفيش Parser هنا، main بتبني الشجرة مباشرة.
+
+## Related Patterns
+
+[Composite](../../structural/composite/README.ar-EG.md) · [Visitor](../visitor/README.ar-EG.md)
+
+## Common Confusion
 
 Composite بتوصف الشجرة، وInterpreter بتضيف معنى القواعد وتقييمها. Visitor ممكن تضيف عمليات عليها.
 
-## سؤال انترفيو
+## Terms to Remember
 
-لو المستخدم كتب editor AND verified OR admin، هتحدد أولوية العمليات فين؟
+- `Interpreter` — مثّل لغة صغيرة بـ objects بتقيّم قواعدها.
+- `Abstract Expression` — عقد تقييم العقد اللي بتمثل قواعد Interpreter. مثال: `Expression`.
+- `Terminal Expression` — تعبير مافيش جواه تعبيرات أطفال. مثال: `Role`.
+- `Nonterminal Expression` — تعبير بيركب تعبيرات أصغر حسب قاعدة في اللغة. مثال: `Both`.
+- `Context` — البيانات اللي التعبيرات بتستخدمها وقت التقييم؛ هنا مجموعة أسماء الصلاحيات.
 
-## تحدي صغير
+## Interview Vocabulary
+
+- [`abstract syntax tree`](../../GLOSSARY.md#abstract-syntax-tree) — شجرة بتمثل تركيب القواعد بدل الشكل المكتوب للنص.
+- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — بتبني تركيب من أجزاء بتوفر نفس عقد الكل.
+- [`short-circuit evaluation`](../../GLOSSARY.md#short-circuit-evaluation) — بتتخطى باقي المعاملات لما نتيجة بدري تكون حسمت الإجابة.
+
+## Interview Question
+
+لو المستخدم كتب editor AND verified OR admin ، هتحدد أولوية العمليات فين؟
+
+## Mini Challenge
 
 ضيف Either للـ OR واختبر قاعدة متداخلة مع ثلاث Contexts مختلفة.
 
-## الخلاصة
+## Quick Summary
 
-- **المشكلة:** قواعد السماح بتجمع أسماء Roles وAND، ومحتاجين نبني القواعد كبيانات.
-- **الحل:** Role تعبير نهائي، وBoth تعبير مركب بيقيّم طفلين بـ AND مع Short Circuit.
-- **المقايضة:** كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ Stack؛ مفيش Parser هنا، main بتبني الشجرة مباشرة.
+- **المشكلة:** قواعد السماح بتجمع أسماء Roles و AND ، ومحتاجين نبني القواعد كبيانات.
+- **الحل:** Role تعبير نهائي، و Both تعبير مركب بيقيّم طفلين بـ AND مع Short Circuit.
+- **Trade-off:** كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ Stack ؛ مفيش Parser هنا، main بتبني الشجرة مباشرة.
 - **افتكر:** عقد القواعد بتدي معنى للتعبير.
 
 [السابق](../../behavioral/command/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/iterator/README.ar-EG.md)

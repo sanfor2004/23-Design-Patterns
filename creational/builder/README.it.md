@@ -1,58 +1,64 @@
-# Costruttore graduale
+# Builder
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../creational/abstract-factory/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../creational/factory-method/README.it.md)
 
-## Categoria
+## Category
 
-Creazionali
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
 
-## Difficoltà
+## Difficulty
 
 Principiante
 
-## In una frase
+## In One Sentence
 
-Configura un oggetto con passi espliciti e produci il risultato alla fine.
+Configura un object con passi espliciti e produci il risultato alla fine.
 
-## Il problema
+## The Problem
 
 Una richiesta contiene endpoint, timeout e retry; aumentando le opzioni, gli argomenti posizionali diventano poco leggibili.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 Request request{"/orders", 5, true}; // what does true mean?
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-Il costruttore funziona, ma numeri e booleani consecutivi nascondono il significato e rendono facili gli scambi accidentali.
+Il constructor funziona, ma numeri e booleani consecutivi nascondono il significato e rendono facili gli scambi accidentali.
 
-## Idea centrale
+## The Idea
 
-RequestBuilder conserva le scelte. I metodi espliciti le raccolgono; build controlla i valori obbligatori e restituisce Request per valore.
+RequestBuilder conserva le scelte. I method espliciti le raccolgono; build controlla i valori obbligatori e restituisce Request per valore.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Prima scegli gli ingredienti del panino, poi la cucina prepara il risultato.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Costruttore graduale](../../assets/diagrams/builder.svg)
+![Builder](../../assets/diagrams/builder.svg)
 
 ```text
 Client  -->  RequestBuilder  -->  Request
 ```
 
-## Partecipanti
+## Participants
 
 RequestBuilder gestisce configurazione temporanea e controlli; Request possiede i dati finali. Il client ordina i passi facoltativi.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Product`](../../GLOSSARY.md#product) — Il contratto dell'object restituito dal codice di creazione. Qui: `Request`.
+- [`fluent interface`](../../GLOSSARY.md#fluent-interface) — Un'interface pensata come catena leggibile di chiamate; da sola non implica Builder. Qui: `RequestBuilder.endpoint().timeout().retry()`.
+- [`constructor`](../../GLOSSARY.md#constructor) — L'operazione speciale che inizializza una nuova instance di una class. Qui: `Request::Request`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -92,54 +98,67 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 /orders timeout=5 retry=1
 Invalid request rejected
 ```
 
-## Quando usarlo
+## When to Use
 
 Usalo con molte opzioni indipendenti o un punto significativo di validazione.
 
-## Quando NON usarlo
-
-Evitalo per due parametri evidenti: un piccolo aggregato può bastare.
-
-## Vantaggi
-
-Le chiamate rendono visibili le scelte e build può rifiutare una configurazione incompleta.
-
-## Svantaggi e compromessi
-
-Introduci un tipo aggiuntivo. Il costruttore di Request resta pubblico: in produzione occorre validare anche lì oppure limitarne l'accesso.
-
-## Applicazioni tecniche
+### Use cases
 
 Configurazione di richieste HTTP e fixture di test; l'esempio non esegue richieste di rete.
 
-## Pattern correlati
+## When NOT to Use
 
-[factory-method](../factory-method/README.it.md) · [abstract-factory](../abstract-factory/README.it.md)
+Evitalo per due parametri evidenti: un piccolo aggregato può bastare.
 
-## Confusione comune
+## Advantages
 
-Factory Method sceglie il tipo concreto dentro un flusso ereditato; Builder compone la configurazione con più chiamate.
+Le chiamate rendono visibili le scelte e build può rifiutare una configurazione incompleta.
 
-## Domanda da colloquio
+## Trade-offs
 
-Un'interfaccia fluente è sempre un Builder? Individua il momento in cui termina la costruzione.
+Introduci un tipo aggiuntivo. Il constructor di Request resta public: in produzione occorre validare anche lì oppure limitarne l'accesso.
 
-## Piccola sfida
+## Related Patterns
+
+[Factory Method](../factory-method/README.it.md) · [Abstract Factory](../abstract-factory/README.it.md)
+
+## Common Confusion
+
+Factory Method sceglie il concrete type dentro un flusso ereditato; Builder compone la configurazione con più chiamate.
+
+## Terms to Remember
+
+- `Builder` — Configura un object con passi espliciti e produci il risultato alla fine.
+- `Product` — Il contratto dell'object restituito dal codice di creazione. Esempio: `Request`.
+- `fluent interface` — Un'interface pensata come catena leggibile di chiamate; da sola non implica Builder. Esempio: `RequestBuilder.endpoint().timeout().retry()`.
+- `constructor` — L'operazione speciale che inizializza una nuova instance di una class. Esempio: `Request::Request`.
+
+## Interview Vocabulary
+
+- [`object creation`](../../GLOSSARY.md#object-creation) — Scegliere il tipo concreto e stabilire valori iniziali e lifetime di un object.
+- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — Tenere separate responsabilità di natura diversa perché possano cambiare indipendentemente.
+- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — Concentrare un modulo su un motivo coerente di cambiamento.
+
+## Interview Question
+
+Una fluent interface è sempre un Builder? Individua il momento in cui termina la costruzione.
+
+## Mini Challenge
 
 Rifiuta timeout superiori a 120 e prova il limite e il primo valore non valido.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Una richiesta contiene endpoint, timeout e retry; aumentando le opzioni, gli argomenti posizionali diventano poco leggibili.
-- **Soluzione:** RequestBuilder conserva le scelte. I metodi espliciti le raccolgono; build controlla i valori obbligatori e restituisce Request per valore.
-- **Compromesso:** Introduci un tipo aggiuntivo. Il costruttore di Request resta pubblico: in produzione occorre validare anche lì oppure limitarne l'accesso.
+- **Soluzione:** RequestBuilder conserva le scelte. I method espliciti le raccolgono; build controlla i valori obbligatori e restituisce Request per valore.
+- **Trade-off:** Introduci un tipo aggiuntivo. Il constructor di Request resta public: in produzione occorre validare anche lì oppure limitarne l'accesso.
 - **Da ricordare:** Scegli i passi, poi costruisci.
 
 [Precedente](../../creational/abstract-factory/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../creational/factory-method/README.it.md)

@@ -1,26 +1,26 @@
-# 责任链
+# Chain of Responsibility
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../structural/proxy/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/command/README.zh-CN.md)
 
-## 类别
+## Category
 
-行为型
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
 
-## 难度
+## Difficulty
 
 中级
 
-## 一句话说明
+## In One Sentence
 
-让请求沿处理器传递，每个处理器可以停止或继续。
+让请求沿 Handler 传递，每个 Handler 可以停止或继续。
 
-## 问题
+## The Problem
 
-请求要通过身份和金额检查，不同入口需要不同策略组合。
+请求要通过身份和金额检查，不同入口需要不同 policy 组合。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 bool accept(Request r) {
@@ -28,33 +28,39 @@ bool accept(Request r) {
 }
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
 一个表达式起初足够，但复制到多条流程后，顺序与复用变得难维护。
 
-## 核心思路
+## The Idea
 
 每个 Handler 检查自己的规则，成功后再委托；最后一个检查通过即接受。
 
-## 生活类比
+## Real-World Analogy
 
 客服能处理就处理，否则交给下一位专员。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![责任链](../../assets/diagrams/chain-of-responsibility.svg)
+![Chain of Responsibility](../../assets/diagrams/chain-of-responsibility.svg)
 
 ```text
 Request  -->  Auth  -->  Limit
 ```
 
-## 参与者
+## Participants
 
-Handler 拥有后继，Auth 检查身份，Limit 检查金额，调用方组装顺序。
+Handler 拥有后继，Auth 检查身份，Limit 检查金额， Client 组装顺序。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`Handler`](../../GLOSSARY.md#handler) — 处理请求或把请求传给后继的角色。 对应代码： `Handler`。
+- [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — 实现某项处理规则的 Handler。 对应代码： `Auth, Limit`。
+- [`chain termination`](../../GLOSSARY.md#chain-termination) — 决定处理链何时停止以及最后一个 Handler 之后如何处理的规则。 对应代码： `Handler::handle`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <initializer_list>
@@ -92,7 +98,7 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 Rejected
@@ -100,47 +106,60 @@ Rejected
 Accepted
 ```
 
-## 何时使用
+## When to Use
 
 处理步骤的顺序或成员需要独立组合时使用。
 
-## 何时不该使用
+### Use cases
+
+适合校验管线和请求中间件；本变体要求全部批准，而非第一个成功 Handler 即结束。
+
+## When NOT to Use
 
 只有一个地方的两个固定检查时，原表达式更清晰。
 
-## 优点
+## Advantages
 
 检查可复用、可重排，无需庞大条件分支。
 
-## 缺点与权衡
+## Trade-offs
 
-顺序会影响行为，链尾策略必须明确。本例全部通过才接受，其他链可能拒绝无人处理的请求。
+顺序会影响 behavior， chain termination policy 必须明确。本例全部通过才接受，其他链可能拒绝无人处理的请求。
 
-## 技术应用场景
+## Related Patterns
 
-适合校验管线和请求中间件；本变体要求全部批准，而非第一个成功处理器即结束。
+[Decorator](../../structural/decorator/README.zh-CN.md) · [Command](../command/README.zh-CN.md)
 
-## 相关模式
+## Common Confusion
 
-[decorator](../../structural/decorator/README.zh-CN.md) · [command](../command/README.zh-CN.md)
+Decorator 叠加 behavior；此 Chain of Responsibility 可能提前结束。 Command 则把请求本身表示为 object。
 
-## 常见混淆
+## Terms to Remember
 
-装饰器叠加行为；此责任链可能提前结束。命令则把请求本身表示为对象。
+- `Chain of Responsibility` — 让请求沿 Handler 传递，每个 Handler 可以停止或继续。
+- `Handler` — 处理请求或把请求传给后继的角色。 示例： `Handler`。
+- `Concrete Handler` — 实现某项处理规则的 Handler。 示例： `Auth, Limit`。
+- `chain termination` — 决定处理链何时停止以及最后一个 Handler 之后如何处理的规则。 示例： `Handler::handle`。
 
-## 面试问题
+## Interview Vocabulary
+
+- [`delegation`](../../GLOSSARY.md#delegation) — 一个 object 把部分工作交给协作方完成。
+- [`object composition`](../../GLOSSARY.md#object-composition) — 连接多个 object，形成更大的行为或结构。
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — 各部分只了解协作所需的小范围约定，限制修改传播。
+
+## Interview Question
 
 如果昂贵的 Limit 放在前面，未认证请求会产生什么额外工作？
 
-## 小练习
+## Mini Challenge
 
-添加维护模式处理器，验证被拒绝的请求不会进入后续检查。
+添加维护模式 Handler，验证被拒绝的请求不会进入后续检查。
 
-## 小结
+## Quick Summary
 
-- **问题:** 请求要通过身份和金额检查，不同入口需要不同策略组合。
+- **问题:** 请求要通过身份和金额检查，不同入口需要不同 policy 组合。
 - **方案:** 每个 Handler 检查自己的规则，成功后再委托；最后一个检查通过即接受。
-- **权衡:** 顺序会影响行为，链尾策略必须明确。本例全部通过才接受，其他链可能拒绝无人处理的请求。
+- **权衡:** 顺序会影响 behavior， chain termination policy 必须明确。本例全部通过才接受，其他链可能拒绝无人处理的请求。
 - **记忆提示:** 处理，或者传递。
 
 [上一个](../../structural/proxy/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/command/README.zh-CN.md)

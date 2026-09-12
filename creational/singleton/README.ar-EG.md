@@ -1,59 +1,65 @@
-# الكائن الوحيد
+# Singleton
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../creational/prototype/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/adapter/README.ar-EG.md)
 
-## الفئة
+## Category
 
-الإنشاء
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
 
-## المستوى
+## Difficulty
 
 متوسط
 
-## في جملة واحدة
+## In One Sentence
 
-قيّد النوع بنسخة واحدة متاحة، مع حساب تكلفة الحالة العامة المشتركة.
+قيّد النوع بـ instance واحدة متاحة، مع حساب تكلفة الـ shared global state.
 
-## المشكلة
+## The Problem
 
 عدادين Metrics منفصلين بيقسّموا إجمالي المفروض يكون واحد للعملية كلها.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 Metrics first;
 Metrics second; // separate counters; assumes a public constructor
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
-لو الـ Constructor عامة، كل Caller ممكن يعمل عداده، والإجمالي المشترك مش هيبقى مشترك.
+لو الـ constructor عامة، كل Caller ممكن يعمل عداده، والإجمالي المشترك مش هيبقى مشترك.
 
-## الفكرة الأساسية
+## The Idea
 
-اخفي الإنشاء، امنع النسخ، ورجّع Static محلية من دالة instance.
+اخفي الإنشاء، امنع النسخ، ورجّع static محلية من function instance.
 
-## مثال من الحياة
+## Real-World Analogy
 
 مكتب صغير عنده دفتر زوار واحد وكل المكاتب بتكتب فيه.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![الكائن الوحيد](../../assets/diagrams/singleton.svg)
+![Singleton](../../assets/diagrams/singleton.svg)
 
 ```text
 Client A + B  -->  Metrics::instance()  -->  one Metrics
 ```
 
-## الأدوار
+## Participants
 
-Metrics بتتحكم في عمرها وبتخزّن العداد. instance بترجع Reference مش مالكة؛ ممنوع تعمل لها delete.
+Metrics بتتحكم في عمرها وبتخزّن العداد. instance بترجع reference مش مالكة؛ ممنوع تعمل لها delete.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`instance`](../../GLOSSARY.md#instance) — object بعينها من نوع معين. هنا: `Metrics::instance()`.
+- [`global state`](../../GLOSSARY.md#global-state) — بيانات أجزاء كتير تقدر توصلها، وتغييرها ممكن يأثر على كود بعيد. هنا: `Metrics::requests_`.
+- [`thread-safe initialization`](../../GLOSSARY.md#thread-safe-initialization) — حماية التهيئة من الإنشاء المتزامن؛ مش معناها إن كل العمليات بعد كده thread-safe. هنا: `static Metrics metrics`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -81,54 +87,67 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Same instance: true
 Requests: 2
 ```
 
-## إمتى تستخدمه
+## When to Use
 
-فكّر فيه بس لو النسخة الواحدة شرط حقيقي على مستوى العملية وعمرها مناسب.
+فكّر فيه بس لو الـ instance الواحدة شرط حقيقي على مستوى العملية وعمرها مناسب.
 
-## إمتى ما تستخدموش
-
-بلاش لمجرد تسهيل الوصول للاعتماديات. مرّر Metrics Reference صراحة لما الاختبارات محتاجة عزل.
-
-## المميزات
-
-فيه نقطة تهيئة واضحة وكل المستدعين بيوصلوا لنفس النسخة.
-
-## العيوب والمقايضات
-
-الوصول العام بيخفي الاعتماديات وبيخلط الاختبارات. تهيئة الـ Static آمنة بين الـ Threads، لكن record مش آمنة؛ التزامن محتاج حماية، وترتيب الإغلاق ممكن يفرق.
-
-## استخدامات تقنية
+### Use cases
 
 عداد تشخيص بسيط في Thread واحدة بيوضح الفكرة، مش توصية بمعمارية Metrics للإنتاج.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[abstract-factory](../abstract-factory/README.ar-EG.md) · [facade](../../structural/facade/README.ar-EG.md)
+بلاش لمجرد تسهيل الوصول للـ dependencies. مرّر Metrics reference صراحة لما الاختبارات محتاجة عزل.
 
-## لخبطة شائعة
+## Advantages
 
-إدارة Object واحدة بالـ Dependency Injection مش بالضرورة Singleton؛ النوع نفسه مش لازم يفرض التفرد.
+فيه نقطة تهيئة واضحة وكل المستدعين بيوصلوا لنفس الـ instance.
 
-## سؤال انترفيو
+## Trade-offs
+
+الوصول العام بيخفي الـ dependencies وبيخلط الاختبارات. تهيئة الـ static آمنة بين الـ Threads ، لكن record مش آمنة؛ التزامن محتاج حماية، وترتيب الإغلاق ممكن يفرق.
+
+## Related Patterns
+
+[Abstract Factory](../abstract-factory/README.ar-EG.md) · [Facade](../../structural/facade/README.ar-EG.md)
+
+## Common Confusion
+
+إدارة object واحدة بالـ [`dependency injection`](../../GLOSSARY.md#dependency-injection) (بتمرّر dependency من بره بدل ما الجزء اللي بيستخدمها يختارها أو يعملها بنفسه) مش بالضرورة Singleton؛ النوع نفسه مش لازم يفرض التفرد.
+
+## Terms to Remember
+
+- `Singleton` — قيّد النوع بـ instance واحدة متاحة، مع حساب تكلفة الـ shared global state.
+- `instance` — object بعينها من نوع معين. مثال: `Metrics::instance()`.
+- `global state` — بيانات أجزاء كتير تقدر توصلها، وتغييرها ممكن يأثر على كود بعيد. مثال: `Metrics::requests_`.
+- `thread-safe initialization` — حماية التهيئة من الإنشاء المتزامن؛ مش معناها إن كل العمليات بعد كده thread-safe. مثال: `static Metrics metrics`.
+
+## Interview Vocabulary
+
+- [`dependency injection`](../../GLOSSARY.md#dependency-injection) — بتمرّر dependency من بره بدل ما الجزء اللي بيستخدمها يختارها أو يعملها بنفسه.
+- [`testability`](../../GLOSSARY.md#testability) — سهولة عزل behavior وتشغيلها والتأكد من نتيجتها.
+- [`lifetime`](../../GLOSSARY.md#lifetime) — الفترة اللي الـ object موجودة فيها وينفع تستخدمها حسب قواعدها.
+
+## Interview Question
 
 هل أمان التهيئة بين الـ Threads معناه إن requests_ آمنة؟ فرّق بين العمليتين.
 
-## تحدي صغير
+## Mini Challenge
 
 غيّر المثال عشان تمرّر عداد لمهمتين، وبعدها اختبر عدادين معزولين.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** عدادين Metrics منفصلين بيقسّموا إجمالي المفروض يكون واحد للعملية كلها.
-- **الحل:** اخفي الإنشاء، امنع النسخ، ورجّع Static محلية من دالة instance.
-- **المقايضة:** الوصول العام بيخفي الاعتماديات وبيخلط الاختبارات. تهيئة الـ Static آمنة بين الـ Threads، لكن record مش آمنة؛ التزامن محتاج حماية، وترتيب الإغلاق ممكن يفرق.
-- **افتكر:** نسخة واحدة مش معناها مشاكل أقل.
+- **الحل:** اخفي الإنشاء، امنع النسخ، ورجّع static محلية من function instance.
+- **Trade-off:** الوصول العام بيخفي الـ dependencies وبيخلط الاختبارات. تهيئة الـ static آمنة بين الـ Threads ، لكن record مش آمنة؛ التزامن محتاج حماية، وترتيب الإغلاق ممكن يفرق.
+- **افتكر:** instance واحدة مش معناها مشاكل أقل.
 
 [السابق](../../creational/prototype/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/adapter/README.ar-EG.md)

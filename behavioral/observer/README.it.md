@@ -1,59 +1,65 @@
-# Osservatore
+# Observer
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../behavioral/memento/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/state/README.it.md)
 
-## Categoria
+## Category
 
-Comportamentali
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
 
-## Difficoltà
+## Difficulty
 
 Principiante
 
-## In una frase
+## In One Sentence
 
-Notifica gli oggetti iscritti quando cambia ciò che seguono.
+Notifica gli object iscritti quando cambia ciò che seguono.
 
-## Il problema
+## The Problem
 
-Il magazzino deve aggiornare le viste interessate senza conoscere ogni tipo concreto.
+Il magazzino deve aggiornare le viste interessate senza conoscere ogni concrete type.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 display.update(quantity);
 email.update(quantity); // publisher names every consumer
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Chiamare direttamente ogni consumatore lega il publisher all'elenco e impone modifiche a ogni aggiunta.
 
-## Idea centrale
+## The Idea
 
-Stock conserva riferimenti deboli a Listener e notifica quelli ancora vivi.
+Stock conserva weak reference a Listener e notifica quelli ancora vivi.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Gli iscritti ricevono avvisi di disponibilità finché la sottoscrizione resta attiva.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Osservatore](../../assets/diagrams/observer.svg)
+![Observer](../../assets/diagrams/observer.svg)
 
 ```text
 Stock::set()  -->  weak Listener subscriptions  -->  Display::update()
 ```
 
-## Partecipanti
+## Participants
 
-Stock è il soggetto, Listener il contratto, Display l'iscritto. Il client possiede gli osservatori; weak_ptr non ne prolunga la vita.
+Stock è il Subject, Listener il contratto, Display l'iscritto. Il client possiede gli Observer; [`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr) (Un riferimento non proprietario a ownership condivisa; lock tenta di ottenere uno shared_ptr temporaneo) non ne prolunga la vita.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Subject`](../../GLOSSARY.md#subject) — Il publisher che comunica i propri cambiamenti agli Observer registrati. Qui: `Stock`.
+- [`Observer interface`](../../GLOSSARY.md#observer-interface) — Il contratto di callback implementato dagli iscritti. Qui: `Listener`.
+- [`Concrete Observer`](../../GLOSSARY.md#concrete-observer) — Un'implementation di Observer che reagisce alle notifiche. Qui: `Display`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <algorithm>
@@ -90,54 +96,67 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Stock: 4
 Expired listener skipped
 ```
 
-## Quando usarlo
+## When to Use
 
 Usalo quando un cambiamento interessa più consumatori registrati indipendentemente.
 
-## Quando NON usarlo
+### Use cases
 
-Evitalo per una sola dipendenza fissa o quando serve consistenza transazionale rigorosa.
+Aggiornamenti UI ed event locali; le garanzie distribuite sono un problema distinto.
 
-## Vantaggi
+## When NOT to Use
+
+Evitalo per una sola dependency fissa o quando serve consistenza transazionale rigorosa.
+
+## Advantages
 
 Gli iscritti cambiano senza modificare il publisher.
 
-## Svantaggi e compromessi
+## Trade-offs
 
 Ordine ed eccezioni richiedono una politica. Il demo sincrono propaga eccezioni e non è thread-safe; la copia dell'elenco tollera nuove iscrizioni ma non impedisce notifiche ricorsive.
 
-## Applicazioni tecniche
+## Related Patterns
 
-Aggiornamenti UI ed eventi locali; le garanzie distribuite sono un problema distinto.
+[Mediator](../mediator/README.it.md) · [State](../state/README.it.md)
 
-## Pattern correlati
+## Common Confusion
 
-[mediator](../mediator/README.it.md) · [state](../state/README.it.md)
+Mediator definisce coordinazione fra pari noti; Observer diffonde event senza prescrivere i rapporti fra iscritti.
 
-## Confusione comune
+## Terms to Remember
 
-Mediator definisce coordinazione fra pari noti; Observer diffonde eventi senza prescrivere i rapporti fra iscritti.
+- `Observer` — Notifica gli object iscritti quando cambia ciò che seguono.
+- `Subject` — Il publisher che comunica i propri cambiamenti agli Observer registrati. Esempio: `Stock`.
+- `Observer interface` — Il contratto di callback implementato dagli iscritti. Esempio: `Listener`.
+- `Concrete Observer` — Un'implementation di Observer che reagisce alle notifiche. Esempio: `Display`.
 
-## Domanda da colloquio
+## Interview Vocabulary
 
-Perché conservare weak_ptr e usare lock per ottenere shared_ptr durante il callback?
+- [`one-to-many dependency`](../../GLOSSARY.md#one-to-many-dependency) — Una sorgente ha più dipendenti che reagiscono ai suoi cambiamenti.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Le parti conoscono solo i contratti necessari a collaborare, limitando la propagazione delle modifiche.
+- [`subscription lifetime`](../../GLOSSARY.md#subscription-lifetime) — Il periodo in cui un listener è registrato e può ricevere notifiche.
 
-## Piccola sfida
+## Interview Question
+
+Perché conservare std::weak_ptr e usare lock per ottenere [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (Uno smart pointer con ownership condivisa; l'object viene rilasciato quando scompare l'ultimo riferimento proprietario) durante il callback?
+
+## Mini Challenge
 
 Registra due listener, distruggine uno e verifica le notifiche al superstite; definisci unsubscribe esplicito.
 
-## Riepilogo
+## Quick Summary
 
-- **Problema:** Il magazzino deve aggiornare le viste interessate senza conoscere ogni tipo concreto.
-- **Soluzione:** Stock conserva riferimenti deboli a Listener e notifica quelli ancora vivi.
-- **Compromesso:** Ordine ed eccezioni richiedono una politica. Il demo sincrono propaga eccezioni e non è thread-safe; la copia dell'elenco tollera nuove iscrizioni ma non impedisce notifiche ricorsive.
+- **Problema:** Il magazzino deve aggiornare le viste interessate senza conoscere ogni concrete type.
+- **Soluzione:** Stock conserva weak reference a Listener e notifica quelli ancora vivi.
+- **Trade-off:** Ordine ed eccezioni richiedono una politica. Il demo sincrono propaga eccezioni e non è thread-safe; la copia dell'elenco tollera nuove iscrizioni ma non impedisce notifiche ricorsive.
 - **Da ricordare:** Pubblica il cambiamento, lascia reagire.
 
 [Precedente](../../behavioral/memento/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/state/README.it.md)

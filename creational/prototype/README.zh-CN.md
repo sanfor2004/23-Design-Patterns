@@ -1,59 +1,65 @@
-# 原型
+# Prototype
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../creational/factory-method/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../creational/singleton/README.zh-CN.md)
 
-## 类别
+## Category
 
-创建型
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — 关注如何创建和配置 object 的 Design Pattern。
 
-## 难度
+## Difficulty
 
 中级
 
-## 一句话说明
+## In One Sentence
 
-复制一个配置好的对象，得到独立的新对象。
+复制一个配置好的 object，得到独立的新 object。
 
-## 问题
+## The Problem
 
-游戏需要从已配置模板生成敌人，而生成逻辑不知道模板的具体类型。
+游戏需要从已配置 template 生成敌人，而生成逻辑不知道 template 的 concrete type。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 Guard another;
 another.rename("gate guard"); // must repeat any custom setup
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
-每次重建默认 Guard 会重复初始化，也会丢失模板上的自定义装备。
+每次重建默认 Guard 会重复初始化，也会丢失 template 上的自定义装备。
 
-## 核心思路
+## The Idea
 
-Enemy 提供 clone；Guard 复制值成员并返回指向独立对象的 unique_ptr。
+Enemy 提供 clone；Guard 复制值成员并返回指向独立 object 的 [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr)（具有独占 ownership 的 smart pointer，在所有者销毁时释放 object）。
 
-## 生活类比
+## Real-World Analogy
 
 复制一份准备好的文档，只修改副本的名称，原件保持不变。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![原型](../../assets/diagrams/prototype.svg)
+![Prototype](../../assets/diagrams/prototype.svg)
 
 ```text
 Client  -->  Enemy::clone()  -->  independent Guard
 ```
 
-## 参与者
+## Participants
 
-Enemy 定义多态克隆接口，Guard 实现复制，调用方拥有副本并修改名称。
+Enemy 定义 polymorphic cloning [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为），Guard 实现复制， Client 拥有副本并修改名称。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`Concrete Prototype`](../../GLOSSARY.md#concrete-prototype) — 通过 clone 操作按已配置值创建另一 object 的 object。 对应代码： `Guard`。
+- [`deep copy`](../../GLOSSARY.md#deep-copy) — 复制所拥有的嵌套数据，使新 object 不与原 object 共享这些可变数据。 对应代码： `Guard::clone`。
+- [`value semantics`](../../GLOSSARY.md#value-semantics) — 按照类型约定，副本表现为独立的值。 对应代码： `name_, equipment_`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -87,54 +93,67 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 template: 2 items
 gate guard: 2 items
 ```
 
-## 何时使用
+## When to Use
 
-已有运行时对象带有有用配置，且调用方不应重建具体类型时使用。
+已有 [`runtime`](../../GLOSSARY.md#runtime)（编译后的程序正在执行的阶段） object 带有有用配置，且 Client 不应重建 concrete type 时使用。
 
-## 何时不该使用
+### Use cases
 
-普通值复制已经清晰表达需求时，不必增加克隆接口。
+适合游戏实体 template 和可编辑文档预设；这里的字符串与向量都按值复制。
 
-## 优点
+## When NOT to Use
 
-复用配置，调用方无需了解每个初始化步骤。
+普通值复制已经清晰表达需求时，不必增加克隆 interface。
 
-## 缺点与权衡
+## Advantages
 
-指针成员需要明确深拷贝还是共享。活动套接字等独占资源可能无法合理复制。
+复用配置， Client 无需了解每个初始化步骤。
 
-## 技术应用场景
+## Trade-offs
 
-适合游戏实体模板和可编辑文档预设；这里的字符串与向量都按值复制。
+pointer 成员需要明确 deep copy 还是共享。活动套接字等独占资源可能无法合理复制。
 
-## 相关模式
+## Related Patterns
 
-[abstract-factory](../abstract-factory/README.zh-CN.md) · [memento](../../behavioral/memento/README.zh-CN.md)
+[Abstract Factory](../abstract-factory/README.zh-CN.md) · [Memento](../../behavioral/memento/README.zh-CN.md)
 
-## 常见混淆
+## Common Confusion
 
-备忘录恢复同一对象的旧状态，原型创建另一个对象；普通复制构造函数本身不提供多态克隆。
+Memento 恢复同一 object 的旧 state， Prototype 创建另一个 object；普通 copy constructor 本身不提供 polymorphic cloning。
 
-## 面试问题
+## Terms to Remember
 
-若装备变成 vector<shared_ptr<Item>>，副本还独立吗？解释别名问题。
+- `Prototype` — 复制一个配置好的 object，得到独立的新 object。
+- `Concrete Prototype` — 通过 clone 操作按已配置值创建另一 object 的 object。 示例： `Guard`。
+- `deep copy` — 复制所拥有的嵌套数据，使新 object 不与原 object 共享这些可变数据。 示例： `Guard::clone`。
+- `value semantics` — 按照类型约定，副本表现为独立的值。 示例： `name_, equipment_`。
 
-## 小练习
+## Interview Vocabulary
 
-增加可编辑装备，并验证修改副本不会影响原型。
+- [`object creation`](../../GLOSSARY.md#object-creation) — 选择具体类型，建立 object 的初始值并开始其 lifetime。
+- [`polymorphism`](../../GLOSSARY.md#polymorphism) — 同一 interface 对应不同 implementation；C++ 同时支持 runtime 与 compile time 的形式。
+- [`ownership`](../../GLOSSARY.md#ownership) — 负责维持资源存活并最终释放资源的责任。
 
-## 小结
+## Interview Question
 
-- **问题:** 游戏需要从已配置模板生成敌人，而生成逻辑不知道模板的具体类型。
-- **方案:** Enemy 提供 clone；Guard 复制值成员并返回指向独立对象的 unique_ptr。
-- **权衡:** 指针成员需要明确深拷贝还是共享。活动套接字等独占资源可能无法合理复制。
+若装备变成 `std::vector<std::shared_ptr<Item>>`，副本还独立吗？解释别名问题。
+
+## Mini Challenge
+
+增加可编辑装备，并验证修改副本不会影响 Prototype。
+
+## Quick Summary
+
+- **问题:** 游戏需要从已配置 template 生成敌人，而生成逻辑不知道 template 的 concrete type。
+- **方案:** Enemy 提供 clone；Guard 复制值成员并返回指向独立 object 的 std::unique_ptr。
+- **权衡:** pointer 成员需要明确 deep copy 还是共享。活动套接字等独占资源可能无法合理复制。
 - **记忆提示:** 复制配置，不复制身份。
 
 [上一个](../../creational/factory-method/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../creational/singleton/README.zh-CN.md)

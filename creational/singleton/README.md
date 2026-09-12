@@ -6,7 +6,7 @@
 
 ## Category
 
-Creational
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
 
 ## Difficulty
 
@@ -20,14 +20,14 @@ Restrict a type to one accessible instance, accepting the cost of shared global 
 
 Two independently created metrics counters split a process-wide total.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 Metrics first;
 Metrics second; // separate counters; assumes a public constructor
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Making the constructor public gives each caller its own counter; the intended shared total is no longer shared.
 
@@ -51,7 +51,13 @@ Client A + B  -->  Metrics::instance()  -->  one Metrics
 
 ## Participants
 
-Metrics controls its lifetime and stores the count. instance returns a non-owning reference; callers must never delete it.
+Metrics controls its [`lifetime`](../../GLOSSARY.md#lifetime) (The interval during which an object exists and may be used according to its rules) and stores the count. instance returns a non-owning reference; callers must never delete it.
+
+Canonical roles in this example:
+
+- [`instance`](../../GLOSSARY.md#instance) — A particular object of a type. Here: `Metrics::instance()`.
+- [`global state`](../../GLOSSARY.md#global-state) — Data reachable broadly across a program whose changes can affect distant code. Here: `Metrics::requests_`.
+- [`thread-safe initialization`](../../GLOSSARY.md#thread-safe-initialization) — Initialization protected against concurrent construction; it does not make later operations thread-safe. Here: `static Metrics metrics`.
 
 ## Modern C++20 Example
 
@@ -88,11 +94,15 @@ Same instance: true
 Requests: 2
 ```
 
-## When to Use It
+## When to Use
 
 Consider it only when one instance really is a process-level invariant and its lifetime is appropriate.
 
-## When NOT to Use It
+### Use cases
+
+A tiny single-threaded diagnostic counter demonstrates the mechanism, not a recommendation for production metrics architecture.
+
+## When NOT to Use
 
 Avoid it for convenient access to ordinary dependencies. Pass a Metrics reference explicitly when tests need isolation.
 
@@ -100,21 +110,30 @@ Avoid it for convenient access to ordinary dependencies. Pass a Metrics referenc
 
 There is one well-defined initialization point and callers reach the same object.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 Global access hides dependencies and contaminates tests. Local-static initialization is thread-safe, but record is not; concurrent calls need synchronization. Shutdown order can also matter.
 
-## Technical Use Cases
-
-A tiny single-threaded diagnostic counter demonstrates the mechanism, not a recommendation for production metrics architecture.
-
 ## Related Patterns
 
-[abstract-factory](../abstract-factory/README.md) · [facade](../../structural/facade/README.md)
+[Abstract Factory](../abstract-factory/README.md) · [Facade](../../structural/facade/README.md)
 
 ## Common Confusion
 
-One object managed by dependency injection is not necessarily a Singleton: uniqueness need not be enforced by the type.
+One object managed by [`dependency injection`](../../GLOSSARY.md#dependency-injection) (Supplying a dependency from outside instead of choosing or constructing it inside the consumer) is not necessarily a Singleton: uniqueness need not be enforced by the type.
+
+## Terms to Remember
+
+- `Singleton` — Restrict a type to one accessible instance, accepting the cost of shared global state.
+- `instance` — A particular object of a type. Example: `Metrics::instance()`.
+- `global state` — Data reachable broadly across a program whose changes can affect distant code. Example: `Metrics::requests_`.
+- `thread-safe initialization` — Initialization protected against concurrent construction; it does not make later operations thread-safe. Example: `static Metrics metrics`.
+
+## Interview Vocabulary
+
+- [`dependency injection`](../../GLOSSARY.md#dependency-injection) — Supplying a dependency from outside instead of choosing or constructing it inside the consumer.
+- [`testability`](../../GLOSSARY.md#testability) — How readily behavior can be isolated, exercised, and checked.
+- [`lifetime`](../../GLOSSARY.md#lifetime) — The interval during which an object exists and may be used according to its rules.
 
 ## Interview Question
 

@@ -17,17 +17,27 @@ CATEGORIES = {
                    'observer state strategy template-method visitor').split(),
 }
 ENGLISH_SECTIONS = (
-    'Category', 'Difficulty', 'In One Sentence', 'The Problem', 'A Naive Solution',
-    'Why This Becomes a Problem', 'The Idea', 'Real-World Analogy', 'Structure',
-    'Participants', 'Modern C++20 Example', 'Example Output', 'When to Use It',
-    'When NOT to Use It', 'Advantages', 'Disadvantages / Trade-offs',
-    'Technical Use Cases', 'Related Patterns', 'Common Confusion',
+    'Category', 'Difficulty', 'In One Sentence', 'The Problem', 'Naive Solution',
+    'Why It Becomes a Problem', 'The Idea', 'Real-World Analogy', 'Structure',
+    'Participants', 'Modern C++20 Example', 'Example Output', 'When to Use',
+    'When NOT to Use', 'Advantages', 'Trade-offs',
+    'Related Patterns', 'Common Confusion', 'Terms to Remember', 'Interview Vocabulary',
     'Interview Question', 'Mini Challenge', 'Quick Summary',
 )
 
 
 def main():
     errors = []
+    def heading_anchors(text):
+        counts = {}
+        anchors = set()
+        for heading in re.findall(r'^#+ (.+)$', text, re.M):
+            heading = re.sub(r'[`*]', '', heading)
+            slug = re.sub(r'[^\w -]', '', heading.lower()).replace(' ', '-')
+            index = counts.get(slug, 0)
+            counts[slug] = index + 1
+            anchors.add(slug if index == 0 else f'{slug}-{index}')
+        return anchors
     documents = list(ROOT.glob('*.md')) + list((ROOT / 'assets').rglob('*.md'))
     for category in CATEGORIES:
         documents.extend((ROOT / category).rglob('*.md'))
@@ -43,6 +53,9 @@ def main():
             resolved = (document.parent / unquote(url.path)).resolve()
             if url.path.startswith('/') or not resolved.is_relative_to(ROOT) or not resolved.is_file():
                 errors.append(f'{document.relative_to(ROOT)}: broken local link {target}')
+            elif url.fragment and resolved.suffix == '.md':
+                if unquote(url.fragment) not in heading_anchors(resolved.read_text(encoding='utf-8')):
+                    errors.append(f'{document.relative_to(ROOT)}: missing anchor {target}')
 
     sources = sorted(source for category in CATEGORIES for source in (ROOT / category).glob('*/cpp/main.cpp'))
     if len(sources) != 23:
@@ -65,11 +78,26 @@ def main():
                 errors.append(f'Missing {article.relative_to(ROOT)}')
                 continue
             text = article.read_text(encoding='utf-8')
+            expected_name = ' '.join(word.capitalize() if word not in ('of',) else word for word in slug.split('-'))
+            if not text.startswith(f'# {expected_name}\n'):
+                errors.append(f'{article.relative_to(ROOT)}: pattern title must be {expected_name}')
             headings = re.findall(r'^## (.+)$', text, re.M)
             if len(headings) != len(ENGLISH_SECTIONS):
                 errors.append(f'{article.relative_to(ROOT)}: incomplete sections')
-            if filename == 'README.md' and tuple(headings) != ENGLISH_SECTIONS:
-                errors.append(f'{slug}: English template mismatch')
+            if tuple(headings) != ENGLISH_SECTIONS:
+                errors.append(f'{article.relative_to(ROOT)}: required template mismatch')
+            for section in ('Terms to Remember', 'Interview Vocabulary'):
+                match = re.search(r'^## '+section+r'\n(.*?)(?=^## |\Z)', text, re.M | re.S)
+                if not match or len(re.findall(r'^- ', match[1], re.M)) < 3:
+                    errors.append(f'{article.relative_to(ROOT)}: {section} needs at least three explained entries')
+                elif any(' — ' not in line for line in match[1].splitlines() if line.startswith('- ')):
+                    errors.append(f'{article.relative_to(ROOT)}: vocabulary entries need explanations')
+                elif filename == 'README.ar-EG.md' and not re.search(r'[\u0600-\u06ff]', match[1]):
+                    errors.append(f'{article.relative_to(ROOT)}: vocabulary needs an Arabic explanation')
+                elif filename == 'README.zh-CN.md' and not re.search(r'[\u3400-\u9fff]', match[1]):
+                    errors.append(f'{article.relative_to(ROOT)}: vocabulary needs a Chinese explanation')
+            if '../../GLOSSARY.md#' not in text:
+                errors.append(f'{article.relative_to(ROOT)}: missing glossary links')
             if any(not section.strip() for section in re.split(r'^## .+\n', text, flags=re.M)[1:]):
                 errors.append(f'{article.relative_to(ROOT)}: empty section')
             for language in LANGUAGES:
@@ -110,6 +138,8 @@ def main():
             diagram_blocks = []
         else:
             diagram_blocks = re.findall(r'^```text\n(.*?)^```', diagram.read_text(encoding='utf-8'), re.M | re.S)
+            if any(re.search(r'[\u0600-\u06ff\u3400-\u9fff]', block) for block in diagram_blocks):
+                errors.append(f'{slug}: diagram labels must remain English')
         for locale, filename in zip(LOCALES, LANGUAGES):
             article = source.parent.parent / filename
             if not article.is_file():
@@ -123,9 +153,16 @@ def main():
                 errors.append(f'{locale}/{slug}: expected output differs from expected.txt')
             if not diagram_blocks or diagram_blocks[0].strip() not in [block.strip() for block in output_blocks]:
                 errors.append(f'{locale}/{slug}: diagram differs from diagram.md')
-    for required in ('LICENSE', 'REFERENCES.md', 'CONTRIBUTING.md', 'CPP_EXAMPLES.md'):
+    for required in ('LICENSE', 'REFERENCES.md', 'CONTRIBUTING.md', 'CPP_EXAMPLES.md', 'GLOSSARY.md'):
         if not (ROOT / required).is_file():
             errors.append(f'Missing {required}')
+    glossary_path = ROOT / 'GLOSSARY.md'
+    if glossary_path.is_file():
+        glossary = glossary_path.read_text(encoding='utf-8')
+        for entry in re.split(r'^## ', glossary, flags=re.M)[1:]:
+            for label in ('Meaning', 'مصري', '中文', 'Italiano'):
+                if not re.search(r'\*\*'+label+r':\*\* \S', entry):
+                    errors.append(f'Glossary entry {entry.splitlines()[0]}: missing {label} explanation')
     for svg in (ROOT / 'assets').rglob('*.svg'):
         try:
             ET.parse(svg)

@@ -1,11 +1,11 @@
-# Strutturali
+# Structural Pattern
 
 [Design-Patterns-23](../README.it.md)
 
-- [Adattatore](adapter/README.it.md)
-- [Ponte](bridge/README.it.md)
-- [Composito](composite/README.it.md)
-- [Decoratore](decorator/README.it.md)
-- [Facciata](facade/README.it.md)
-- [Oggetto condiviso leggero](flyweight/README.it.md)
-- [Procuratore](proxy/README.it.md)
+- [Adapter](adapter/README.it.md)
+- [Bridge](bridge/README.it.md)
+- [Composite](composite/README.it.md)
+- [Decorator](decorator/README.it.md)
+- [Facade](facade/README.it.md)
+- [Flyweight](flyweight/README.it.md)
+- [Proxy](proxy/README.it.md)

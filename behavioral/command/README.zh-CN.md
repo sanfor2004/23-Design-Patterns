@@ -1,58 +1,64 @@
-# 命令
+# Command
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../behavioral/chain-of-responsibility/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/interpreter/README.zh-CN.md)
 
-## 类别
+## Category
 
-行为型
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
 
-## 难度
+## Difficulty
 
 中级
 
-## 一句话说明
+## In One Sentence
 
-把操作封装成可保存、可延后调用的对象。
+通过 [`encapsulation`](../../GLOSSARY.md#encapsulation)（把内部表示和必须保持的规则放在受控操作之后） 把操作及其数据组成可保存、可延后调用的 object。
 
-## 问题
+## The Problem
 
 编辑器要执行和撤销操作，工具栏不应了解每种文档修改。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 document.text += " world"; // no object records how to undo
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
-直接修改文本完成了工作，却没有留下动作及之前状态的记录。
+直接修改文本完成了工作，却没有留下动作及之前 state 的记录。
 
-## 核心思路
+## The Idea
 
-Append 保存接收者和参数；execute 记录旧文本，undo 恢复。History 拥有已执行命令。
+Append 保存 Receiver 和参数；execute 记录旧文本，undo 恢复。History 拥有已执行 Command。
 
-## 生活类比
+## Real-World Analogy
 
 餐厅点菜单独立记录动作，不依赖提交它的服务员。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![命令](../../assets/diagrams/command.svg)
+![Command](../../assets/diagrams/command.svg)
 
 ```text
 History  -->  Command  -->  Append → Document
 ```
 
-## 参与者
+## Participants
 
 Command 定义执行和撤销，Append 修改借用的 Document，History 按栈顺序调用和保存。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`Receiver`](../../GLOSSARY.md#receiver) — 执行 Command 所请求工作的 object。 对应代码： `Document`。
+- [`Invoker`](../../GLOSSARY.md#invoker) — 启动或保存 Command、无需了解每项操作细节的角色。 对应代码： `History`。
+- [`Concrete Command`](../../GLOSSARY.md#concrete-command) — 把 Receiver 与动作绑定起来的 Command implementation。 对应代码： `Append`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -102,53 +108,66 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 Hello world
 Hello
 ```
 
-## 何时使用
+## When to Use
 
-适合延迟操作、队列、宏命令或撤销历史。
+适合延迟操作、队列、宏 Command 或撤销历史。
 
-## 何时不该使用
+### Use cases
 
-一次性函数调用无需保存或调度意图时，避免额外对象。
+适合编辑器操作和任务队列；持久队列还需要 serialization、 idempotency 等机制。
 
-## 优点
+## When NOT to Use
 
-调用者不依赖具体操作，可以保留执行历史。
+一次性 function 调用无需保存或调度意图时，避免额外 object。
 
-## 缺点与权衡
+## Advantages
+
+Client 不依赖具体操作，可以保留执行历史。
+
+## Trade-offs
 
 保存全文耗费内存。单线程示例假定修改都经过 History，且 Document 比历史活得更久；外部修改会破坏撤销预期。
 
-## 技术应用场景
+## Related Patterns
 
-适合编辑器操作和任务队列；持久队列还需要序列化、幂等性等机制。
+[Memento](../memento/README.zh-CN.md) · [Chain of Responsibility](../chain-of-responsibility/README.zh-CN.md)
 
-## 相关模式
+## Common Confusion
 
-[memento](../memento/README.zh-CN.md) · [chain-of-responsibility](../chain-of-responsibility/README.zh-CN.md)
+Memento 保存 state， Command 保存动作并可用 snapshot 撤销；不是所有 Command 都可逆。
 
-## 常见混淆
+## Terms to Remember
 
-备忘录保存状态，命令保存动作并可用快照撤销；不是所有命令都可逆。
+- `Command` — 通过 encapsulation 把操作及其数据组成可保存、可延后调用的 object。
+- `Receiver` — 执行 Command 所请求工作的 object。 示例： `Document`。
+- `Invoker` — 启动或保存 Command、无需了解每项操作细节的角色。 示例： `History`。
+- `Concrete Command` — 把 Receiver 与动作绑定起来的 Command implementation。 示例： `Append`。
 
-## 面试问题
+## Interview Vocabulary
+
+- [`undo`](../../GLOSSARY.md#undo) — 在可行时用保存的 state 或逆操作恢复之前的逻辑结果。
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — 把内部表示和必须保持的规则放在受控操作之后。
+- [`exception safety`](../../GLOSSARY.md#exception-safety) — 操作抛出 exception 时仍能保持的保证。
+
+## Interview Question
 
 发送邮件能像恢复字符串一样撤销吗？区分补偿和逆操作。
 
-## 小练习
+## Mini Challenge
 
-连续追加两次再撤销两次，验证空历史上的撤销无副作用。
+连续追加两次再撤销两次，验证空历史上的撤销无 side effect。
 
-## 小结
+## Quick Summary
 
 - **问题:** 编辑器要执行和撤销操作，工具栏不应了解每种文档修改。
-- **方案:** Append 保存接收者和参数；execute 记录旧文本，undo 恢复。History 拥有已执行命令。
+- **方案:** Append 保存 Receiver 和参数；execute 记录旧文本，undo 恢复。History 拥有已执行 Command。
 - **权衡:** 保存全文耗费内存。单线程示例假定修改都经过 History，且 Document 比历史活得更久；外部修改会破坏撤销预期。
 - **记忆提示:** 把动作保存下来。
 

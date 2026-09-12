@@ -1,58 +1,64 @@
-# Strategia
+# Strategy
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../behavioral/state/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/template-method/README.it.md)
 
-## Categoria
+## Category
 
-Comportamentali
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
 
-## Difficoltà
+## Difficulty
 
 Principiante
 
-## In una frase
+## In One Sentence
 
-Fornisci un algoritmo sostituibile all'oggetto che ne ha bisogno.
+Fornisci un algorithm sostituibile all'object che ne ha bisogno.
 
-## Il problema
+## The Problem
 
 Il checkout richiede politiche di spedizione diverse senza inglobarle tutte.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 int fee = express ? (subtotal >= 100 ? 0 : 15) : 5;
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Una condizione è leggibile; ripeterla in più percorsi rende difficili aggiunte e test.
 
-## Idea centrale
+## The Idea
 
 Checkout possiede un callable ShippingRule e gli chiede il costo; il client sceglie alla costruzione.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Scegli il percorso a piedi o in auto mantenendo la stessa destinazione.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Strategia](../../assets/diagrams/strategy.svg)
+![Strategy](../../assets/diagrams/strategy.svg)
 
 ```text
 Checkout::total()  -->  ShippingRule  -->  standard / express lambda
 ```
 
-## Partecipanti
+## Participants
 
-Checkout è il contesto, ShippingRule il contratto, le lambda implementano tariffe standard ed express.
+Checkout è il Context, ShippingRule il contratto, le lambda implementano tariffe standard ed express.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Context`](../../GLOSSARY.md#context) — L'object che usa una Strategy o delega il behavior allo State corrente. Qui: `Checkout`.
+- [`Strategy interface`](../../GLOSSARY.md#strategy-interface) — Il contratto degli algorithm intercambiabili usati da un Context. Qui: `ShippingRule`.
+- [`Concrete Strategy`](../../GLOSSARY.md#concrete-strategy) — Una particolare implementation della Strategy interface, anche un callable invece di una class. Qui: `standard / express lambdas`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <functional>
@@ -81,7 +87,7 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Standard: 45
@@ -89,47 +95,62 @@ Express: 55
 Express large: 120
 ```
 
-## Quando usarlo
+## When to Use
 
-Usala quando gli algoritmi variano indipendentemente e il client deve scegliere una politica.
+Usala quando gli algorithm variano indipendentemente e il client deve scegliere una politica.
 
-## Quando NON usarlo
+### Use cases
 
-Evitala per un algoritmo stabile o una condizione leggibile senza vera pressione di estensione.
+Prezzi, function di ranking e politiche di retry sono contesti adatti.
 
-## Vantaggi
+## When NOT to Use
+
+Evitala per un algorithm stabile o una condizione leggibile senza vera pressione di estensione.
+
+## Advantages
 
 Ogni politica si prova isolatamente e il calcolo totale resta condiviso.
 
-## Svantaggi e compromessi
+## Trade-offs
 
-std::function introduce cancellazione del tipo e possibili allocazioni; template o puntatori a funzione rispondono a vincoli diversi. Valida i risultati di politiche esterne.
+[`std::function`](../../GLOSSARY.md#stdfunction) (Un wrapper con type erasure che conserva un callable con una firma scelta) introduce [`type erasure`](../../GLOSSARY.md#type-erasure) (Nascondere un tipo concreto dietro un'interface uniforme a runtime, come std::function per i callable) e possibili [`memory allocation`](../../GLOSSARY.md#memory-allocation) (Ottenere spazio per i dati; costi e possibilità di errore dipendono dal meccanismo); template o function pointer rispondono a vincoli diversi. Valida i risultati di politiche esterne.
 
-## Applicazioni tecniche
+## Related Patterns
 
-Prezzi, funzioni di ranking e politiche di retry sono contesti adatti.
+[State](../state/README.it.md) · [Template Method](../template-method/README.it.md)
 
-## Pattern correlati
+## Common Confusion
 
-[state](../state/README.it.md) · [template-method](../template-method/README.it.md)
+State riguarda il [`lifecycle`](../../GLOSSARY.md#lifecycle) (Le fasi e transizioni modellate di un'entità del dominio, distinte dalla lifetime di un object C++) e transizioni; Strategy sceglie algorithm. Template Method personalizza passi ereditati anziché callable iniettati.
 
-## Confusione comune
+## Terms to Remember
 
-State riguarda ciclo di vita e transizioni; Strategy sceglie algoritmi. Template Method personalizza passi ereditati anziché callable iniettati.
+- `Strategy` — Fornisci un algorithm sostituibile all'object che ne ha bisogno.
+- `Context` — L'object che usa una Strategy o delega il behavior allo State corrente. Esempio: `Checkout`.
+- `Strategy interface` — Il contratto degli algorithm intercambiabili usati da un Context. Esempio: `ShippingRule`.
+- `Concrete Strategy` — Una particolare implementation della Strategy interface, anche un callable invece di una class. Esempio: `standard / express lambdas`.
 
-## Domanda da colloquio
+## Interview Vocabulary
 
-Sostituendo std::function con un parametro template, cosa cambia per scelta a runtime e compilazione?
+- [`interchangeable behavior`](../../GLOSSARY.md#interchangeable-behavior) — Behavior diversi fornibili attraverso lo stesso contratto.
+- [`encapsulate an algorithm`](../../GLOSSARY.md#encapsulate-an-algorithm) — Racchiudere un algorithm dietro un'operazione che ne nasconde i passi interni.
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — Preferire object collaboranti quando esprimono la variazione meglio di una gerarchia di inheritance.
+- [`runtime selection`](../../GLOSSARY.md#runtime-selection) — Scegliere un'implementation durante l'esecuzione del programma.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Le parti conoscono solo i contratti necessari a collaborare, limitando la propagazione delle modifiche.
 
-## Piccola sfida
+## Interview Question
+
+Sostituendo std::function con un parametro template, cosa cambia per scelta a [`runtime`](../../GLOSSARY.md#runtime) (Il periodo in cui il programma compilato è in esecuzione) e compilazione?
+
+## Mini Challenge
 
 Aggiungi spedizione gratuita da 80 e prova 79, 80 e 81.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Il checkout richiede politiche di spedizione diverse senza inglobarle tutte.
 - **Soluzione:** Checkout possiede un callable ShippingRule e gli chiede il costo; il client sceglie alla costruzione.
-- **Compromesso:** std::function introduce cancellazione del tipo e possibili allocazioni; template o puntatori a funzione rispondono a vincoli diversi. Valida i risultati di politiche esterne.
-- **Da ricordare:** Stesso compito, algoritmo a scelta.
+- **Trade-off:** std::function introduce type erasure e possibili memory allocation; template o function pointer rispondono a vincoli diversi. Valida i risultati di politiche esterne.
+- **Da ricordare:** Stesso compito, algorithm a scelta.
 
 [Precedente](../../behavioral/state/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/template-method/README.it.md)

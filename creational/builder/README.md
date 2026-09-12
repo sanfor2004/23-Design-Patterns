@@ -6,7 +6,7 @@
 
 ## Category
 
-Creational
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
 
 ## Difficulty
 
@@ -20,13 +20,13 @@ Assemble a configured object through named steps before producing the result.
 
 A request has an endpoint, a timeout and a retry option; positional arguments become hard to read as options grow.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 Request request{"/orders", 5, true}; // what does true mean?
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 The constructor works, but calls with several integers and booleans hide intent and make swapped arguments hard to notice.
 
@@ -51,6 +51,12 @@ Client  -->  RequestBuilder  -->  Request
 ## Participants
 
 RequestBuilder stores temporary choices and validates them. Request owns the finished values. The client chooses the order of optional steps.
+
+Canonical roles in this example:
+
+- [`Product`](../../GLOSSARY.md#product) — The contract of an object returned by creation code. Here: `Request`.
+- [`fluent interface`](../../GLOSSARY.md#fluent-interface) — An interface shaped to read as a chain of calls; it does not by itself imply Builder. Here: `RequestBuilder.endpoint().timeout().retry()`.
+- [`constructor`](../../GLOSSARY.md#constructor) — The special operation that initializes a new class instance. Here: `Request::Request`.
 
 ## Modern C++20 Example
 
@@ -99,11 +105,15 @@ int main() {
 Invalid request rejected
 ```
 
-## When to Use It
+## When to Use
 
 Use it for objects with many independent options or a meaningful validation boundary.
 
-## When NOT to Use It
+### Use cases
+
+HTTP request configuration and test fixture assembly fit; this example performs no network request.
+
+## When NOT to Use
 
 Avoid it for two obvious constructor arguments; a small aggregate with named fields may be clearer.
 
@@ -111,21 +121,30 @@ Avoid it for two obvious constructor arguments; a small aggregate with named fie
 
 Call sites explain the choices, and invalid builder state can be rejected before producing a result.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 There is an extra type to maintain. This Request constructor remains public, so production invariants would also need constructor validation or restricted access.
 
-## Technical Use Cases
-
-HTTP request configuration and test fixture assembly fit; this example performs no network request.
-
 ## Related Patterns
 
-[factory-method](../factory-method/README.md) · [abstract-factory](../abstract-factory/README.md)
+[Factory Method](../factory-method/README.md) · [Abstract Factory](../abstract-factory/README.md)
 
 ## Common Confusion
 
 Factory Method chooses the concrete product inside an inherited workflow. Builder assembles the configuration of a result over several calls.
+
+## Terms to Remember
+
+- `Builder` — Assemble a configured object through named steps before producing the result.
+- `Product` — The contract of an object returned by creation code. Example: `Request`.
+- `fluent interface` — An interface shaped to read as a chain of calls; it does not by itself imply Builder. Example: `RequestBuilder.endpoint().timeout().retry()`.
+- `constructor` — The special operation that initializes a new class instance. Example: `Request::Request`.
+
+## Interview Vocabulary
+
+- [`object creation`](../../GLOSSARY.md#object-creation) — Choosing a concrete type and establishing an object's initial values and lifetime.
+- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — Keeping distinct kinds of responsibility apart so they can change independently.
+- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — Keep a module focused on one coherent reason to change.
 
 ## Interview Question
 

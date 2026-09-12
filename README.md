@@ -24,7 +24,7 @@ Patterns are easier to understand when you can trace a concrete problem through 
 
 Choose a category below or follow the learning path. Every pattern directory contains four translations, a diagram, and a `cpp/` directory. Language links keep you on the same pattern.
 
-## Creational
+## Creational Pattern
 
 How objects get created
 
@@ -34,7 +34,7 @@ How objects get created
 - [Prototype](creational/prototype/README.md) — Create an independent object by cloning an existing configured object. (Intermediate)
 - [Singleton](creational/singleton/README.md) — Restrict a type to one accessible instance, accepting the cost of shared global state. (Intermediate)
 
-## Structural
+## Structural Pattern
 
 How objects fit together
 
@@ -46,7 +46,7 @@ How objects fit together
 - [Flyweight](structural/flyweight/README.md) — Share immutable intrinsic data while keeping each occurrence's context separate. (Advanced)
 - [Proxy](structural/proxy/README.md) — Control access to an object through a stand-in with the same interface. (Intermediate)
 
-## Behavioral
+## Behavioral Pattern
 
 How objects communicate and behave
 
@@ -77,3 +77,9 @@ A pattern is a reusable design idea for a recurring problem—not a class diagra
 - [Contributing](CONTRIBUTING.md)
 - [License](LICENSE)
 - [C++20](CPP_EXAMPLES.md)
+
+## Terminology policy
+
+Translate the explanation, not the terminology. Pattern names, software terms, code identifiers, and interview expressions stay in English; each language explains their meaning.
+
+[Glossary](GLOSSARY.md)

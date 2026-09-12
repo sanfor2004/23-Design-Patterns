@@ -6,7 +6,7 @@
 
 ## Category
 
-Behavioral
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
 
 ## Difficulty
 
@@ -20,13 +20,13 @@ Turn an action into an object that can be stored and invoked later.
 
 An editor must apply changes and undo the last action without teaching the toolbar every document operation.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 document.text += " world"; // no object records how to undo
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Direct mutation performs the edit but leaves no record of the action or its prior state.
 
@@ -51,6 +51,12 @@ History  -->  Command  -->  Append → Document
 ## Participants
 
 Command defines execute and undo. Append changes a borrowed Document. History invokes and retains commands in stack order.
+
+Canonical roles in this example:
+
+- [`Receiver`](../../GLOSSARY.md#receiver) — The object that performs the work requested by a Command. Here: `Document`.
+- [`Invoker`](../../GLOSSARY.md#invoker) — The role that starts or stores Commands without knowing each operation's details. Here: `History`.
+- [`Concrete Command`](../../GLOSSARY.md#concrete-command) — A Command implementation that binds a Receiver and an action. Here: `Append`.
 
 ## Modern C++20 Example
 
@@ -109,11 +115,15 @@ Hello world
 Hello
 ```
 
-## When to Use It
+## When to Use
 
 Use it for deferred actions, queues, macros or undo histories.
 
-## When NOT to Use It
+### Use cases
+
+Editor actions and job queues fit, but durable queues need serialization and idempotency beyond this example.
+
+## When NOT to Use
 
 Avoid it for a one-off function call with no need to store or schedule intent.
 
@@ -121,21 +131,30 @@ Avoid it for a one-off function call with no need to store or schedule intent.
 
 The invoker does not depend on concrete operations and can retain their execution history.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 Saving whole text costs memory. This single-threaded demo assumes edits go through History and Document outlives it; external edits would invalidate undo expectations.
 
-## Technical Use Cases
-
-Editor actions and job queues fit, but durable queues need serialization and idempotency beyond this example.
-
 ## Related Patterns
 
-[memento](../memento/README.md) · [chain-of-responsibility](../chain-of-responsibility/README.md)
+[Memento](../memento/README.md) · [Chain of Responsibility](../chain-of-responsibility/README.md)
 
 ## Common Confusion
 
 Memento stores state; Command stores an action and may use a snapshot to undo it. Not every command is reversible.
+
+## Terms to Remember
+
+- `Command` — Turn an action into an object that can be stored and invoked later.
+- `Receiver` — The object that performs the work requested by a Command. Example: `Document`.
+- `Invoker` — The role that starts or stores Commands without knowing each operation's details. Example: `History`.
+- `Concrete Command` — A Command implementation that binds a Receiver and an action. Example: `Append`.
+
+## Interview Vocabulary
+
+- [`undo`](../../GLOSSARY.md#undo) — Restoring an earlier logical result, using saved state or an inverse operation when possible.
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — Keeping representation and invariants behind controlled operations.
+- [`exception safety`](../../GLOSSARY.md#exception-safety) — The guarantees an operation preserves if it fails by throwing an exception.
 
 ## Interview Question
 

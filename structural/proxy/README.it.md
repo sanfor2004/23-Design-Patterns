@@ -1,58 +1,64 @@
-# Procuratore
+# Proxy
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../structural/flyweight/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/chain-of-responsibility/README.it.md)
 
-## Categoria
+## Category
 
-Strutturali
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
 
-## Difficoltà
+## Difficulty
 
 Intermedio
 
-## In una frase
+## In One Sentence
 
-Controlla l'accesso a un oggetto tramite un sostituto con la stessa interfaccia.
+Controlla l'accesso a un object tramite un sostituto con la stessa [`interface`](../../GLOSSARY.md#interface) (Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa).
 
-## Il problema
+## The Problem
 
 Una galleria prepara molte immagini ma ne mostra poche.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 DiskImage image; // loads even if never displayed
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Costruire subito tutte le immagini pesanti carica dati prima che servano.
 
-## Idea centrale
+## The Idea
 
 LazyImage implementa Image, crea DiskImage al primo display e poi la riutilizza.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Una richiesta di biblioteca rappresenta il libro finché il bibliotecario lo recupera.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Procuratore](../../assets/diagrams/proxy.svg)
+![Proxy](../../assets/diagrams/proxy.svg)
 
 ```text
 Client(Image)  -->  LazyImage  -->  DiskImage
 ```
 
-## Partecipanti
+## Participants
 
-Image è il contratto, DiskImage svolge il lavoro, LazyImage possiede il soggetto creato su richiesta.
+Image è il contratto, DiskImage svolge il lavoro, LazyImage possiede il Real Subject creato su richiesta.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Subject interface`](../../GLOSSARY.md#subject-interface) — Il contratto condiviso da Proxy e Real Subject. Qui: `Image`.
+- [`Real Subject`](../../GLOSSARY.md#real-subject) — L'object che svolge il lavoro dietro un Proxy. Qui: `DiskImage`.
+- [`lazy initialization`](../../GLOSSARY.md#lazy-initialization) — Rinviare la creazione fino al primo utilizzo del valore o della risorsa. Qui: `LazyImage::display`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -82,7 +88,7 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Proxy ready
@@ -91,47 +97,60 @@ Display image
 Display image
 ```
 
-## Quando usarlo
+## When to Use
 
-Usalo per inizializzazione differita, autorizzazione o accesso remoto con un'interfaccia stabile.
+Usalo per lazy initialization, autorizzazione o accesso remoto con un'interface stabile.
 
-## Quando NON usarlo
-
-Evitalo se costruire direttamente costa poco e la politica di accesso non serve.
-
-## Vantaggi
-
-Il client conserva display mentre la creazione viene rinviata.
-
-## Svantaggi e compromessi
-
-La prima chiamata paga il caricamento. mutable esprime costanza logica, non sicurezza fra thread; serve anche una politica per gli errori.
-
-## Applicazioni tecniche
+### Use cases
 
 Media caricati su richiesta, controlli di autorizzazione e stub remoti hanno questa forma ma semantiche d'errore diverse.
 
-## Pattern correlati
+## When NOT to Use
 
-[decorator](../decorator/README.it.md) · [adapter](../adapter/README.it.md)
+Evitalo se costruire direttamente costa poco e la politica di accesso non serve.
 
-## Confusione comune
+## Advantages
 
-Decorator aggiunge responsabilità, Proxy controlla quando o se raggiungere il soggetto; le strutture possono coincidere.
+Il client conserva display mentre la creazione viene rinviata.
 
-## Domanda da colloquio
+## Trade-offs
+
+La prima chiamata paga il caricamento. mutable esprime logical constness, non sicurezza fra thread; serve anche una politica per gli errori.
+
+## Related Patterns
+
+[Decorator](../decorator/README.it.md) · [Adapter](../adapter/README.it.md)
+
+## Common Confusion
+
+Decorator aggiunge responsibility, Proxy controlla quando o se raggiungere il Real Subject; le strutture possono coincidere.
+
+## Terms to Remember
+
+- `Proxy` — Controlla l'accesso a un object tramite un sostituto con la stessa interface.
+- `Subject interface` — Il contratto condiviso da Proxy e Real Subject. Esempio: `Image`.
+- `Real Subject` — L'object che svolge il lavoro dietro un Proxy. Esempio: `DiskImage`.
+- `lazy initialization` — Rinviare la creazione fino al primo utilizzo del valore o della risorsa. Esempio: `LazyImage::display`.
+
+## Interview Vocabulary
+
+- [`delegation`](../../GLOSSARY.md#delegation) — Un object affida parte del proprio lavoro a un collaboratore.
+- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — Ciò che il programma fa durante l'esecuzione, incluso il behavior scelto dagli input.
+- [`trade-off`](../../GLOSSARY.md#trade-off) — Un vantaggio ottenuto rinunciando a un'altra proprietà desiderabile.
+
+## Interview Question
 
 Se il caricamento lancia un'eccezione, ritenti o memorizzi il fallimento? Definisci il contratto.
 
-## Piccola sfida
+## Mini Challenge
 
 Conta i caricamenti su tre display e prova un loader che fallisce una volta.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Una galleria prepara molte immagini ma ne mostra poche.
 - **Soluzione:** LazyImage implementa Image, crea DiskImage al primo display e poi la riutilizza.
-- **Compromesso:** La prima chiamata paga il caricamento. mutable esprime costanza logica, non sicurezza fra thread; serve anche una politica per gli errori.
+- **Trade-off:** La prima chiamata paga il caricamento. mutable esprime logical constness, non sicurezza fra thread; serve anche una politica per gli errori.
 - **Da ricordare:** Un sostituto controlla l'accesso.
 
 [Precedente](../../structural/flyweight/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/chain-of-responsibility/README.it.md)

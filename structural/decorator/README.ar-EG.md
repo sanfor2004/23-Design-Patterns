@@ -1,59 +1,65 @@
-# المزيّن
+# Decorator
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../structural/composite/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/facade/README.ar-EG.md)
 
-## الفئة
+## Category
 
-التركيب
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
 
-## المستوى
+## Difficulty
 
 مبتدئ
 
-## في جملة واحدة
+## In One Sentence
 
-ضيف سلوك بإنك تلف Object بواحدة تانية عندها نفس الواجهة.
+ضيف behavior بإنك تلف object بواحدة تانية عندها نفس الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها).
 
-## المشكلة
+## The Problem
 
-طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير Class لكل تركيبة.
+طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير class لكل تركيبة.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 struct CoffeeWithMilk {};
 struct CoffeeWithDoubleMilk {}; // another combination
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
-Classes التركيبات بتكرر السعر الأساسي، وعددها بيزيد مع كل إضافة.
+classes التركيبات بتكرر السعر الأساسي، وعددها بيزيد مع كل إضافة.
 
-## الفكرة الأساسية
+## The Idea
 
 Milk بتمتلك Drink وبتفوّض ليها قبل ما تضيف وصفها وسعرها.
 
-## مثال من الحياة
+## Real-World Analogy
 
 كل طبقة تغليف بتحيط بالهدية اللي قبلها، ولسه الناتج هدية متغلفة.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![المزيّن](../../assets/diagrams/decorator.svg)
+![Decorator](../../assets/diagrams/decorator.svg)
 
 ```text
 Client  -->  Milk(Drink)  -->  Coffee or Milk
 ```
 
-## الأدوار
+## Participants
 
-Drink العقد المشترك، Coffee الأساس، وMilk بتلف Drink واحدة. الـ Client بيمتلك الطبقة الخارجية.
+Drink العقد المشترك، Coffee الأساس، و Milk بتلف Drink واحدة. الـ Client بيمتلك الطبقة الخارجية.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Component`](../../GLOSSARY.md#component) — العقد المشترك اللي العنصر أو المجموعة أو Wrapper بتوفره. هنا: `Drink`.
+- [`Concrete Component`](../../GLOSSARY.md#concrete-component) — الـ implementation الأساسية قبل إضافة طبقات اختيارية. هنا: `Coffee`.
+- [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — Wrapper بتحافظ على عقد Component وبتضيف responsibility محددة. هنا: `Milk`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -88,53 +94,66 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 coffee + milk + milk: 14
 ```
 
-## إمتى تستخدمه
+## When to Use
 
-استخدمه لسلوك اختياري قابل للتركيب وبيحافظ على عقد العنصر الأصلي.
+استخدمه ل behavior اختياري قابل للتركيب وبيحافظ على عقد العنصر الأصلي.
 
-## إمتى ما تستخدموش
+### Use cases
+
+ينفع لطبقات ضغط وتشفير الـ Streams ، مع الانتباه للترتيب والأخطاء.
+
+## When NOT to Use
 
 بلاش لو قائمة مكونات وجمع أسعار كفاية؛ المثال متعمد عشان يوضح التركيب.
 
-## المميزات
+## Advantages
 
-الإضافات بتتركب وقت التشغيل، والتنفيذ الأساسي بيفضل صغير.
+الإضافات بتتركب وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء) ، والـ base [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد interface) بيفضل صغير.
 
-## العيوب والمقايضات
+## Trade-offs
 
-ترتيب الطبقات ممكن يغيّر السلوك، وكتر الـ Objects الصغيرة بيصعّب التتبع. نفس الواجهة مش ضمان لنفس الوعود السلوكية.
+ترتيب الطبقات ممكن يغيّر الـ behavior ، وكتر الـ objects الصغيرة بيصعّب التتبع. نفس الـ interface مش ضمان لنفس الوعود المرتبطة بالـ behavior.
 
-## استخدامات تقنية
+## Related Patterns
 
-ينفع لطبقات ضغط وتشفير الـ Streams، مع الانتباه للترتيب والأخطاء.
+[Proxy](../proxy/README.ar-EG.md) · [Composite](../composite/README.ar-EG.md)
 
-## أنماط مرتبطة
+## Common Confusion
 
-[proxy](../proxy/README.ar-EG.md) · [composite](../composite/README.ar-EG.md)
+Proxy بتتحكم في الوصول، وDecorator بتضيف responsibilities ؛ شكل الـ Wrapper لوحده مش كفاية تعرف المقصود.
 
-## لخبطة شائعة
+## Terms to Remember
 
-Proxy بتتحكم في الوصول، وDecorator بتضيف مسؤوليات؛ شكل الـ Wrapper لوحده مش كفاية تعرف المقصود.
+- `Decorator` — ضيف behavior بإنك تلف object بواحدة تانية عندها نفس الـ interface.
+- `Component` — العقد المشترك اللي العنصر أو المجموعة أو Wrapper بتوفره. مثال: `Drink`.
+- `Concrete Component` — الـ implementation الأساسية قبل إضافة طبقات اختيارية. مثال: `Coffee`.
+- `Concrete Decorator` — Wrapper بتحافظ على عقد Component وبتضيف responsibility محددة. مثال: `Milk`.
 
-## سؤال انترفيو
+## Interview Vocabulary
+
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل objects متعاونة لما تعبر عن التغيير أوضح من تكبير شجرة inheritance.
+- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — بتبني تركيب من أجزاء بتوفر نفس عقد الكل.
+- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — خلّي الجزء مركز على سبب واحد مترابط للتغيير.
+
+## Interview Question
 
 هل Logging قبل التشفير هيشوف نفس البيانات بعد التشفير؟
 
-## تحدي صغير
+## Mini Challenge
 
 ضيف Syrup بسعر 3 وجرّب ترتيبين، واشرح اختلاف الوصف.
 
-## الخلاصة
+## Quick Summary
 
-- **المشكلة:** طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير Class لكل تركيبة.
+- **المشكلة:** طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير class لكل تركيبة.
 - **الحل:** Milk بتمتلك Drink وبتفوّض ليها قبل ما تضيف وصفها وسعرها.
-- **المقايضة:** ترتيب الطبقات ممكن يغيّر السلوك، وكتر الـ Objects الصغيرة بيصعّب التتبع. نفس الواجهة مش ضمان لنفس الوعود السلوكية.
+- **Trade-off:** ترتيب الطبقات ممكن يغيّر الـ behavior ، وكتر الـ objects الصغيرة بيصعّب التتبع. نفس الـ interface مش ضمان لنفس الوعود المرتبطة بالـ behavior.
 - **افتكر:** نفس العقد، وطبقة زيادة.
 
 [السابق](../../structural/composite/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/facade/README.ar-EG.md)

@@ -1,15 +1,15 @@
-# Comportamentali
+# Behavioral Pattern
 
 [Design-Patterns-23](../README.it.md)
 
-- [Catena di responsabilità](chain-of-responsibility/README.it.md)
-- [Comando](command/README.it.md)
-- [Interprete](interpreter/README.it.md)
-- [Iteratore](iterator/README.it.md)
-- [Mediatore](mediator/README.it.md)
-- [Promemoria](memento/README.it.md)
-- [Osservatore](observer/README.it.md)
-- [Stato](state/README.it.md)
-- [Strategia](strategy/README.it.md)
-- [Metodo modello](template-method/README.it.md)
-- [Visitatore](visitor/README.it.md)
+- [Chain of Responsibility](chain-of-responsibility/README.it.md)
+- [Command](command/README.it.md)
+- [Interpreter](interpreter/README.it.md)
+- [Iterator](iterator/README.it.md)
+- [Mediator](mediator/README.it.md)
+- [Memento](memento/README.it.md)
+- [Observer](observer/README.it.md)
+- [State](state/README.it.md)
+- [Strategy](strategy/README.it.md)
+- [Template Method](template-method/README.it.md)
+- [Visitor](visitor/README.it.md)

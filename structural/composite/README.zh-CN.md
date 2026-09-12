@@ -1,59 +1,65 @@
-# 组合
+# Composite
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../structural/bridge/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/decorator/README.zh-CN.md)
 
-## 类别
+## Category
 
-结构型
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
 
-## 难度
+## Difficulty
 
 入门
 
-## 一句话说明
+## In One Sentence
 
-让单个叶子和对象树提供同一种操作。
+让单个叶子和 object 树提供同一种操作。
 
-## 问题
+## The Problem
 
 文件浏览器要计算文件或嵌套文件夹的大小。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 int total = file_size;
 for (int size : folder_sizes) total += size; // only one nesting level
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
 按深度分别写循环无法应对继续嵌套，还会重复判断文件和目录。
 
-## 核心思路
+## The Idea
 
-File 和 Folder 都实现 Entry，文件夹递归请求各子节点的大小。
+File 和 Folder 都实现 Entry，文件夹递归地请求各子节点的大小。
 
-## 生活类比
+## Real-World Analogy
 
 运输箱既能装包裹，也能装小箱子；每一层都按同样规则计算重量。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![组合](../../assets/diagrams/composite.svg)
+![Composite](../../assets/diagrams/composite.svg)
 
 ```text
 Client::bytes()  -->  Entry  -->  File / Folder[Entry]
 ```
 
-## 参与者
+## Participants
 
-Entry 定义 bytes；File 返回自身大小；Folder 用 unique_ptr 拥有子节点并汇总结果。
+Entry 定义 bytes；File 返回自身大小；Folder 用 [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr)（具有独占 ownership 的 smart pointer，在所有者销毁时释放 object） 拥有子节点并汇总结果。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`Component`](../../GLOSSARY.md#component) — 叶子、分组或包装层共同提供的约定。 对应代码： `Entry`。
+- [`Leaf`](../../GLOSSARY.md#leaf) — 不含子 Component 的 Component。 对应代码： `File`。
+- [`ownership`](../../GLOSSARY.md#ownership) — 负责维持资源存活并最终释放资源的责任。 对应代码： `Folder::children_`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -97,52 +103,65 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 Total: 30 bytes
 ```
 
-## 何时使用
+## When to Use
 
 适合真正的部分—整体树，且叶子与分组都有共同的有效操作。
 
-## 何时不该使用
-
-平面列表或带共享父节点、环的图，不宜硬套树形所有权。
-
-## 优点
-
-调用方无需知道深度和具体结构，就能计算子树总量。
-
-## 缺点与权衡
-
-极深的树可能耗尽栈，整数求和可能溢出；不要强迫叶子支持仅分组才有的操作。
-
-## 技术应用场景
+### Use cases
 
 适合文件树、无节点共享的场景树和菜单层次。
 
-## 相关模式
+## When NOT to Use
 
-[decorator](../decorator/README.zh-CN.md) · [iterator](../../behavioral/iterator/README.zh-CN.md)
+平面列表或带共享父节点、环的图，不宜硬套树形 ownership。
 
-## 常见混淆
+## Advantages
 
-装饰器包装一个对象以增加行为；组合通常包含多个子节点来表示整体，两者都可能递归依赖共同接口。
+Client 无需知道深度和具体结构，就能计算子树总量。
 
-## 面试问题
+## Trade-offs
+
+极深的树可能耗尽栈，整数求和可能溢出；不要强迫叶子支持仅分组才有的操作。
+
+## Related Patterns
+
+[Decorator](../decorator/README.zh-CN.md) · [Iterator](../../behavioral/iterator/README.zh-CN.md)
+
+## Common Confusion
+
+Decorator 包装一个 object 以增加 behavior；Composite 通常包含多个子节点来表示整体，两者都可能 递归地依赖共同 [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为）。
+
+## Terms to Remember
+
+- `Composite` — 让单个叶子和 object 树提供同一种操作。
+- `Component` — 叶子、分组或包装层共同提供的约定。 示例： `Entry`。
+- `Leaf` — 不含子 Component 的 Component。 示例： `File`。
+- `ownership` — 负责维持资源存活并最终释放资源的责任。 示例： `Folder::children_`。
+
+## Interview Vocabulary
+
+- [`part-whole hierarchy`](../../GLOSSARY.md#part-whole-hierarchy) — 分组包含叶子或更小分组的递归结构。
+- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — 由提供与整体相同约定的部分递归构建结构。
+- [`polymorphism`](../../GLOSSARY.md#polymorphism) — 同一 interface 对应不同 implementation；C++ 同时支持 runtime 与 compile time 的形式。
+
+## Interview Question
 
 为什么 add 放在 Folder 而不是 Entry？给文件加子节点意味着什么？
 
-## 小练习
+## Mini Challenge
 
-增加空目录和更深一层目录，验证总量，并考虑更宽的大小类型。
+增加空目录和更深一层目录，验证总量，并考虑更宽的大小 type。
 
-## 小结
+## Quick Summary
 
 - **问题:** 文件浏览器要计算文件或嵌套文件夹的大小。
-- **方案:** File 和 Folder 都实现 Entry，文件夹递归请求各子节点的大小。
+- **方案:** File 和 Folder 都实现 Entry，文件夹递归地请求各子节点的大小。
 - **权衡:** 极深的树可能耗尽栈，整数求和可能溢出；不要强迫叶子支持仅分组才有的操作。
 - **记忆提示:** 整体像单项一样回答。
 

@@ -6,7 +6,7 @@
 
 ## Category
 
-Structural
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
 
 ## Difficulty
 
@@ -20,14 +20,14 @@ Share immutable intrinsic data while keeping each occurrence's context separate.
 
 A document has many repeated glyphs; storing a full outline for each position wastes memory.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 std::string shape1 = "A";
 std::string shape2 = "A"; // repeated immutable data per placement
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Duplicating the same shape for each occurrence scales memory with the number of placements rather than distinct shapes.
 
@@ -51,7 +51,13 @@ PlacedGlyph(x)  -->  GlyphPool::get  -->  shared const Glyph
 
 ## Participants
 
-Glyph holds shared intrinsic shape; GlyphPool interns it; PlacedGlyph stores extrinsic position and shared ownership.
+Glyph holds shared intrinsic shape; GlyphPool interns it; PlacedGlyph stores extrinsic position and shared [`ownership`](../../GLOSSARY.md#ownership) (Responsibility for keeping a resource alive and eventually releasing it).
+
+Canonical roles in this example:
+
+- [`intrinsic state`](../../GLOSSARY.md#intrinsic-state) — Data independent of an occurrence's context that a Flyweight can share. Here: `Glyph::shape`.
+- [`extrinsic state`](../../GLOSSARY.md#extrinsic-state) — Per-occurrence data kept outside a shared Flyweight. Here: `PlacedGlyph::x`.
+- [`Flyweight Factory`](../../GLOSSARY.md#flyweight-factory) — A lookup service that returns a shared Flyweight for a key. Here: `GlyphPool`.
 
 ## Modern C++20 Example
 
@@ -98,11 +104,15 @@ A at 10
 Shared shape: true
 ```
 
-## When to Use It
+## When to Use
 
 Use it after measuring significant duplication of immutable data across many objects.
 
-## When NOT to Use It
+### Use cases
+
+Glyph outlines, terrain tile definitions and interned identifiers are suitable candidates when profiling supports sharing.
+
+## When NOT to Use
 
 Avoid it for tiny datasets, mutable per-instance data, or when lookup overhead outweighs savings.
 
@@ -110,21 +120,30 @@ Avoid it for tiny datasets, mutable per-instance data, or when lookup overhead o
 
 Repeated placements reuse the same shape object while positions remain independent.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
-The pool retains entries, map lookup costs time, and shared_ptr adds bookkeeping. This toy string is small; no memory-saving benchmark is claimed. Pool access is not synchronized.
-
-## Technical Use Cases
-
-Glyph outlines, terrain tile definitions and interned identifiers are suitable candidates when profiling supports sharing.
+The pool retains entries, map lookup costs time, and [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (A smart pointer sharing ownership; the managed object is released when the last owning reference disappears) adds bookkeeping. This toy string is small; no memory-saving benchmark is claimed. Pool access is not synchronized.
 
 ## Related Patterns
 
-[composite](../composite/README.md) · [prototype](../../creational/prototype/README.md)
+[Composite](../composite/README.md) · [Prototype](../../creational/prototype/README.md)
 
 ## Common Confusion
 
 Prototype copies configured state to a new object. Flyweight deliberately shares intrinsic state across occurrences.
+
+## Terms to Remember
+
+- `Flyweight` — Share immutable intrinsic data while keeping each occurrence's context separate.
+- `intrinsic state` — Data independent of an occurrence's context that a Flyweight can share. Example: `Glyph::shape`.
+- `extrinsic state` — Per-occurrence data kept outside a shared Flyweight. Example: `PlacedGlyph::x`.
+- `Flyweight Factory` — A lookup service that returns a shared Flyweight for a key. Example: `GlyphPool`.
+
+## Interview Vocabulary
+
+- [`interning`](../../GLOSSARY.md#interning) — Reusing one representation for equivalent values through a lookup pool.
+- [`ownership`](../../GLOSSARY.md#ownership) — Responsibility for keeping a resource alive and eventually releasing it.
+- [`memory allocation`](../../GLOSSARY.md#memory-allocation) — Obtaining storage for data; its cost and failure behavior depend on the mechanism.
 
 ## Interview Question
 
@@ -138,7 +157,7 @@ Extend the key with a font identifier. Verify same keys share and different font
 
 - **Problem:** A document has many repeated glyphs; storing a full outline for each position wastes memory.
 - **Solution:** Pool Glyph objects by character. PlacedGlyph shares a const Glyph and keeps its own x position.
-- **Trade-off:** The pool retains entries, map lookup costs time, and shared_ptr adds bookkeeping. This toy string is small; no memory-saving benchmark is claimed. Pool access is not synchronized.
+- **Trade-off:** The pool retains entries, map lookup costs time, and std::shared_ptr adds bookkeeping. This toy string is small; no memory-saving benchmark is claimed. Pool access is not synchronized.
 - **Remember:** Share the shape; carry the position.
 
 [Previous](../../structural/facade/README.md) · [Category](../README.md) · [Next](../../structural/proxy/README.md)

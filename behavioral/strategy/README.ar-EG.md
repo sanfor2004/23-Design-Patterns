@@ -1,58 +1,64 @@
-# الاستراتيجية
+# Strategy
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../behavioral/state/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/template-method/README.ar-EG.md)
 
-## الفئة
+## Category
 
-السلوك
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
 
-## المستوى
+## Difficulty
 
 مبتدئ
 
-## في جملة واحدة
+## In One Sentence
 
-مرّر خوارزمية قابلة للتبديل للـ Object اللي محتاجاها.
+مرّر algorithm قابلة للتبديل للـ object اللي محتاجاها.
 
-## المشكلة
+## The Problem
 
 إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه Checkout.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 int fee = express ? (subtotal >= 100 ? 0 : 15) : 5;
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 شرط واحد مقروء؛ تكرار فروع السياسات في كذا مسار بيصعّب إضافة القواعد واختبارها.
 
-## الفكرة الأساسية
+## The Idea
 
-Checkout بتمتلك Callable اسمها ShippingRule وبتسألها عن الرسوم؛ المستدعي بيختار القاعدة وقت الإنشاء.
+Checkout بتمتلك callable اسمها ShippingRule وبتسألها عن الرسوم؛ المستدعي بيختار القاعدة وقت الإنشاء.
 
-## مثال من الحياة
+## Real-World Analogy
 
 اختار تخطيط طريق للمشي أو السواقة، والوجهة واحدة.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![الاستراتيجية](../../assets/diagrams/strategy.svg)
+![Strategy](../../assets/diagrams/strategy.svg)
 
 ```text
 Checkout::total()  -->  ShippingRule  -->  standard / express lambda
 ```
 
-## الأدوار
+## Participants
 
-Checkout السياق، ShippingRule عقد السلوك، والـ Lambdas بتنّفذ الشحن العادي والسريع.
+Checkout هي الـ Context ، ShippingRule عقد الـ behavior ، والـ Lambdas بتنّفذ الشحن العادي والسريع.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Context`](../../GLOSSARY.md#context) — الـ object اللي بتستخدم Strategy أو بتفوّض behavior للـ State الحالية. هنا: `Checkout`.
+- [`Strategy interface`](../../GLOSSARY.md#strategy-interface) — عقد الـ algorithms القابلة للتبديل اللي Context بتستخدمها. هنا: `ShippingRule`.
+- [`Concrete Strategy`](../../GLOSSARY.md#concrete-strategy) — implementation محددة لـ Strategy interface؛ ممكن تكون callable بدل class. هنا: `standard / express lambdas`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <functional>
@@ -81,7 +87,7 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Standard: 45
@@ -89,47 +95,62 @@ Express: 55
 Express large: 120
 ```
 
-## إمتى تستخدمه
+## When to Use
 
-استخدمه لما الخوارزميات بتتغير باستقلال والـ Client محتاج يختار سياسة.
+استخدمه لما الـ algorithms بتتغير باستقلال والـ Client محتاج يختار سياسة.
 
-## إمتى ما تستخدموش
-
-بلاش لخوارزمية ثابتة واحدة أو شرط واضح مش محتاج توسعة فعلية.
-
-## المميزات
-
-كل سياسة تتختبر لوحدها، وحساب الإجمالي يفضل مشترك.
-
-## العيوب والمقايضات
-
-std::function فيها Type Erasure وممكن تخصص ذاكرة؛ Template أو Function Pointer ممكن يناسبوا قيود تانية. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
-
-## استخدامات تقنية
+### Use cases
 
 مناسب للتسعير والترتيب وسياسات إعادة المحاولة.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[state](../state/README.ar-EG.md) · [template-method](../template-method/README.ar-EG.md)
+بلاش لـ algorithm ثابتة واحدة أو شرط واضح مش محتاج توسعة فعلية.
 
-## لخبطة شائعة
+## Advantages
 
-State بتمثل دورة حياة وانتقالات، Strategy بتختار خوارزمية. Template Method بتغيّر خطوات موروثة بدل Callable محقونة.
+كل سياسة تتختبر لوحدها، وحساب الإجمالي يفضل مشترك.
 
-## سؤال انترفيو
+## Trade-offs
 
-استبدال std::function بـ Template Parameter هيأثر إزاي على الاختيار وقت التشغيل والترجمة؟
+[`std::function`](../../GLOSSARY.md#stdfunction) (Wrapper بتخزن callable بتوقيع محدد وبتخفي نوعها الفعلي) فيها [`type erasure`](../../GLOSSARY.md#type-erasure) (بتخفي النوع الفعلي ورا interface موحدة وقت runtime، زي std::function مع callables) وممكن تخصص ذاكرة؛ template أو function pointer ممكن يناسبوا قيود تانية. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
 
-## تحدي صغير
+## Related Patterns
+
+[State](../state/README.ar-EG.md) · [Template Method](../template-method/README.ar-EG.md)
+
+## Common Confusion
+
+State بتمثل [`lifecycle`](../../GLOSSARY.md#lifecycle) (المراحل والانتقالات اللي بنمثلها لكيان في المشكلة؛ مش نفس lifetime بتاعة object في C++) وانتقالات، Strategy بتختار algorithm. Template Method بتغيّر خطوات موروثة بدل callable محقونة.
+
+## Terms to Remember
+
+- `Strategy` — مرّر algorithm قابلة للتبديل للـ object اللي محتاجاها.
+- `Context` — الـ object اللي بتستخدم Strategy أو بتفوّض behavior للـ State الحالية. مثال: `Checkout`.
+- `Strategy interface` — عقد الـ algorithms القابلة للتبديل اللي Context بتستخدمها. مثال: `ShippingRule`.
+- `Concrete Strategy` — implementation محددة لـ Strategy interface؛ ممكن تكون callable بدل class. مثال: `standard / express lambdas`.
+
+## Interview Vocabulary
+
+- [`interchangeable behavior`](../../GLOSSARY.md#interchangeable-behavior) — behaviors مختلفة تقدر تمرّر أي واحدة منها من نفس العقد.
+- [`encapsulate an algorithm`](../../GLOSSARY.md#encapsulate-an-algorithm) — حط algorithm ورا عملية بتخفي خطواتها الداخلية.
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل objects متعاونة لما تعبر عن التغيير أوضح من تكبير شجرة inheritance.
+- [`runtime selection`](../../GLOSSARY.md#runtime-selection) — اختيار implementation والبرنامج شغال.
+- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
+
+## Interview Question
+
+استبدال std::function بـ template Parameter هيأثر إزاي على الاختيار وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء) والترجمة؟
+
+## Mini Challenge
 
 ضيف شحن مجاني من 80 واختبر 79 و80 و81.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه Checkout.
-- **الحل:** Checkout بتمتلك Callable اسمها ShippingRule وبتسألها عن الرسوم؛ المستدعي بيختار القاعدة وقت الإنشاء.
-- **المقايضة:** std::function فيها Type Erasure وممكن تخصص ذاكرة؛ Template أو Function Pointer ممكن يناسبوا قيود تانية. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
-- **افتكر:** نفس المهمة، اختار الخوارزمية.
+- **الحل:** Checkout بتمتلك callable اسمها ShippingRule وبتسألها عن الرسوم؛ المستدعي بيختار القاعدة وقت الإنشاء.
+- **Trade-off:** std::function فيها type erasure وممكن تخصص ذاكرة؛ template أو function pointer ممكن يناسبوا قيود تانية. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
+- **افتكر:** نفس المهمة، اختار الـ algorithm.
 
 [السابق](../../behavioral/state/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/template-method/README.ar-EG.md)

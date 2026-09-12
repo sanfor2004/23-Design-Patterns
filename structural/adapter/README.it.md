@@ -1,58 +1,64 @@
-# Adattatore
+# Adapter
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../creational/singleton/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/bridge/README.it.md)
 
-## Categoria
+## Category
 
-Strutturali
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
 
-## Difficoltà
+## Difficulty
 
 Principiante
 
-## In una frase
+## In One Sentence
 
-Traduce un'interfaccia esistente nel contratto atteso dal client.
+Traduce un'[`interface`](../../GLOSSARY.md#interface) (Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa) esistente nel contratto atteso dal client.
 
-## Il problema
+## The Problem
 
 Il pannello usa Celsius, ma un sensore esistente espone Fahrenheit.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 double displayed = sensor.fahrenheit(); // UI expects Celsius
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Passare il numero direttamente mostra l'unità sbagliata; ripetere la formula disperde la regola di compatibilità.
 
-## Idea centrale
+## The Idea
 
 Implementa Temperature intorno a un LegacyThermometer preso in prestito e converti al confine.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Come un adattatore da viaggio, ma qui cambia anche il significato del valore.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Adattatore](../../assets/diagrams/adapter.svg)
+![Adapter](../../assets/diagrams/adapter.svg)
 
 ```text
 display(Temperature)  -->  CelsiusAdapter  -->  LegacyThermometer
 ```
 
-## Partecipanti
+## Participants
 
 Temperature è il contratto atteso, LegacyThermometer l'API esistente. CelsiusAdapter la usa senza possederla; display conosce solo Temperature.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Target`](../../GLOSSARY.md#target) — L'interface attesa dal Client. Qui: `Temperature`.
+- [`Adaptee`](../../GLOSSARY.md#adaptee) — L'object esistente la cui interface deve essere adattata. Qui: `LegacyThermometer`.
+- [`interface`](../../GLOSSARY.md#interface) — Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa. Qui: `Temperature`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -82,53 +88,66 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 25 C
 ```
 
-## Quando usarlo
+## When to Use
 
 Usalo al confine con un'API che non puoi o non conviene modificare.
 
-## Quando NON usarlo
-
-Evitalo se controlli entrambe le parti e puoi uniformare facilmente il contratto.
-
-## Vantaggi
-
-La conversione resta centralizzata e display accetta altre implementazioni.
-
-## Svantaggi e compromessi
-
-Rinominare metodi può nascondere differenze semantiche. Il sensore deve vivere più dell'adattatore, che conserva un riferimento non proprietario.
-
-## Applicazioni tecniche
+### Use cases
 
 Integrazione di API legacy e conversioni di unità; precisione ed errori richiedono comunque un contratto.
 
-## Pattern correlati
+## When NOT to Use
 
-[facade](../facade/README.it.md) · [bridge](../bridge/README.it.md)
+Evitalo se controlli entrambe le parti e puoi uniformare facilmente il contratto.
 
-## Confusione comune
+## Advantages
 
-Facade semplifica un sottosistema; Adapter rende compatibile una specifica interfaccia.
+La conversione resta centralizzata e display accetta altre [`implementation`](../../GLOSSARY.md#implementation) (Il codice concreto che esegue un'operazione o soddisfa un'interface).
 
-## Domanda da colloquio
+## Trade-offs
 
-Puoi sempre preservare il comportamento adattando un'API asincrona a una sincrona?
+Rinominare method può nascondere differenze semantiche. Il sensore deve vivere più di CelsiusAdapter, che conserva un non-owning reference.
 
-## Piccola sfida
+## Related Patterns
+
+[Facade](../facade/README.it.md) · [Bridge](../bridge/README.it.md)
+
+## Common Confusion
+
+Facade semplifica un subsystem; Adapter rende compatibile una specifica interface.
+
+## Terms to Remember
+
+- `Adapter` — Traduce un'interface esistente nel contratto atteso dal client.
+- `Target` — L'interface attesa dal Client. Esempio: `Temperature`.
+- `Adaptee` — L'object esistente la cui interface deve essere adattata. Esempio: `LegacyThermometer`.
+- `interface` — Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa. Esempio: `Temperature`.
+
+## Interview Vocabulary
+
+- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — Dipendere dal contratto promesso anziché da una particolare implementation concreta.
+- [`delegation`](../../GLOSSARY.md#delegation) — Un object affida parte del proprio lavoro a un collaboratore.
+- [`lifetime`](../../GLOSSARY.md#lifetime) — L'intervallo in cui un object esiste e può essere usato secondo le sue regole.
+
+## Interview Question
+
+Puoi sempre preservare il behavior adattando un'API asincrona a una sincrona?
+
+## Mini Challenge
 
 Rendi configurabile la temperatura Fahrenheit e prova congelamento ed ebollizione.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Il pannello usa Celsius, ma un sensore esistente espone Fahrenheit.
 - **Soluzione:** Implementa Temperature intorno a un LegacyThermometer preso in prestito e converti al confine.
-- **Compromesso:** Rinominare metodi può nascondere differenze semantiche. Il sensore deve vivere più dell'adattatore, che conserva un riferimento non proprietario.
+- **Trade-off:** Rinominare method può nascondere differenze semantiche. Il sensore deve vivere più di CelsiusAdapter, che conserva un non-owning reference.
 - **Da ricordare:** Traduci al confine.
 
 [Precedente](../../creational/singleton/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/bridge/README.it.md)

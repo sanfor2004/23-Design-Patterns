@@ -1,58 +1,64 @@
-# Promemoria
+# Memento
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../behavioral/mediator/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/observer/README.it.md)
 
-## Categoria
+## Category
 
-Comportamentali
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
 
-## Difficoltà
+## Difficulty
 
 Intermedio
 
-## In una frase
+## In One Sentence
 
-Salva e ripristina lo stato senza esporre i dettagli dello snapshot.
+Salva e ripristina lo state senza esporre i dettagli dello snapshot.
 
-## Il problema
+## The Problem
 
 Un editor vuole un checkpoint prima di una modifica sperimentale.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 std::string old_text = editor.text(); // caretaker knows what state to copy
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
-Se il gestore copia campi pubblici, ogni nuovo campo interno richiede una sua modifica.
+Se il gestore copia campi public, ogni nuovo campo interno richiede una sua modifica.
 
-## Idea centrale
+## The Idea
 
-Editor crea Snapshot con testo privato e lo legge per ripristinarsi.
+Editor crea Snapshot con testo private e lo legge per ripristinarsi.
 
-## Analogia quotidiana
+## Real-World Analogy
 
 Un checkpoint di gioco ripristina il progresso senza mostrare il formato dei dati.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Promemoria](../../assets/diagrams/memento.svg)
+![Memento](../../assets/diagrams/memento.svg)
 
 ```text
 Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
 ```
 
-## Partecipanti
+## Participants
 
-Editor è l'originatore, Snapshot il memento privato, main il custode che lo conserva senza ispezionarlo.
+Editor è l'Originator, Snapshot il Memento private, main il Caretaker che lo conserva senza ispezionarlo.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Originator`](../../GLOSSARY.md#originator) — L'object che sa acquisire e ripristinare il proprio state. Qui: `Editor`.
+- [`Caretaker`](../../GLOSSARY.md#caretaker) — Il ruolo che conserva un Memento senza ispezionarne la rappresentazione privata. Qui: `main`.
+- [`snapshot`](../../GLOSSARY.md#snapshot) — Una rappresentazione di uno state selezionato in un dato momento. Qui: `Editor::Snapshot`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -83,54 +89,67 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Broken edit
 Draft
 ```
 
-## Quando usarlo
+## When to Use
 
-Usalo per checkpoint di cui l'originatore sa definire uno stato consistente.
+Usalo per checkpoint di cui l'Originator sa definire uno state consistente.
 
-## Quando NON usarlo
+### Use cases
 
-Evitalo per stati enormi, risorse non ripristinabili o quando operazioni inverse costano meno.
+Checkpoint di editor e simulazioni, purché lo state salvato sia completo e consistente.
 
-## Vantaggi
+## When NOT to Use
 
-La rappresentazione resta privata e il custode non copia campi a mano.
+Evitalo per state enormi, risorse non ripristinabili o quando operazioni inverse costano meno.
 
-## Svantaggi e compromessi
+## Advantages
+
+La rappresentazione resta privata e il Caretaker non copia campi a mano.
+
+## Trade-offs
 
 Snapshot completi costano memoria e tempo; ripristinare una stringa non annulla file o chiamate di rete.
 
-## Applicazioni tecniche
+## Related Patterns
 
-Checkpoint di editor e simulazioni, purché lo stato salvato sia completo e consistente.
+[Command](../command/README.it.md) · [Prototype](../../creational/prototype/README.it.md)
 
-## Pattern correlati
+## Common Confusion
 
-[command](../command/README.it.md) · [prototype](../../creational/prototype/README.it.md)
+Command registra azioni, Memento registra state; Prototype crea un altro object anziché ripristinare questo.
 
-## Confusione comune
+## Terms to Remember
 
-Command registra azioni, Memento registra stato; Prototype crea un altro oggetto anziché ripristinare questo.
+- `Memento` — Salva e ripristina lo state senza esporre i dettagli dello snapshot.
+- `Originator` — L'object che sa acquisire e ripristinare il proprio state. Esempio: `Editor`.
+- `Caretaker` — Il ruolo che conserva un Memento senza ispezionarne la rappresentazione privata. Esempio: `main`.
+- `snapshot` — Una rappresentazione di uno state selezionato in un dato momento. Esempio: `Editor::Snapshot`.
 
-## Domanda da colloquio
+## Interview Vocabulary
+
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — Proteggere rappresentazione interna e invarianti mediante operazioni controllate.
+- [`undo`](../../GLOSSARY.md#undo) — Ripristinare un risultato precedente con state salvato o un'operazione inversa, quando possibile.
+- [`ownership`](../../GLOSSARY.md#ownership) — La responsabilità di mantenere una risorsa valida e infine rilasciarla.
+
+## Interview Question
 
 Aggiungendo la posizione del cursore, chi deve cambiare per mantenere corretto il ripristino?
 
-## Piccola sfida
+## Mini Challenge
 
 Salva anche il cursore e verifica che torni insieme al testo.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Un editor vuole un checkpoint prima di una modifica sperimentale.
-- **Soluzione:** Editor crea Snapshot con testo privato e lo legge per ripristinarsi.
-- **Compromesso:** Snapshot completi costano memoria e tempo; ripristinare una stringa non annulla file o chiamate di rete.
-- **Da ricordare:** Ricorda lo stato senza esporlo.
+- **Soluzione:** Editor crea Snapshot con testo private e lo legge per ripristinarsi.
+- **Trade-off:** Snapshot completi costano memoria e tempo; ripristinare una stringa non annulla file o chiamate di rete.
+- **Da ricordare:** Ricorda lo state senza esporlo.
 
 [Precedente](../../behavioral/mediator/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/observer/README.it.md)

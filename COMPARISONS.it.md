@@ -2,18 +2,18 @@
 
 [Catalogo dei pattern](README.it.md)
 
-Strutture simili possono risolvere problemi diversi. Scegli in base a intento, variazione e responsabilità.
+Strutture simili possono risolvere problemi diversi. Scegli in base a intento, variazione e responsibility.
 
 
-## Strategia ↔ Stato
+## Strategy ↔ State
 
 ### Problema centrale
 
-Entrambi delegano, ma Strategy sceglie algoritmi e State gestisce risposte del ciclo di vita.
+Entrambi delegano, ma Strategy sceglie algorithm e State gestisce risposte del lifetime.
 
 ### Differenza strutturale
 
-Strategy viene solitamente fornita dal client; uno State può avviare una transizione dopo un evento.
+Strategy viene solitamente fornita dal client; uno State può avviare una transizione dopo un event.
 
 ### Uso comune
 
@@ -21,23 +21,23 @@ Tariffe di spedizione con Strategy; porta aperta, chiusa o bloccata con State.
 
 ### Regola di scelta
 
-Una politica scelta suggerisce Strategy; un evento che cambia fase suggerisce State.
+Una politica scelta suggerisce Strategy; un event che cambia fase suggerisce State.
 
 ### Piccolo esempio di design
 
 Checkout → ShippingRule scelta; Door → DoorState corrente → successivo.
 
-[Strategia](behavioral/strategy/README.it.md) · [Stato](behavioral/state/README.it.md)
+[Strategy](behavioral/strategy/README.it.md) · [State](behavioral/state/README.it.md)
 
 ### Da ricordare
 
-Strategy sceglie come agire; State lega il comportamento alla fase corrente.
+Strategy sceglie come agire; State lega il behavior alla fase corrente.
 
-## Adattatore ↔ Facciata
+## Adapter ↔ Facade
 
 ### Problema centrale
 
-Adapter risolve incompatibilità; Facade semplifica l'uso di un sottosistema.
+Adapter risolve incompatibilità; Facade semplifica l'uso di un subsystem.
 
 ### Differenza strutturale
 
@@ -55,21 +55,21 @@ Compatibilità specifica: Adapter. Ingresso più semplice: Facade, che può usar
 
 Temperature ← CelsiusAdapter → LegacyThermometer; Client → Checkout → servizi.
 
-[Adattatore](structural/adapter/README.it.md) · [Facciata](structural/facade/README.it.md)
+[Adapter](structural/adapter/README.it.md) · [Facade](structural/facade/README.it.md)
 
 ### Da ricordare
 
 Adapter traduce un contratto; Facade semplifica un flusso.
 
-## Decoratore ↔ Procuratore
+## Decorator ↔ Proxy
 
 ### Problema centrale
 
-Decorator aggiunge responsabilità; Proxy controlla l'accesso.
+Decorator aggiunge responsibility; Proxy controlla l'accesso.
 
 ### Differenza strutturale
 
-Entrambi possono implementare la stessa interfaccia e delegare: l'intento distingue meglio della forma.
+Entrambi possono implementare la stessa interface e delegare: l'intento distingue meglio della forma.
 
 ### Uso comune
 
@@ -83,13 +83,13 @@ Il wrapper aggiunge capacità facoltative o governa l'accesso? Può anche fare e
 
 Milk(Drink) aggiunge prezzo; LazyImage decide quando creare DiskImage.
 
-[Decoratore](structural/decorator/README.it.md) · [Procuratore](structural/proxy/README.it.md)
+[Decorator](structural/decorator/README.it.md) · [Proxy](structural/proxy/README.it.md)
 
 ### Da ricordare
 
 Decorator aggiunge capacità; Proxy regola l’accesso.
 
-## Metodo fabbrica ↔ Fabbrica astratta
+## Factory Method ↔ Abstract Factory
 
 ### Problema centrale
 
@@ -111,13 +111,13 @@ Un punto di creazione nel flusso suggerisce Factory Method; una famiglia interca
 
 AlertJob::run → make_sender(); render → Theme.button() + Theme.panel().
 
-[Metodo fabbrica](creational/factory-method/README.it.md) · [Fabbrica astratta](creational/abstract-factory/README.it.md)
+[Factory Method](creational/factory-method/README.it.md) · [Abstract Factory](creational/abstract-factory/README.it.md)
 
 ### Da ricordare
 
 Factory Method varia un passo di creazione; Abstract Factory fornisce una famiglia coerente.
 
-## Costruttore graduale ↔ Metodo fabbrica
+## Builder ↔ Factory Method
 
 ### Problema centrale
 
@@ -125,7 +125,7 @@ Builder gestisce configurazioni complesse; Factory Method sceglie il prodotto co
 
 ### Differenza strutturale
 
-Builder raccoglie stato in chiamate esplicite; Factory Method seleziona tramite override.
+Builder raccoglie state in chiamate esplicite; Factory Method seleziona tramite override.
 
 ### Uso comune
 
@@ -133,19 +133,19 @@ Configura timeout e retry di una richiesta, oppure scegli il sender di un job co
 
 ### Regola di scelta
 
-Molte scelte costruttive suggeriscono Builder; scelta tramite sottoclasse suggerisce Factory Method. Un costruttore semplice non richiede nessuno dei due.
+Molte scelte costruttive suggeriscono Builder; scelta tramite subclass suggerisce Factory Method. Un constructor semplice non richiede nessuno dei due.
 
 ### Piccolo esempio di design
 
 RequestBuilder.endpoint(...).timeout(...).build(); EmailJob ridefinisce make_sender().
 
-[Costruttore graduale](creational/builder/README.it.md) · [Metodo fabbrica](creational/factory-method/README.it.md)
+[Builder](creational/builder/README.it.md) · [Factory Method](creational/factory-method/README.it.md)
 
 ### Da ricordare
 
-Builder configura per passi; Factory Method lascia scegliere il prodotto alla sottoclasse.
+Builder configura per passi; Factory Method lascia scegliere il prodotto alla subclass.
 
-## Osservatore ↔ Mediatore
+## Observer ↔ Mediator
 
 ### Problema centrale
 
@@ -167,21 +167,21 @@ Reazioni indipendenti suggeriscono Observer; regole fra pari suggeriscono Mediat
 
 Stock → listener; Field → LoginForm → Button.
 
-[Osservatore](behavioral/observer/README.it.md) · [Mediatore](behavioral/mediator/README.it.md)
+[Observer](behavioral/observer/README.it.md) · [Mediator](behavioral/mediator/README.it.md)
 
 ### Da ricordare
 
 Observer annuncia un cambiamento; Mediator coordina un’interazione.
 
-## Metodo modello ↔ Strategia
+## Template Method ↔ Strategy
 
 ### Problema centrale
 
-Entrambi riusano un flusso variando il comportamento, ma collocano la variazione diversamente.
+Entrambi riusano un flusso variando il behavior, ma collocano la variazione diversamente.
 
 ### Differenza strutturale
 
-Template Method richiama hook della sottoclasse; Strategy delega a un collaboratore o callable fornito.
+Template Method richiama hook della subclass; Strategy delega a un collaboratore o callable fornito.
 
 ### Uso comune
 
@@ -189,23 +189,23 @@ Ordine del report tramite hook; tariffa di spedizione tramite callable.
 
 ### Regola di scelta
 
-Scegli Template Method per un protocollo ereditato stabile; Strategy per comportamento indipendente dal tipo del contesto.
+Scegli Template Method per un protocollo ereditato stabile; Strategy per behavior indipendente dal tipo del contesto.
 
 ### Piccolo esempio di design
 
 Report::generate → virtual format(); Checkout::total → ShippingRule.
 
-[Metodo modello](behavioral/template-method/README.it.md) · [Strategia](behavioral/strategy/README.it.md)
+[Template Method](behavioral/template-method/README.it.md) · [Strategy](behavioral/strategy/README.it.md)
 
 ### Da ricordare
 
-Template Method eredita la sequenza; Strategy riceve il comportamento.
+Template Method eredita la sequenza; Strategy riceve il behavior.
 
-## Composito ↔ Decoratore
+## Composite ↔ Decorator
 
 ### Problema centrale
 
-Composite rappresenta parte-tutto; Decorator aggiunge comportamento a un componente.
+Composite rappresenta parte-tutto; Decorator aggiunge behavior a un componente.
 
 ### Differenza strutturale
 
@@ -223,7 +223,7 @@ Un gruppo che agisce come foglia suggerisce Composite; strati facoltativi sugger
 
 Folder[File, Folder[File]]; Milk(Milk(Coffee)).
 
-[Composito](structural/composite/README.it.md) · [Decoratore](structural/decorator/README.it.md)
+[Composite](structural/composite/README.it.md) · [Decorator](structural/decorator/README.it.md)
 
 ### Da ricordare
 

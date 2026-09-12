@@ -1,59 +1,65 @@
-# المركّب
+# Composite
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../structural/bridge/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/decorator/README.ar-EG.md)
 
-## الفئة
+## Category
 
-التركيب
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
 
-## المستوى
+## Difficulty
 
 مبتدئ
 
-## في جملة واحدة
+## In One Sentence
 
 عامل العنصر الواحد وشجرة العناصر بنفس العملية.
 
-## المشكلة
+## The Problem
 
 متصفح الملفات محتاج يحسب حجم ملف أو فولدر جواه فولدرات تانية.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 int total = file_size;
 for (int size : folder_sizes) total += size; // only one nesting level
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 Loops مخصوصة لكل عمق بتتكسر لما التداخل يزيد، وبتكرر سؤال: ده ملف ولا فولدر؟
 
-## الفكرة الأساسية
+## The Idea
 
-خلّي File وFolder ينفذوا Entry. الفولدر يسأل كل طفل عن حجمه بشكل Recursive.
+خلّي File و Folder ينفذوا Entry. الفولدر يسأل كل طفل عن حجمه بشكل Recursive.
 
-## مثال من الحياة
+## Real-World Analogy
 
 كرتونة الشحن ممكن تشيل طرود أو كراتين أصغر؛ حساب الوزن بيتكرر بنفس القاعدة.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![المركّب](../../assets/diagrams/composite.svg)
+![Composite](../../assets/diagrams/composite.svg)
 
 ```text
 Client::bytes()  -->  Entry  -->  File / Folder[Entry]
 ```
 
-## الأدوار
+## Participants
 
-Entry بتحدد bytes. File بترجع حجمها، وFolder بتمتلك الأطفال بـ unique_ptr وبتجمع نتايجهم.
+Entry بتحدد bytes. File بترجع حجمها، و Folder بتمتلك الأطفال بـ [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (smart pointer بملكية حصرية، بتحرر الـ object لما المالك يتدمر) وبتجمع نتايجهم.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Component`](../../GLOSSARY.md#component) — العقد المشترك اللي العنصر أو المجموعة أو Wrapper بتوفره. هنا: `Entry`.
+- [`Leaf`](../../GLOSSARY.md#leaf) — Component مافيهاش Components أطفال. هنا: `File`.
+- [`ownership`](../../GLOSSARY.md#ownership) — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر. هنا: `Folder::children_`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -97,53 +103,66 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Total: 30 bytes
 ```
 
-## إمتى تستخدمه
+## When to Use
 
 استخدمه لشجرة جزء وكل حقيقية، وعملية مفيدة تنفع للورقة والمجموعة.
 
-## إمتى ما تستخدموش
+### Use cases
 
-بلاش لقائمة مسطحة أو Graph فيها مشاركة ودورات؛ ملكية الشجرة مش هتمثلها صح.
+ينفع لشجر الملفات وقوائم الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) ومشاهد من غير مشاركة عقد.
 
-## المميزات
+## When NOT to Use
+
+بلاش لقائمة مسطحة أو Graph فيها مشاركة ودورات؛ tree ownership مش هتمثلها صح.
+
+## Advantages
 
 الـ Client يحسب إجمالي فرع من غير ما يعرف عمقه أو شكله.
 
-## العيوب والمقايضات
+## Trade-offs
 
-العمق الكبير ممكن يملأ الـ Stack، والجمع ممكن يتجاوز سعة int. ماتفرضش عمليات المجموعات على الورق.
+العمق الكبير ممكن يملأ الـ Stack ، والجمع ممكن يتجاوز سعة int. ماتفرضش عمليات المجموعات على الورق.
 
-## استخدامات تقنية
+## Related Patterns
 
-ينفع لشجر الملفات وقوائم الواجهة ومشاهد من غير مشاركة عقد.
+[Decorator](../decorator/README.ar-EG.md) · [Iterator](../../behavioral/iterator/README.ar-EG.md)
 
-## أنماط مرتبطة
+## Common Confusion
 
-[decorator](../decorator/README.ar-EG.md) · [iterator](../../behavioral/iterator/README.ar-EG.md)
+Decorator بتلف عنصر واحد لإضافة behavior ؛ Composite بتجمع أطفال عشان تمثل كل. الاتنين ممكن يستخدموا نفس الـ interface بشكل متكرر.
 
-## لخبطة شائعة
+## Terms to Remember
 
-Decorator بتلف عنصر واحد لإضافة سلوك؛ Composite بتجمع أطفال عشان تمثل كل. الاتنين ممكن يستخدموا نفس الواجهة بشكل متكرر.
+- `Composite` — عامل العنصر الواحد وشجرة العناصر بنفس العملية.
+- `Component` — العقد المشترك اللي العنصر أو المجموعة أو Wrapper بتوفره. مثال: `Entry`.
+- `Leaf` — Component مافيهاش Components أطفال. مثال: `File`.
+- `ownership` — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر. مثال: `Folder::children_`.
 
-## سؤال انترفيو
+## Interview Vocabulary
 
-ليه add في Folder مش Entry؟ إضافة طفل لملف معناها إيه؟
+- [`part-whole hierarchy`](../../GLOSSARY.md#part-whole-hierarchy) — تركيب متكرر فيه مجموعات بتحتوي عناصر أو مجموعات أصغر.
+- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — بتبني تركيب من أجزاء بتوفر نفس عقد الكل.
+- [`polymorphism`](../../GLOSSARY.md#polymorphism) — نفس interface تشتغل مع implementations مختلفة؛ C++ فيها أشكال وقت runtime وأشكال وقت compile time.
 
-## تحدي صغير
+## Interview Question
+
+ليه add في Folder مش Entry ؟ إضافة طفل لملف معناها إيه؟
+
+## Mini Challenge
 
 ضيف فولدر فاضي ومستوى تداخل كمان، وراجع الأحجام وفكّر في نوع أوسع للأرقام.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** متصفح الملفات محتاج يحسب حجم ملف أو فولدر جواه فولدرات تانية.
-- **الحل:** خلّي File وFolder ينفذوا Entry. الفولدر يسأل كل طفل عن حجمه بشكل Recursive.
-- **المقايضة:** العمق الكبير ممكن يملأ الـ Stack، والجمع ممكن يتجاوز سعة int. ماتفرضش عمليات المجموعات على الورق.
+- **الحل:** خلّي File و Folder ينفذوا Entry. الفولدر يسأل كل طفل عن حجمه بشكل Recursive.
+- **Trade-off:** العمق الكبير ممكن يملأ الـ Stack ، والجمع ممكن يتجاوز سعة int. ماتفرضش عمليات المجموعات على الورق.
 - **افتكر:** المجموعة بتجاوب زي عنصر.
 
 [السابق](../../structural/bridge/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/decorator/README.ar-EG.md)

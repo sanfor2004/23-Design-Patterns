@@ -1,58 +1,64 @@
-# الوكيل
+# Proxy
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../structural/flyweight/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/chain-of-responsibility/README.ar-EG.md)
 
-## الفئة
+## Category
 
-التركيب
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Design Pattern بيركز على تركيب objects وclasses وعلاقتهم ببعض.
 
-## المستوى
+## Difficulty
 
 متوسط
 
-## في جملة واحدة
+## In One Sentence
 
-تحكّم في الوصول لـ Object عن طريق بديل بنفس الواجهة.
+تحكّم في الوصول لـ object عن طريق بديل بنفس الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها).
 
-## المشكلة
+## The Problem
 
 معرض الصور ممكن يجهّز صور كتير بس يعرض كام واحدة.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 DiskImage image; // loads even if never displayed
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 إنشاء الصور التقيلة فوراً بيحمّل حاجات قبل ما حد يطلب عرضها.
 
-## الفكرة الأساسية
+## The Idea
 
-LazyImage بتنفذ Image، وبتعمل DiskImage عند أول display وبعد كده تعيد استخدامها.
+LazyImage بتنفذ Image ، وبتعمل DiskImage عند أول display وبعد كده تعيد استخدامها.
 
-## مثال من الحياة
+## Real-World Analogy
 
 إيصال طلب كتاب بيمثل الكتاب المخزّن لحد ما أمين المكتبة يجيبه.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![الوكيل](../../assets/diagrams/proxy.svg)
+![Proxy](../../assets/diagrams/proxy.svg)
 
 ```text
 Client(Image)  -->  LazyImage  -->  DiskImage
 ```
 
-## الأدوار
+## Participants
 
-Image الواجهة المشتركة، DiskImage الشغل الفعلي، وLazyImage بتمتلك الصورة اللي بتتعمل عند الطلب.
+Image الـ interface المشتركة، DiskImage الشغل الفعلي، و LazyImage بتمتلك الصورة اللي بتتعمل عند الطلب.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Subject interface`](../../GLOSSARY.md#subject-interface) — العقد المشترك اللي Proxy وReal Subject بيوفروه. هنا: `Image`.
+- [`Real Subject`](../../GLOSSARY.md#real-subject) — الـ object اللي بتنفذ الشغل الحقيقي ورا Proxy. هنا: `DiskImage`.
+- [`lazy initialization`](../../GLOSSARY.md#lazy-initialization) — بتأجل الإنشاء لأول مرة تحتاج فيها القيمة أو المورد. هنا: `LazyImage::display`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -82,7 +88,7 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Proxy ready
@@ -91,47 +97,60 @@ Display image
 Display image
 ```
 
-## إمتى تستخدمه
+## When to Use
 
-استخدمه للتحميل عند الطلب أو فحص الوصول أو الوصول البعيد مع واجهة ثابتة.
+استخدمه للتحميل عند الطلب أو فحص الوصول أو الوصول البعيد مع interface ثابتة.
 
-## إمتى ما تستخدموش
+### Use cases
+
+ينفع للوسائط عند الطلب وبوابات الصلاحيات و Remote Stubs ، وكل واحدة ليها طريقة فشل مختلفة.
+
+## When NOT to Use
 
 بلاش لو الإنشاء رخيص وسياسة الوصول مش بتضيف قيمة.
 
-## المميزات
+## Advantages
 
 الـ Client بيستخدم نفس display والإنشاء بيتأجل.
 
-## العيوب والمقايضات
+## Trade-offs
 
-أول استدعاء هيدفع تكلفة التحميل. mutable هنا للـ Logical Constness مش أمان التزامن؛ وفشل التحميل محتاج سياسة.
+أول استدعاء هيدفع تكلفة التحميل. mutable هنا للـ logical constness مش أمان التزامن؛ وفشل التحميل محتاج سياسة.
 
-## استخدامات تقنية
+## Related Patterns
 
-ينفع للوسائط عند الطلب وبوابات الصلاحيات وRemote Stubs، وكل واحدة ليها طريقة فشل مختلفة.
+[Decorator](../decorator/README.ar-EG.md) · [Adapter](../adapter/README.ar-EG.md)
 
-## أنماط مرتبطة
+## Common Confusion
 
-[decorator](../decorator/README.ar-EG.md) · [adapter](../adapter/README.ar-EG.md)
+Decorator بتضيف behavior ، Proxy بتتحكم إمتى وهل نوصل للأصل؛ الرسم ممكن يبقى شبه بعض.
 
-## لخبطة شائعة
+## Terms to Remember
 
-Decorator بتضيف سلوك، Proxy بتتحكم إمتى وهل نوصل للأصل؛ الرسم ممكن يبقى شبه بعض.
+- `Proxy` — تحكّم في الوصول لـ object عن طريق بديل بنفس الـ interface.
+- `Subject interface` — العقد المشترك اللي Proxy وReal Subject بيوفروه. مثال: `Image`.
+- `Real Subject` — الـ object اللي بتنفذ الشغل الحقيقي ورا Proxy. مثال: `DiskImage`.
+- `lazy initialization` — بتأجل الإنشاء لأول مرة تحتاج فيها القيمة أو المورد. مثال: `LazyImage::display`.
 
-## سؤال انترفيو
+## Interview Vocabulary
 
-لو التحميل رمى Exception، تعيد المحاولة المرة الجاية ولا تفتكر الفشل؟
+- [`delegation`](../../GLOSSARY.md#delegation) — object بتطلب من object متعاونة معاها تنفذ جزء من الشغل.
+- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — اللي البرنامج بيعمله وهو شغال، بما فيه behavior بتتحدد من المدخلات.
+- [`trade-off`](../../GLOSSARY.md#trade-off) — ميزة بتكسبها قصاد تكلفة أو تنازل في ناحية تانية.
 
-## تحدي صغير
+## Interview Question
+
+لو التحميل رمى Exception ، تعيد المحاولة المرة الجاية ولا تفتكر الفشل؟
+
+## Mini Challenge
 
 عدّ مرات التحميل مع ثلاث مرات عرض، وجرّب Loader بتفشل مرة عشان تختبر سياسة المحاولة.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** معرض الصور ممكن يجهّز صور كتير بس يعرض كام واحدة.
-- **الحل:** LazyImage بتنفذ Image، وبتعمل DiskImage عند أول display وبعد كده تعيد استخدامها.
-- **المقايضة:** أول استدعاء هيدفع تكلفة التحميل. mutable هنا للـ Logical Constness مش أمان التزامن؛ وفشل التحميل محتاج سياسة.
+- **الحل:** LazyImage بتنفذ Image ، وبتعمل DiskImage عند أول display وبعد كده تعيد استخدامها.
+- **Trade-off:** أول استدعاء هيدفع تكلفة التحميل. mutable هنا للـ logical constness مش أمان التزامن؛ وفشل التحميل محتاج سياسة.
 - **افتكر:** بديل بينك وبين الأصل.
 
 [السابق](../../structural/flyweight/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/chain-of-responsibility/README.ar-EG.md)

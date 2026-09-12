@@ -1,4 +1,4 @@
-# Behavioral
+# Behavioral Pattern
 
 [Design-Patterns-23](../README.md)
 

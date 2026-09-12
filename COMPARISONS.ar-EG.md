@@ -2,18 +2,18 @@
 
 [دليل الأنماط](README.ar-EG.md)
 
-أشكال شبه بعض ممكن تحل مشاكل مختلفة. اختار حسب الهدف، وإيه اللي بيتغير، ومكان المسؤولية.
+أشكال شبه بعض ممكن تحل مشاكل مختلفة. اختار حسب الهدف، وإيه اللي بيتغير، ومكان الـ responsibility.
 
 
-## الاستراتيجية ↔ الحالة
+## Strategy ↔ State
 
 ### المشكلة الأساسية
 
-الاتنين بيفوضوا السلوك؛ Strategy لاختيار خوارزمية، وState لرد حسب دورة الحياة.
+الاتنين بيفوضوا الـ behavior ؛ Strategy لاختيار algorithm ، وState لرد حسب lifecycle.
 
 ### فرق التركيب
 
-Strategy عادة المستدعي بيختارها. State ممكن تبدأ انتقال السياق بعد حدث.
+Strategy عادة المستدعي بيختارها. State ممكن تبدأ انتقال الـ Context بعد حدث.
 
 ### استخدام شائع
 
@@ -27,17 +27,17 @@ Strategy عادة المستدعي بيختارها. State ممكن تبدأ ا�
 
 Checkout → ShippingRule مختارة؛ Door → DoorState حالية → حالة تالية.
 
-[الاستراتيجية](behavioral/strategy/README.ar-EG.md) · [الحالة](behavioral/state/README.ar-EG.md)
+[Strategy](behavioral/strategy/README.ar-EG.md) · [State](behavioral/state/README.ar-EG.md)
 
 ### افتكر
 
 Strategy بتختار الطريقة؛ State بتربط التصرف بمرحلة الحياة.
 
-## المحوّل ↔ الواجهة المبسّطة
+## Adapter ↔ Facade
 
 ### المشكلة الأساسية
 
-Adapter بتحل عدم توافق واجهة، وFacade بتقلل شغل استخدام نظام.
+Adapter بتحل عدم توافق interface ، وFacade بتقلل شغل استخدام نظام.
 
 ### فرق التركيب
 
@@ -45,7 +45,7 @@ Adapter بتنّفذ العقد المطلوب حوالين API موجودة. Fa
 
 ### استخدام شائع
 
-حوّل Fahrenheit لواجهة Celsius بـ Adapter، واجمع مخزون ودفع وشحن بـ Facade.
+حوّل Fahrenheit ل interface Celsius بـ Adapter، واجمع مخزون ودفع وشحن بـ Facade.
 
 ### قاعدة الاختيار
 
@@ -53,23 +53,23 @@ Adapter بتنّفذ العقد المطلوب حوالين API موجودة. Fa
 
 ### مثال تصميم صغير
 
-Temperature ← CelsiusAdapter → LegacyThermometer؛ Client → Checkout → خدمات.
+Temperature ← CelsiusAdapter → LegacyThermometer ؛ Client → Checkout → خدمات.
 
-[المحوّل](structural/adapter/README.ar-EG.md) · [الواجهة المبسّطة](structural/facade/README.ar-EG.md)
+[Adapter](structural/adapter/README.ar-EG.md) · [Facade](structural/facade/README.ar-EG.md)
 
 ### افتكر
 
-Adapter بتترجم واجهة؛ Facade بتبسّط خطوات شغل.
+Adapter بتترجم interface ؛ Facade بتبسّط خطوات شغل.
 
-## المزيّن ↔ الوكيل
+## Decorator ↔ Proxy
 
 ### المشكلة الأساسية
 
-Decorator بتضيف مسؤوليات، وProxy بتتحكم في الوصول للأصل.
+Decorator بتضيف responsibilities ، وProxy بتتحكم في الوصول للأصل.
 
 ### فرق التركيب
 
-الاتنين ممكن ينفذوا نفس الواجهة ويفوضوا لعنصر ملفوف. الهدف أدق من الشكل في التفريق.
+الاتنين ممكن ينفذوا نفس الـ interface ويفوضوا لعنصر ملفوف. الهدف أدق من الشكل في التفريق.
 
 ### استخدام شائع
 
@@ -83,13 +83,13 @@ Decorator بتضيف مسؤوليات، وProxy بتتحكم في الوصول �
 
 Milk(Drink) بتضيف سعر؛ LazyImage بتحدد إمتى DiskImage تتعمل.
 
-[المزيّن](structural/decorator/README.ar-EG.md) · [الوكيل](structural/proxy/README.ar-EG.md)
+[Decorator](structural/decorator/README.ar-EG.md) · [Proxy](structural/proxy/README.ar-EG.md)
 
 ### افتكر
 
 Decorator بتزوّد إمكانيات؛ Proxy بتنظّم الوصول.
 
-## طريقة المصنع ↔ المصنع المجرّد
+## Factory Method ↔ Abstract Factory
 
 ### المشكلة الأساسية
 
@@ -97,11 +97,11 @@ Factory Method بتغيّر خطوة إنشاء؛ Abstract Factory بتوفر ع
 
 ### فرق التركيب
 
-الأولى عملية قابلة للـ Override جوه Workflow. التانية Object بتعرض إنشاء منتجات مرتبطة.
+الأولى عملية قابلة للـ override جوه Workflow. التانية object بتعرض إنشاء منتجات مرتبطة.
 
 ### استخدام شائع
 
-اختار Sender جوه AlertJob بالأولى؛ اعمل Button وPanel متوافقين بالتانية.
+اختار Sender جوه AlertJob بالأولى؛ اعمل Button و Panel متوافقين بالتانية.
 
 ### قاعدة الاختيار
 
@@ -111,13 +111,13 @@ Factory Method بتغيّر خطوة إنشاء؛ Abstract Factory بتوفر ع
 
 AlertJob::run → make_sender()؛ render → Theme.button() + Theme.panel().
 
-[طريقة المصنع](creational/factory-method/README.ar-EG.md) · [المصنع المجرّد](creational/abstract-factory/README.ar-EG.md)
+[Factory Method](creational/factory-method/README.ar-EG.md) · [Abstract Factory](creational/abstract-factory/README.ar-EG.md)
 
 ### افتكر
 
 Factory Method بتغيّر خطوة إنشاء؛ Abstract Factory بتطلّع عيلة متوافقة.
 
-## البنّاء ↔ طريقة المصنع
+## Builder ↔ Factory Method
 
 ### المشكلة الأساسية
 
@@ -125,27 +125,27 @@ Builder بتعالج إعداد معقد؛ Factory Method بتحدد نوع ال
 
 ### فرق التركيب
 
-Builder بتجمع حالة على استدعاءات مسماة وبعدين ترجع النتيجة. Factory Method بتختار المنتج بـ Override.
+Builder بتجمع حالة على استدعاءات مسماة وبعدين ترجع النتيجة. Factory Method بتختار المنتج بـ override.
 
 ### استخدام شائع
 
-جهّز Request بـ Timeout وRetry؛ أو اختار Sender لخطوات تنبيه مشتركة.
+جهّز Request بـ Timeout و Retry ؛ أو اختار Sender لخطوات تنبيه مشتركة.
 
 ### قاعدة الاختيار
 
-اختيارات إنشاء كتير تشير لـ Builder. اختيار منتج بالـ Subclass يشير لـ Factory Method. Constructor بسيطة مش محتاجة أي واحدة.
+اختيارات إنشاء كتير تشير لـ Builder. اختيار منتج بالـ subclass يشير لـ Factory Method. constructor بسيطة مش محتاجة أي واحدة.
 
 ### مثال تصميم صغير
 
 RequestBuilder.endpoint(...).timeout(...).build()؛ EmailJob بتغيّر make_sender().
 
-[البنّاء](creational/builder/README.ar-EG.md) · [طريقة المصنع](creational/factory-method/README.ar-EG.md)
+[Builder](creational/builder/README.ar-EG.md) · [Factory Method](creational/factory-method/README.ar-EG.md)
 
 ### افتكر
 
-Builder بتجهّز خطوة خطوة؛ Factory Method بتسيب اختيار المنتج للـ Subclass.
+Builder بتجهّز خطوة خطوة؛ Factory Method بتسيب اختيار المنتج للـ subclass.
 
-## المراقب ↔ الوسيط
+## Observer ↔ Mediator
 
 ### المشكلة الأساسية
 
@@ -167,49 +167,49 @@ Observer بتدير اشتراكات من غير قواعد كل مشترك. Med
 
 Stock → مشتركين؛ Field → LoginForm → Button.
 
-[المراقب](behavioral/observer/README.ar-EG.md) · [الوسيط](behavioral/mediator/README.ar-EG.md)
+[Observer](behavioral/observer/README.ar-EG.md) · [Mediator](behavioral/mediator/README.ar-EG.md)
 
 ### افتكر
 
 Observer بتعلن التغيير؛ Mediator بتنسّق قاعدة بين أطراف.
 
-## طريقة القالب ↔ الاستراتيجية
+## Template Method ↔ Strategy
 
 ### المشكلة الأساسية
 
-الاتنين بيعادوا استخدام خطوات مع تغيير سلوك، بس مكان التغيير مختلف.
+الاتنين بيعادوا استخدام خطوات مع تغيير behavior ، بس مكان التغيير مختلف.
 
 ### فرق التركيب
 
-Template Method بتنادي Hooks في الابن من هيكل موروث ثابت. Strategy بتفوّض لمتعاون أو Callable ممررة.
+Template Method بتنادي Hooks في الابن من هيكل موروث ثابت. Strategy بتفوّض لمتعاون أو callable ممررة.
 
 ### استخدام شائع
 
-ثبّت ترتيب التقرير بالـ Hooks، أو بدّل قاعدة الشحن بـ Callable.
+ثبّت ترتيب التقرير بالـ Hooks ، أو بدّل قاعدة الشحن بـ callable.
 
 ### قاعدة الاختيار
 
-اختار Template Method لعقد توسعة بالوراثة ثابت. Strategy أنسب لو السلوك مستقل عن نوع السياق.
+اختار Template Method لعقد توسعة بالـ inheritance ثابت. Strategy أنسب لو الـ behavior مستقل عن نوع الـ Context.
 
 ### مثال تصميم صغير
 
 Report::generate → virtual format()؛ Checkout::total → ShippingRule.
 
-[طريقة القالب](behavioral/template-method/README.ar-EG.md) · [الاستراتيجية](behavioral/strategy/README.ar-EG.md)
+[Template Method](behavioral/template-method/README.ar-EG.md) · [Strategy](behavioral/strategy/README.ar-EG.md)
 
 ### افتكر
 
-Template Method بتورّث ترتيب الخطوات؛ Strategy بتستقبل السلوك.
+Template Method بتورّث ترتيب الخطوات؛ Strategy بتستقبل الـ behavior.
 
-## المركّب ↔ المزيّن
+## Composite ↔ Decorator
 
 ### المشكلة الأساسية
 
-Composite بتمثل علاقة الجزء بالكل؛ Decorator بتضيف سلوك لعنصر.
+Composite بتمثل علاقة الجزء بالكل؛ Decorator بتضيف behavior لعنصر.
 
 ### فرق التركيب
 
-Composite غالباً بتمتلك أطفال كتير وبتجمع عملية. Decorator بتلف واحد وتضيف على التفويض.
+Composite غالباً بتمتلك أطفال كتير وبتجمع عملية. Decorator بتلف واحد وتضيف على الـ delegation.
 
 ### استخدام شائع
 
@@ -223,7 +223,7 @@ Composite غالباً بتمتلك أطفال كتير وبتجمع عملية.
 
 Folder[File, Folder[File]]؛ Milk(Milk(Coffee)).
 
-[المركّب](structural/composite/README.ar-EG.md) · [المزيّن](structural/decorator/README.ar-EG.md)
+[Composite](structural/composite/README.ar-EG.md) · [Decorator](structural/decorator/README.ar-EG.md)
 
 ### افتكر
 

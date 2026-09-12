@@ -1,59 +1,65 @@
-# الزائر
+# Visitor
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../behavioral/template-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md)
 
-## الفئة
+## Category
 
-السلوك
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
 
-## المستوى
+## Difficulty
 
 متقدم
 
-## في جملة واحدة
+## In One Sentence
 
 ضيف عمليات على أنواع عناصر ثابتة عن طريق Visitor منفصلة.
 
-## المشكلة
+## The Problem
 
-السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل Class.
+السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل class.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 // For each new operation, add another virtual method to every Item.
 // tax(), export_json(), print_label(), ...
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
-إضافة Virtual Method لكل عملية بتطلب تعديل كل عناصر السلة مع كل مهمة جديدة.
+إضافة virtual Method لكل عملية بتطلب تعديل كل عناصر السلة مع كل مهمة جديدة.
 
-## الفكرة الأساسية
+## The Idea
 
-كل Item فعلية بتنادي Visitor::visit المناسبة لنوعها من accept، وTax بتنّفذ العملية لكل نوع.
+كل Item فعلية بتنادي Visitor::visit المناسبة لنوعها من accept ، و Tax بتنّفذ العملية لكل نوع.
 
-## مثال من الحياة
+## Real-World Analogy
 
 مفتش بيزور محطات ورشة، ولكل نوع محطة قائمة فحص مناسبة.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![الزائر](../../assets/diagrams/visitor.svg)
+![Visitor](../../assets/diagrams/visitor.svg)
 
 ```text
 Item::accept(visitor)  -->  Visitor::visit(type)  -->  Tax(Book) / Tax(Food)
 ```
 
-## الأدوار
+## Participants
 
-Item بتحدد accept، Book وFood بيختاروا الـ Overload، Visitor بتسرد الأنواع، Tax بتجمع النتيجة، والسلة بتمتلك العناصر.
+Item بتحدد accept ، Book و Food بيختاروا الـ Overload ، Visitor بتسرد الأنواع، Tax بتجمع النتيجة، والسلة بتمتلك العناصر.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Element`](../../GLOSSARY.md#element) — عقد الـ objects اللي بتقبل Visitor. هنا: `Item`.
+- [`Concrete Element`](../../GLOSSARY.md#concrete-element) — implementation لـ Element بتختار Visitor overload المناسبة لنوعها. هنا: `Book, Food`.
+- [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — implementation لـ Visitor فيها عملية لكل نوع Element مدعوم. هنا: `Tax`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -94,53 +100,66 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Tax: 4
 ```
 
-## إمتى تستخدمه
+## When to Use
 
 استخدمه لما أنواع العناصر ثابتة والعمليات الجديدة كتير.
 
-## إمتى ما تستخدموش
-
-بلاش لو الأنواع الجديدة بتزيد باستمرار أو كشف تفاصيلها هيكسر التغليف.
-
-## المميزات
-
-تضيف عملية في Visitor من غير تعديل Classes العناصر الموجودة.
-
-## العيوب والمقايضات
-
-إضافة نوع عنصر بتطلب تعديل واجهة Visitor وكل الزوار. نسب الضريبة هنا للتوضيح مش قواعد حقيقية، والتقريب محتاج سياسة من المجال.
-
-## استخدامات تقنية
+### Use cases
 
 مناسب لتحليل AST وتصدير المستندات مع عيلة عقد ثابتة؛ std::variant مع std::visit بديل لمجموعة أنواع مقفولة.
 
-## أنماط مرتبطة
+## When NOT to Use
 
-[composite](../../structural/composite/README.ar-EG.md) · [iterator](../iterator/README.ar-EG.md)
+بلاش لو الأنواع الجديدة بتزيد باستمرار أو كشف تفاصيلها هيكسر الـ [`encapsulation`](../../GLOSSARY.md#encapsulation) (بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة).
 
-## لخبطة شائعة
+## Advantages
+
+تضيف عملية في Visitor من غير تعديل classes العناصر الموجودة.
+
+## Trade-offs
+
+إضافة نوع عنصر بتطلب تعديل [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) Visitor وكل الزوار. نسب الضريبة هنا للتوضيح مش قواعد حقيقية، والتقريب محتاج سياسة من المجال.
+
+## Related Patterns
+
+[Composite](../../structural/composite/README.ar-EG.md) · [Iterator](../iterator/README.ar-EG.md)
+
+## Common Confusion
 
 Iterator بتلف على المجموعة، Visitor بتختار العملية حسب النوع، وComposite ممكن توفر الشجرة.
 
-## سؤال انترفيو
+## Terms to Remember
 
-ليه visitor.visit(*this) جوه Book تختار Overload الكتب، وItem Reference لوحدها مش كفاية؟
+- `Visitor` — ضيف عمليات على أنواع عناصر ثابتة عن طريق Visitor منفصلة.
+- `Element` — عقد الـ objects اللي بتقبل Visitor. مثال: `Item`.
+- `Concrete Element` — implementation لـ Element بتختار Visitor overload المناسبة لنوعها. مثال: `Book, Food`.
+- `Concrete Visitor` — implementation لـ Visitor فيها عملية لكل نوع Element مدعوم. مثال: `Tax`.
 
-## تحدي صغير
+## Interview Vocabulary
 
-ضيف Label Visitor من غير تعديل Book أوFood، وبعدها ضيف نوع ثالث وعدّ التغييرات.
+- [`double dispatch`](../../GLOSSARY.md#double-dispatch) — اختيار behavior بناءً على نوعين وقت runtime؛ Visitor التقليدية بتجمع نداءين virtual مع overload resolution.
+- [`overload resolution`](../../GLOSSARY.md#overload-resolution) — اختيار function من كذا واحدة بنفس الاسم حسب أنواع المعاملات وقت compile time.
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — استهدف open for extension, closed for modification عند حدود مفيدة ومختارة بوضوح.
 
-## الخلاصة
+## Interview Question
 
-- **المشكلة:** السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل Class.
-- **الحل:** كل Item فعلية بتنادي Visitor::visit المناسبة لنوعها من accept، وTax بتنّفذ العملية لكل نوع.
-- **المقايضة:** إضافة نوع عنصر بتطلب تعديل واجهة Visitor وكل الزوار. نسب الضريبة هنا للتوضيح مش قواعد حقيقية، والتقريب محتاج سياسة من المجال.
+ليه visitor.visit(*this) جوه Book تختار Overload الكتب، و Item reference لوحدها مش كفاية؟
+
+## Mini Challenge
+
+ضيف Label Visitor من غير تعديل Book أو Food ، وبعدها ضيف نوع ثالث وعدّ التغييرات.
+
+## Quick Summary
+
+- **المشكلة:** السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل class.
+- **الحل:** كل Item فعلية بتنادي Visitor::visit المناسبة لنوعها من accept ، و Tax بتنّفذ العملية لكل نوع.
+- **Trade-off:** إضافة نوع عنصر بتطلب تعديل interface Visitor وكل الزوار. نسب الضريبة هنا للتوضيح مش قواعد حقيقية، والتقريب محتاج سياسة من المجال.
 - **افتكر:** أنواع ثابتة، عمليات جديدة.
 
 [السابق](../../behavioral/template-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md)

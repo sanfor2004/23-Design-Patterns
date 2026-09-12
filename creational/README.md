@@ -1,4 +1,4 @@
-# Creational
+# Creational Pattern
 
 [Design-Patterns-23](../README.md)
 

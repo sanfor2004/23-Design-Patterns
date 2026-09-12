@@ -6,7 +6,7 @@
 
 ## Category
 
-Structural
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
 
 ## Difficulty
 
@@ -14,19 +14,19 @@ Intermediate
 
 ## In One Sentence
 
-Control access to an object through a stand-in with the same interface.
+Control access to an object through a stand-in with the same [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller).
 
 ## The Problem
 
 A gallery may prepare many images but display only a few.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 DiskImage image; // loads even if never displayed
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Constructing every heavy image immediately performs unnecessary loading before anyone asks to display it.
 
@@ -51,6 +51,12 @@ Client(Image)  -->  LazyImage  -->  DiskImage
 ## Participants
 
 Image is the shared interface; DiskImage performs the real work; LazyImage owns the lazily created subject.
+
+Canonical roles in this example:
+
+- [`Subject interface`](../../GLOSSARY.md#subject-interface) — The shared contract offered by a Proxy and its Real Subject. Here: `Image`.
+- [`Real Subject`](../../GLOSSARY.md#real-subject) — The object that does the work behind a Proxy. Here: `DiskImage`.
+- [`lazy initialization`](../../GLOSSARY.md#lazy-initialization) — Deferring creation until the value or resource is first needed. Here: `LazyImage::display`.
 
 ## Modern C++20 Example
 
@@ -91,11 +97,15 @@ Display image
 Display image
 ```
 
-## When to Use It
+## When to Use
 
 Use it for lazy initialization, access checks or remote access when a stable subject interface is useful.
 
-## When NOT to Use It
+### Use cases
+
+Lazy media access, authorization gates and remote object stubs are possible uses, with different failure semantics.
+
+## When NOT to Use
 
 Avoid it if direct construction is cheap and the access policy adds no value.
 
@@ -103,21 +113,30 @@ Avoid it if direct construction is cheap and the access policy adds no value.
 
 Callers use the same display interface while creation is deferred.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 The first call now bears loading cost. mutable enables logical constness here but does not make concurrent display safe; loading failures also need a policy.
 
-## Technical Use Cases
-
-Lazy media access, authorization gates and remote object stubs are possible uses, with different failure semantics.
-
 ## Related Patterns
 
-[decorator](../decorator/README.md) · [adapter](../adapter/README.md)
+[Decorator](../decorator/README.md) · [Adapter](../adapter/README.md)
 
 ## Common Confusion
 
 Decorator adds behavior; Proxy controls when or whether a subject is reached. Their class diagrams can look similar.
+
+## Terms to Remember
+
+- `Proxy` — Control access to an object through a stand-in with the same interface.
+- `Subject interface` — The shared contract offered by a Proxy and its Real Subject. Example: `Image`.
+- `Real Subject` — The object that does the work behind a Proxy. Example: `DiskImage`.
+- `lazy initialization` — Deferring creation until the value or resource is first needed. Example: `LazyImage::display`.
+
+## Interview Vocabulary
+
+- [`delegation`](../../GLOSSARY.md#delegation) — An object asks a collaborator to perform part of its work.
+- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — What the program does while executing, including behavior selected from runtime input.
+- [`trade-off`](../../GLOSSARY.md#trade-off) — A benefit gained at the cost of another desirable property.
 
 ## Interview Question
 

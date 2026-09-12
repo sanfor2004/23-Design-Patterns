@@ -1,59 +1,65 @@
-# 访问者
+# Visitor
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../behavioral/template-method/README.zh-CN.md) · [类别](../README.zh-CN.md)
 
-## 类别
+## Category
 
-行为型
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
 
-## 难度
+## Difficulty
 
 进阶
 
-## 一句话说明
+## In One Sentence
 
-通过独立访问者，为稳定的元素类型集合增加操作。
+通过独立 Visitor，为稳定的 Element type 集合增加操作。
 
-## 问题
+## The Problem
 
-购物篮包含书和食品，新增税费、导出等操作不应不断塞进每个元素类。
+购物篮包含书和食品，新增税费、导出等操作不应不断塞进每个 Element class。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 // For each new operation, add another virtual method to every Item.
 // tax(), export_json(), print_label(), ...
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
-每增加一个任务就给 Item 增加虚方法，会要求修改所有具体元素。
+每增加一个任务就给 Item 增加 virtual method，会要求修改所有具体元素。
 
-## 核心思路
+## The Idea
 
-具体 Item 在 accept 中调用匹配类型的 Visitor::visit 重载，Tax 为每种类型实现操作。
+具体 Item 在 accept 中调用匹配 type 的 Visitor::visit 重载，Tax 为每种 type 实现操作。
 
-## 生活类比
+## Real-World Analogy
 
 检查员走访不同工位，按工位类型使用不同检查清单。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![访问者](../../assets/diagrams/visitor.svg)
+![Visitor](../../assets/diagrams/visitor.svg)
 
 ```text
 Item::accept(visitor)  -->  Visitor::visit(type)  -->  Tax(Book) / Tax(Food)
 ```
 
-## 参与者
+## Participants
 
-Item 定义 accept，Book 和 Food 选择类型重载，Visitor 列出支持类型，Tax 汇总结果，购物篮拥有元素。
+Item 定义 accept，Book 和 Food 选择 type 重载，Visitor 列出支持 type，Tax 汇总结果，购物篮拥有元素。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`Element`](../../GLOSSARY.md#element) — 接受 Visitor 的 object 所提供的约定。 对应代码： `Item`。
+- [`Concrete Element`](../../GLOSSARY.md#concrete-element) — 选择与自身类型匹配的 Visitor overload 的 Element implementation。 对应代码： `Book, Food`。
+- [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — 为每种受支持的 Element 类型提供操作的 Visitor implementation。 对应代码： `Tax`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -94,53 +100,66 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 Tax: 4
 ```
 
-## 何时使用
+## When to Use
 
-元素类型稳定，而新操作频繁增加时使用。
+Element type 稳定，而新操作频繁增加时使用。
 
-## 何时不该使用
+### Use cases
 
-元素类型经常增加，或暴露内部细节会破坏封装时避免。
+适合稳定节点族上的 AST 分析和文档导出；封闭 type 集合也可考虑 std::variant 与 std::visit。
 
-## 优点
+## When NOT to Use
 
-增加访问者即可增加操作，不必修改现有元素类。
+Element type 经常增加，或暴露内部细节会破坏 [`encapsulation`](../../GLOSSARY.md#encapsulation)（把内部表示和必须保持的规则放在受控操作之后） 时避免。
 
-## 缺点与权衡
+## Advantages
 
-新增元素类型要修改 Visitor 接口和所有访问者。整数税率仅供演示，不代表真实税法，舍入需要领域规则。
+增加 Visitor 即可增加操作，不必修改现有 Element class。
 
-## 技术应用场景
+## Trade-offs
 
-适合稳定节点族上的 AST 分析和文档导出；封闭类型集合也可考虑 std::variant 与 std::visit。
+新增 Element type 要修改 Visitor [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为） 和所有 Visitor。整数税率仅供演示，不代表真实税法，舍入需要领域规则。
 
-## 相关模式
+## Related Patterns
 
-[composite](../../structural/composite/README.zh-CN.md) · [iterator](../iterator/README.zh-CN.md)
+[Composite](../../structural/composite/README.zh-CN.md) · [Iterator](../iterator/README.zh-CN.md)
 
-## 常见混淆
+## Common Confusion
 
-迭代器负责遍历，访问者按元素类型分派操作，组合可提供被访问的树。
+iterator 负责遍历， Visitor 按 Element type 分派操作，Composite 可提供被访问的树。
 
-## 面试问题
+## Terms to Remember
 
-为什么 Book 内的 visitor.visit(*this) 会选择 Book 重载，而单独的 Item 引用不行？
+- `Visitor` — 通过独立 Visitor，为稳定的 Element type 集合增加操作。
+- `Element` — 接受 Visitor 的 object 所提供的约定。 示例： `Item`。
+- `Concrete Element` — 选择与自身类型匹配的 Visitor overload 的 Element implementation。 示例： `Book, Food`。
+- `Concrete Visitor` — 为每种受支持的 Element 类型提供操作的 Visitor implementation。 示例： `Tax`。
 
-## 小练习
+## Interview Vocabulary
 
-不修改 Book 和 Food，添加 Label 访问者；再添加第三种元素，统计修改范围。
+- [`double dispatch`](../../GLOSSARY.md#double-dispatch) — 依据两个 runtime 类型选择 behavior；经典 Visitor 结合两次 virtual 调用与 overload resolution。
+- [`overload resolution`](../../GLOSSARY.md#overload-resolution) — 在 compile time 根据参数类型，从同名 function 中选择匹配项。
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — 在选定的有效边界上追求 open for extension, closed for modification。
 
-## 小结
+## Interview Question
 
-- **问题:** 购物篮包含书和食品，新增税费、导出等操作不应不断塞进每个元素类。
-- **方案:** 具体 Item 在 accept 中调用匹配类型的 Visitor::visit 重载，Tax 为每种类型实现操作。
-- **权衡:** 新增元素类型要修改 Visitor 接口和所有访问者。整数税率仅供演示，不代表真实税法，舍入需要领域规则。
-- **记忆提示:** 类型稳定，操作扩展。
+为什么 Book 内的 visitor.visit(*this) 会选择 Book 重载，而单独的 Item reference 不行？
+
+## Mini Challenge
+
+不修改 Book 和 Food，添加 Label Visitor；再添加第三种元素，统计修改范围。
+
+## Quick Summary
+
+- **问题:** 购物篮包含书和食品，新增税费、导出等操作不应不断塞进每个 Element class。
+- **方案:** 具体 Item 在 accept 中调用匹配 type 的 Visitor::visit 重载，Tax 为每种 type 实现操作。
+- **权衡:** 新增 Element type 要修改 Visitor interface 和所有 Visitor。整数税率仅供演示，不代表真实税法，舍入需要领域规则。
+- **记忆提示:** type 稳定，操作扩展。
 
 [上一个](../../behavioral/template-method/README.zh-CN.md) · [类别](../README.zh-CN.md)

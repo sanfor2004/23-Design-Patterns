@@ -6,7 +6,7 @@
 
 ## Category
 
-Structural
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
 
 ## Difficulty
 
@@ -14,13 +14,13 @@ Intermediate
 
 ## In One Sentence
 
-Separate two changing dimensions and connect them through composition.
+Separate two changing dimensions and connect them through [`composition`](../../GLOSSARY.md#composition) (Building behavior by connecting objects that use or contain other objects).
 
 ## The Problem
 
 Notices vary by urgency and by delivery channel; both dimensions need independent extensions.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 struct UrgentEmailNotice {};
@@ -29,7 +29,7 @@ struct NormalEmailNotice {};
 struct NormalSmsNotice {};
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 A class for every urgency-channel pair multiplies combinations and repeats delivery logic.
 
@@ -53,7 +53,14 @@ Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 
 ## Participants
 
-Notice is the abstraction, UrgentNotice refines it, Channel is the implementation contract, Email and Sms implement delivery.
+Notice is the [`abstraction`](../../GLOSSARY.md#abstraction) (A view that exposes the operations a caller needs while hiding irrelevant details), UrgentNotice refines it, Channel is the [`implementation`](../../GLOSSARY.md#implementation) (The concrete code that fulfills an interface or performs an operation) contract, Email and Sms implement delivery.
+
+Canonical roles in this example:
+
+- [`Abstraction`](../../GLOSSARY.md#abstraction-bridge-role) — The high-level side of Bridge that delegates implementation work. Here: `Notice`.
+- [`Refined Abstraction`](../../GLOSSARY.md#refined-abstraction) — A specialization of Abstraction independent of the implementation side. Here: `UrgentNotice`.
+- [`Implementor`](../../GLOSSARY.md#implementor) — The contract used by a Bridge Abstraction for lower-level work. Here: `Channel`.
+- [`Concrete Implementor`](../../GLOSSARY.md#concrete-implementor) — A particular implementation of the Implementor contract. Here: `Email, Sms`.
 
 ## Modern C++20 Example
 
@@ -101,11 +108,15 @@ Email: URGENT: disk full
 SMS: URGENT: disk full
 ```
 
-## When to Use It
+## When to Use
 
 Use it when two axes of variation would otherwise produce a cross-product of subclasses.
 
-## When NOT to Use It
+### Use cases
+
+Rendering APIs with independent shapes and backends, or notification types with channels, fit this structure.
+
+## When NOT to Use
 
 Avoid it when only one small dimension changes and a function parameter already handles it.
 
@@ -113,21 +124,31 @@ Avoid it when only one small dimension changes and a function parameter already 
 
 A new channel serves existing notice types without adding every possible pair.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 The extra indirection requires a clear boundary; borrowed channels must outlive their notices.
 
-## Technical Use Cases
-
-Rendering APIs with independent shapes and backends, or notification types with channels, fit this structure.
-
 ## Related Patterns
 
-[adapter](../adapter/README.md) · [strategy](../../behavioral/strategy/README.md)
+[Adapter](../adapter/README.md) · [Strategy](../../behavioral/strategy/README.md)
 
 ## Common Confusion
 
 Adapter reconciles an existing mismatch. Bridge is usually an intentional separation of independently evolving dimensions; Strategy focuses on interchangeable behavior.
+
+## Terms to Remember
+
+- `Bridge` — Separate two changing dimensions and connect them through composition.
+- `Abstraction` — The high-level side of Bridge that delegates implementation work. Example: `Notice`.
+- `Refined Abstraction` — A specialization of Abstraction independent of the implementation side. Example: `UrgentNotice`.
+- `Implementor` — The contract used by a Bridge Abstraction for lower-level work. Example: `Channel`.
+- `Concrete Implementor` — A particular implementation of the Implementor contract. Example: `Email, Sms`.
+
+## Interview Vocabulary
+
+- [`object composition`](../../GLOSSARY.md#object-composition) — Connecting objects to form a larger behavior or structure.
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — Prefer collaborating objects when they express variation more clearly than extending a class hierarchy.
+- [`encapsulate what varies`](../../GLOSSARY.md#encapsulate-what-varies) — Put a changing design decision behind a stable boundary.
 
 ## Interview Question
 

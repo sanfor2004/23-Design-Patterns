@@ -6,7 +6,7 @@
 
 ## Category
 
-Structural
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
 
 ## Difficulty
 
@@ -14,20 +14,20 @@ Beginner
 
 ## In One Sentence
 
-Add behavior by wrapping an object in another object with the same interface.
+Add behavior by wrapping an object in another object with the same [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller).
 
 ## The Problem
 
 A coffee order can add milk once or several times without inventing a drink class for every combination.
 
-## A Naive Solution
+## Naive Solution
 
 ```cpp
 struct CoffeeWithMilk {};
 struct CoffeeWithDoubleMilk {}; // another combination
 ```
 
-## Why This Becomes a Problem
+## Why It Becomes a Problem
 
 Separate combination classes duplicate base pricing and expand with every add-on.
 
@@ -52,6 +52,12 @@ Client  -->  Milk(Drink)  -->  Coffee or Milk
 ## Participants
 
 Drink is the shared contract. Coffee supplies the base behavior. Milk wraps exactly one Drink. The client owns the outermost wrapper.
+
+Canonical roles in this example:
+
+- [`Component`](../../GLOSSARY.md#component) — The common contract exposed by leaves, groups, or wrappers. Here: `Drink`.
+- [`Concrete Component`](../../GLOSSARY.md#concrete-component) — The basic implementation before optional wrappers are added. Here: `Coffee`.
+- [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — A wrapper that keeps the Component contract and adds a specific responsibility. Here: `Milk`.
 
 ## Modern C++20 Example
 
@@ -94,33 +100,46 @@ int main() {
 coffee + milk + milk: 14
 ```
 
-## When to Use It
+## When to Use
 
 Use it for optional, composable behavior that preserves the wrapped contract.
 
-## When NOT to Use It
+### Use cases
+
+Streams with compression or encryption layers are a technical context; order and failure handling matter.
+
+## When NOT to Use
 
 Avoid it when a simple list of ingredients and a sum express the entire requirement; this example intentionally illustrates the structure.
 
 ## Advantages
 
-Add-ons combine at runtime, and the base implementation stays small.
+Add-ons combine at [`runtime`](../../GLOSSARY.md#runtime) (The period when a compiled program is executing), and the base [`implementation`](../../GLOSSARY.md#implementation) (The concrete code that fulfills an interface or performs an operation) stays small.
 
-## Disadvantages / Trade-offs
+## Trade-offs
 
 Wrapper order can change behavior. Many tiny objects complicate debugging, and preserving the interface does not automatically preserve every semantic promise.
 
-## Technical Use Cases
-
-Streams with compression or encryption layers are a technical context; order and failure handling matter.
-
 ## Related Patterns
 
-[proxy](../proxy/README.md) · [composite](../composite/README.md)
+[Proxy](../proxy/README.md) · [Composite](../composite/README.md)
 
 ## Common Confusion
 
 Proxy controls access to an object. Decorator adds responsibilities. A wrapper's shape alone does not tell you its intent.
+
+## Terms to Remember
+
+- `Decorator` — Add behavior by wrapping an object in another object with the same interface.
+- `Component` — The common contract exposed by leaves, groups, or wrappers. Example: `Drink`.
+- `Concrete Component` — The basic implementation before optional wrappers are added. Example: `Coffee`.
+- `Concrete Decorator` — A wrapper that keeps the Component contract and adds a specific responsibility. Example: `Milk`.
+
+## Interview Vocabulary
+
+- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — Prefer collaborating objects when they express variation more clearly than extending a class hierarchy.
+- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — Building a structure from parts that expose the same contract as the whole.
+- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — Keep a module focused on one coherent reason to change.
 
 ## Interview Question
 

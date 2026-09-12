@@ -1,11 +1,11 @@
-# 结构型
+# Structural Pattern
 
 [Design-Patterns-23](../README.zh-CN.md)
 
-- [适配器](adapter/README.zh-CN.md)
-- [桥接](bridge/README.zh-CN.md)
-- [组合](composite/README.zh-CN.md)
-- [装饰器](decorator/README.zh-CN.md)
-- [外观](facade/README.zh-CN.md)
-- [享元](flyweight/README.zh-CN.md)
-- [代理](proxy/README.zh-CN.md)
+- [Adapter](adapter/README.zh-CN.md)
+- [Bridge](bridge/README.zh-CN.md)
+- [Composite](composite/README.zh-CN.md)
+- [Decorator](decorator/README.zh-CN.md)
+- [Facade](facade/README.zh-CN.md)
+- [Flyweight](flyweight/README.zh-CN.md)
+- [Proxy](proxy/README.zh-CN.md)

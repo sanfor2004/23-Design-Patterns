@@ -1,58 +1,64 @@
-# 适配器
+# Adapter
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../creational/singleton/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/bridge/README.zh-CN.md)
 
-## 类别
+## Category
 
-结构型
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
 
-## 难度
+## Difficulty
 
 入门
 
-## 一句话说明
+## In One Sentence
 
-把已有接口转换成调用方期待的接口。
+把已有 [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为） 转换成 Client 期待的 interface。
 
-## 问题
+## The Problem
 
 仪表盘使用摄氏度，旧传感器却返回华氏度。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 double displayed = sensor.fahrenheit(); // UI expects Celsius
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
 直接传值会显示错误单位；到处写换算公式又会重复兼容逻辑。
 
-## 核心思路
+## The Idea
 
 用 CelsiusAdapter 实现 Temperature，在边界处调用借用的旧传感器并换算。
 
-## 生活类比
+## Real-World Analogy
 
 旅行插头连接不同插座；这里还需要转换数值含义。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![适配器](../../assets/diagrams/adapter.svg)
+![Adapter](../../assets/diagrams/adapter.svg)
 
 ```text
 display(Temperature)  -->  CelsiusAdapter  -->  LegacyThermometer
 ```
 
-## 参与者
+## Participants
 
-Temperature 是目标接口，LegacyThermometer 是旧 API，适配器借用传感器，display 只依赖目标接口。
+Temperature 是 Target interface，LegacyThermometer 是旧 API， Adapter 借用传感器，display 只依赖 Target interface。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`Target`](../../GLOSSARY.md#target) — Client 期望使用的 interface。 对应代码： `Temperature`。
+- [`Adaptee`](../../GLOSSARY.md#adaptee) — 其现有 interface 需要适配的 object。 对应代码： `LegacyThermometer`。
+- [`interface`](../../GLOSSARY.md#interface) — 约定可调用的操作及其对外可观察行为。 对应代码： `Temperature`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -82,53 +88,66 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 25 C
 ```
 
-## 何时使用
+## When to Use
 
 适合不能或不宜修改的已有 API 边界。
 
-## 何时不该使用
-
-双方接口都由你控制，统一接口更简单时，不必适配。
-
-## 优点
-
-换算集中在一处，显示逻辑也能使用其他 Temperature 实现。
-
-## 缺点与权衡
-
-仅改方法名可能掩盖语义差异；引用不拥有传感器，因此传感器必须活得更久。
-
-## 技术应用场景
+### Use cases
 
 适合旧 API 集成和单位转换，但精度与错误处理仍需明确约定。
 
-## 相关模式
+## When NOT to Use
 
-[facade](../facade/README.zh-CN.md) · [bridge](../bridge/README.zh-CN.md)
+双方 interface 都由你控制，统一 interface 更简单时，不必适配。
 
-## 常见混淆
+## Advantages
 
-外观简化子系统；适配器使已有接口满足目标契约。
+换算集中在一处，显示逻辑也能使用其他 Temperature 实现。
 
-## 面试问题
+## Trade-offs
 
-如果源接口异步而目标接口同步，适配器总能保持原有行为吗？
+仅改 method 名可能掩盖语义差异； reference 不拥有传感器，因此传感器必须活得更久。
 
-## 小练习
+## Related Patterns
+
+[Facade](../facade/README.zh-CN.md) · [Bridge](../bridge/README.zh-CN.md)
+
+## Common Confusion
+
+Facade 简化 subsystem； Adapter 使已有 interface 满足目标契约。
+
+## Terms to Remember
+
+- `Adapter` — 把已有 interface 转换成 Client 期待的 interface。
+- `Target` — Client 期望使用的 interface。 示例： `Temperature`。
+- `Adaptee` — 其现有 interface 需要适配的 object。 示例： `LegacyThermometer`。
+- `interface` — 约定可调用的操作及其对外可观察行为。 示例： `Temperature`。
+
+## Interview Vocabulary
+
+- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — 依赖公开约定，而不是某个具体 implementation。
+- [`delegation`](../../GLOSSARY.md#delegation) — 一个 object 把部分工作交给协作方完成。
+- [`lifetime`](../../GLOSSARY.md#lifetime) — object 存在且可按规则使用的时间区间。
+
+## Interview Question
+
+如果源 interface 异步而 Target interface 同步， Adapter 总能保持原有 behavior 吗？
+
+## Mini Challenge
 
 让旧传感器返回可配置的华氏温度，测试冰点和沸点。
 
-## 小结
+## Quick Summary
 
 - **问题:** 仪表盘使用摄氏度，旧传感器却返回华氏度。
 - **方案:** 用 CelsiusAdapter 实现 Temperature，在边界处调用借用的旧传感器并换算。
-- **权衡:** 仅改方法名可能掩盖语义差异；引用不拥有传感器，因此传感器必须活得更久。
+- **权衡:** 仅改 method 名可能掩盖语义差异； reference 不拥有传感器，因此传感器必须活得更久。
 - **记忆提示:** 在边界完成转换。
 
 [上一个](../../creational/singleton/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/bridge/README.zh-CN.md)

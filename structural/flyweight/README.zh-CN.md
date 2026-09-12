@@ -1,59 +1,65 @@
-# 享元
+# Flyweight
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [上一个](../../structural/facade/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/proxy/README.zh-CN.md)
 
-## 类别
+## Category
 
-结构型
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
 
-## 难度
+## Difficulty
 
 进阶
 
-## 一句话说明
+## In One Sentence
 
-共享不可变的内部数据，把每次使用的上下文留在外部。
+共享不可变的 intrinsic state，把每次使用的 extrinsic state 留在共享 object 外部。
 
-## 问题
+## The Problem
 
 文档里大量字符重复，为每个位置保存完整轮廓会浪费内存。
 
-## 最初的简单方案
+## Naive Solution
 
 ```cpp
 std::string shape1 = "A";
 std::string shape2 = "A"; // repeated immutable data per placement
 ```
 
-## 为什么难以维护
+## Why It Becomes a Problem
 
 逐次复制形状，使内存随出现次数增长，而不是随不同形状数量增长。
 
-## 核心思路
+## The Idea
 
 GlyphPool 按字符复用 Glyph，PlacedGlyph 共享 const Glyph 并独立保存 x 坐标。
 
-## 生活类比
+## Real-World Analogy
 
 多人共用一本参考书，但各自保留书签。
 
-## 原创结构图
+## Structure
 
 [结构图](diagram.md) · [运行示例](cpp/README.md)
 
-![享元](../../assets/diagrams/flyweight.svg)
+![Flyweight](../../assets/diagrams/flyweight.svg)
 
 ```text
 PlacedGlyph(x)  -->  GlyphPool::get  -->  shared const Glyph
 ```
 
-## 参与者
+## Participants
 
-Glyph 保存内在形状，GlyphPool 负责驻留复用，PlacedGlyph 保存外在位置和共享所有权。
+Glyph 保存内在形状，GlyphPool 负责驻留复用，PlacedGlyph 保存外在位置和 shared [`ownership`](../../GLOSSARY.md#ownership)（负责维持资源存活并最终释放资源的责任）。
 
-## 现代 C++20 完整可运行示例
+本例中的标准角色：
+
+- [`intrinsic state`](../../GLOSSARY.md#intrinsic-state) — 不依赖具体使用位置、可由 Flyweight 共享的数据。 对应代码： `Glyph::shape`。
+- [`extrinsic state`](../../GLOSSARY.md#extrinsic-state) — 每次使用独有、保存在共享 Flyweight 外部的数据。 对应代码： `PlacedGlyph::x`。
+- [`Flyweight Factory`](../../GLOSSARY.md#flyweight-factory) — 按键查找并返回共享 Flyweight 的服务。 对应代码： `GlyphPool`。
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -90,7 +96,7 @@ int main() {
 }
 ```
 
-## 预期输出
+## Example Output
 
 ```text
 A at 0
@@ -98,47 +104,60 @@ A at 10
 Shared shape: true
 ```
 
-## 何时使用
+## When to Use
 
-测量确认大量对象重复持有不可变数据时使用。
+测量确认大量 object 重复持有不可变数据时使用。
 
-## 何时不该使用
-
-数据量很小、每个实例的数据都可变，或查找成本超过收益时避免。
-
-## 优点
-
-重复出现的字符共享形状，位置保持独立。
-
-## 缺点与权衡
-
-池会保留条目，map 查找和 shared_ptr 有成本。示例字符串很小，不声称已有内存收益测量；池也未同步。
-
-## 技术应用场景
+### Use cases
 
 字形轮廓、地形定义、驻留标识符都可在性能分析后考虑。
 
-## 相关模式
+## When NOT to Use
 
-[composite](../composite/README.zh-CN.md) · [prototype](../../creational/prototype/README.zh-CN.md)
+数据量很小、每个 instance 的数据都可变，或查找成本超过收益时避免。
 
-## 常见混淆
+## Advantages
 
-原型复制配置生成新对象；享元有意让多个使用位置共享内部状态。
+重复出现的字符共享形状，位置保持独立。
 
-## 面试问题
+## Trade-offs
+
+池会保留条目，map 查找和 [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr)（共享 ownership 的 smart pointer，最后一个拥有引用消失时释放 object） 有成本。示例字符串很小，不声称已有内存收益测量；池也未同步。
+
+## Related Patterns
+
+[Composite](../composite/README.zh-CN.md) · [Prototype](../../creational/prototype/README.zh-CN.md)
+
+## Common Confusion
+
+Prototype 复制配置生成新 object； Flyweight 有意让多个使用位置共享内部 state。
+
+## Terms to Remember
+
+- `Flyweight` — 共享不可变的 intrinsic state，把每次使用的 extrinsic state 留在共享 object 外部。
+- `intrinsic state` — 不依赖具体使用位置、可由 Flyweight 共享的数据。 示例： `Glyph::shape`。
+- `extrinsic state` — 每次使用独有、保存在共享 Flyweight 外部的数据。 示例： `PlacedGlyph::x`。
+- `Flyweight Factory` — 按键查找并返回共享 Flyweight 的服务。 示例： `GlyphPool`。
+
+## Interview Vocabulary
+
+- [`interning`](../../GLOSSARY.md#interning) — 通过查找池为等价值复用同一个表示。
+- [`ownership`](../../GLOSSARY.md#ownership) — 负责维持资源存活并最终释放资源的责任。
+- [`memory allocation`](../../GLOSSARY.md#memory-allocation) — 为数据取得存储空间，其成本和失败方式取决于所用机制。
+
+## Interview Question
 
 若字体和字号影响形状，缓存键应该包含哪些字段？
 
-## 小练习
+## Mini Challenge
 
 给键增加字体标识，验证相同键共享、不同字体不共享。
 
-## 小结
+## Quick Summary
 
 - **问题:** 文档里大量字符重复，为每个位置保存完整轮廓会浪费内存。
 - **方案:** GlyphPool 按字符复用 Glyph，PlacedGlyph 共享 const Glyph 并独立保存 x 坐标。
-- **权衡:** 池会保留条目，map 查找和 shared_ptr 有成本。示例字符串很小，不声称已有内存收益测量；池也未同步。
+- **权衡:** 池会保留条目，map 查找和 std::shared_ptr 有成本。示例字符串很小，不声称已有内存收益测量；池也未同步。
 - **记忆提示:** 共享形状，位置随身带。
 
 [上一个](../../structural/facade/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/proxy/README.zh-CN.md)

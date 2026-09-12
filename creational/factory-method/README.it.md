@@ -1,26 +1,26 @@
-# Metodo fabbrica
+# Factory Method
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [Precedente](../../creational/builder/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../creational/prototype/README.it.md)
 
-## Categoria
+## Category
 
-Creazionali
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
 
-## Difficoltà
+## Difficulty
 
 Principiante
 
-## In una frase
+## In One Sentence
 
-Lascia a una sottoclasse la scelta dell'oggetto usato da un flusso comune.
+Lascia a una subclass la scelta dell'object usato da un flusso comune.
 
-## Il problema
+## The Problem
 
 Un job invia sempre il messaggio di completamento, ma l'ambiente determina il canale.
 
-## Soluzione iniziale
+## Naive Solution
 
 ```cpp
 void run() {
@@ -29,33 +29,41 @@ void run() {
 }
 ```
 
-## Perché diventa difficile
+## Why It Becomes a Problem
 
 Creare EmailSender dentro run lega il flusso all'email; copiare run per la console duplica la logica.
 
-## Idea centrale
+Questo è `tight coupling`: il flusso conosce un Sender concreto, quindi cambiare la consegna può richiedere modifiche allo stesso flusso.
 
-Metti il flusso in AlertJob e richiama il punto di creazione virtuale make_sender.
+## The Idea
 
-## Analogia quotidiana
+Metti il flusso in AlertJob e richiama il punto di creazione virtual make_sender.
+
+## Real-World Analogy
 
 Le filiali seguono la stessa procedura di consegna, scegliendo mezzi diversi.
 
-## Diagramma originale
+## Structure
 
 [Diagramma](diagram.md) · [Esegui l’esempio](cpp/README.md)
 
-![Metodo fabbrica](../../assets/diagrams/factory-method.svg)
+![Factory Method](../../assets/diagrams/factory-method.svg)
 
 ```text
 AlertJob::run  -->  make_sender()  -->  Sender
 ```
 
-## Partecipanti
+## Participants
 
-AlertJob definisce il flusso; EmailJob e ConsoleJob personalizzano la creazione. Sender espone l'operazione e unique_ptr possiede il prodotto.
+AlertJob definisce il flusso; EmailJob e ConsoleJob personalizzano la creazione. Sender espone l'operazione e [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (Uno smart pointer con ownership esclusiva che rilascia l'object alla distruzione del proprietario) possiede il prodotto.
 
-## C++20 moderno — esempio eseguibile completo
+Ruoli canonici in questo esempio:
+
+- [`Creator`](../../GLOSSARY.md#creator) — Il ruolo base che contiene il flusso e dichiara l'operazione di creazione. Qui: `AlertJob`.
+- [`Concrete Creator`](../../GLOSSARY.md#concrete-creator) — Una subclass di Creator che fornisce un particolare Product. Qui: `EmailJob, ConsoleJob`.
+- [`Product`](../../GLOSSARY.md#product) — Il contratto dell'object restituito dal codice di creazione. Qui: `Sender`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -94,54 +102,68 @@ int main() {
 }
 ```
 
-## Output previsto
+## Example Output
 
 ```text
 Email: build complete
 Console: build complete
 ```
 
-## Quando usarlo
+## When to Use
 
-Usalo quando un flusso già basato sull'ereditarietà richiede un punto di creazione estensibile.
+Usalo quando un flusso già basato sull'[`inheritance`](../../GLOSSARY.md#inheritance) (Definire una derived class da una base class per riusarne o specializzarne contratto e implementation) richiede un punto di creazione estensibile.
 
-## Quando NON usarlo
-
-Evitalo se basta passare un Sender pronto a una funzione.
-
-## Vantaggi
-
-Il flusso rimane unico mentre varia il prodotto.
-
-## Svantaggi e compromessi
-
-Ogni scelta può richiedere una sottoclasse. Dal costruttore base una chiamata virtuale non raggiunge l'override derivato come ci si potrebbe aspettare.
-
-## Applicazioni tecniche
+### Use cases
 
 Esportatori estensibili e job specifici per ambiente sono contesti adatti; qui i sender stampano soltanto.
 
-## Pattern correlati
+## When NOT to Use
 
-[abstract-factory](../abstract-factory/README.it.md) · [template-method](../../behavioral/template-method/README.it.md)
+Evitalo se basta passare un Sender pronto a una function.
 
-## Confusione comune
+## Advantages
 
-Una funzione con switch è una fabbrica semplice, non questo punto di estensione GoF. Abstract Factory coordina una famiglia.
+Il flusso rimane unico mentre varia il prodotto.
 
-## Domanda da colloquio
+## Trade-offs
 
-Perché chiamare make_sender da run dopo la costruzione e non dal costruttore di AlertJob?
+Ogni scelta può richiedere una subclass. Dal base constructor una chiamata virtual non raggiunge l'override derivato come ci si potrebbe aspettare.
 
-## Piccola sfida
+## Related Patterns
+
+[Abstract Factory](../abstract-factory/README.it.md) · [Template Method](../../behavioral/template-method/README.it.md)
+
+## Common Confusion
+
+Una function con switch è una simple factory, non questo punto di estensione GoF. Abstract Factory coordina una famiglia.
+
+## Terms to Remember
+
+- `Factory Method` — Lascia a una subclass la scelta dell'object usato da un flusso comune.
+- `Creator` — Il ruolo base che contiene il flusso e dichiara l'operazione di creazione. Esempio: `AlertJob`.
+- `Concrete Creator` — Una subclass di Creator che fornisce un particolare Product. Esempio: `EmailJob, ConsoleJob`.
+- `Product` — Il contratto dell'object restituito dal codice di creazione. Esempio: `Sender`.
+
+## Interview Vocabulary
+
+- [`object creation`](../../GLOSSARY.md#object-creation) — Scegliere il tipo concreto e stabilire valori iniziali e lifetime di un object.
+- [`tight coupling`](../../GLOSSARY.md#tight-coupling) — Le parti dipendono molto dai dettagli concreti reciproci e le modifiche tendono a propagarsi.
+- [`inheritance`](../../GLOSSARY.md#inheritance) — Definire una derived class da una base class per riusarne o specializzarne contratto e implementation.
+- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — Mirare a open for extension, closed for modification lungo un confine scelto e utile.
+
+## Interview Question
+
+Perché chiamare make_sender da run dopo la costruzione e non dal constructor di AlertJob?
+
+## Mini Challenge
 
 Aggiungi FileJob con un sender che scrive in un file temporaneo e verificane il contenuto.
 
-## Riepilogo
+## Quick Summary
 
 - **Problema:** Un job invia sempre il messaggio di completamento, ma l'ambiente determina il canale.
-- **Soluzione:** Metti il flusso in AlertJob e richiama il punto di creazione virtuale make_sender.
-- **Compromesso:** Ogni scelta può richiedere una sottoclasse. Dal costruttore base una chiamata virtuale non raggiunge l'override derivato come ci si potrebbe aspettare.
+- **Soluzione:** Metti il flusso in AlertJob e richiama il punto di creazione virtual make_sender.
+- **Trade-off:** Ogni scelta può richiedere una subclass. Dal base constructor una chiamata virtual non raggiunge l'override derivato come ci si potrebbe aspettare.
 - **Da ricordare:** Conserva il flusso, personalizza la creazione.
 
 [Precedente](../../creational/builder/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../creational/prototype/README.it.md)

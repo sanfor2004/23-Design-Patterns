@@ -1,59 +1,65 @@
-# النموذج الأولي
+# Prototype
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../creational/factory-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/singleton/README.ar-EG.md)
 
-## الفئة
+## Category
 
-الإنشاء
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Design Pattern بيركز على إزاي نعمل objects ونجهّزها.
 
-## المستوى
+## Difficulty
 
 متوسط
 
-## في جملة واحدة
+## In One Sentence
 
-اعمل Object مستقلة عن طريق نسخ نموذج متجهّز.
+اعمل object مستقلة عن طريق نسخ نموذج متجهّز.
 
-## المشكلة
+## The Problem
 
-اللعبة محتاجة أعداء من Template جاهزة، وكود الـ Spawn مش عارف النوع الفعلي.
+اللعبة محتاجة أعداء من template جاهزة، وكود الـ Spawn مش عارف النوع الفعلي.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 Guard another;
 another.rename("gate guard"); // must repeat any custom setup
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 إنشاء Guard افتراضية كل مرة بيكرر التجهيز وبيضيّع أي معدات مخصصة في النموذج.
 
-## الفكرة الأساسية
+## The Idea
 
-وفّر clone في Enemy. Guard بتنسخ الـ Value Members وترجع unique_ptr لـ Object مستقلة.
+وفّر clone في Enemy. Guard بتنسخ الـ Value Members وترجع [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (smart pointer بملكية حصرية، بتحرر الـ object لما المالك يتدمر) لـ object مستقلة.
 
-## مثال من الحياة
+## Real-World Analogy
 
 زي نسخة من مستند متجهّز: تغيّر اسم النسخة من غير ما تلمس الأصل.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![النموذج الأولي](../../assets/diagrams/prototype.svg)
+![Prototype](../../assets/diagrams/prototype.svg)
 
 ```text
 Client  -->  Enemy::clone()  -->  independent Guard
 ```
 
-## الأدوار
+## Participants
 
-Enemy بتحدد النسخ متعدد الأشكال، وGuard بتنفذه؛ الـ Client بيمتلك النسخة ويغيّر اسمها.
+Enemy بتحدد polymorphic cloning ، و Guard بتنفذه؛ الـ Client بيمتلك النسخة ويغيّر اسمها.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Concrete Prototype`](../../GLOSSARY.md#concrete-prototype) — object فيها clone بتعمل object تانية من القيم المتجهّزة. هنا: `Guard`.
+- [`deep copy`](../../GLOSSARY.md#deep-copy) — بتنسخ البيانات الداخلية المملوكة عشان تعديل النسخة ما يغيرش الأصل. هنا: `Guard::clone`.
+- [`value semantics`](../../GLOSSARY.md#value-semantics) — النسخ تتعامل كقيم مستقلة حسب عقد النوع. هنا: `name_, equipment_`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -87,54 +93,67 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 template: 2 items
 gate guard: 2 items
 ```
 
-## إمتى تستخدمه
+## When to Use
 
-استخدمه لما الـ Objects الموجودة شايلة إعداد مهم، والـ Client مش المفروض يعيد بناء نوعها الفعلي.
+استخدمه لما الـ objects الموجودة شايلة إعداد مهم، والـ Client مش المفروض يعيد بناء نوعها الفعلي.
 
-## إمتى ما تستخدموش
+### Use cases
+
+مناسب لقوالب كيانات الألعاب والمستندات؛ المثال بينسخ string و std::vector بالقيمة.
+
+## When NOT to Use
 
 بلاش لو النسخ العادي بالقيمة واضح وكافي.
 
-## المميزات
+## Advantages
 
 بتعيد استخدام التجهيز من غير ما تكشف كل خطوات الإنشاء للـ Client.
 
-## العيوب والمقايضات
+## Trade-offs
 
-لو فيه Pointers لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. Socket مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
+لو فيه pointers لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. Socket مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
 
-## استخدامات تقنية
+## Related Patterns
 
-مناسب لقوالب كيانات الألعاب والمستندات؛ المثال بينسخ string وvector بالقيمة.
+[Abstract Factory](../abstract-factory/README.ar-EG.md) · [Memento](../../behavioral/memento/README.ar-EG.md)
 
-## أنماط مرتبطة
+## Common Confusion
 
-[abstract-factory](../abstract-factory/README.ar-EG.md) · [memento](../../behavioral/memento/README.ar-EG.md)
+Memento بترجّع نفس الـ object ل state قديمة. Prototype بتعمل object تانية، والـ copy constructor لوحدها مش بتوفر polymorphic cloning.
 
-## لخبطة شائعة
+## Terms to Remember
 
-Memento بترجّع نفس الـ Object لحالة قديمة. Prototype بتعمل Object تانية، والـ Copy Constructor لوحدها مش بتوفر نسخ Polymorphic.
+- `Prototype` — اعمل object مستقلة عن طريق نسخ نموذج متجهّز.
+- `Concrete Prototype` — object فيها clone بتعمل object تانية من القيم المتجهّزة. مثال: `Guard`.
+- `deep copy` — بتنسخ البيانات الداخلية المملوكة عشان تعديل النسخة ما يغيرش الأصل. مثال: `Guard::clone`.
+- `value semantics` — النسخ تتعامل كقيم مستقلة حسب عقد النوع. مثال: `name_, equipment_`.
 
-## سؤال انترفيو
+## Interview Vocabulary
 
-لو المعدات بقت vector<shared_ptr<Item>>، هل النسخة هتفضل مستقلة؟ وضّح المشاركة.
+- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز القيم الأولية وبدء lifetime بتاعة object.
+- [`polymorphism`](../../GLOSSARY.md#polymorphism) — نفس interface تشتغل مع implementations مختلفة؛ C++ فيها أشكال وقت runtime وأشكال وقت compile time.
+- [`ownership`](../../GLOSSARY.md#ownership) — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر.
 
-## تحدي صغير
+## Interview Question
+
+لو المعدات بقت `std::vector<std::shared_ptr<Item>>`، هل النسخة هتفضل مستقلة؟ وضّح المشاركة.
+
+## Mini Challenge
 
 خلّي المعدات قابلة للتعديل، واتأكد إن تعديل النسخة مايمسش الأصل.
 
-## الخلاصة
+## Quick Summary
 
-- **المشكلة:** اللعبة محتاجة أعداء من Template جاهزة، وكود الـ Spawn مش عارف النوع الفعلي.
-- **الحل:** وفّر clone في Enemy. Guard بتنسخ الـ Value Members وترجع unique_ptr لـ Object مستقلة.
-- **المقايضة:** لو فيه Pointers لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. Socket مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
+- **المشكلة:** اللعبة محتاجة أعداء من template جاهزة، وكود الـ Spawn مش عارف النوع الفعلي.
+- **الحل:** وفّر clone في Enemy. Guard بتنسخ الـ Value Members وترجع std::unique_ptr لـ object مستقلة.
+- **Trade-off:** لو فيه pointers لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. Socket مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
 - **افتكر:** انسخ التجهيز، مش الهوية.
 
 [السابق](../../creational/factory-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/singleton/README.ar-EG.md)

@@ -1,58 +1,64 @@
-# التذكار
+# Memento
 
 [English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
 
 [السابق](../../behavioral/mediator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/observer/README.ar-EG.md)
 
-## الفئة
+## Category
 
-السلوك
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Design Pattern بيركز على behavior وتعاون objects مع بعض.
 
-## المستوى
+## Difficulty
 
 متوسط
 
-## في جملة واحدة
+## In One Sentence
 
-احفظ حالة Object وارجعها من غير كشف تفاصيل النسخة المحفوظة.
+احفظ state بتاعة object وارجعها من غير كشف تفاصيل النسخة المحفوظة.
 
-## المشكلة
+## The Problem
 
 المحرر محتاج نقطة رجوع قبل تعديل تجريبي.
 
-## حل بسيط في الأول
+## Naive Solution
 
 ```cpp
 std::string old_text = editor.text(); // caretaker knows what state to copy
 ```
 
-## ليه الحل بيصعّب الدنيا
+## Why It Becomes a Problem
 
 لو مدير التراجع بينسخ Fields عامة بنفسه، كل Field داخلية جديدة هتحتاج تعديله.
 
-## الفكرة الأساسية
+## The Idea
 
 Editor بتعمل Snapshot بنص خاص، وبعدها تقرأها عشان ترجع نفسها.
 
-## مثال من الحياة
+## Real-World Analogy
 
 Checkpoint اللعبة بترجعك لنقطة قديمة من غير ما تعرض لك صيغة البيانات.
 
-## رسم توضيحي أصلي
+## Structure
 
 [الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
 
-![التذكار](../../assets/diagrams/memento.svg)
+![Memento](../../assets/diagrams/memento.svg)
 
 ```text
 Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
 ```
 
-## الأدوار
+## Participants
 
-Editor هي صاحبة الحالة، Snapshot بتحفظها بشكل خاص، وmain بتحتفظ بيها من غير ما تفتش جواها.
+Editor هي صاحبة الـ state ، Snapshot بتحفظها بشكل خاص، و main بتحتفظ بيها من غير ما تفتش جواها.
 
-## C++20 — مثال كامل قابل للتشغيل
+الأدوار القياسية في المثال ده:
+
+- [`Originator`](../../GLOSSARY.md#originator) — الـ object اللي عارفة تحفظ state بتاعتها وترجعها. هنا: `Editor`.
+- [`Caretaker`](../../GLOSSARY.md#caretaker) — الدور اللي بيحتفظ بـ Memento من غير ما يفتش في تمثيلها الداخلي. هنا: `main`.
+- [`snapshot`](../../GLOSSARY.md#snapshot) — صورة محفوظة لجزء محدد من state في لحظة معينة. هنا: `Editor::Snapshot`.
+
+## Modern C++20 Example
 
 ```cpp
 #include <iostream>
@@ -83,54 +89,67 @@ int main() {
 }
 ```
 
-## الناتج المتوقع
+## Example Output
 
 ```text
 Broken edit
 Draft
 ```
 
-## إمتى تستخدمه
+## When to Use
 
-استخدمه لنقاط رجوع تقدر فيها الـ Object تحدد نسخة متسقة من حالتها.
+استخدمه لنقاط رجوع تقدر فيها الـ object تحدد نسخة متسقة من الـ state بتاعتها.
 
-## إمتى ما تستخدموش
+### Use cases
 
-بلاش لو الحالة ضخمة أو الموارد ماينفعش ترجع، أو تسجيل العملية العكسية أرخص.
+مناسب لنقاط حفظ المحرر والمحاكاة بشرط الـ state تكون كاملة ومتسقة.
 
-## المميزات
+## When NOT to Use
 
-شكل الحالة المحفوظة بيفضل خاص، ومدير الحفظ مش بينسخ الحقول بنفسه.
+بلاش لو الـ state ضخمة أو الموارد ماينفعش ترجع، أو تسجيل العملية العكسية أرخص.
 
-## العيوب والمقايضات
+## Advantages
+
+شكل الـ state المحفوظة بيفضل خاص، ومدير الحفظ مش بينسخ الحقول بنفسه.
+
+## Trade-offs
 
 النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع string مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
 
-## استخدامات تقنية
+## Related Patterns
 
-مناسب لنقاط حفظ المحرر والمحاكاة بشرط الحالة تكون كاملة ومتسقة.
+[Command](../command/README.ar-EG.md) · [Prototype](../../creational/prototype/README.ar-EG.md)
 
-## أنماط مرتبطة
+## Common Confusion
 
-[command](../command/README.ar-EG.md) · [prototype](../../creational/prototype/README.ar-EG.md)
+Command بتسجل فعل، Memento بتسجل state. Prototype بتعمل object تانية بدل استرجاع دي.
 
-## لخبطة شائعة
+## Terms to Remember
 
-Command بتسجل فعل، Memento بتسجل حالة. Prototype بتعمل Object تانية بدل استرجاع دي.
+- `Memento` — احفظ state بتاعة object وارجعها من غير كشف تفاصيل النسخة المحفوظة.
+- `Originator` — الـ object اللي عارفة تحفظ state بتاعتها وترجعها. مثال: `Editor`.
+- `Caretaker` — الدور اللي بيحتفظ بـ Memento من غير ما يفتش في تمثيلها الداخلي. مثال: `main`.
+- `snapshot` — صورة محفوظة لجزء محدد من state في لحظة معينة. مثال: `Editor::Snapshot`.
 
-## سؤال انترفيو
+## Interview Vocabulary
+
+- [`encapsulation`](../../GLOSSARY.md#encapsulation) — بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة.
+- [`undo`](../../GLOSSARY.md#undo) — بترجع لنتيجة سابقة باستخدام state محفوظة أو عملية عكسية لما ينفع.
+- [`ownership`](../../GLOSSARY.md#ownership) — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر.
+
+## Interview Question
 
 لو Editor ضافت مكان المؤشر، مين لازم يتعدل عشان الرجوع يفضل صح؟
 
-## تحدي صغير
+## Mini Challenge
 
 ضيف مكان المؤشر لـ Snapshot واختبر رجوعه مع النص.
 
-## الخلاصة
+## Quick Summary
 
 - **المشكلة:** المحرر محتاج نقطة رجوع قبل تعديل تجريبي.
 - **الحل:** Editor بتعمل Snapshot بنص خاص، وبعدها تقرأها عشان ترجع نفسها.
-- **المقايضة:** النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع string مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
-- **افتكر:** افتكر الحالة من غير ما تكشفها.
+- **Trade-off:** النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع string مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
+- **افتكر:** افتكر الـ state من غير ما تكشفها.
 
 [السابق](../../behavioral/mediator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/observer/README.ar-EG.md)
