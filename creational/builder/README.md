@@ -60,7 +60,7 @@ RequestBuilder stores temporary choices and validates them. Request owns the fin
 
 Canonical roles in this example:
 
-- [`Product`](../../GLOSSARY.md#product) — The contract of an object returned by creation code. Here: `Request`.
+- [`Product`](../../GLOSSARY.md#product) — The finished object produced by the Builder. Here: `Request`.
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — An interface shaped to read as a chain of calls; it does not by itself imply Builder. Here: `RequestBuilder.endpoint().timeout().retry()`.
 - [`constructor`](../../GLOSSARY.md#constructor) — The special operation that initializes a new class instance. Here: `Request::Request`.
 
@@ -146,7 +146,7 @@ Factory Method chooses the concrete product inside an inherited workflow. Builde
 ## Terms to Remember
 
 - `Builder` — Assemble a configured object through named steps before producing the result.
-- `Product` — The contract of an object returned by creation code. Example: `Request`.
+- `Product` — The finished object produced by the Builder. Example: `Request`.
 - `fluent interface` — An interface shaped to read as a chain of calls; it does not by itself imply Builder. Example: `RequestBuilder.endpoint().timeout().retry()`.
 - `constructor` — The special operation that initializes a new class instance. Example: `Request::Request`.
 

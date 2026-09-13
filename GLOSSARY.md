@@ -1208,13 +1208,13 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 ## Product
 
-**Meaning:** The contract of an object returned by creation code.
+**Meaning:** The object a creation pattern produces. Some patterns also define a common Product interface.
 
-**مصري:** العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه.
+**مصري:** الكائن (`object`) اللي نمط الإنشاء بينتجه. بعض الأنماط بتحدد له `Product interface` مشترك.
 
-**中文:** 创建代码返回的 object 所提供的约定。
+**中文:** 创建型模式生成的 object。有些模式还会为 Product 定义共同的 interface。
 
-**Italiano:** Il contratto dell'object restituito dal codice di creazione.
+**Italiano:** L'object prodotto dal pattern creazionale. Alcuni pattern definiscono anche una Product interface comune.
 
 ## Concrete Product
 

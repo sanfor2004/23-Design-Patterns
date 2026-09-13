@@ -60,7 +60,7 @@ RequestBuilder 保存和校验临时配置，Request 拥有最终数据， Clien
 
 本例中的标准角色：
 
-- [`Product`](../../GLOSSARY.md#product) — 创建代码返回的 object 所提供的约定。 对应代码： `Request`。
+- [`Product`](../../GLOSSARY.md#product) — Builder 最终生成的 object。对应代码：`Request`。
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — 设计成链式调用的 interface；它本身并不等于 Builder。 对应代码： `RequestBuilder.endpoint().timeout().retry()`。
 - [`constructor`](../../GLOSSARY.md#constructor) — 创建 class instance 时负责初始化的特殊操作。 对应代码： `Request::Request`。
 
@@ -146,7 +146,7 @@ Factory Method 在 [`inheritance`](../../GLOSSARY.md#inheritance) 流程中选�
 ## Terms to Remember
 
 - `Builder` — 用具名步骤配置 object，最后一次性生成结果。
-- `Product` — 创建代码返回的 object 所提供的约定。 示例： `Request`。
+- `Product` — Builder 最终生成的 object。示例：`Request`。
 - `fluent interface` — 设计成链式调用的 interface；它本身并不等于 Builder。 示例： `RequestBuilder.endpoint().timeout().retry()`。
 - `constructor` — 创建 class instance 时负责初始化的特殊操作。 示例： `Request::Request`。
 

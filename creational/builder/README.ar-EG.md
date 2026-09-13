@@ -60,7 +60,7 @@ Client  -->  RequestBuilder  -->  Request
 
 الأدوار القياسية في المثال ده:
 
-- [`Product`](../../GLOSSARY.md#product) — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. هنا: `Request`.
+- [`Product`](../../GLOSSARY.md#product) — الكائن (`object`) النهائي اللي الـ`Builder` بينتجه. هنا: `Request`.
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — عقد (`interface`) بيسمح تكتب سلسلة استدعاءات بشكل مقروء؛ ده لوحده مش معناه إنك بتستخدم `Builder`. هنا: `RequestBuilder.endpoint().timeout().retry()`.
 - [`constructor`](../../GLOSSARY.md#constructor) — العملية الخاصة اللي بتجهّز `instance` جديدة وقت إنشائها. هنا: `Request::Request`.
 
@@ -146,7 +146,7 @@ Invalid request rejected
 ## Terms to Remember
 
 - `Builder` — جهّز الكائن (`object`) بخطوات أساميها واضحة، وبعدين طلّع النتيجة.
-- `Product` — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. مثال: `Request`.
+- `Product` — الكائن (`object`) النهائي اللي الـ`Builder` بينتجه. مثال: `Request`.
 - `fluent interface` — عقد (`interface`) بيسمح تكتب سلسلة استدعاءات بشكل مقروء؛ ده لوحده مش معناه إنك بتستخدم `Builder`. مثال: `RequestBuilder.endpoint().timeout().retry()`.
 - `constructor` — العملية الخاصة اللي بتجهّز `instance` جديدة وقت إنشائها. مثال: `Request::Request`.
 

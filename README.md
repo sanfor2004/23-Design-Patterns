@@ -88,7 +88,7 @@ How objects communicate and behave
 - [Memento](behavioral/memento/README.md) — Save and restore an object's state without exposing snapshot internals. (Intermediate)
 - [Observer](behavioral/observer/README.md) — Notify subscribed objects when something they follow changes. (Beginner)
 - [State](behavioral/state/README.md) — Let an object's current state determine its response and transitions. (Intermediate)
-- [Strategy](behavioral/strategy/README.md) — Supply an interchangeable algorithm to the object that needs it. (Beginner)
+- [Strategy](behavioral/strategy/README.md) — Let an object choose among different algorithms for the same job. (Beginner)
 - [Template Method](behavioral/template-method/README.md) — Fix an algorithm's sequence while subclasses implement selected steps. (Intermediate)
 - [Visitor](behavioral/visitor/README.md) — Add operations across a stable set of element types using a separate visitor. (Advanced)
 

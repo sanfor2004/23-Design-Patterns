@@ -60,7 +60,7 @@ RequestBuilder gestisce configurazione temporanea e controlli; Request possiede 
 
 Ruoli canonici in questo esempio:
 
-- [`Product`](../../GLOSSARY.md#product) — Il contratto dell'object restituito dal codice di creazione. Qui: `Request`.
+- [`Product`](../../GLOSSARY.md#product) — L'object finale prodotto dal Builder. Qui: `Request`.
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — Un'interface pensata come catena leggibile di chiamate; da sola non implica Builder. Qui: `RequestBuilder.endpoint().timeout().retry()`.
 - [`constructor`](../../GLOSSARY.md#constructor) — L'operazione speciale che inizializza una nuova instance di una class. Qui: `Request::Request`.
 
@@ -146,7 +146,7 @@ Factory Method sceglie il concrete type dentro un flusso ereditato; Builder comp
 ## Terms to Remember
 
 - `Builder` — Configura un object con passi espliciti e produci il risultato alla fine.
-- `Product` — Il contratto dell'object restituito dal codice di creazione. Esempio: `Request`.
+- `Product` — L'object finale prodotto dal Builder. Esempio: `Request`.
 - `fluent interface` — Un'interface pensata come catena leggibile di chiamate; da sola non implica Builder. Esempio: `RequestBuilder.endpoint().timeout().retry()`.
 - `constructor` — L'operazione speciale che inizializza una nuova instance di una class. Esempio: `Request::Request`.
 

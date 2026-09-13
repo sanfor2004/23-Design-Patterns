@@ -144,7 +144,7 @@ State represents [`lifecycle`](../../GLOSSARY.md#lifecycle) and transitions; Str
 
 ## Terms to Remember
 
-- `Strategy` — Supply an interchangeable algorithm to the object that needs it.
+- `Strategy` — Let an object choose among different algorithms for the same job.
 - `Context` — The object that uses a Strategy or delegates behavior to its current State. Example: `Checkout`.
 - `Strategy interface` — The contract for interchangeable algorithms used by a Context. Example: `ShippingRule`.
 - `Concrete Strategy` — A particular implementation of a Strategy interface, possibly a callable rather than a class. Example: `standard / express lambdas`.

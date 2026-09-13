@@ -144,7 +144,7 @@ State 表示 [`lifecycle`](../../GLOSSARY.md#lifecycle) 与转换， Strategy �
 
 ## Terms to Remember
 
-- `Strategy` — 给需要 algorithm 的 object 传入可替换的 behavior。
+- `Strategy` — 让 object 在几种完成同一任务的 algorithm 中选择。
 - `Context` — 使用 Strategy 或把 behavior 委托给当前 State 的 object。 示例： `Checkout`。
 - `Strategy interface` — Context 所使用的可替换 algorithm 的约定。 示例： `ShippingRule`。
 - `Concrete Strategy` — Strategy interface 的一种具体 implementation，可以是 callable 而不必是 class。 示例： `standard / express lambdas`。
