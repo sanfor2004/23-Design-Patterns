@@ -1,60 +1,26 @@
 # Adapter
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../creational/singleton/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/bridge/README.ar-EG.md)
+**الفكرة في سطر:** وفّق طريقة التعامل الحالية مع العقد اللي الكود المستدعي (`Client`) محتاجه. العقد ده بنسميه [`interface`](../../GLOSSARY.md#interface): بيحدد العمليات المتاحة والنتيجة المتوقعة منها.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+لوحة العرض مستنية `Celsius`، بس الحساس الموجود بيرجع `Fahrenheit`. تمرير الرقم زي ما هو بيعرض وحدة غلط. وتكرار معادلة التحويل في كذا مكان بيكرر قاعدة التوافق.
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
+## الحل ببساطة
 
-## Difficulty
+الحساس بيرجع فهرنهايت، والعرض محتاج مئوية.الـ`Adapter` بيحوّل الاستدعاء والقيمة من غير تعديل الطرفين. اعمل طبقة توافق من نوع `CelsiusAdapter` بتنفّذ العقد `Temperature`. الطبقة بتستعير الحساس القديم `LegacyThermometer`، وبتحوّل وحدات القياس عند الحد الفاصل.
 
-مبتدئ
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-وفّق طريقة التعامل الحالية مع العقد اللي الكود المستدعي (`Client`) محتاجه. العقد ده بنسميه [`interface`](../../GLOSSARY.md#interface): بيحدد العمليات المتاحة والنتيجة المتوقعة منها.
-
-## ببساطة
-
-الحساس بيرجع فهرنهايت، والعرض محتاج مئوية.الـ`Adapter` بيحوّل الاستدعاء والقيمة من غير تعديل الطرفين.
-
-## The Problem
-
-لوحة العرض مستنية `Celsius`، بس الحساس الموجود بيرجع `Fahrenheit`.
-
-## Naive Solution
-
-```cpp
-double displayed = sensor.fahrenheit(); // UI expects Celsius
-```
-
-## Why It Becomes a Problem
-
-تمرير الرقم زي ما هو بيعرض وحدة غلط. وتكرار معادلة التحويل في كذا مكان بيكرر قاعدة التوافق.
-
-## The Idea
-
-اعمل طبقة توافق من نوع `CelsiusAdapter` بتنفّذ العقد `Temperature`. الطبقة بتستعير الحساس القديم `LegacyThermometer`، وبتحوّل وحدات القياس عند الحد الفاصل.
-
-## Real-World Analogy
-
-زي وصلة كهربا للسفر؛ هنا الوصلة بتحوّل معنى القيمة كمان.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Adapter](../../assets/diagrams/adapter.svg)
+![خريطة مثال Adapter](../../assets/diagrams/adapter.svg)
 
 ```text
 display(Temperature)  -->  CelsiusAdapter  -->  LegacyThermometer
 ```
-
-## Participants
 
 في المثال، العقد المطلوب هو `Temperature`، والحساس القديم هو `LegacyThermometer`. طبقة التوافق `CelsiusAdapter` بتستعير الحساس وبتحوّل القيمة. دالة العرض `display` بتتعامل مع العقد المطلوب بس.
 
@@ -64,11 +30,43 @@ display(Temperature)  -->  CelsiusAdapter  -->  LegacyThermometer
 - [`Adaptee`](../../GLOSSARY.md#adaptee) — الـ `object` الموجودة اللي `interface` بتاعتها محتاجة تتوافق مع المطلوب. هنا: `LegacyThermometer`.
 - [`interface`](../../GLOSSARY.md#interface) — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. هنا: `Temperature`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class LegacyThermometer:
+    def fahrenheit(self):
+        return 77.0
+
+
+class CelsiusAdapter:
+    def __init__(self, sensor):
+        self.sensor = sensor
+
+    def celsius(self):
+        return (self.sensor.fahrenheit() - 32) * 5 / 9
+
+
+def display(temperature):
+    print(temperature.celsius(), "C")
+
+
+if __name__ == "__main__":
+    display(CelsiusAdapter(LegacyThermometer()))
+```
+
+### Python output
+
+```text
+25.0 C
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -98,13 +96,19 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 25 C
 ```
 
-## When to Use
+## قارن اللغتين
+
+Python accepts any Object with `celsius`; C++ declares Temperature as an Interface. The Python Adapter retains its sensor. The C++ reference borrows it, so the sensor must outlive the Adapter.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه عند التعامل مع `API` موجودة مش قادر أو مش مناسب تغيّرها.
 
@@ -112,58 +116,14 @@ int main() {
 
 مناسب لربط `APIs` قديمة وتحويل وحدات؛ الدقة والتعامل مع الأخطاء محتاجين اتفاق واضح.
 
-## When NOT to Use
+**التكلفة:** تغيير أسماء الـ `methods` بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ `Adapter` لأن الـ `reference` مش مالكة.
 
-بلاش لو أنت مالك الطرفين وتوحيد الـ `interface` أبسط.
-
-## Advantages
-
-التحويل في مكان واحد، والعرض يقبل أي [`implementation`](../../GLOSSARY.md#implementation) لـ `Temperature`.
-
-## Trade-offs
-
-تغيير أسماء الـ `methods` بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ `Adapter` لأن الـ `reference` مش مالكة.
-
-## Related Patterns
-
-[Facade](../facade/README.ar-EG.md) · [Bridge](../bridge/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Facade` بتبسّط `Subsystem`. الـ `Adapter` بتخلّي `interface` بعينها متوافقة مع عقد مطلوب.
-
-## Terms to Remember
-
-- `Adapter` — وفّق طريقة التعامل الحالية (`interface`) مع العقد اللي الكود المستدعي (`Client`) محتاجه.
-- `Target` — الـ `interface` اللي `Client` متوقع يتعامل معاها. مثال: `Temperature`.
-- `Adaptee` — الـ `object` الموجودة اللي `interface` بتاعتها محتاجة تتوافق مع المطلوب. مثال: `LegacyThermometer`.
-- `interface` — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. مثال: `Temperature`.
-
-## Interview Vocabulary
-
-- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — اعتمد على العقد المعلن بدل تفاصيل `implementation` بعينها.
-- [`delegation`](../../GLOSSARY.md#delegation) — الكائن بيفوّض جزء من شغله لكائن متعاون معاه (`object`)، بدل ما ينفّذ كل حاجة بنفسه.
-- [`lifetime`](../../GLOSSARY.md#lifetime) — الفترة اللي الـ `object` موجودة فيها وينفع تستخدمها حسب قواعدها.
-
-## Interview Question
-
-هل ينفع دايماً تحافظ على الـ `behavior` لو المصدر `Async` والـ `interface` المطلوبة `Sync`؟
-
-## Mini Challenge
-
-خلّي `Fahrenheit` قابلة للتغيير، واختبر نقطتي التجمد والغليان.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. مين بيحوّل الوحدات، ومين مسؤول عن `Lifetime` الحساس؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** خلّي `Fahrenheit` قابلة للتغيير، واختبر نقطتي التجمد والغليان.
 
-- **المشكلة:** لوحة العرض مستنية `Celsius`، بس الحساس الموجود بيرجع `Fahrenheit`.
-- **الحل:** اعمل طبقة توافق من نوع `CelsiusAdapter` بتنفّذ العقد `Temperature`. الطبقة بتستعير الحساس القديم `LegacyThermometer`، وبتحوّل وحدات القياس عند الحد الفاصل.
-- **`Trade-off`:** تغيير أسماء الـ `methods` بس ممكن يخبي اختلاف المعنى. الحساس لازم يعيش أطول من الـ `Adapter` لأن الـ `reference` مش مالكة.
-- **افتكر:** حوّل عند نقطة الاتصال.
-
-[السابق](../../creational/singleton/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/bridge/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

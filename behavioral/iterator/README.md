@@ -1,62 +1,30 @@
 # Iterator
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../behavioral/interpreter/README.md) · [Category](../README.md) · [Next](../../behavioral/mediator/README.md)
+**In one sentence:** Visit a collection without exposing its storage.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+Clients need to read playlist entries without reaching into its private storage. Index-based code tied to a public std::vector exposes representation and spreads boundary handling.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
+## The idea
 
-## Difficulty
+A caller wants each track, not the details of a playlist container. Iterator keeps traversal position separate and lets a loop request the next item. Provide begin and end plus an iterator supporting dereference, increment and equality.
 
-Beginner
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Visit a collection without exposing its storage.
-
-## Explain It Simply
-
-A caller wants each track, not the details of a playlist container. Iterator keeps traversal position separate and lets a loop request the next item.
-
-## The Problem
-
-Clients need to read playlist entries without reaching into its private storage.
-
-## Naive Solution
-
-```cpp
-for (std::size_t i = 0; i < tracks.size(); ++i) {
-    std::cout << tracks[i];
-}
-```
-
-## Why It Becomes a Problem
-
-Index-based code tied to a public std::vector exposes representation and spreads boundary handling.
-
-## The Idea
-
-Provide begin and end plus an iterator supporting dereference, increment and equality.
-
-## Real-World Analogy
-
-Follow a museum route one exhibit at a time without needing its internal room database.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Iterator](../../assets/diagrams/iterator.svg)
+![Iterator example map](../../assets/diagrams/iterator.svg)
 
 ```text
 range-for client  -->  Playlist::Iterator  -->  private tracks
 ```
 
-## Participants
+Playlist owns tracks; Iterator borrows the vector and stores a position. Range-for is the client. A static_assert checks the C++20 forward_iterator concept. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Playlist owns tracks; Iterator borrows the std::vector and stores a position. Range-for is the client. A static_assert checks the C++20 forward_iterator concept.
 
@@ -66,11 +34,40 @@ Canonical roles in this example:
 - [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — An implementation that stores a traversal position for a particular Aggregate. Here: `Playlist::Iterator`.
 - [`forward iterator`](../../GLOSSARY.md#forward-iterator) — An iterator supporting forward traversal and the multipass guarantee, allowing independent copies to traverse the same range. Here: `std::forward_iterator`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Playlist:
+    def __init__(self, tracks):
+        self._tracks = list(tracks)
+
+    def __iter__(self):
+        return iter(self._tracks)
+
+
+if __name__ == "__main__":
+    playlist = Playlist([7, 12, 18])
+    for track in playlist:
+        print("Track", track)
+    first = iter(playlist)
+    second = iter(playlist)
+    print("Independent:", next(first), next(second))
+    print("Empty:", list(Playlist([])))
+```
+
+### Python output
+
+```text
+Track 7
+Track 12
+Track 18
+Independent: 7 7
+Empty: []
+```
+
+## C++20 example
 
 ```cpp
 #include <cstddef>
@@ -113,7 +110,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Track 7
@@ -123,7 +120,13 @@ Empty: true
 Independent positions: 12 7
 ```
 
-## When to Use
+## Compare the languages
+
+Python delegates to the built-in list Iterator through `__iter__`; exhaustion raises StopIteration, which `for` handles. C++ demonstrates a custom forward Iterator, but returning standard iterators or ranges is usually simpler. Do not modify the collection while traversing either example.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use standard iterators or ranges to expose traversal without exposing storage details.
 
@@ -131,58 +134,14 @@ Use standard iterators or ranges to expose traversal without exposing storage de
 
 Container traversal and tree walks fit; choose iterator category according to actual operations and complexity.
 
-## When NOT to Use
+**Cost:** Iterators do not extend the collection [`lifetime`](../../GLOSSARY.md#lifetime). Moving or destroying this Playlist invalidates assumptions; dereferencing end is invalid, just as with standard iterators.
 
-Avoid a custom iterator when returning existing const iterators or a standard range is sufficient; this custom [`implementation`](../../GLOSSARY.md#implementation) is educational.
-
-## Advantages
-
-Algorithms can use a common protocol, and multiple iterators maintain independent positions.
-
-## Trade-offs
-
-Iterators do not extend the collection [`lifetime`](../../GLOSSARY.md#lifetime). Moving or destroying this Playlist invalidates assumptions; dereferencing end is invalid, just as with standard iterators.
-
-## Related Patterns
-
-[Composite](../../structural/composite/README.md) · [Visitor](../visitor/README.md)
-
-## Common Confusion
-
-Visitor chooses operations by element type. Iterator controls traversal and need not know what the client does with an element.
-
-## Terms to Remember
-
-- `Iterator` — Traverse a collection through a stable access protocol.
-- `Aggregate` — The collection that provides access to iterators. Example: `Playlist`.
-- `Concrete Iterator` — An implementation that stores a traversal position for a particular Aggregate. Example: `Playlist::Iterator`.
-- `forward iterator` — An iterator supporting forward traversal and the multipass guarantee, allowing independent copies to traverse the same range. Example: `std::forward_iterator`.
-
-## Interview Vocabulary
-
-- [`encapsulation`](../../GLOSSARY.md#encapsulation) — Keeping representation and invariants behind controlled operations.
-- [`iterator invalidation`](../../GLOSSARY.md#iterator-invalidation) — An operation makes an iterator no longer valid for its intended use.
-- [`generic programming`](../../GLOSSARY.md#generic-programming) — Writing algorithms against requirements on types rather than one concrete type.
-
-## Interview Question
-
-Why does the equality check include the std::vector pointer as well as the index?
-
-## Mini Challenge
-
-Test an empty playlist and two independent iterators; verify advancing one does not advance the other.
-
-## Check Yourself
+## Check yourself
 
 1. Can two traversals keep separate positions in the same Playlist?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Test an empty playlist and two independent iterators; verify advancing one does not advance the other.
 
-- **Problem:** Clients need to read playlist entries without reaching into its private storage.
-- **Solution:** Provide begin and end plus an iterator supporting dereference, increment and equality.
-- **Trade-off:** Iterators do not extend the collection lifetime. Moving or destroying this Playlist invalidates assumptions; dereferencing end is invalid, just as with standard iterators.
-- **Remember:** Move through data without opening the container.
-
-[Previous](../../behavioral/interpreter/README.md) · [Category](../README.md) · [Next](../../behavioral/mediator/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

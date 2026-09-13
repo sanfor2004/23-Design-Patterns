@@ -1,6 +1,8 @@
-# Flyweight: structure
+# Flyweight: example map
 
-[Explanation](README.md) · [C++20 source](cpp/main.cpp)
+[English lesson](README.md) · [الشرح بالمصري](README.ar-EG.md) · [Python source](python/main.py) · [C++20 source](cpp/main.cpp)
+
+![Flyweight example map](../../assets/diagrams/flyweight.svg)
 
 ```text
 PlacedGlyph(x)  -->  GlyphPool::get  -->  shared const Glyph
@@ -8,5 +10,4 @@ PlacedGlyph(x)  -->  GlyphPool::get  -->  shared const Glyph
 
 Glyph holds shared intrinsic shape; GlyphPool interns it; PlacedGlyph stores extrinsic position and shared ownership.
 
-
-The arrows show collaboration or delegation, not a complete UML model. This diagram describes this repository’s example.
+The sketch maps the example's call path. The middle card is where the pattern assigns or changes responsibility; arrows show the demonstrated flow, not inheritance or object ownership.

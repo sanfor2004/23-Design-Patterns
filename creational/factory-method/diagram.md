@@ -1,6 +1,8 @@
-# Factory Method: structure
+# Factory Method: example map
 
-[Explanation](README.md) · [C++20 source](cpp/main.cpp)
+[English lesson](README.md) · [الشرح بالمصري](README.ar-EG.md) · [Python source](python/main.py) · [C++20 source](cpp/main.cpp)
+
+![Factory Method example map](../../assets/diagrams/factory-method.svg)
 
 ```text
 AlertJob::run  -->  make_sender()  -->  Sender
@@ -8,5 +10,4 @@ AlertJob::run  -->  make_sender()  -->  Sender
 
 AlertJob owns the workflow. EmailJob and ConsoleJob override creation. Sender supplies the operation and the returned unique_ptr owns the product.
 
-
-The arrows show collaboration or delegation, not a complete UML model. This diagram describes this repository’s example.
+The sketch maps the example's call path. The middle card is where the pattern assigns or changes responsibility; arrows show the demonstrated flow, not inheritance or object ownership.

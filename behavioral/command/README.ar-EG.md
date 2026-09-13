@@ -1,60 +1,26 @@
 # Command
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../behavioral/chain-of-responsibility/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/interpreter/README.ar-EG.md)
+**الفكرة في سطر:** مثّل الفعل بكائن (`object`) تقدر تخزنه وتشغّله بعدين.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+المحرر محتاج ينفذ تعديلات ويرجع آخر تعديل من غير ما شريط الأدوات يعرف كل تفاصيل المستند. التعديل المباشر بيغيّر النص، بس مابيسجلش الفعل ولا الـ `state` اللي قبله.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
+## الحل ببساطة
 
-## Difficulty
+المحرر محتاج يفتكر التعديلات عشان المستخدم يقدر يرجع فيها.الـ`Command` بيحتفظ بالفعل وبيانات التراجع، والـ`History` بيحدد إمتى ينفّذه أو يلغيه. خلّي الأمر `Append` يحتفظ بالمستند والمعامل المطلوب. عند التنفيذ، العملية `execute` بتحفظ النص القديم؛ وعند التراجع، العملية `undo` بترجّعه. السجل `History` بيمتلك الأوامر اللي اتنفّذت.
 
-متوسط
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-مثّل الفعل بكائن (`object`) تقدر تخزنه وتشغّله بعدين.
-
-## ببساطة
-
-المحرر محتاج يفتكر التعديلات عشان المستخدم يقدر يرجع فيها.الـ`Command` بيحتفظ بالفعل وبيانات التراجع، والـ`History` بيحدد إمتى ينفّذه أو يلغيه.
-
-## The Problem
-
-المحرر محتاج ينفذ تعديلات ويرجع آخر تعديل من غير ما شريط الأدوات يعرف كل تفاصيل المستند.
-
-## Naive Solution
-
-```cpp
-document.text += " world"; // no object records how to undo
-```
-
-## Why It Becomes a Problem
-
-التعديل المباشر بيغيّر النص، بس مابيسجلش الفعل ولا الـ `state` اللي قبله.
-
-## The Idea
-
-خلّي الأمر `Append` يحتفظ بالمستند والمعامل المطلوب. عند التنفيذ، العملية `execute` بتحفظ النص القديم؛ وعند التراجع، العملية `undo` بترجّعه. السجل `History` بيمتلك الأوامر اللي اتنفّذت.
-
-## Real-World Analogy
-
-تذكرة طلب المطعم بتسجل المطلوب بعيد عن الجرسون اللي سلّمها.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Command](../../assets/diagrams/command.svg)
+![خريطة مثال Command](../../assets/diagrams/command.svg)
 
 ```text
 History  -->  Command  -->  Append → Document
 ```
-
-## Participants
 
 في المثال، العقد `Command` بيحدد العمليتين `execute` و `undo`. الأمر `Append` بيعدل مستند مستعار من نوع `Document`، وسجل `History` بيدير الأوامر المنفذة بترتيب المكدّس (`stack`).
 
@@ -64,11 +30,68 @@ History  -->  Command  -->  Append → Document
 - [`Invoker`](../../GLOSSARY.md#invoker) — الدور اللي بيشغّل `Commands` أو بيخزنها من غير معرفة تفاصيل كل عملية. هنا: `History`.
 - [`Concrete Command`](../../GLOSSARY.md#concrete-command) — تنفيذ للأمر (`Command implementation`) بيربط الفعل المطلوب بالجهة اللي هتنفّذه (`Receiver`). هنا: `Append`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Document:
+    def __init__(self, text):
+        self.text = text
+
+
+class Append:
+    def __init__(self, document, suffix):
+        self.document = document
+        self.suffix = suffix
+        self.before = None
+
+    def execute(self):
+        self.before = self.document.text
+        self.document.text += self.suffix
+
+    def undo(self):
+        self.document.text = self.before
+
+
+class History:
+    def __init__(self):
+        self.commands = []
+
+    def run(self, command):
+        command.execute()
+        self.commands.append(command)
+
+    def undo(self):
+        if self.commands:
+            self.commands.pop().undo()
+
+
+if __name__ == "__main__":
+    document = Document("Hello")
+    history = History()
+    history.run(Append(document, " world"))
+    history.run(Append(document, "!"))
+    print(document.text)
+    for _ in range(3):
+        history.undo()
+        print(document.text)
+```
+
+### Python output
+
+```text
+Hello world!
+Hello world
+Hello
+Hello
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -120,7 +143,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Hello world
@@ -128,7 +151,13 @@ Hello
 Empty undo: Hello
 ```
 
-## When to Use
+## قارن اللغتين
+
+A callable is enough for an action with no history. Here a Command Object keeps the previous text for undo. Python retains the Document; C++ borrows it and owns Commands in History. Undo assumes commands run once and are undone in reverse order, with no unrelated edits in between.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه للأفعال المؤجلة والطوابير والـ `Macros` وتاريخ التراجع.
 
@@ -136,58 +165,14 @@ Empty undo: Hello
 
 مناسب للمحررات وطوابير الوظائف، بس الطابور الدائم محتاج `Serialization` و `Idempotency` زيادة.
 
-## When NOT to Use
+**التكلفة:** حفظ النص كله مكلف. المثال في `Thread` واحدة وبيفترض كل التعديلات عبر `History`، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات `undo`.
 
-بلاش لـ `function` بتتنادي مرة ومش محتاجة تخزين نية أو جدولة.
-
-## Advantages
-
-اللي بينادي مش مرتبط بكل عملية فعلية، ويقدر يحتفظ بتاريخها.
-
-## Trade-offs
-
-حفظ النص كله مكلف. المثال في `Thread` واحدة وبيفترض كل التعديلات عبر `History`، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات `undo`.
-
-## Related Patterns
-
-[Memento](../memento/README.ar-EG.md) · [Chain of Responsibility](../chain-of-responsibility/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Memento` بتخزن `state`، `Command` بتخزن فعل وممكن تستخدم `Snapshot` للتراجع. مش كل أمر قابل للعكس.
-
-## Terms to Remember
-
-- `Command` — مثّل الفعل بكائن (`object`) تقدر تخزنه وتشغّله بعدين.
-- `Receiver` — الـ `object` اللي بيتنفذ عليها الشغل المطلوب من `Command`. مثال: `Document`.
-- `Invoker` — الدور اللي بيشغّل `Commands` أو بيخزنها من غير معرفة تفاصيل كل عملية. مثال: `History`.
-- `Concrete Command` — تنفيذ للأمر (`Command implementation`) بيربط الفعل المطلوب بالجهة اللي هتنفّذه (`Receiver`). مثال: `Append`.
-
-## Interview Vocabulary
-
-- [`undo`](../../GLOSSARY.md#undo) — بترجع لنتيجة سابقة باستخدام `state` محفوظة أو عملية عكسية لما ينفع.
-- [`encapsulation`](../../GLOSSARY.md#encapsulation) — بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة.
-- [`exception safety`](../../GLOSSARY.md#exception-safety) — الضمانات اللي العملية بتحافظ عليها لو فشلت ورمت `exception`.
-
-## Interview Question
-
-ينفع ترجع إرسال إيميل زي ما بترجع `string`؟ فرّق بين التعويض والعكس.
-
-## Mini Challenge
-
-ضيف تعديلين، ارجع مرتين، واتأكد إن `undo` على تاريخ فاضي آمنة.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. ليه لازم نلغي التعديلات دي بعكس ترتيب تنفيذها؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف تعديلين، ارجع مرتين، واتأكد إن `undo` على تاريخ فاضي آمنة.
 
-- **المشكلة:** المحرر محتاج ينفذ تعديلات ويرجع آخر تعديل من غير ما شريط الأدوات يعرف كل تفاصيل المستند.
-- **الحل:** خلّي الأمر `Append` يحتفظ بالمستند والمعامل المطلوب. عند التنفيذ، العملية `execute` بتحفظ النص القديم؛ وعند التراجع، العملية `undo` بترجّعه. السجل `History` بيمتلك الأوامر اللي اتنفّذت.
-- **`Trade-off`:** حفظ النص كله مكلف. المثال في `Thread` واحدة وبيفترض كل التعديلات عبر `History`، والمستند أطول عمراً منها؛ تعديل خارجي يبوّظ توقعات `undo`.
-- **افتكر:** فعل تقدر تحتفظ بيه.
-
-[السابق](../../behavioral/chain-of-responsibility/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/interpreter/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

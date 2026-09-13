@@ -1,61 +1,26 @@
 # Singleton
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../creational/prototype/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/adapter/README.ar-EG.md)
+**الفكرة في سطر:** اسمح بوجود نسخة واحدة متاحة من النوع (`instance`)، وخد بالك من تكلفة الحالة العامة المشتركة (`shared global state`).
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+عدادين `Metrics` منفصلين بيقسّموا إجمالي المفروض يكون واحد للعملية كلها. لو الـ `constructor` عامة، كل `Caller` ممكن يعمل عداده، والإجمالي المشترك مش هيبقى مشترك.
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الـ`Objects` وإعدادها.
+## الحل ببساطة
 
-## Difficulty
+كذا مستدعي محتاجين نفس عدّاد الطلبات.الـ`Singleton` بيتحكم في الإنشاء، بس مشاركة الـ`state` بتصعّب عزل الاختبارات والـ`Dependencies`. اخفي الإنشاء وامنع النسخ. خلّي الدالة `instance` ترجع نفس المتغير المحلي، المعرّف بالكلمة `static`، في كل استدعاء.
 
-متوسط
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-اسمح بوجود نسخة واحدة متاحة من النوع (`instance`)، وخد بالك من تكلفة الحالة العامة المشتركة (`shared global state`).
-
-## ببساطة
-
-كذا مستدعي محتاجين نفس عدّاد الطلبات.الـ`Singleton` بيتحكم في الإنشاء، بس مشاركة الـ`state` بتصعّب عزل الاختبارات والـ`Dependencies`.
-
-## The Problem
-
-عدادين `Metrics` منفصلين بيقسّموا إجمالي المفروض يكون واحد للعملية كلها.
-
-## Naive Solution
-
-```cpp
-Metrics first;
-Metrics second; // separate counters; assumes a public constructor
-```
-
-## Why It Becomes a Problem
-
-لو الـ `constructor` عامة، كل `Caller` ممكن يعمل عداده، والإجمالي المشترك مش هيبقى مشترك.
-
-## The Idea
-
-اخفي الإنشاء وامنع النسخ. خلّي الدالة `instance` ترجع نفس المتغير المحلي، المعرّف بالكلمة `static`، في كل استدعاء.
-
-## Real-World Analogy
-
-مكتب صغير عنده دفتر زوار واحد وكل المكاتب بتكتب فيه.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Singleton](../../assets/diagrams/singleton.svg)
+![خريطة مثال Singleton](../../assets/diagrams/singleton.svg)
 
 ```text
 Client A + B  -->  Metrics::instance()  -->  one Metrics
 ```
-
-## Participants
 
 في المثال، `Metrics` بتتحكم في عمر النسخة وبتخزّن العداد. الدالة `instance` بترجع مرجع مش مالك (`non-owning reference`)؛ ممنوع تحاول تحرر النسخة باستخدام `delete`.
 
@@ -65,11 +30,49 @@ Client A + B  -->  Metrics::instance()  -->  one Metrics
 - [`global state`](../../GLOSSARY.md#global-state) — بيانات أجزاء كتير تقدر توصلها، وتغييرها ممكن يأثر على كود بعيد. هنا: `Metrics::requests_`.
 - [`thread-safe initialization`](../../GLOSSARY.md#thread-safe-initialization) — حماية التهيئة من الإنشاء المتزامن؛ مش معناها إن كل العمليات بعد كده `thread-safe`. هنا: `static Metrics metrics`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Metrics:
+    def __init__(self):
+        self.requests = 0
+
+    def record(self):
+        self.requests += 1
+
+
+# One shared instance under normal imports of this module.
+# This expresses shared access, not a ban on creating other Metrics objects.
+metrics = Metrics()
+
+
+def main():
+    first = metrics
+    second = metrics
+    first.record()
+    second.record()
+    print("Same instance:", first is second)
+    print("Requests:", metrics.requests)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Python output
+
+```text
+Same instance: True
+Requests: 2
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -97,14 +100,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Same instance: true
 Requests: 2
 ```
 
-## When to Use
+## قارن اللغتين
+
+Python uses one module-level instance, a common alternative to a strict Singleton Class. It does not prevent callers from constructing Metrics. C++ makes its constructor private and deletes copying. Shared mutable State complicates isolation in both; prefer passing a Dependency explicitly. Neither counter is thread-safe.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 فكّر فيه بس لو الـ `instance` الواحدة شرط حقيقي على مستوى العملية وعمرها مناسب.
 
@@ -112,58 +121,14 @@ Requests: 2
 
 عداد تشخيص بسيط في `Thread` واحدة بيوضح الفكرة، مش توصية بمعمارية `Metrics` للإنتاج.
 
-## When NOT to Use
+**التكلفة:** الوصول العام بيخفي الـ `dependencies` وبيخلط الاختبارات. تهيئة الـ `static` آمنة بين الـ `Threads`، لكن `record` مش آمنة؛ التزامن محتاج حماية، وترتيب الإغلاق ممكن يفرق.
 
-بلاش لمجرد تسهيل الوصول للـ `dependencies`. مرّر `Metrics reference` صراحة لما الاختبارات محتاجة عزل.
-
-## Advantages
-
-فيه نقطة تهيئة واضحة وكل المستدعين بيوصلوا لنفس الـ `instance`.
-
-## Trade-offs
-
-الوصول العام بيخفي الـ `dependencies` وبيخلط الاختبارات. تهيئة الـ `static` آمنة بين الـ `Threads`، لكن `record` مش آمنة؛ التزامن محتاج حماية، وترتيب الإغلاق ممكن يفرق.
-
-## Related Patterns
-
-[Abstract Factory](../abstract-factory/README.ar-EG.md) · [Facade](../../structural/facade/README.ar-EG.md)
-
-## Common Confusion
-
-إدارة `object` واحدة بالـ [`dependency injection`](../../GLOSSARY.md#dependency-injection) مش بالضرورة `Singleton`؛ النوع نفسه مش لازم يفرض التفرد.
-
-## Terms to Remember
-
-- `Singleton` — اسمح بوجود نسخة واحدة متاحة من النوع (`instance`)، وخد بالك من تكلفة الحالة العامة المشتركة (`shared global state`).
-- `instance` — كائن محدد (`object`) من نوع معين. مثال: `Metrics::instance()`.
-- `global state` — بيانات أجزاء كتير تقدر توصلها، وتغييرها ممكن يأثر على كود بعيد. مثال: `Metrics::requests_`.
-- `thread-safe initialization` — حماية التهيئة من الإنشاء المتزامن؛ مش معناها إن كل العمليات بعد كده `thread-safe`. مثال: `static Metrics metrics`.
-
-## Interview Vocabulary
-
-- [`dependency injection`](../../GLOSSARY.md#dependency-injection) — بتمرّر `dependency` من بره بدل ما الجزء اللي بيستخدمها يختارها أو يعملها بنفسه.
-- [`testability`](../../GLOSSARY.md#testability) — سهولة عزل `behavior` وتشغيلها والتأكد من نتيجتها.
-- [`lifetime`](../../GLOSSARY.md#lifetime) — الفترة اللي الـ `object` موجودة فيها وينفع تستخدمها حسب قواعدها.
-
-## Interview Question
-
-هل أمان التهيئة بين الـ `Threads` معناه إن `requests_` آمنة؟ فرّق بين العمليتين.
-
-## Mini Challenge
-
-غيّر المثال عشان تمرّر عداد لمهمتين، وبعدها اختبر عدادين معزولين.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. إزاي اختبار يسيب `State` في العدّاد تأثر على الاختبار اللي بعده؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** غيّر المثال عشان تمرّر عداد لمهمتين، وبعدها اختبر عدادين معزولين.
 
-- **المشكلة:** عدادين `Metrics` منفصلين بيقسّموا إجمالي المفروض يكون واحد للعملية كلها.
-- **الحل:** اخفي الإنشاء وامنع النسخ. خلّي الدالة `instance` ترجع نفس المتغير المحلي، المعرّف بالكلمة `static`، في كل استدعاء.
-- **`Trade-off`:** الوصول العام بيخفي الـ `dependencies` وبيخلط الاختبارات. تهيئة الـ `static` آمنة بين الـ `Threads`، لكن `record` مش آمنة؛ التزامن محتاج حماية، وترتيب الإغلاق ممكن يفرق.
-- **افتكر:** وجود نسخة واحدة (`instance`) مش معناه مشاكل أقل.
-
-[السابق](../../creational/prototype/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/adapter/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

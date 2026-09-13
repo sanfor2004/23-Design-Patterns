@@ -1,60 +1,30 @@
 # Command
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../behavioral/chain-of-responsibility/README.md) · [Category](../README.md) · [Next](../../behavioral/interpreter/README.md)
+**In one sentence:** Keep an action as an Object.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+An editor must apply changes and undo the last action without teaching the toolbar every document operation. Direct mutation performs the edit but leaves no record of the action or its prior state.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
+## The idea
 
-## Difficulty
+An editor needs to remember edits so users can undo them. Command stores the action and the information needed to reverse it, while History decides when to run or undo it. Append captures a receiver and argument; execute stores the old text, and undo restores it. History owns executed commands.
 
-Intermediate
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Keep an action as an Object.
-
-## Explain It Simply
-
-An editor needs to remember edits so users can undo them. Command stores the action and the information needed to reverse it, while History decides when to run or undo it.
-
-## The Problem
-
-An editor must apply changes and undo the last action without teaching the toolbar every document operation.
-
-## Naive Solution
-
-```cpp
-document.text += " world"; // no object records how to undo
-```
-
-## Why It Becomes a Problem
-
-Direct mutation performs the edit but leaves no record of the action or its prior state.
-
-## The Idea
-
-Append captures a receiver and argument; execute stores the old text, and undo restores it. History owns executed commands.
-
-## Real-World Analogy
-
-A restaurant order ticket records an action independently of the waiter who submits it.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Command](../../assets/diagrams/command.svg)
+![Command example map](../../assets/diagrams/command.svg)
 
 ```text
 History  -->  Command  -->  Append → Document
 ```
 
-## Participants
+Command defines execute and undo. Append changes a borrowed Document. History invokes and retains commands in stack order. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Command defines execute and undo. Append changes a borrowed Document. History invokes and retains commands in stack order.
 
@@ -64,11 +34,64 @@ Canonical roles in this example:
 - [`Invoker`](../../GLOSSARY.md#invoker) — The role that starts or stores Commands without knowing each operation's details. Here: `History`.
 - [`Concrete Command`](../../GLOSSARY.md#concrete-command) — A Command implementation that binds a Receiver and an action. Here: `Append`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Document:
+    def __init__(self, text):
+        self.text = text
+
+
+class Append:
+    def __init__(self, document, suffix):
+        self.document = document
+        self.suffix = suffix
+        self.before = None
+
+    def execute(self):
+        self.before = self.document.text
+        self.document.text += self.suffix
+
+    def undo(self):
+        self.document.text = self.before
+
+
+class History:
+    def __init__(self):
+        self.commands = []
+
+    def run(self, command):
+        command.execute()
+        self.commands.append(command)
+
+    def undo(self):
+        if self.commands:
+            self.commands.pop().undo()
+
+
+if __name__ == "__main__":
+    document = Document("Hello")
+    history = History()
+    history.run(Append(document, " world"))
+    history.run(Append(document, "!"))
+    print(document.text)
+    for _ in range(3):
+        history.undo()
+        print(document.text)
+```
+
+### Python output
+
+```text
+Hello world!
+Hello world
+Hello
+Hello
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -120,7 +143,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Hello world
@@ -128,7 +151,13 @@ Hello
 Empty undo: Hello
 ```
 
-## When to Use
+## Compare the languages
+
+A callable is enough for an action with no history. Here a Command Object keeps the previous text for undo. Python retains the Document; C++ borrows it and owns Commands in History. Undo assumes commands run once and are undone in reverse order, with no unrelated edits in between.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it for deferred actions, queues, macros or undo histories.
 
@@ -136,58 +165,14 @@ Use it for deferred actions, queues, macros or undo histories.
 
 Editor actions and job queues fit, but durable queues need serialization and idempotency beyond this example.
 
-## When NOT to Use
+**Cost:** Saving whole text costs memory. This single-threaded demo assumes edits go through History and Document outlives it; external edits would invalidate undo expectations.
 
-Avoid it for a one-off function call with no need to store or schedule intent.
-
-## Advantages
-
-The invoker does not depend on concrete operations and can retain their execution history.
-
-## Trade-offs
-
-Saving whole text costs memory. This single-threaded demo assumes edits go through History and Document outlives it; external edits would invalidate undo expectations.
-
-## Related Patterns
-
-[Memento](../memento/README.md) · [Chain of Responsibility](../chain-of-responsibility/README.md)
-
-## Common Confusion
-
-Memento stores state; Command stores an action and may use a snapshot to undo it. Not every command is reversible.
-
-## Terms to Remember
-
-- `Command` — Turn an action into an object that can be stored and invoked later.
-- `Receiver` — The object that performs the work requested by a Command. Example: `Document`.
-- `Invoker` — The role that starts or stores Commands without knowing each operation's details. Example: `History`.
-- `Concrete Command` — A Command implementation that binds a Receiver and an action. Example: `Append`.
-
-## Interview Vocabulary
-
-- [`undo`](../../GLOSSARY.md#undo) — Restoring an earlier logical result, using saved state or an inverse operation when possible.
-- [`encapsulation`](../../GLOSSARY.md#encapsulation) — Keeping representation and invariants behind controlled operations.
-- [`exception safety`](../../GLOSSARY.md#exception-safety) — The guarantees an operation preserves if it fails by throwing an exception.
-
-## Interview Question
-
-Can sending an email be undone in the same sense as restoring a string? Define compensation versus reversal.
-
-## Mini Challenge
-
-Add a second append, undo twice, and verify the empty-history call is harmless.
-
-## Check Yourself
+## Check yourself
 
 1. Why must these edits be undone in reverse order?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add a second append, undo twice, and verify the empty-history call is harmless.
 
-- **Problem:** An editor must apply changes and undo the last action without teaching the toolbar every document operation.
-- **Solution:** Append captures a receiver and argument; execute stores the old text, and undo restores it. History owns executed commands.
-- **Trade-off:** Saving whole text costs memory. This single-threaded demo assumes edits go through History and Document outlives it; external edits would invalidate undo expectations.
-- **Remember:** An action you can keep.
-
-[Previous](../../behavioral/chain-of-responsibility/README.md) · [Category](../README.md) · [Next](../../behavioral/interpreter/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

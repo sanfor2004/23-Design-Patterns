@@ -1,60 +1,30 @@
 # Proxy
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../structural/flyweight/README.md) · [Category](../README.md) · [Next](../../behavioral/chain-of-responsibility/README.md)
+**In one sentence:** Control access through a stand-in Object.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+A gallery may prepare many images but display only a few. Constructing every heavy image immediately performs unnecessary loading before anyone asks to display it.
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
+## The idea
 
-## Difficulty
+A gallery should not load every image before anyone views it. This Proxy offers `display`, creates the real image on first use, then reuses it. LazyImage implements Image and creates DiskImage on the first display call, then reuses it.
 
-Intermediate
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Control access through a stand-in Object.
-
-## Explain It Simply
-
-A gallery should not load every image before anyone views it. This Proxy offers `display`, creates the real image on first use, then reuses it.
-
-## The Problem
-
-A gallery may prepare many images but display only a few.
-
-## Naive Solution
-
-```cpp
-DiskImage image; // loads even if never displayed
-```
-
-## Why It Becomes a Problem
-
-Constructing every heavy image immediately performs unnecessary loading before anyone asks to display it.
-
-## The Idea
-
-LazyImage implements Image and creates DiskImage on the first display call, then reuses it.
-
-## Real-World Analogy
-
-A library request slip represents a stored book until the librarian retrieves it.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Proxy](../../assets/diagrams/proxy.svg)
+![Proxy example map](../../assets/diagrams/proxy.svg)
 
 ```text
 Client(Image)  -->  LazyImage  -->  DiskImage
 ```
 
-## Participants
+Image is the shared interface; DiskImage performs the real work; LazyImage owns the lazily created subject. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Image is the shared interface; DiskImage performs the real work; LazyImage owns the lazily created subject.
 
@@ -64,11 +34,46 @@ Canonical roles in this example:
 - [`Real Subject`](../../GLOSSARY.md#real-subject) — The object that does the work behind a Proxy. Here: `DiskImage`.
 - [`lazy initialization`](../../GLOSSARY.md#lazy-initialization) — Deferring creation until the value or resource is first needed. Here: `LazyImage::display`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class DiskImage:
+    def __init__(self):
+        print("Load image")
+
+    def display(self):
+        print("Display image")
+
+
+class LazyImage:
+    def __init__(self):
+        self.image = None
+
+    def display(self):
+        if self.image is None:
+            self.image = DiskImage()
+        self.image.display()
+
+
+if __name__ == "__main__":
+    image = LazyImage()
+    print("Proxy ready")
+    image.display()
+    image.display()
+```
+
+### Python output
+
+```text
+Proxy ready
+Load image
+Display image
+Display image
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -98,7 +103,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Proxy ready
@@ -107,7 +112,13 @@ Display image
 Display image
 ```
 
-## When to Use
+## Compare the languages
+
+Python starts with `None`; C++ starts with an empty `unique_ptr`. Both create the real image on the first call. C++ uses `mutable` to cache inside a const operation. Neither version synchronizes concurrent calls or demonstrates access control; this is a virtual Proxy for lazy loading.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it for lazy initialization, access checks or remote access when a stable subject interface is useful.
 
@@ -115,58 +126,14 @@ Use it for lazy initialization, access checks or remote access when a stable sub
 
 Lazy media access, authorization gates and remote object stubs are possible uses, with different failure semantics.
 
-## When NOT to Use
+**Cost:** The first call now bears loading cost. mutable enables logical constness here but does not make concurrent display safe; loading failures also need a policy.
 
-Avoid it if direct construction is cheap and the access policy adds no value.
-
-## Advantages
-
-Callers use the same display interface while creation is deferred.
-
-## Trade-offs
-
-The first call now bears loading cost. mutable enables logical constness here but does not make concurrent display safe; loading failures also need a policy.
-
-## Related Patterns
-
-[Decorator](../decorator/README.md) · [Adapter](../adapter/README.md)
-
-## Common Confusion
-
-Decorator adds behavior; Proxy controls when or whether a subject is reached. Their class diagrams can look similar.
-
-## Terms to Remember
-
-- `Proxy` — Control access to an object through a stand-in with the same interface.
-- `Subject interface` — The shared contract offered by a Proxy and its Real Subject. Example: `Image`.
-- `Real Subject` — The object that does the work behind a Proxy. Example: `DiskImage`.
-- `lazy initialization` — Deferring creation until the value or resource is first needed. Example: `LazyImage::display`.
-
-## Interview Vocabulary
-
-- [`delegation`](../../GLOSSARY.md#delegation) — An object asks a collaborator to perform part of its work.
-- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — What the program does while executing, including behavior selected from runtime input.
-- [`trade-off`](../../GLOSSARY.md#trade-off) — A benefit gained at the cost of another desirable property.
-
-## Interview Question
-
-If loading throws, should the proxy retry on the next call or remember failure? Explain your contract.
-
-## Mini Challenge
-
-Count loads across three display calls and add a failure-once loader to test your retry policy.
-
-## Check Yourself
+## Check yourself
 
 1. How many real images exist after two display calls, and when were they created?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Count loads across three display calls and add a failure-once loader to test your retry policy.
 
-- **Problem:** A gallery may prepare many images but display only a few.
-- **Solution:** LazyImage implements Image and creates DiskImage on the first display call, then reuses it.
-- **Trade-off:** The first call now bears loading cost. mutable enables logical constness here but does not make concurrent display safe; loading failures also need a policy.
-- **Remember:** A stand-in guards the real object.
-
-[Previous](../../structural/flyweight/README.md) · [Category](../README.md) · [Next](../../behavioral/chain-of-responsibility/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

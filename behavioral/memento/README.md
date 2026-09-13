@@ -1,60 +1,30 @@
 # Memento
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../behavioral/mediator/README.md) · [Category](../README.md) · [Next](../../behavioral/observer/README.md)
+**In one sentence:** Save State now and restore it later.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+An editor needs a checkpoint before an experimental edit. If the undo manager copies public fields itself, every new internal field requires changes in the manager.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
+## The idea
 
-## Difficulty
+An editor needs a checkpoint before a risky edit. Memento holds that checkpoint while the editor controls how its state is saved and restored. Editor creates a Snapshot with private text and later reads it to restore itself.
 
-Intermediate
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Save State now and restore it later.
-
-## Explain It Simply
-
-An editor needs a checkpoint before a risky edit. Memento holds that checkpoint while the editor controls how its state is saved and restored.
-
-## The Problem
-
-An editor needs a checkpoint before an experimental edit.
-
-## Naive Solution
-
-```cpp
-std::string old_text = editor.text(); // caretaker knows what state to copy
-```
-
-## Why It Becomes a Problem
-
-If the undo manager copies public fields itself, every new internal field requires changes in the manager.
-
-## The Idea
-
-Editor creates a Snapshot with private text and later reads it to restore itself.
-
-## Real-World Analogy
-
-A game checkpoint stores enough state to return to an earlier point without showing the player its data format.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Memento](../../assets/diagrams/memento.svg)
+![Memento example map](../../assets/diagrams/memento.svg)
 
 ```text
 Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
 ```
 
-## Participants
+Editor is the originator. Snapshot is the memento with private state. main is the caretaker holding it without inspecting its contents. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Editor is the originator. Snapshot is the memento with private state. main is the caretaker holding it without inspecting its contents.
 
@@ -64,11 +34,52 @@ Canonical roles in this example:
 - [`Caretaker`](../../GLOSSARY.md#caretaker) — The role that keeps a Memento without inspecting its private representation. Here: `main`.
 - [`snapshot`](../../GLOSSARY.md#snapshot) — A captured representation of selected state at a point in time. Here: `Editor::Snapshot`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Snapshot:
+    def __init__(self, text):
+        self._text = text
+
+
+class Editor:
+    def __init__(self):
+        self.text = ""
+
+    def write(self, text):
+        self.text = text
+
+    def save(self):
+        return Snapshot(self.text)
+
+    def restore(self, snapshot):
+        self.text = snapshot._text
+
+
+if __name__ == "__main__":
+    editor = Editor()
+    editor.write("Draft")
+    checkpoint = editor.save()
+    editor.write("Broken edit")
+    print(editor.text)
+    editor.restore(checkpoint)
+    print(editor.text)
+    editor.write("Another edit")
+    editor.restore(checkpoint)
+    print(editor.text)
+```
+
+### Python output
+
+```text
+Broken edit
+Draft
+Draft
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -102,7 +113,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Broken edit
@@ -110,7 +121,13 @@ Draft
 Restore again: Draft
 ```
 
-## When to Use
+## Compare the languages
+
+Python uses an underscore to mark snapshot details as internal by convention. C++ enforces private access with a friend declaration. Both snapshots hold immutable text values here. Mutable nested State would require an explicit copy policy; neither snapshot reverses external side effects.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it for checkpoints where the originator can define a consistent state snapshot.
 
@@ -118,58 +135,14 @@ Use it for checkpoints where the originator can define a consistent state snapsh
 
 Editor checkpoints and simulation snapshots fit when the saved state is complete and consistent.
 
-## When NOT to Use
+**Cost:** Full snapshots cost memory and copying time. External effects such as files or network calls are not undone by restoring this string.
 
-Avoid it when state is huge, resources cannot be restored, or recording inverse operations is cheaper.
-
-## Advantages
-
-Snapshot representation stays private to the originator, so the caretaker does not copy fields manually.
-
-## Trade-offs
-
-Full snapshots cost memory and copying time. External effects such as files or network calls are not undone by restoring this string.
-
-## Related Patterns
-
-[Command](../command/README.md) · [Prototype](../../creational/prototype/README.md)
-
-## Common Confusion
-
-Command records an action; Memento records state. Prototype makes a separate object rather than restoring this one.
-
-## Terms to Remember
-
-- `Memento` — Save and restore an object's state without exposing snapshot internals.
-- `Originator` — The object that knows how to capture and restore its own state. Example: `Editor`.
-- `Caretaker` — The role that keeps a Memento without inspecting its private representation. Example: `main`.
-- `snapshot` — A captured representation of selected state at a point in time. Example: `Editor::Snapshot`.
-
-## Interview Vocabulary
-
-- [`encapsulation`](../../GLOSSARY.md#encapsulation) — Keeping representation and invariants behind controlled operations.
-- [`undo`](../../GLOSSARY.md#undo) — Restoring an earlier logical result, using saved state or an inverse operation when possible.
-- [`ownership`](../../GLOSSARY.md#ownership) — Responsibility for keeping a resource alive and eventually releasing it.
-
-## Interview Question
-
-If Editor later stores cursor position, who must change so restoration stays correct?
-
-## Mini Challenge
-
-Include a cursor position in Snapshot and test that both text and cursor return together.
-
-## Check Yourself
+## Check yourself
 
 1. Why must later edits leave a saved Snapshot unchanged?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Include a cursor position in Snapshot and test that both text and cursor return together.
 
-- **Problem:** An editor needs a checkpoint before an experimental edit.
-- **Solution:** Editor creates a Snapshot with private text and later reads it to restore itself.
-- **Trade-off:** Full snapshots cost memory and copying time. External effects such as files or network calls are not undone by restoring this string.
-- **Remember:** Remember state without exposing it.
-
-[Previous](../../behavioral/mediator/README.md) · [Category](../README.md) · [Next](../../behavioral/observer/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

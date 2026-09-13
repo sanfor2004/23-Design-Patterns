@@ -1,60 +1,30 @@
 # Builder
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../creational/abstract-factory/README.md) · [Category](../README.md) · [Next](../../creational/factory-method/README.md)
+**In one sentence:** Build an Object through clear steps.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+A request has an endpoint, a timeout and a retry option; positional arguments become hard to read as options grow. The constructor works, but calls with several integers and booleans hide intent and make swapped arguments hard to notice.
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
+## The idea
 
-## Difficulty
+A request has several options, and a long constructor call hides what each value means. Builder collects named choices, checks them, then creates the result. Keep construction state in RequestBuilder. Named methods collect choices; build checks required values and returns a Request by value.
 
-Beginner
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Build an Object through clear steps.
-
-## Explain It Simply
-
-A request has several options, and a long constructor call hides what each value means. Builder collects named choices, checks them, then creates the result.
-
-## The Problem
-
-A request has an endpoint, a timeout and a retry option; positional arguments become hard to read as options grow.
-
-## Naive Solution
-
-```cpp
-Request request{"/orders", 5, true}; // what does true mean?
-```
-
-## Why It Becomes a Problem
-
-The constructor works, but calls with several integers and booleans hide intent and make swapped arguments hard to notice.
-
-## The Idea
-
-Keep construction state in RequestBuilder. Named methods collect choices; build checks required values and returns a Request by value.
-
-## Real-World Analogy
-
-A sandwich order names each choice before the kitchen prepares the final meal.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Builder](../../assets/diagrams/builder.svg)
+![Builder example map](../../assets/diagrams/builder.svg)
 
 ```text
 Client  -->  RequestBuilder  -->  Request
 ```
 
-## Participants
+RequestBuilder stores temporary choices and validates them. Request owns the finished values. The client chooses the order of optional steps. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 RequestBuilder stores temporary choices and validates them. Request owns the finished values. The client chooses the order of optional steps.
 
@@ -64,11 +34,70 @@ Canonical roles in this example:
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — An interface shaped to read as a chain of calls; it does not by itself imply Builder. Here: `RequestBuilder.endpoint().timeout().retry()`.
 - [`constructor`](../../GLOSSARY.md#constructor) — The special operation that initializes a new class instance. Here: `Request::Request`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Request:
+    def __init__(self, endpoint, timeout=30, retry=False):
+        self.endpoint = endpoint
+        self.timeout = timeout
+        self.retry = retry
+
+    def describe(self):
+        print(f"{self.endpoint} timeout={self.timeout} retry={self.retry}")
+
+
+class RequestBuilder:
+    def __init__(self):
+        self.endpoint_value = ""
+        self.timeout_value = 30
+        self.retry_value = False
+
+    def endpoint(self, value):
+        self.endpoint_value = value
+        return self
+
+    def timeout(self, seconds):
+        self.timeout_value = seconds
+        return self
+
+    def retry(self, enabled):
+        self.retry_value = enabled
+        return self
+
+    def build(self):
+        if not self.endpoint_value or self.timeout_value <= 0:
+            raise ValueError("Invalid request")
+        return Request(self.endpoint_value, self.timeout_value, self.retry_value)
+
+
+def main():
+    RequestBuilder().endpoint("/orders").timeout(5).retry(True).build().describe()
+    try:
+        RequestBuilder().build()
+    except ValueError:
+        print("Invalid request rejected")
+    try:
+        RequestBuilder().endpoint("/orders").timeout(0).build()
+    except ValueError:
+        print("Zero timeout rejected")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Python output
+
+```text
+/orders timeout=5 retry=True
+Invalid request rejected
+Zero timeout rejected
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -108,14 +137,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 /orders timeout=5 retry=1
 Invalid request rejected
 ```
 
-## When to Use
+## Compare the languages
+
+Named Python arguments often make a Builder unnecessary. This example keeps separate construction steps to show the intent. `build` creates a fresh Request; as in C++, calling the public Request constructor directly bypasses Builder validation. A GoF Director is optional here, and the example builds one representation.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it for objects with many independent options or a meaningful validation boundary.
 
@@ -123,58 +158,14 @@ Use it for objects with many independent options or a meaningful validation boun
 
 HTTP request configuration and test fixture assembly fit; this example performs no network request.
 
-## When NOT to Use
+**Cost:** There is an extra type to maintain. This Request constructor remains public, so production invariants would also need constructor validation or restricted access.
 
-Avoid it for two obvious constructor arguments; a small aggregate with named fields may be clearer.
-
-## Advantages
-
-Call sites explain the choices, and invalid builder state can be rejected before producing a result.
-
-## Trade-offs
-
-There is an extra type to maintain. This Request constructor remains public, so production invariants would also need constructor validation or restricted access.
-
-## Related Patterns
-
-[Factory Method](../factory-method/README.md) · [Abstract Factory](../abstract-factory/README.md)
-
-## Common Confusion
-
-Factory Method chooses the concrete product inside an inherited workflow. Builder assembles the configuration of a result over several calls.
-
-## Terms to Remember
-
-- `Builder` — Assemble a configured object through named steps before producing the result.
-- `Product` — The finished object produced by the Builder. Example: `Request`.
-- `fluent interface` — An interface shaped to read as a chain of calls; it does not by itself imply Builder. Example: `RequestBuilder.endpoint().timeout().retry()`.
-- `constructor` — The special operation that initializes a new class instance. Example: `Request::Request`.
-
-## Interview Vocabulary
-
-- [`object creation`](../../GLOSSARY.md#object-creation) — Choosing a concrete type and establishing an object's initial values and lifetime.
-- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — Keeping distinct kinds of responsibility apart so they can change independently.
-- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — Keep a module focused on one coherent reason to change.
-
-## Interview Question
-
-Does a fluent interface automatically make something a Builder? Explain where construction ends.
-
-## Mini Challenge
-
-Reject timeouts above 120 and demonstrate both the boundary value and the first rejected value.
-
-## Check Yourself
+## Check yourself
 
 1. What happens if a caller bypasses build and calls Request directly?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Reject timeouts above 120 and demonstrate both the boundary value and the first rejected value.
 
-- **Problem:** A request has an endpoint, a timeout and a retry option; positional arguments become hard to read as options grow.
-- **Solution:** Keep construction state in RequestBuilder. Named methods collect choices; build checks required values and returns a Request by value.
-- **Trade-off:** There is an extra type to maintain. This Request constructor remains public, so production invariants would also need constructor validation or restricted access.
-- **Remember:** Choose steps, then build.
-
-[Previous](../../creational/abstract-factory/README.md) · [Category](../README.md) · [Next](../../creational/factory-method/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

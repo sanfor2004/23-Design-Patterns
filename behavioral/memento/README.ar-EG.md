@@ -1,60 +1,26 @@
 # Memento
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../behavioral/mediator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/observer/README.ar-EG.md)
+**الفكرة في سطر:** احفظ حالة الكائن (`state`) عشان تقدر ترجعها بعدين، من غير ما تكشف تفاصيل النسخة المحفوظة.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+المحرر محتاج نقطة رجوع قبل تعديل تجريبي. لو مدير التراجع بينسخ `Fields` عامة بنفسه، كل `Field` داخلية جديدة هتحتاج تعديله.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
+## الحل ببساطة
 
-## Difficulty
+المحرر محتاج نقطة رجوع قبل تعديل ممكن يبوّظ النص. الـ`Memento` بيحفظ نسخة من الـ`state`، والمحرر هو اللي بيحدد إزاي يحفظها ويرجعها. خلّي المحرر `Editor` ينشئ نسخة محفوظة (`Snapshot`) فيها النص بشكل خاص. لما تحتاج ترجع، المحرر نفسه هو اللي يقرأ النسخة ويستعيد حالته.
 
-متوسط
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-احفظ حالة الكائن (`state`) عشان تقدر ترجعها بعدين، من غير ما تكشف تفاصيل النسخة المحفوظة.
-
-## ببساطة
-
-المحرر محتاج نقطة رجوع قبل تعديل ممكن يبوّظ النص. الـ`Memento` بيحفظ نسخة من الـ`state`، والمحرر هو اللي بيحدد إزاي يحفظها ويرجعها.
-
-## The Problem
-
-المحرر محتاج نقطة رجوع قبل تعديل تجريبي.
-
-## Naive Solution
-
-```cpp
-std::string old_text = editor.text(); // caretaker knows what state to copy
-```
-
-## Why It Becomes a Problem
-
-لو مدير التراجع بينسخ `Fields` عامة بنفسه، كل `Field` داخلية جديدة هتحتاج تعديله.
-
-## The Idea
-
-خلّي المحرر `Editor` ينشئ نسخة محفوظة (`Snapshot`) فيها النص بشكل خاص. لما تحتاج ترجع، المحرر نفسه هو اللي يقرأ النسخة ويستعيد حالته.
-
-## Real-World Analogy
-
-الـ `Checkpoint` اللعبة بترجعك لنقطة قديمة من غير ما تعرض لك صيغة البيانات.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Memento](../../assets/diagrams/memento.svg)
+![خريطة مثال Memento](../../assets/diagrams/memento.svg)
 
 ```text
 Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
 ```
-
-## Participants
 
 في المثال، المحرر `Editor` هو صاحب الحالة (`state`). النسخة `Snapshot` بتحفظها بشكل خاص، والدالة `main` بتحتفظ بالنسخة من غير ما تقرأ تفاصيلها الداخلية.
 
@@ -64,11 +30,56 @@ Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
 - [`Caretaker`](../../GLOSSARY.md#caretaker) — الدور اللي بيحتفظ بـ `Memento` من غير ما يفتش في تمثيلها الداخلي. هنا: `main`.
 - [`snapshot`](../../GLOSSARY.md#snapshot) — صورة محفوظة لجزء محدد من `state` في لحظة معينة. هنا: `Editor::Snapshot`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Snapshot:
+    def __init__(self, text):
+        self._text = text
+
+
+class Editor:
+    def __init__(self):
+        self.text = ""
+
+    def write(self, text):
+        self.text = text
+
+    def save(self):
+        return Snapshot(self.text)
+
+    def restore(self, snapshot):
+        self.text = snapshot._text
+
+
+if __name__ == "__main__":
+    editor = Editor()
+    editor.write("Draft")
+    checkpoint = editor.save()
+    editor.write("Broken edit")
+    print(editor.text)
+    editor.restore(checkpoint)
+    print(editor.text)
+    editor.write("Another edit")
+    editor.restore(checkpoint)
+    print(editor.text)
+```
+
+### Python output
+
+```text
+Broken edit
+Draft
+Draft
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -102,7 +113,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Broken edit
@@ -110,7 +121,13 @@ Draft
 Restore again: Draft
 ```
 
-## When to Use
+## قارن اللغتين
+
+Python uses an underscore to mark snapshot details as internal by convention. C++ enforces private access with a friend declaration. Both snapshots hold immutable text values here. Mutable nested State would require an explicit copy policy; neither snapshot reverses external side effects.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لنقاط رجوع تقدر فيها الـ `object` تحدد نسخة متسقة من الـ `state` بتاعتها.
 
@@ -118,58 +135,14 @@ Restore again: Draft
 
 مناسب لنقاط حفظ المحرر والمحاكاة بشرط الـ `state` تكون كاملة ومتسقة.
 
-## When NOT to Use
+**التكلفة:** النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع `string` مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
 
-بلاش لو الـ `state` ضخمة أو الموارد ماينفعش ترجع، أو تسجيل العملية العكسية أرخص.
-
-## Advantages
-
-شكل الـ `state` المحفوظة بيفضل خاص، ومدير الحفظ مش بينسخ الحقول بنفسه.
-
-## Trade-offs
-
-النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع `string` مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
-
-## Related Patterns
-
-[Command](../command/README.ar-EG.md) · [Prototype](../../creational/prototype/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Command` بتسجل فعل، `Memento` بتسجل `state`. الـ `Prototype` بتعمل `object` تانية بدل استرجاع دي.
-
-## Terms to Remember
-
-- `Memento` — احفظ حالة الكائن (`state`) عشان تقدر ترجعها بعدين، من غير ما تكشف تفاصيل النسخة المحفوظة.
-- `Originator` — الكائن اللي يعرف يحفظ حالته (`state`) ويسترجعها. مثال: `Editor`.
-- `Caretaker` — الدور اللي بيحتفظ بـ `Memento` من غير ما يفتش في تمثيلها الداخلي. مثال: `main`.
-- `snapshot` — صورة محفوظة لجزء محدد من `state` في لحظة معينة. مثال: `Editor::Snapshot`.
-
-## Interview Vocabulary
-
-- [`encapsulation`](../../GLOSSARY.md#encapsulation) — بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة.
-- [`undo`](../../GLOSSARY.md#undo) — بترجع لنتيجة سابقة باستخدام `state` محفوظة أو عملية عكسية لما ينفع.
-- [`ownership`](../../GLOSSARY.md#ownership) — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر.
-
-## Interview Question
-
-لو `Editor` ضافت مكان المؤشر، مين لازم يتعدل عشان الرجوع يفضل صح؟
-
-## Mini Challenge
-
-ضيف مكان المؤشر لـ `Snapshot` واختبر رجوعه مع النص.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. ليه التعديلات الجديدة لازم ما تغيّرش الـ`Snapshot` المحفوظة؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف مكان المؤشر لـ `Snapshot` واختبر رجوعه مع النص.
 
-- **المشكلة:** المحرر محتاج نقطة رجوع قبل تعديل تجريبي.
-- **الحل:** خلّي المحرر `Editor` ينشئ نسخة محفوظة (`Snapshot`) فيها النص بشكل خاص. لما تحتاج ترجع، المحرر نفسه هو اللي يقرأ النسخة ويستعيد حالته.
-- **`Trade-off`:** النسخ الكاملة بتكلف ذاكرة ووقت. استرجاع `string` مش هيرجع ملفات أو اتصالات شبكة حصلت بره.
-- **افتكر:** افتكر الـ `state` من غير ما تكشفها.
-
-[السابق](../../behavioral/mediator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/observer/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

@@ -6,7 +6,7 @@
 
 [Sanfor2004](https://github.com/Sanfor2004) · Python + C++20
 
-[English](README.md) · [العربية المصرية](README.ar-EG.md) · [简体中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [العربية المصرية](README.ar-EG.md)
 
 ابدأ بمشكلة حقيقية. شوف الحل البسيط بيصعّب الدنيا فين. افهم النمط، شغّل Python وC++20، وقرر هل التنظيم الزيادة يستاهل.
 

@@ -1,63 +1,30 @@
 # Bridge
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../structural/adapter/README.md) · [Category](../README.md) · [Next](../../structural/composite/README.md)
+**In one sentence:** Let two kinds of variation change separately.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+Notices vary by urgency and by delivery channel; both dimensions need independent extensions. A class for every urgency-channel pair multiplies combinations and repeats delivery logic.
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
+## The idea
 
-## Difficulty
+Notices can be normal or urgent, and delivery can use email or SMS. Bridge connects a notice to a channel instead of needing a Class for every combination. Notice delegates delivery to a Channel. UrgentNotice changes message behavior without choosing a transport.
 
-Intermediate
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Let two kinds of variation change separately.
-
-## Explain It Simply
-
-Notices can be normal or urgent, and delivery can use email or SMS. Bridge connects a notice to a channel instead of needing a Class for every combination.
-
-## The Problem
-
-Notices vary by urgency and by delivery channel; both dimensions need independent extensions.
-
-## Naive Solution
-
-```cpp
-struct UrgentEmailNotice {};
-struct UrgentSmsNotice {};
-struct NormalEmailNotice {};
-struct NormalSmsNotice {};
-```
-
-## Why It Becomes a Problem
-
-A class for every urgency-channel pair multiplies combinations and repeats delivery logic.
-
-## The Idea
-
-Notice delegates delivery to a Channel. UrgentNotice changes message behavior without choosing a transport.
-
-## Real-World Analogy
-
-A remote control and its radio link can evolve separately while sharing a small protocol.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Bridge](../../assets/diagrams/bridge.svg)
+![Bridge example map](../../assets/diagrams/bridge.svg)
 
 ```text
 Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 ```
 
-## Participants
+Notice is the abstraction, UrgentNotice refines it, Channel is the implementation contract, Email and Sms implement delivery. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Notice is the [`abstraction`](../../GLOSSARY.md#abstraction), UrgentNotice refines it, Channel is the [`implementation`](../../GLOSSARY.md#implementation) contract, Email and Sms implement delivery.
 
@@ -68,11 +35,49 @@ Canonical roles in this example:
 - [`Implementor`](../../GLOSSARY.md#implementor) — The contract used by a Bridge Abstraction for lower-level work. Here: `Channel`.
 - [`Concrete Implementor`](../../GLOSSARY.md#concrete-implementor) — A particular implementation of the Implementor contract. Here: `Email, Sms`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Email:
+    def deliver(self, text):
+        print("Email:", text)
+
+
+class Sms:
+    def deliver(self, text):
+        print("SMS:", text)
+
+
+class Notice:
+    def __init__(self, channel):
+        self.channel = channel
+
+    def send(self):
+        self.channel.deliver("status normal")
+
+
+class UrgentNotice(Notice):
+    def send(self):
+        self.channel.deliver("URGENT: disk full")
+
+
+if __name__ == "__main__":
+    Notice(Email()).send()
+    UrgentNotice(Email()).send()
+    UrgentNotice(Sms()).send()
+```
+
+### Python output
+
+```text
+Email: status normal
+Email: URGENT: disk full
+SMS: URGENT: disk full
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -110,7 +115,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Email: status normal
@@ -118,7 +123,13 @@ Email: URGENT: disk full
 SMS: URGENT: disk full
 ```
 
-## When to Use
+## Compare the languages
+
+Both examples use Composition to separate notice type from delivery channel. Python retains a channel reference and relies on `deliver`; C++ borrows an Object implementing Channel, so its Lifetime must cover the notice.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it when two axes of variation would otherwise produce a cross-product of subclasses.
 
@@ -126,59 +137,14 @@ Use it when two axes of variation would otherwise produce a cross-product of sub
 
 Rendering APIs with independent shapes and backends, or notification types with channels, fit this structure.
 
-## When NOT to Use
+**Cost:** The extra indirection requires a clear boundary; borrowed channels must outlive their notices.
 
-Avoid it when only one small dimension changes and a function parameter already handles it.
-
-## Advantages
-
-A new channel serves existing notice types without adding every possible pair.
-
-## Trade-offs
-
-The extra indirection requires a clear boundary; borrowed channels must outlive their notices.
-
-## Related Patterns
-
-[Adapter](../adapter/README.md) · [Strategy](../../behavioral/strategy/README.md)
-
-## Common Confusion
-
-Adapter reconciles an existing mismatch. Bridge is usually an intentional separation of independently evolving dimensions; Strategy focuses on interchangeable behavior.
-
-## Terms to Remember
-
-- `Bridge` — Separate two changing dimensions and connect them through composition.
-- `Abstraction` — The high-level side of Bridge that delegates implementation work. Example: `Notice`.
-- `Refined Abstraction` — A specialization of Abstraction independent of the implementation side. Example: `UrgentNotice`.
-- `Implementor` — The contract used by a Bridge Abstraction for lower-level work. Example: `Channel`.
-- `Concrete Implementor` — A particular implementation of the Implementor contract. Example: `Email, Sms`.
-
-## Interview Vocabulary
-
-- [`object composition`](../../GLOSSARY.md#object-composition) — Connecting objects to form a larger behavior or structure.
-- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — Prefer collaborating objects when they express variation more clearly than extending a class hierarchy.
-- [`encapsulate what varies`](../../GLOSSARY.md#encapsulate-what-varies) — Put a changing design decision behind a stable boundary.
-
-## Interview Question
-
-If you add Push and ScheduledNotice, how many classes are needed with and without the bridge?
-
-## Mini Challenge
-
-Add a Push channel and reuse both notice classes without changing them.
-
-## Check Yourself
+## Check yourself
 
 1. Which Classes change if you add a new channel but no new notice type?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add a Push channel and reuse both notice classes without changing them.
 
-- **Problem:** Notices vary by urgency and by delivery channel; both dimensions need independent extensions.
-- **Solution:** Notice delegates delivery to a Channel. UrgentNotice changes message behavior without choosing a transport.
-- **Trade-off:** The extra indirection requires a clear boundary; borrowed channels must outlive their notices.
-- **Remember:** Two axes, one connection.
-
-[Previous](../../structural/adapter/README.md) · [Category](../README.md) · [Next](../../structural/composite/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

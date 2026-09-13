@@ -1,61 +1,26 @@
 # Prototype
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../creational/factory-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/singleton/README.ar-EG.md)
+**الفكرة في سطر:** انسخ نموذج متجهّز عشان تنشئ كائن مستقل (`object`) وتعدّله من غير ما تغيّر الأصل.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+اللعبة محتاجة تنسخ أعداء من نموذج جاهز، لكن كود إنشاء الأعداء (`spawn`) مش عارف النوع الفعلي. النموذج هنا مش `template` بالمعنى الخاص بلغة `C++`. إنشاء `Guard` افتراضية كل مرة بيكرر التجهيز وبيضيّع أي معدات مخصصة في النموذج.
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الـ`Objects` وإعدادها.
+## الحل ببساطة
 
-## Difficulty
+اللعبة فيها حارس متجهّز بالمعدات المطلوبة.الـ`Prototype` بينسخ التجهيز ده عشان تغيّر النسخة الجديدة من غير ما تغيّر الأصل. وفّر العملية `clone` في العقد `Enemy`. عند نسخ `Guard`، انسخ البيانات المخزّنة بالقيمة (`value members`). ارجع الكائن المستقل داخل [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr)، وهو مؤشر بملكية حصرية بيحرر الكائن تلقائيًا مع المالك.
 
-متوسط
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-انسخ نموذج متجهّز عشان تنشئ كائن مستقل (`object`) وتعدّله من غير ما تغيّر الأصل.
-
-## ببساطة
-
-اللعبة فيها حارس متجهّز بالمعدات المطلوبة.الـ`Prototype` بينسخ التجهيز ده عشان تغيّر النسخة الجديدة من غير ما تغيّر الأصل.
-
-## The Problem
-
-اللعبة محتاجة تنسخ أعداء من نموذج جاهز، لكن كود إنشاء الأعداء (`spawn`) مش عارف النوع الفعلي. النموذج هنا مش `template` بالمعنى الخاص بلغة `C++`.
-
-## Naive Solution
-
-```cpp
-Guard another;
-another.rename("gate guard"); // must repeat any custom setup
-```
-
-## Why It Becomes a Problem
-
-إنشاء `Guard` افتراضية كل مرة بيكرر التجهيز وبيضيّع أي معدات مخصصة في النموذج.
-
-## The Idea
-
-وفّر العملية `clone` في العقد `Enemy`. عند نسخ `Guard`، انسخ البيانات المخزّنة بالقيمة (`value members`). ارجع الكائن المستقل داخل [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr)، وهو مؤشر بملكية حصرية بيحرر الكائن تلقائيًا مع المالك.
-
-## Real-World Analogy
-
-زي نسخة من مستند متجهّز: تغيّر اسم النسخة من غير ما تلمس الأصل.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Prototype](../../assets/diagrams/prototype.svg)
+![خريطة مثال Prototype](../../assets/diagrams/prototype.svg)
 
 ```text
 Client  -->  Enemy::clone()  -->  independent Guard
 ```
-
-## Participants
 
 في المثال، `Enemy` بتحدد عقد النسخ حسب النوع الفعلي (`polymorphic cloning`)، و `Guard` بتنفّذه. المستدعي (`Client`) بيمتلك النسخة الجديدة ويغيّر اسمها.
 
@@ -65,11 +30,48 @@ Client  -->  Enemy::clone()  -->  independent Guard
 - [`deep copy`](../../GLOSSARY.md#deep-copy) — بتنسخ البيانات الداخلية المملوكة عشان تعديل النسخة ما يغيرش الأصل. هنا: `Guard::clone`.
 - [`value semantics`](../../GLOSSARY.md#value-semantics) — النسخ تتعامل كقيم مستقلة حسب عقد النوع. هنا: `name_, equipment_`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Guard:
+    def __init__(self, name, equipment):
+        self.name = name
+        self.equipment = equipment
+
+    def clone(self):
+        return Guard(self.name, self.equipment.copy())
+
+    def describe(self):
+        print(self.name + ": " + ", ".join(self.equipment))
+
+
+def main():
+    prototype = Guard("template", ["shield", "spear"])
+    guard = prototype.clone()
+    guard.name = "gate guard"
+    guard.equipment.append("helmet")
+    prototype.describe()
+    guard.describe()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Python output
+
+```text
+template: shield, spear
+gate guard: shield, spear, helmet
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -103,14 +105,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 template: 2 items
 gate guard: 2 items
 ```
 
-## When to Use
+## قارن اللغتين
+
+Assignment in Python shares an Object. This clone copies the equipment list explicitly; its strings are immutable. C++ copies the vector by value inside a polymorphic `clone`. Nested mutable data would require a deliberate deeper copy in Python; `copy.deepcopy` is an option, not a universal resource-copy policy.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لما الـ `objects` الموجودة شايلة إعداد مهم، والـ `Client` مش المفروض يعيد بناء نوعها الفعلي.
 
@@ -118,58 +126,14 @@ gate guard: 2 items
 
 مناسب لقوالب كيانات الألعاب والمستندات؛ المثال بينسخ `string` و `std::vector` بالقيمة.
 
-## When NOT to Use
+**التكلفة:** لو فيه `pointers` لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. الـ `Socket` مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
 
-بلاش لو النسخ العادي بالقيمة واضح وكافي.
-
-## Advantages
-
-بتعيد استخدام التجهيز من غير ما تكشف كل خطوات الإنشاء للـ `Client`.
-
-## Trade-offs
-
-لو فيه `pointers` لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. الـ `Socket` مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
-
-## Related Patterns
-
-[Abstract Factory](../abstract-factory/README.ar-EG.md) · [Memento](../../behavioral/memento/README.ar-EG.md)
-
-## Common Confusion
-
-في `Memento`، بنرجّع نفس الكائن لحالة قديمة (`state`). أما `Prototype`، فبينشئ كائن تاني مستقل (`object`). دالة النسخ `copy constructor` لوحدها مش بتختار التنفيذ حسب النوع الفعلي؛ الميزة دي اسمها `polymorphic cloning`.
-
-## Terms to Remember
-
-- `Prototype` — انسخ نموذج متجهّز عشان تنشئ كائن مستقل (`object`) وتعدّله من غير ما تغيّر الأصل.
-- `Concrete Prototype` — كائن بيوفّر العملية `clone` لإنشاء كائن تاني (`object`) من القيم المتجهّزة. مثال: `Guard`.
-- `deep copy` — بتنسخ البيانات الداخلية المملوكة عشان تعديل النسخة ما يغيرش الأصل. مثال: `Guard::clone`.
-- `value semantics` — النسخ تتعامل كقيم مستقلة حسب عقد النوع. مثال: `name_, equipment_`.
-
-## Interview Vocabulary
-
-- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز قيمه الأولية. من هنا بيبدأ عمر الكائن (`lifetime`).
-- [`polymorphism`](../../GLOSSARY.md#polymorphism) — نفس العقد (`interface`) يقبل تنفيذات مختلفة (`implementations`). في `C++`، فيه أشكال بتتحدد وقت التشغيل (`runtime`)، وأشكال وقت الترجمة (`compile time`).
-- [`ownership`](../../GLOSSARY.md#ownership) — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر.
-
-## Interview Question
-
-لو المعدات بقت `std::vector<std::shared_ptr<Item>>`، هل النسخة هتفضل مستقلة؟ وضّح المشاركة.
-
-## Mini Challenge
-
-خلّي المعدات قابلة للتعديل، واتأكد إن تعديل النسخة مايمسش الأصل.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. هل إسناد الأصل لمتغير تاني بيعمل نسخة مستقلة؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** خلّي المعدات قابلة للتعديل، واتأكد إن تعديل النسخة مايمسش الأصل.
 
-- **المشكلة:** اللعبة محتاجة تنسخ أعداء من نموذج جاهز، لكن كود إنشاء الأعداء (`spawn`) مش عارف النوع الفعلي. النموذج هنا مش `template` بالمعنى الخاص بلغة `C++`.
-- **الحل:** وفّر العملية `clone` في العقد `Enemy`. عند نسخ `Guard`، انسخ البيانات المخزّنة بالقيمة (`value members`). ارجع الكائن المستقل داخل `std::unique_ptr`، وهو مؤشر بملكية حصرية بيحرر الكائن تلقائيًا مع المالك.
-- **`Trade-off`:** لو فيه `pointers` لازم تحدد هتنسخ بعمق ولا هتشارك البيانات. الـ `Socket` مفتوحة أو مورد حصري ممكن ماينفعش يتنسخ.
-- **افتكر:** انسخ التجهيز، مش الهوية.
-
-[السابق](../../creational/factory-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/singleton/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

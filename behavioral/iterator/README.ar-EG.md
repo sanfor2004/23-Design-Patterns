@@ -1,62 +1,26 @@
 # Iterator
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../behavioral/interpreter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/mediator/README.ar-EG.md)
+**الفكرة في سطر:** لف على مجموعة من خلال طريقة وصول ثابتة.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+الـ `Client` محتاج يقرأ أغاني القائمة من غير ما يدخل على التخزين الخاص. كود الـ `Index` مربوط بـ `std::vector` عامة بيكشف التمثيل وبيوزع حساب الحدود.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
+## الحل ببساطة
 
-## Difficulty
+المستدعي محتاج الأغاني واحدة واحدة، مش تفاصيل التخزين.الـ`Iterator` بيتابع مكانه وبيخلّي الحلقة تطلب العنصر اللي بعده. وفّر بداية النطاق ونهايته عن طريق `begin` و`end`. أداة المرور (`Iterator`) تدعم قراءة العنصر الحالي، والانتقال للي بعده، والمقارنة.
 
-مبتدئ
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-لف على مجموعة من خلال طريقة وصول ثابتة.
-
-## ببساطة
-
-المستدعي محتاج الأغاني واحدة واحدة، مش تفاصيل التخزين.الـ`Iterator` بيتابع مكانه وبيخلّي الحلقة تطلب العنصر اللي بعده.
-
-## The Problem
-
-الـ `Client` محتاج يقرأ أغاني القائمة من غير ما يدخل على التخزين الخاص.
-
-## Naive Solution
-
-```cpp
-for (std::size_t i = 0; i < tracks.size(); ++i) {
-    std::cout << tracks[i];
-}
-```
-
-## Why It Becomes a Problem
-
-كود الـ `Index` مربوط بـ `std::vector` عامة بيكشف التمثيل وبيوزع حساب الحدود.
-
-## The Idea
-
-وفّر بداية النطاق ونهايته عن طريق `begin` و`end`. أداة المرور (`Iterator`) تدعم قراءة العنصر الحالي، والانتقال للي بعده، والمقارنة.
-
-## Real-World Analogy
-
-زي مسار متحف تمشيه قطعة قطعة من غير ما تعرف قاعدة بيانات الغرف.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Iterator](../../assets/diagrams/iterator.svg)
+![خريطة مثال Iterator](../../assets/diagrams/iterator.svg)
 
 ```text
 range-for client  -->  Playlist::Iterator  -->  private tracks
 ```
-
-## Participants
 
 في المثال، `Playlist` بتمتلك الأغاني. أداة المرور `Iterator` بتستعير التخزين، من نوع `std::vector`، وبتحتفظ بالموضع. حلقة `range-for` هي المستدعي (`Client`). بنستخدم `static_assert` للتأكد من استيفاء متطلبات `std::forward_iterator` في `C++20`.
 
@@ -66,11 +30,44 @@ range-for client  -->  Playlist::Iterator  -->  private tracks
 - [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — تنفيذ (`implementation`) بيحفظ موضع المرور في مجموعة محددة (`Aggregate`). هنا: `Playlist::Iterator`.
 - [`forward iterator`](../../GLOSSARY.md#forward-iterator) — أداة مرور (`iterator`) بتتحرك لقدام، وبتدعم المرور المستقل أكتر من مرة (`multipass`). يعني نسخها المستقلة تقدر تمر على نفس النطاق. هنا: `std::forward_iterator`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Playlist:
+    def __init__(self, tracks):
+        self._tracks = list(tracks)
+
+    def __iter__(self):
+        return iter(self._tracks)
+
+
+if __name__ == "__main__":
+    playlist = Playlist([7, 12, 18])
+    for track in playlist:
+        print("Track", track)
+    first = iter(playlist)
+    second = iter(playlist)
+    print("Independent:", next(first), next(second))
+    print("Empty:", list(Playlist([])))
+```
+
+### Python output
+
+```text
+Track 7
+Track 12
+Track 18
+Independent: 7 7
+Empty: []
+```
+
+## C++20 example
 
 ```cpp
 #include <cstddef>
@@ -113,7 +110,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Track 7
@@ -123,7 +120,13 @@ Empty: true
 Independent positions: 12 7
 ```
 
-## When to Use
+## قارن اللغتين
+
+Python delegates to the built-in list Iterator through `__iter__`; exhaustion raises StopIteration, which `for` handles. C++ demonstrates a custom forward Iterator, but returning standard iterators or ranges is usually simpler. Do not modify the collection while traversing either example.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدم `Iterators` أو `Ranges` قياسية عشان تعرض المرور من غير كشف التخزين.
 
@@ -131,58 +134,14 @@ Independent positions: 12 7
 
 مناسب للمرور على الـ `containers` والشجر؛ اختار الفئة حسب العمليات والتكلفة الفعلية.
 
-## When NOT to Use
+**التكلفة:** الـ`Iterator` بيستعير البيانات ومش بيطوّل الـ`Lifetime` بتاعة المجموعة. لازم الـ`Playlist` تفضل موجودة وما تتنقلش أثناء استخدامه. القيمة `end` بتحدد نهاية النطاق، ومينفعش تقراها كأنها عنصر.
 
-بلاش `Iterator` مخصصة لو `const iterators` موجودة أو `Range` كفاية؛ الـ [`implementation`](../../GLOSSARY.md#implementation) هنا للتعليم.
-
-## Advantages
-
-الـ `algorithms` بتستخدم بروتوكول موحد، وكل `Iterator` ليها موضع مستقل.
-
-## Trade-offs
-
-الـ`Iterator` بيستعير البيانات ومش بيطوّل الـ`Lifetime` بتاعة المجموعة. لازم الـ`Playlist` تفضل موجودة وما تتنقلش أثناء استخدامه. القيمة `end` بتحدد نهاية النطاق، ومينفعش تقراها كأنها عنصر.
-
-## Related Patterns
-
-[Composite](../../structural/composite/README.ar-EG.md) · [Visitor](../visitor/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Visitor` بتختار العملية حسب نوع العنصر. الـ `Iterator` بتدير المرور من غير ما تعرف هتعمل إيه بالعنصر.
-
-## Terms to Remember
-
-- `Iterator` — لف على مجموعة من خلال طريقة وصول ثابتة.
-- `Aggregate` — المجموعة اللي بتوفر `iterators` للمرور عليها. مثال: `Playlist`.
-- `Concrete Iterator` — تنفيذ (`implementation`) بيحفظ موضع المرور في مجموعة محددة (`Aggregate`). مثال: `Playlist::Iterator`.
-- `forward iterator` — أداة مرور (`iterator`) بتتحرك لقدام، وبتدعم المرور المستقل أكتر من مرة (`multipass`). يعني نسخها المستقلة تقدر تمر على نفس النطاق. مثال: `std::forward_iterator`.
-
-## Interview Vocabulary
-
-- [`encapsulation`](../../GLOSSARY.md#encapsulation) — بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة.
-- [`iterator invalidation`](../../GLOSSARY.md#iterator-invalidation) — عملية بتخلي `iterator` ما بقتش صالحة للاستخدام المقصود.
-- [`generic programming`](../../GLOSSARY.md#generic-programming) — بتكتب `algorithms` على أساس متطلبات النوع بدل ما تربطها بنوع واحد.
-
-## Interview Question
-
-ليه المقارنة بتراجع `pointer` الـ `std::vector` كمان، مش الـ `Index` بس؟
-
-## Mini Challenge
-
-اختبر قائمة فاضية و `Iterator` اتنين مستقلين؛ تحريك واحدة ما يحركش التانية.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. هل نقدر نمشي في نفس الـ`Playlist` مرتين وكل مرة ليها مكان مستقل؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** اختبر قائمة فاضية و `Iterator` اتنين مستقلين؛ تحريك واحدة ما يحركش التانية.
 
-- **المشكلة:** الـ `Client` محتاج يقرأ أغاني القائمة من غير ما يدخل على التخزين الخاص.
-- **الحل:** وفّر بداية النطاق ونهايته عن طريق `begin` و`end`. أداة المرور (`Iterator`) تدعم قراءة العنصر الحالي، والانتقال للي بعده، والمقارنة.
-- **`Trade-off`:** الـ`Iterator` بيستعير البيانات ومش بيطوّل الـ`Lifetime` بتاعة المجموعة. لازم الـ`Playlist` تفضل موجودة وما تتنقلش أثناء استخدامه. القيمة `end` بتحدد نهاية النطاق، ومينفعش تقراها كأنها عنصر.
-- **افتكر:** امشي على البيانات من غير ما تفتح الـ `container`.
-
-[السابق](../../behavioral/interpreter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/mediator/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

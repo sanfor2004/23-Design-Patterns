@@ -1,60 +1,26 @@
 # Builder
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../creational/abstract-factory/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/factory-method/README.ar-EG.md)
+**الفكرة في سطر:** جهّز الكائن (`object`) بخطوات أساميها واضحة، وبعدين طلّع النتيجة.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+طلب الاتصال (`Request`) فيه عنوان (`Endpoint`)، ومهلة انتظار (`Timeout`)، واختيار لإعادة المحاولة (`Retry`). كل ما الخيارات تزيد، ترتيب المعاملات (`Arguments`) بيبقى أصعب. الـ `constructor` شغال، بس شوية أرقام و `Booleans` جنب بعض مش بيوضحوا المقصود، والغلط في ترتيبهم سهل يفوت.
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الـ`Objects` وإعدادها.
+## الحل ببساطة
 
-## Difficulty
+الطلب ليه اختيارات كتير، واستدعاء `constructor` طويل بيخلّي معنى القيم مش واضح.الـ`Builder` بيجمع الاختيارات بأسماء واضحة ويراجعها قبل ما يطلع النتيجة. خزّن الاختيارات مؤقتًا في `RequestBuilder`. سمّي كل عملية باسم يوضح الاختيار اللي بتضبطه. في الآخر، الدالة `build` بتراجع القيم وترجع النتيجة من نوع `Request` بالقيمة.
 
-مبتدئ
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-جهّز الكائن (`object`) بخطوات أساميها واضحة، وبعدين طلّع النتيجة.
-
-## ببساطة
-
-الطلب ليه اختيارات كتير، واستدعاء `constructor` طويل بيخلّي معنى القيم مش واضح.الـ`Builder` بيجمع الاختيارات بأسماء واضحة ويراجعها قبل ما يطلع النتيجة.
-
-## The Problem
-
-طلب الاتصال (`Request`) فيه عنوان (`Endpoint`)، ومهلة انتظار (`Timeout`)، واختيار لإعادة المحاولة (`Retry`). كل ما الخيارات تزيد، ترتيب المعاملات (`Arguments`) بيبقى أصعب.
-
-## Naive Solution
-
-```cpp
-Request request{"/orders", 5, true}; // what does true mean?
-```
-
-## Why It Becomes a Problem
-
-الـ `constructor` شغال، بس شوية أرقام و `Booleans` جنب بعض مش بيوضحوا المقصود، والغلط في ترتيبهم سهل يفوت.
-
-## The Idea
-
-خزّن الاختيارات مؤقتًا في `RequestBuilder`. سمّي كل عملية باسم يوضح الاختيار اللي بتضبطه. في الآخر، الدالة `build` بتراجع القيم وترجع النتيجة من نوع `Request` بالقيمة.
-
-## Real-World Analogy
-
-زي طلب ساندوتش: بتحدد الإضافات قبل ما المطبخ يجهزه.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Builder](../../assets/diagrams/builder.svg)
+![خريطة مثال Builder](../../assets/diagrams/builder.svg)
 
 ```text
 Client  -->  RequestBuilder  -->  Request
 ```
-
-## Participants
 
 في المثال، `RequestBuilder` بتجمع الاختيارات وتراجعها. الكائن الناتج، من نوع `Request`، بيمتلك القيم النهائية. المستدعي (`Client`) بيختار ترتيب الخطوات الاختيارية.
 
@@ -64,11 +30,74 @@ Client  -->  RequestBuilder  -->  Request
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — عقد (`interface`) بيسمح تكتب سلسلة استدعاءات بشكل مقروء؛ ده لوحده مش معناه إنك بتستخدم `Builder`. هنا: `RequestBuilder.endpoint().timeout().retry()`.
 - [`constructor`](../../GLOSSARY.md#constructor) — العملية الخاصة اللي بتجهّز `instance` جديدة وقت إنشائها. هنا: `Request::Request`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Request:
+    def __init__(self, endpoint, timeout=30, retry=False):
+        self.endpoint = endpoint
+        self.timeout = timeout
+        self.retry = retry
+
+    def describe(self):
+        print(f"{self.endpoint} timeout={self.timeout} retry={self.retry}")
+
+
+class RequestBuilder:
+    def __init__(self):
+        self.endpoint_value = ""
+        self.timeout_value = 30
+        self.retry_value = False
+
+    def endpoint(self, value):
+        self.endpoint_value = value
+        return self
+
+    def timeout(self, seconds):
+        self.timeout_value = seconds
+        return self
+
+    def retry(self, enabled):
+        self.retry_value = enabled
+        return self
+
+    def build(self):
+        if not self.endpoint_value or self.timeout_value <= 0:
+            raise ValueError("Invalid request")
+        return Request(self.endpoint_value, self.timeout_value, self.retry_value)
+
+
+def main():
+    RequestBuilder().endpoint("/orders").timeout(5).retry(True).build().describe()
+    try:
+        RequestBuilder().build()
+    except ValueError:
+        print("Invalid request rejected")
+    try:
+        RequestBuilder().endpoint("/orders").timeout(0).build()
+    except ValueError:
+        print("Zero timeout rejected")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Python output
+
+```text
+/orders timeout=5 retry=True
+Invalid request rejected
+Zero timeout rejected
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -108,14 +137,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 /orders timeout=5 retry=1
 Invalid request rejected
 ```
 
-## When to Use
+## قارن اللغتين
+
+Named Python arguments often make a Builder unnecessary. This example keeps separate construction steps to show the intent. `build` creates a fresh Request; as in C++, calling the public Request constructor directly bypasses Builder validation. A GoF Director is optional here, and the example builds one representation.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لما الخيارات المستقلة كتير، أو محتاج نقطة واضحة لمراجعة الإنشاء.
 
@@ -123,58 +158,14 @@ Invalid request rejected
 
 مناسب لإعداد `HTTP Requests` وتجهيز بيانات الاختبار؛ المثال مش بيعمل اتصال بالشبكة.
 
-## When NOT to Use
+**التكلفة:** فيه نوع زيادة هتصونه. الـ `constructor` بتاعة `Request` هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
 
-بلاش مع معاملين واضحين؛ الـ `struct` صغيرة ممكن تكون أبسط.
-
-## Advantages
-
-مكان الاستدعاء بيوضح النية، وبتقدر ترفض إعداد ناقص قبل إخراج النتيجة.
-
-## Trade-offs
-
-فيه نوع زيادة هتصونه. الـ `constructor` بتاعة `Request` هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
-
-## Related Patterns
-
-[Factory Method](../factory-method/README.ar-EG.md) · [Abstract Factory](../abstract-factory/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Factory Method` بتختار نوع المنتج جوه `Workflow` موروث. الـ `Builder` بتجمع إعداد النتيجة على كذا خطوة.
-
-## Terms to Remember
-
-- `Builder` — جهّز الكائن (`object`) بخطوات أساميها واضحة، وبعدين طلّع النتيجة.
-- `Product` — الكائن (`object`) النهائي اللي الـ`Builder` بينتجه. مثال: `Request`.
-- `fluent interface` — عقد (`interface`) بيسمح تكتب سلسلة استدعاءات بشكل مقروء؛ ده لوحده مش معناه إنك بتستخدم `Builder`. مثال: `RequestBuilder.endpoint().timeout().retry()`.
-- `constructor` — العملية الخاصة اللي بتجهّز `instance` جديدة وقت إنشائها. مثال: `Request::Request`.
-
-## Interview Vocabulary
-
-- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز قيمه الأولية. من هنا بيبدأ عمر الكائن (`lifetime`).
-- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — بتفصل أنواع الشغل المختلفة عشان كل نوع يقدر يتغير لوحده.
-- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — خلّي الجزء مركز على سبب واحد مترابط للتغيير.
-
-## Interview Question
-
-هل أي `fluent interface` تعتبر `Builder`؟ وضّح فين الإنشاء بينتهي.
-
-## Mini Challenge
-
-ارفض `Timeout` أكبر من 120، وجرّب آخر قيمة مقبولة وأول قيمة مرفوضة.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. إيه اللي يحصل لو المستدعي استخدم `Request` مباشرة بدل `build`؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ارفض `Timeout` أكبر من 120، وجرّب آخر قيمة مقبولة وأول قيمة مرفوضة.
 
-- **المشكلة:** طلب الاتصال (`Request`) فيه عنوان (`Endpoint`)، ومهلة انتظار (`Timeout`)، واختيار لإعادة المحاولة (`Retry`). كل ما الخيارات تزيد، ترتيب المعاملات (`Arguments`) بيبقى أصعب.
-- **الحل:** خزّن الاختيارات مؤقتًا في `RequestBuilder`. سمّي كل عملية باسم يوضح الاختيار اللي بتضبطه. في الآخر، الدالة `build` بتراجع القيم وترجع النتيجة من نوع `Request` بالقيمة.
-- **`Trade-off`:** فيه نوع زيادة هتصونه. الـ `constructor` بتاعة `Request` هنا عامة؛ في الإنتاج لازم تراجع القيم فيها كمان أو تمنع الوصول المباشر ليها.
-- **افتكر:** اختار الخطوات، وبعدها ابنِ.
-
-[السابق](../../creational/abstract-factory/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/factory-method/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

@@ -1,6 +1,6 @@
 # C++20 examples
 
-Each pattern has a standalone `main.cpp` and an `expected.txt` containing its exact output. The same source and output appear in all four translations of the article.
+Each pattern has a standalone `main.cpp` and an `expected.txt` containing its exact output. The same source and output appear in the English and Egyptian Arabic lessons, after the Python example.
 
 Start with the [Python examples](PYTHON_EXAMPLES.md) to see the design intent, then use C++20 to study Ownership, Lifetime, and implementation trade-offs. Money examples use integer cents; their small demonstration values are not a production money or rounding policy.
 
@@ -35,4 +35,4 @@ For Factory Method, use `pattern_factory_method`. You can also compile an indivi
 
 ## Change an example
 
-Keep `main.cpp`, `expected.txt`, and the complete example and expected-output blocks in all four articles synchronized. See [contribution instructions](CONTRIBUTING.md).
+Keep `main.cpp`, `expected.txt`, and the complete example and expected-output blocks in both lessons synchronized. See [contribution instructions](CONTRIBUTING.md).

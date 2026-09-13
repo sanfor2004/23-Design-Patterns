@@ -1,60 +1,26 @@
 # Proxy
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../structural/flyweight/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/chain-of-responsibility/README.ar-EG.md)
+**الفكرة في سطر:** تحكّم في الوصول للكائن (`object`) عن طريق بديل بيوفّر نفس [`interface`](../../GLOSSARY.md#interface)، يعني نفس العقد اللي المستدعي بيتعامل معاه.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+معرض الصور ممكن يجهّز صور كتير بس يعرض كام واحدة. إنشاء الصور التقيلة فوراً بيحمّل حاجات قبل ما حد يطلب عرضها.
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
+## الحل ببساطة
 
-## Difficulty
+معرض الصور مش محتاج يحمّل كل صورة قبل ما حد يشوفها.الـ`Proxy` هنا بيوفر `display`، وبيجهّز الصورة عند أول استخدام وبعدين يعيد استخدامها. خلّي البديل `LazyImage` ينفّذ العقد `Image`. عند أول استدعاء للعملية `display`، أنشئ الصورة الفعلية `DiskImage`؛ وبعد كده أعد استخدامها.
 
-متوسط
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-تحكّم في الوصول للكائن (`object`) عن طريق بديل بيوفّر نفس [`interface`](../../GLOSSARY.md#interface)، يعني نفس العقد اللي المستدعي بيتعامل معاه.
-
-## ببساطة
-
-معرض الصور مش محتاج يحمّل كل صورة قبل ما حد يشوفها.الـ`Proxy` هنا بيوفر `display`، وبيجهّز الصورة عند أول استخدام وبعدين يعيد استخدامها.
-
-## The Problem
-
-معرض الصور ممكن يجهّز صور كتير بس يعرض كام واحدة.
-
-## Naive Solution
-
-```cpp
-DiskImage image; // loads even if never displayed
-```
-
-## Why It Becomes a Problem
-
-إنشاء الصور التقيلة فوراً بيحمّل حاجات قبل ما حد يطلب عرضها.
-
-## The Idea
-
-خلّي البديل `LazyImage` ينفّذ العقد `Image`. عند أول استدعاء للعملية `display`، أنشئ الصورة الفعلية `DiskImage`؛ وبعد كده أعد استخدامها.
-
-## Real-World Analogy
-
-إيصال طلب كتاب بيمثل الكتاب المخزّن لحد ما أمين المكتبة يجيبه.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Proxy](../../assets/diagrams/proxy.svg)
+![خريطة مثال Proxy](../../assets/diagrams/proxy.svg)
 
 ```text
 Client(Image)  -->  LazyImage  -->  DiskImage
 ```
-
-## Participants
 
 في المثال، العقد المشترك هو `Image`، والشغل الفعلي موجود في `DiskImage`. البديل `LazyImage` بيمتلك الصورة اللي بينشئها عند أول طلب للعرض.
 
@@ -64,11 +30,50 @@ Client(Image)  -->  LazyImage  -->  DiskImage
 - [`Real Subject`](../../GLOSSARY.md#real-subject) — الـ `object` اللي بتنفذ الشغل الحقيقي ورا `Proxy`. هنا: `DiskImage`.
 - [`lazy initialization`](../../GLOSSARY.md#lazy-initialization) — بتأجل الإنشاء لأول مرة تحتاج فيها القيمة أو المورد. هنا: `LazyImage::display`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class DiskImage:
+    def __init__(self):
+        print("Load image")
+
+    def display(self):
+        print("Display image")
+
+
+class LazyImage:
+    def __init__(self):
+        self.image = None
+
+    def display(self):
+        if self.image is None:
+            self.image = DiskImage()
+        self.image.display()
+
+
+if __name__ == "__main__":
+    image = LazyImage()
+    print("Proxy ready")
+    image.display()
+    image.display()
+```
+
+### Python output
+
+```text
+Proxy ready
+Load image
+Display image
+Display image
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -98,7 +103,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Proxy ready
@@ -107,7 +112,13 @@ Display image
 Display image
 ```
 
-## When to Use
+## قارن اللغتين
+
+Python starts with `None`; C++ starts with an empty `unique_ptr`. Both create the real image on the first call. C++ uses `mutable` to cache inside a const operation. Neither version synchronizes concurrent calls or demonstrates access control; this is a virtual Proxy for lazy loading.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه للتحميل عند الطلب أو فحص الوصول أو الوصول البعيد مع `interface` ثابتة.
 
@@ -115,58 +126,14 @@ Display image
 
 ينفع للوسائط عند الطلب وبوابات الصلاحيات و `Remote Stubs`، وكل واحدة ليها طريقة فشل مختلفة.
 
-## When NOT to Use
+**التكلفة:** أول استدعاء هيدفع تكلفة التحميل. الـ `mutable` هنا للـ `logical constness` مش أمان التزامن؛ وفشل التحميل محتاج سياسة.
 
-بلاش لو الإنشاء رخيص وسياسة الوصول مش بتضيف قيمة.
-
-## Advantages
-
-الـ `Client` بيستخدم نفس `display` والإنشاء بيتأجل.
-
-## Trade-offs
-
-أول استدعاء هيدفع تكلفة التحميل. الـ `mutable` هنا للـ `logical constness` مش أمان التزامن؛ وفشل التحميل محتاج سياسة.
-
-## Related Patterns
-
-[Decorator](../decorator/README.ar-EG.md) · [Adapter](../adapter/README.ar-EG.md)
-
-## Common Confusion
-
-الـ`Decorator` بيضيف `behavior`. الـ`Proxy` بيتحكم في الوصول للـ`Object` الأصلية، زي تأجيل إنشائها. شكل الرسم ممكن يتشابه؛ فرّق بينهم حسب الهدف.
-
-## Terms to Remember
-
-- `Proxy` — تحكّم في الوصول للكائن (`object`) عن طريق بديل بيوفّر نفس العقد (`interface`).
-- `Subject interface` — العقد المشترك اللي `Proxy` و `Real Subject` بيوفروه. مثال: `Image`.
-- `Real Subject` — الـ `object` اللي بتنفذ الشغل الحقيقي ورا `Proxy`. مثال: `DiskImage`.
-- `lazy initialization` — بتأجل الإنشاء لأول مرة تحتاج فيها القيمة أو المورد. مثال: `LazyImage::display`.
-
-## Interview Vocabulary
-
-- [`delegation`](../../GLOSSARY.md#delegation) — الكائن بيفوّض جزء من شغله لكائن متعاون معاه (`object`)، بدل ما ينفّذ كل حاجة بنفسه.
-- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — اللي البرنامج بيعمله وهو شغال، بما فيه `behavior` بتتحدد من المدخلات.
-- [`trade-off`](../../GLOSSARY.md#trade-off) — ميزة بتكسبها قصاد تكلفة أو تنازل في ناحية تانية.
-
-## Interview Question
-
-لو التحميل رمى `Exception`، تعيد المحاولة المرة الجاية ولا تفتكر الفشل؟
-
-## Mini Challenge
-
-عدّ مرات التحميل مع ثلاث مرات عرض، وجرّب `Loader` بتفشل مرة عشان تختبر سياسة المحاولة.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. بعد استدعاء `display` مرتين، كام صورة فعلية اتعملت وإمتى؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** عدّ مرات التحميل مع ثلاث مرات عرض، وجرّب `Loader` بتفشل مرة عشان تختبر سياسة المحاولة.
 
-- **المشكلة:** معرض الصور ممكن يجهّز صور كتير بس يعرض كام واحدة.
-- **الحل:** خلّي البديل `LazyImage` ينفّذ العقد `Image`. عند أول استدعاء للعملية `display`، أنشئ الصورة الفعلية `DiskImage`؛ وبعد كده أعد استخدامها.
-- **`Trade-off`:** أول استدعاء هيدفع تكلفة التحميل. الـ `mutable` هنا للـ `logical constness` مش أمان التزامن؛ وفشل التحميل محتاج سياسة.
-- **افتكر:** بديل بينك وبين الأصل.
-
-[السابق](../../structural/flyweight/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/chain-of-responsibility/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

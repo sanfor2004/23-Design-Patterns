@@ -1,61 +1,26 @@
 # Visitor
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../behavioral/template-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md)
+**الفكرة في سطر:** ضيف عمليات جديدة على مجموعة أنواع ثابتة، وحط العمليات دي في `Visitor` منفصلة.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل `class`. إضافة `virtual method` لكل عملية بتطلب تعديل كل عناصر السلة مع كل مهمة جديدة.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
+## الحل ببساطة
 
-## Difficulty
+الكتب والأكل ليهم حساب ضريبة مختلف.الـ`Visitor` بيجمع الحسابات، وكل عنصر بينادي العملية المناسبة لنوعه. خلّي كل نوع فعلي من `Item` ينفّذ العملية `accept` بحيث ينادي النسخة المناسبة لنوعه من `Visitor::visit`. الزائر `Tax` بيوفّر حساب الضريبة لكل نوع.
 
-متقدم
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-ضيف عمليات جديدة على مجموعة أنواع ثابتة، وحط العمليات دي في `Visitor` منفصلة.
-
-## ببساطة
-
-الكتب والأكل ليهم حساب ضريبة مختلف.الـ`Visitor` بيجمع الحسابات، وكل عنصر بينادي العملية المناسبة لنوعه.
-
-## The Problem
-
-السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل `class`.
-
-## Naive Solution
-
-```cpp
-// For each new operation, add another virtual method to every Item.
-// tax(), export_json(), print_label(), ...
-```
-
-## Why It Becomes a Problem
-
-إضافة `virtual method` لكل عملية بتطلب تعديل كل عناصر السلة مع كل مهمة جديدة.
-
-## The Idea
-
-خلّي كل نوع فعلي من `Item` ينفّذ العملية `accept` بحيث ينادي النسخة المناسبة لنوعه من `Visitor::visit`. الزائر `Tax` بيوفّر حساب الضريبة لكل نوع.
-
-## Real-World Analogy
-
-مفتش بيزور محطات ورشة، ولكل نوع محطة قائمة فحص مناسبة.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Visitor](../../assets/diagrams/visitor.svg)
+![خريطة مثال Visitor](../../assets/diagrams/visitor.svg)
 
 ```text
 Item::accept(visitor)  -->  Visitor::visit(type)  -->  Tax(Book) / Tax(Food)
 ```
-
-## Participants
 
 في المثال، العقد `Item` بيحدد العملية `accept`. كل من `Book` و `Food` بيختار الاستدعاء المناسب لنوعه (`overload`). عقد الزيارة `Visitor` بيسرد الأنواع المدعومة، و `Tax` بتجمع النتيجة. السلة بتمتلك العناصر.
 
@@ -65,11 +30,62 @@ Item::accept(visitor)  -->  Visitor::visit(type)  -->  Tax(Book) / Tax(Food)
 - [`Concrete Element`](../../GLOSSARY.md#concrete-element) — تنفيذ للعنصر (`Element implementation`) بيختار الاستدعاء المناسب لنوعه من عمليات الزيارة (`Visitor overload`). هنا: `Book, Food`.
 - [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — تنفيذ للزائر (`Visitor implementation`) فيه عملية لكل نوع عنصر مدعوم (`Element`). هنا: `Tax`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Book:
+    def __init__(self, price_cents):
+        self.price_cents = price_cents
+
+    def accept(self, visitor):
+        visitor.visit_book(self)
+
+
+class Food:
+    def __init__(self, price_cents):
+        self.price_cents = price_cents
+
+    def accept(self, visitor):
+        visitor.visit_food(self)
+
+
+class Tax:
+    def __init__(self):
+        self.total_cents = 0
+
+    def visit_book(self, book):
+        self.total_cents += book.price_cents // 10
+
+    def visit_food(self, food):
+        self.total_cents += food.price_cents // 5
+
+
+def tax_cents(basket):
+    tax = Tax()
+    for item in basket:
+        item.accept(tax)
+    return tax.total_cents
+
+
+if __name__ == "__main__":
+    print("Tax:", tax_cents([Book(2000), Food(1000)]), "cents")
+    print("Empty basket tax:", tax_cents([]), "cents")
+```
+
+### Python output
+
+```text
+Tax: 400 cents
+Empty basket tax: 0 cents
+```
+
+## C++20 example
 
 ```cpp
 // Monetary amounts in this example are integer cents.
@@ -111,13 +127,19 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Tax: 4
 ```
 
-## When to Use
+## قارن اللغتين
+
+Python uses separate `visit_book` and `visit_food` methods because it does not overload methods by parameter type. C++ uses overloads plus virtual dispatch. Both keep Tax outside the element types. Integer division truncates fractional cents; these sample rates and amounts avoid fractions and are not a tax policy.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لما أنواع العناصر ثابتة والعمليات الجديدة كتير.
 
@@ -125,58 +147,14 @@ Tax: 4
 
 مناسب لتحليل `AST` وتصدير المستندات مع عيلة عقد ثابتة؛ الـ `std::variant` مع `std::visit` بديل لمجموعة أنواع مقفولة.
 
-## When NOT to Use
+**التكلفة:** إضافة نوع عنصر جديد بتحتاج تعديل عقد الزيارة في `Visitor`، وكل تنفيذ للزائر. العقد ده هو الـ [`interface`](../../GLOSSARY.md#interface): العمليات اللي كل تنفيذ لازم يوفّرها. نسب الضريبة هنا للتوضيح، والتقريب محتاج قاعدة مناسبة للمجال.
 
-بلاش لو الأنواع الجديدة بتزيد باستمرار أو كشف تفاصيلها هيكسر الـ [`encapsulation`](../../GLOSSARY.md#encapsulation).
-
-## Advantages
-
-تضيف عملية في `Visitor` من غير تعديل `classes` العناصر الموجودة.
-
-## Trade-offs
-
-إضافة نوع عنصر جديد بتحتاج تعديل عقد الزيارة في `Visitor`، وكل تنفيذ للزائر. العقد ده هو الـ [`interface`](../../GLOSSARY.md#interface): العمليات اللي كل تنفيذ لازم يوفّرها. نسب الضريبة هنا للتوضيح، والتقريب محتاج قاعدة مناسبة للمجال.
-
-## Related Patterns
-
-[Composite](../../structural/composite/README.ar-EG.md) · [Iterator](../iterator/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Iterator` بتلف على المجموعة، `Visitor` بتختار العملية حسب النوع، و `Composite` ممكن توفر الشجرة.
-
-## Terms to Remember
-
-- `Visitor` — ضيف عمليات جديدة على مجموعة أنواع ثابتة، وحط العمليات دي في `Visitor` منفصلة.
-- `Element` — عقد الـ `objects` اللي بتقبل `Visitor`. مثال: `Item`.
-- `Concrete Element` — تنفيذ للعنصر (`Element implementation`) بيختار الاستدعاء المناسب لنوعه من عمليات الزيارة (`Visitor overload`). مثال: `Book, Food`.
-- `Concrete Visitor` — تنفيذ للزائر (`Visitor implementation`) فيه عملية لكل نوع عنصر مدعوم (`Element`). مثال: `Tax`.
-
-## Interview Vocabulary
-
-- [`double dispatch`](../../GLOSSARY.md#double-dispatch) — اختيار `behavior` بناءً على نوعين وقت `runtime`؛ الـ `Visitor` التقليدية بتجمع نداءين `virtual` مع `overload resolution`.
-- [`overload resolution`](../../GLOSSARY.md#overload-resolution) — اختيار `function` من كذا واحدة بنفس الاسم حسب أنواع المعاملات وقت `compile time`.
-- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — خلّي التوسيع ممكن من غير تعديل الكود المستقر، عند حدود مختارة بوضوح. التعبير هو `open for extension, closed for modification`.
-
-## Interview Question
-
-ليه `visitor.visit(*this)` جوه `Book` تختار `Overload` الكتب، و `Item reference` لوحدها مش كفاية؟
-
-## Mini Challenge
-
-ضيف `Label Visitor` من غير تعديل `Book` أو `Food`، وبعدها ضيف نوع ثالث وعدّ التغييرات.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. إيه اللي بيتغير لما تضيف نوع عنصر جديد بدل عملية جديدة؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف `Label Visitor` من غير تعديل `Book` أو `Food`، وبعدها ضيف نوع ثالث وعدّ التغييرات.
 
-- **المشكلة:** السلة فيها كتب وأكل، وعمليات جديدة زي الضريبة أو التصدير مش المفروض تملا كل `class`.
-- **الحل:** خلّي كل نوع فعلي من `Item` ينفّذ العملية `accept` بحيث ينادي النسخة المناسبة لنوعه من `Visitor::visit`. الزائر `Tax` بيوفّر حساب الضريبة لكل نوع.
-- **`Trade-off`:** إضافة نوع عنصر جديد بتحتاج تعديل عقد الزيارة في `Visitor`، وكل تنفيذ للزائر. العقد ده هو الـ `interface`: العمليات اللي كل تنفيذ لازم يوفّرها. نسب الضريبة هنا للتوضيح، والتقريب محتاج قاعدة مناسبة للمجال.
-- **افتكر:** أنواع ثابتة، عمليات جديدة.
-
-[السابق](../../behavioral/template-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

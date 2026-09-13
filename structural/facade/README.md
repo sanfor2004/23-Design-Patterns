@@ -1,61 +1,30 @@
 # Facade
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../structural/decorator/README.md) · [Category](../README.md) · [Next](../../structural/flyweight/README.md)
+**In one sentence:** Give a complex subsystem one simple entry point.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+Every checkout caller must check stock, charge payment and request shipping in the right order. Direct calls let callers forget stock checks or duplicate orchestration inconsistently.
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
+## The idea
 
-## Difficulty
+Checkout needs stock, payment, and shipping in order. Facade puts that common sequence behind one call; it does not automatically make the steps a transaction. Checkout exposes buy and coordinates its internal services behind that operation.
 
-Beginner
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Give a complex subsystem one simple entry point.
-
-## Explain It Simply
-
-Checkout needs stock, payment, and shipping in order. Facade puts that common sequence behind one call; it does not automatically make the steps a transaction.
-
-## The Problem
-
-Every checkout caller must check stock, charge payment and request shipping in the right order.
-
-## Naive Solution
-
-```cpp
-payment.charge(20);
-shipping.dispatch(); // caller forgot to check stock
-```
-
-## Why It Becomes a Problem
-
-Direct calls let callers forget stock checks or duplicate orchestration inconsistently.
-
-## The Idea
-
-Checkout exposes buy and coordinates its internal services behind that operation.
-
-## Real-World Analogy
-
-A restaurant's front desk coordinates your booking without making you call every department.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Facade](../../assets/diagrams/facade.svg)
+![Facade example map](../../assets/diagrams/facade.svg)
 
 ```text
 Client  -->  Checkout::buy()  -->  Stock / Payment / Shipping
 ```
 
-## Participants
+Stock checks availability, Payment charges, Shipping dispatches, and Checkout presents the common workflow. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Stock checks availability, Payment charges, Shipping dispatches, and Checkout presents the common workflow.
 
@@ -65,11 +34,59 @@ Canonical roles in this example:
 - [`interface`](../../GLOSSARY.md#interface) — The contract of operations and observable behavior offered to a caller. Here: `Checkout::buy`.
 - [`Client`](../../GLOSSARY.md#client-pattern-role) — Code that uses an interface or collaborates with a pattern's objects. Here: `main`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Stock:
+    def available(self, quantity):
+        return 0 < quantity <= 3
+
+
+class Payment:
+    def charge(self, amount_cents):
+        print("Charged", amount_cents, "cents")
+
+
+class Shipping:
+    def dispatch(self):
+        print("Dispatched")
+
+
+class Checkout:
+    def __init__(self):
+        self.stock = Stock()
+        self.payment = Payment()
+        self.shipping = Shipping()
+
+    def buy(self, quantity):
+        if not self.stock.available(quantity):
+            return False
+        self.payment.charge(quantity * 1000)
+        self.shipping.dispatch()
+        return True
+
+
+if __name__ == "__main__":
+    checkout = Checkout()
+    checkout.buy(2)
+    if not checkout.buy(4):
+        print("Unavailable")
+    if not checkout.buy(0):
+        print("Invalid quantity")
+```
+
+### Python output
+
+```text
+Charged 2000 cents
+Dispatched
+Unavailable
+Invalid quantity
+```
+
+## C++20 example
 
 ```cpp
 // Monetary amounts in this example are integer cents.
@@ -103,7 +120,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Charged 20
@@ -111,7 +128,13 @@ Dispatched
 Unavailable
 ```
 
-## When to Use
+## Compare the languages
+
+Both versions put the same small workflow behind `buy`. C++ stores service Objects by value; Python holds references. Neither example implements a transaction: a real shipping failure after payment needs an explicit recovery policy.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it when many callers need the same useful subset of a complicated subsystem.
 
@@ -119,58 +142,14 @@ Use it when many callers need the same useful subset of a complicated subsystem.
 
 SDK entry points and application service boundaries fit; the example has no real payment integration.
 
-## When NOT to Use
+**Cost:** The facade can grow into a god object. This example is not transactional: real payment and shipping failures require compensation or another consistency strategy.
 
-Avoid it for a trivial pass-through that adds no meaningful simplification.
-
-## Advantages
-
-Callers depend on a smaller interface and a shared ordering rule.
-
-## Trade-offs
-
-The facade can grow into a god object. This example is not transactional: real payment and shipping failures require compensation or another consistency strategy.
-
-## Related Patterns
-
-[Adapter](../adapter/README.md) · [Mediator](../../behavioral/mediator/README.md)
-
-## Common Confusion
-
-Adapter changes compatibility. Facade reduces the surface area of a subsystem and need not implement an existing interface.
-
-## Terms to Remember
-
-- `Facade` — Offer a small entry point to a subsystem's common workflow.
-- `subsystem` — A group of cooperating services or objects within a larger system. Example: `Stock, Payment, Shipping`.
-- `interface` — The contract of operations and observable behavior offered to a caller. Example: `Checkout::buy`.
-- `Client` — Code that uses an interface or collaborates with a pattern's objects. Example: `main`.
-
-## Interview Vocabulary
-
-- [`separation of concerns`](../../GLOSSARY.md#separation-of-concerns) — Keeping distinct kinds of responsibility apart so they can change independently.
-- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Parts know only the small contracts needed to cooperate, limiting change propagation.
-- [`trade-off`](../../GLOSSARY.md#trade-off) — A benefit gained at the cost of another desirable property.
-
-## Interview Question
-
-If charging succeeds but shipping fails, what guarantee can buy honestly provide?
-
-## Mini Challenge
-
-Add a simulated shipping failure and design an explicit refund result rather than silently returning success.
-
-## Check Yourself
+## Check yourself
 
 1. What does buy fail to guarantee if shipping fails after payment?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add a simulated shipping failure and design an explicit refund result rather than silently returning success.
 
-- **Problem:** Every checkout caller must check stock, charge payment and request shipping in the right order.
-- **Solution:** Checkout exposes buy and coordinates its internal services behind that operation.
-- **Trade-off:** The facade can grow into a god object. This example is not transactional: real payment and shipping failures require compensation or another consistency strategy.
-- **Remember:** One front door to several services.
-
-[Previous](../../structural/decorator/README.md) · [Category](../README.md) · [Next](../../structural/flyweight/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

@@ -1,61 +1,30 @@
 # Visitor
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../behavioral/template-method/README.md) · [Category](../README.md)
+**In one sentence:** Add operations outside a stable set of element types.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+A basket contains books and food, and new operations such as tax or export should not fill every item class. Adding every operation as another virtual Item method requires editing all item classes for each new task.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
+## The idea
 
-## Difficulty
+Books and food need different tax calculations. Visitor keeps those calculations together, while each item calls the method for its own type. Each concrete Item calls the matching Visitor::visit overload from accept; Tax implements the operation for each type.
 
-Advanced
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Add operations outside a stable set of element types.
-
-## Explain It Simply
-
-Books and food need different tax calculations. Visitor keeps those calculations together, while each item calls the method for its own type.
-
-## The Problem
-
-A basket contains books and food, and new operations such as tax or export should not fill every item class.
-
-## Naive Solution
-
-```cpp
-// For each new operation, add another virtual method to every Item.
-// tax(), export_json(), print_label(), ...
-```
-
-## Why It Becomes a Problem
-
-Adding every operation as another virtual Item method requires editing all item classes for each new task.
-
-## The Idea
-
-Each concrete Item calls the matching Visitor::visit overload from accept; Tax implements the operation for each type.
-
-## Real-World Analogy
-
-An inspector visits different workshop stations and applies a station-specific checklist.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Visitor](../../assets/diagrams/visitor.svg)
+![Visitor example map](../../assets/diagrams/visitor.svg)
 
 ```text
 Item::accept(visitor)  -->  Visitor::visit(type)  -->  Tax(Book) / Tax(Food)
 ```
 
-## Participants
+Item defines accept. Book and Food select their typed overload. Visitor lists supported types. Tax accumulates the result; the basket owns items. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Item defines accept. Book and Food select their typed overload. Visitor lists supported types. Tax accumulates the result; the basket owns items.
 
@@ -65,11 +34,58 @@ Canonical roles in this example:
 - [`Concrete Element`](../../GLOSSARY.md#concrete-element) — An Element implementation that selects its matching Visitor overload. Here: `Book, Food`.
 - [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — A Visitor implementation containing one operation for every supported Element type. Here: `Tax`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Book:
+    def __init__(self, price_cents):
+        self.price_cents = price_cents
+
+    def accept(self, visitor):
+        visitor.visit_book(self)
+
+
+class Food:
+    def __init__(self, price_cents):
+        self.price_cents = price_cents
+
+    def accept(self, visitor):
+        visitor.visit_food(self)
+
+
+class Tax:
+    def __init__(self):
+        self.total_cents = 0
+
+    def visit_book(self, book):
+        self.total_cents += book.price_cents // 10
+
+    def visit_food(self, food):
+        self.total_cents += food.price_cents // 5
+
+
+def tax_cents(basket):
+    tax = Tax()
+    for item in basket:
+        item.accept(tax)
+    return tax.total_cents
+
+
+if __name__ == "__main__":
+    print("Tax:", tax_cents([Book(2000), Food(1000)]), "cents")
+    print("Empty basket tax:", tax_cents([]), "cents")
+```
+
+### Python output
+
+```text
+Tax: 400 cents
+Empty basket tax: 0 cents
+```
+
+## C++20 example
 
 ```cpp
 // Monetary amounts in this example are integer cents.
@@ -111,13 +127,19 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Tax: 4
 ```
 
-## When to Use
+## Compare the languages
+
+Python uses separate `visit_book` and `visit_food` methods because it does not overload methods by parameter type. C++ uses overloads plus virtual dispatch. Both keep Tax outside the element types. Integer division truncates fractional cents; these sample rates and amounts avoid fractions and are not a tax policy.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it when element types are stable but new operations are frequent.
 
@@ -125,58 +147,14 @@ Use it when element types are stable but new operations are frequent.
 
 AST analyses and document exports fit a stable node family; std::variant with std::visit is another option for closed type sets.
 
-## When NOT to Use
+**Cost:** Adding an element type requires updating the Visitor [`interface`](../../GLOSSARY.md#interface) and all visitors. Integer tax rates here are illustrative, not real tax rules; rounding needs a domain policy.
 
-Avoid it when new element types are frequent or exposing their details would break [`encapsulation`](../../GLOSSARY.md#encapsulation).
-
-## Advantages
-
-A new operation can be added in a visitor without changing existing element classes.
-
-## Trade-offs
-
-Adding an element type requires updating the Visitor [`interface`](../../GLOSSARY.md#interface) and all visitors. Integer tax rates here are illustrative, not real tax rules; rounding needs a domain policy.
-
-## Related Patterns
-
-[Composite](../../structural/composite/README.md) · [Iterator](../iterator/README.md)
-
-## Common Confusion
-
-Iterator traverses a collection; Visitor dispatches an operation by element type. Composite can supply the tree on which visitors work.
-
-## Terms to Remember
-
-- `Visitor` — Add operations across a stable set of element types using a separate visitor.
-- `Element` — The contract for objects that accept a Visitor. Example: `Item`.
-- `Concrete Element` — An Element implementation that selects its matching Visitor overload. Example: `Book, Food`.
-- `Concrete Visitor` — A Visitor implementation containing one operation for every supported Element type. Example: `Tax`.
-
-## Interview Vocabulary
-
-- [`double dispatch`](../../GLOSSARY.md#double-dispatch) — Selecting behavior using two runtime types; classic Visitor combines two virtual calls with overload resolution.
-- [`overload resolution`](../../GLOSSARY.md#overload-resolution) — Compile-time selection among functions with the same name using the argument types.
-- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — Aim for open for extension, closed for modification at a useful, chosen boundary.
-
-## Interview Question
-
-Why does visitor.visit(*this) inside Book select the Book overload, while an Item reference alone would not?
-
-## Mini Challenge
-
-Add a Label visitor without modifying Book or Food, then add a third item type and count the changes.
-
-## Check Yourself
+## Check yourself
 
 1. What must change when you add a new item type rather than a new operation?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add a Label visitor without modifying Book or Food, then add a third item type and count the changes.
 
-- **Problem:** A basket contains books and food, and new operations such as tax or export should not fill every item class.
-- **Solution:** Each concrete Item calls the matching Visitor::visit overload from accept; Tax implements the operation for each type.
-- **Trade-off:** Adding an element type requires updating the Visitor interface and all visitors. Integer tax rates here are illustrative, not real tax rules; rounding needs a domain policy.
-- **Remember:** Stable types, new operations.
-
-[Previous](../../behavioral/template-method/README.md) · [Category](../README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

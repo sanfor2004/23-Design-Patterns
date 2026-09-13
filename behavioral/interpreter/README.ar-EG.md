@@ -1,60 +1,26 @@
 # Interpreter
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../behavioral/command/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/iterator/README.ar-EG.md)
+**الفكرة في سطر:** مثّل قواعد لغة صغيرة بكائنات (`objects`)، بحيث كل كائن يعرف يقيّم الجزء المسؤول عنه.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+قواعد السماح بتجمع أسماء `Roles` و `AND`، ومحتاجين نبني القواعد كبيانات. تعبير `Boolean` ثابت بسيط، بس تغيير شكل قواعد متداخلة بيحتاج تعديل كود التطبيق.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
+## الحل ببساطة
 
-## Difficulty
+قاعدة السماح ممكن تحتاج دور `editor` ودور `verified` مع بعض.كل جزء بيقيّم قاعدة، والتعبير الكبير بيتركّب من تعبيرات أصغر. مثّل فحص الدور بتعبير نهائي (`Terminal Expression`) اسمه `Role`. التعبير المركّب `Both` بيجمع تعبيرين باستخدام `AND`. لو الأول رجع نتيجة سلبية، مش محتاج تقيّم التاني؛ ده اسمه `short-circuit evaluation`.
 
-متقدم
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-مثّل قواعد لغة صغيرة بكائنات (`objects`)، بحيث كل كائن يعرف يقيّم الجزء المسؤول عنه.
-
-## ببساطة
-
-قاعدة السماح ممكن تحتاج دور `editor` ودور `verified` مع بعض.كل جزء بيقيّم قاعدة، والتعبير الكبير بيتركّب من تعبيرات أصغر.
-
-## The Problem
-
-قواعد السماح بتجمع أسماء `Roles` و `AND`، ومحتاجين نبني القواعد كبيانات.
-
-## Naive Solution
-
-```cpp
-bool allowed = roles.contains("editor") && roles.contains("verified");
-```
-
-## Why It Becomes a Problem
-
-تعبير `Boolean` ثابت بسيط، بس تغيير شكل قواعد متداخلة بيحتاج تعديل كود التطبيق.
-
-## The Idea
-
-مثّل فحص الدور بتعبير نهائي (`Terminal Expression`) اسمه `Role`. التعبير المركّب `Both` بيجمع تعبيرين باستخدام `AND`. لو الأول رجع نتيجة سلبية، مش محتاج تقيّم التاني؛ ده اسمه `short-circuit evaluation`.
-
-## Real-World Analogy
-
-الجملة بتجمع كلمات بقواعد؛ هنا القاعدة بتجمع `Roles` باستخدام `AND`.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Interpreter](../../assets/diagrams/interpreter.svg)
+![خريطة مثال Interpreter](../../assets/diagrams/interpreter.svg)
 
 ```text
 Context  -->  Both(Expression, Expression)  -->  Role / nested Both
 ```
-
-## Participants
 
 في المثال، `Expression` بتحدد عقد التقييم. بيانات التقييم موجودة في `Context`، والتعبير `Role` بيفحص وجود دور معين. التعبير المركّب `Both` بيمتلك التعبيرين اللي بيقيّمهم.
 
@@ -65,11 +31,47 @@ Context  -->  Both(Expression, Expression)  -->  Role / nested Both
 - [`Nonterminal Expression`](../../GLOSSARY.md#nonterminal-expression) — تعبير بيركب تعبيرات أصغر حسب قاعدة في اللغة. هنا: `Both`.
 - `Context` — البيانات اللي التعبيرات بتستخدمها وقت التقييم؛ هنا مجموعة أسماء الصلاحيات. `Context`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Role:
+    def __init__(self, name):
+        self.name = name
+
+    def evaluate(self, context):
+        return self.name in context
+
+
+class Both:
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+
+    def evaluate(self, context):
+        return self.left.evaluate(context) and self.right.evaluate(context)
+
+
+if __name__ == "__main__":
+    rule = Both(Role("editor"), Role("verified"))
+    for context in [set(), {"editor"}, {"editor", "verified"}]:
+        print(rule.evaluate(context))
+```
+
+### Python output
+
+```text
+False
+False
+True
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -108,14 +110,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 false
 true
 ```
 
-## When to Use
+## قارن اللغتين
+
+Both examples build an expression tree directly; neither parses text. Python uses a set as Context and matching `evaluate` methods. C++ declares an Expression Interface. Use a direct boolean expression when rules do not need to be represented as data.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه للغة صغيرة مستقرة، وشجرة التعبير مفيدة للبناء والفحص.
 
@@ -123,59 +131,14 @@ true
 
 ينفع للغات فلترة أو أهلية صغيرة؛ مش نظام صلاحيات آمن ولا `Parser` عام.
 
-## When NOT to Use
+**التكلفة:** كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ `Stack`؛ مفيش `Parser` هنا، `main` بتبني الشجرة مباشرة.
 
-بلاش للغة كبيرة محتاجة `Parser` قوي ورسائل أخطاء وتحسين؛ أدوات `Parsing` جاهزة أنسب.
-
-## Advantages
-
-القواعد بتتركب بشكل `Recursive` وتتقيّم مع `Contexts` مختلفة.
-
-## Trade-offs
-
-كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ `Stack`؛ مفيش `Parser` هنا، `main` بتبني الشجرة مباشرة.
-
-## Related Patterns
-
-[Composite](../../structural/composite/README.ar-EG.md) · [Visitor](../visitor/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Composite` بتوصف الشجرة، و `Interpreter` بتضيف معنى القواعد وتقييمها. الـ `Visitor` ممكن تضيف عمليات عليها.
-
-## Terms to Remember
-
-- `Interpreter` — مثّل قواعد لغة صغيرة بكائنات (`objects`)، بحيث كل كائن يعرف يقيّم الجزء المسؤول عنه.
-- `Abstract Expression` — عقد تقييم العقد اللي بتمثل قواعد `Interpreter`. مثال: `Expression`.
-- `Terminal Expression` — تعبير مافيش جواه تعبيرات أطفال. مثال: `Role`.
-- `Nonterminal Expression` — تعبير بيركب تعبيرات أصغر حسب قاعدة في اللغة. مثال: `Both`.
-- `Context` — البيانات اللي التعبيرات بتستخدمها وقت التقييم؛ هنا مجموعة أسماء الصلاحيات.
-
-## Interview Vocabulary
-
-- [`abstract syntax tree`](../../GLOSSARY.md#abstract-syntax-tree) — شجرة بتمثل تركيب القواعد بدل الشكل المكتوب للنص.
-- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — بتبني تركيب من أجزاء بتوفر نفس عقد الكل.
-- [`short-circuit evaluation`](../../GLOSSARY.md#short-circuit-evaluation) — بتتخطى باقي المعاملات لما نتيجة بدري تكون حسمت الإجابة.
-
-## Interview Question
-
-لو المستخدم كتب `editor AND verified OR admin`، هتحدد أولوية العمليات فين؟
-
-## Mini Challenge
-
-ضيف `Either` للـ `OR` واختبر قاعدة متداخلة مع ثلاث `Contexts` مختلفة.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. المثال بيحلّل نص، ولا بيقيّم شجرة جاهزة؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف `Either` للـ `OR` واختبر قاعدة متداخلة مع ثلاث `Contexts` مختلفة.
 
-- **المشكلة:** قواعد السماح بتجمع أسماء `Roles` و `AND`، ومحتاجين نبني القواعد كبيانات.
-- **الحل:** مثّل فحص الدور بتعبير نهائي (`Terminal Expression`) اسمه `Role`. التعبير المركّب `Both` بيجمع تعبيرين باستخدام `AND`. لو الأول رجع نتيجة سلبية، مش محتاج تقيّم التاني؛ ده اسمه `short-circuit evaluation`.
-- **`Trade-off`:** كل شكل في القواعد محتاج كود. التداخل العميق ممكن يملأ الـ `Stack`؛ مفيش `Parser` هنا، `main` بتبني الشجرة مباشرة.
-- **افتكر:** عقد القواعد بتدي معنى للتعبير.
-
-[السابق](../../behavioral/command/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/iterator/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

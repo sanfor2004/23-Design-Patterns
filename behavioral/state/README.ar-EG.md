@@ -1,61 +1,26 @@
 # State
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../behavioral/observer/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/strategy/README.ar-EG.md)
+**الفكرة في سطر:** خلّي الحالة الحالية للكائن (`state`) هي اللي تحدد استجابته والانتقالات المتاحة ليه.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+الباب بيرد على نفس الزر بشكل مختلف وهو مفتوح أو مقفول؛ أجهزة أكبر فيها قفل أو عطل. الـ `Boolean` كفاية لحالتين، بس نسخ شروط الـ `state` على `events` كتير بيخلّي الانتقالات تتعارض.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
+## الحل ببساطة
 
-## Difficulty
+ضغطة زر الباب بتفتحه لو مقفول وبتقفله لو مفتوح.الـ`State` بينقل الاستجابة والانتقال للـ`Object` اللي بتمثل الوضع الحالي. خلّي الباب `Door` يفوّض العملية `press` للحالة الحالية من نوع `DoorState`. تنفيذ الحالة هو اللي بيحدد الحالة التالية.
 
-متوسط
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-خلّي الحالة الحالية للكائن (`state`) هي اللي تحدد استجابته والانتقالات المتاحة ليه.
-
-## ببساطة
-
-ضغطة زر الباب بتفتحه لو مقفول وبتقفله لو مفتوح.الـ`State` بينقل الاستجابة والانتقال للـ`Object` اللي بتمثل الوضع الحالي.
-
-## The Problem
-
-الباب بيرد على نفس الزر بشكل مختلف وهو مفتوح أو مقفول؛ أجهزة أكبر فيها قفل أو عطل.
-
-## Naive Solution
-
-```cpp
-if (open) open = false;
-else open = true; // becomes scattered as states and events grow
-```
-
-## Why It Becomes a Problem
-
-الـ `Boolean` كفاية لحالتين، بس نسخ شروط الـ `state` على `events` كتير بيخلّي الانتقالات تتعارض.
-
-## The Idea
-
-خلّي الباب `Door` يفوّض العملية `press` للحالة الحالية من نوع `DoorState`. تنفيذ الحالة هو اللي بيحدد الحالة التالية.
-
-## Real-World Analogy
-
-ماكينة البيع بتتعامل مع المدخل حسب الدفع حصل ولا لأ.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![State](../../assets/diagrams/state.svg)
+![خريطة مثال State](../../assets/diagrams/state.svg)
 
 ```text
 Door::press()  -->  DoorState  -->  Open ↔ Closed
 ```
-
-## Participants
 
 في المثال، الباب `Door` بيلعب دور `Context`. العقد `DoorState` بيحدد العمليتين `press` و `name`. الحالتان `Open` و `Closed` بيحتفظوا بروابط مش مالكة للحالة التالية. الدالة `main` بتخلي الحالتين موجودتين لمدة أطول من الباب.
 
@@ -65,11 +30,55 @@ Door::press()  -->  DoorState  -->  Open ↔ Closed
 - [`State interface`](../../GLOSSARY.md#state-interface) — العقد اللي `Context` بتفوّض من خلاله `behavior` المعتمدة على `state`. هنا: `DoorState`.
 - [`Concrete State`](../../GLOSSARY.md#concrete-state) — تنفيذ لحالة معينة (`Concrete State`) بيحدد سلوكها (`behavior`) والانتقالات المتاحة منها. هنا: `Open, Closed`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Closed:
+    name = "closed"
+
+    def press(self, door):
+        door.state = Open()
+
+
+class Open:
+    name = "open"
+
+    def press(self, door):
+        door.state = Closed()
+
+
+class Door:
+    def __init__(self):
+        self.state = Closed()
+
+    def press(self):
+        self.state.press(self)
+
+
+if __name__ == "__main__":
+    door = Door()
+    print(door.state.name)
+    door.press()
+    print(door.state.name)
+    door.press()
+    print(door.state.name)
+```
+
+### Python output
+
+```text
+closed
+open
+closed
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -113,7 +122,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 closed
@@ -121,7 +130,13 @@ open
 closed
 ```
 
-## When to Use
+## قارن اللغتين
+
+Python creates a new stateless State Object for each transition. C++ reuses Open and Closed Objects through borrowed pointers; they must outlive Door. Both move transition behavior into State Objects. A boolean toggle is simpler for this tiny domain.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لما الـ `behavior` حسب الـ `state` والانتقالات يتوزعوا على كذا عملية.
 
@@ -129,58 +144,14 @@ closed
 
 مناسب لجلسات البروتوكولات ودورات عمل الأجهزة لما قواعد الانتقال واضحة.
 
-## When NOT to Use
+**التكلفة:** التصميم بيضيف أنواع جديدة (`classes`)، ولازم تتابع عمر الكائنات وعلاقتها ببعض. المقصود بـ [`lifetime`](../../GLOSSARY.md#lifetime) هو الفترة اللي الكائن موجود فيها وينفع تستخدمه. الحالات في المثال موجودة بره الباب `Door`؛ عشان كده، الانتقال مش بيدمر الحالة وهي لسه بتنفّذ. حافظ على الضمان ده في التصميم الأكبر.
 
-بلاش لو المطلوب تبديل بسيط (`toggle`)، أو لو جدول صغير باستخدام `enum` بيعبّر عن الحالات بوضوح.
-
-## Advantages
-
-الـ `behavior` متجمع حسب الـ `state`، والانتقالات واضحة في مكانها.
-
-## Trade-offs
-
-التصميم بيضيف أنواع جديدة (`classes`)، ولازم تتابع عمر الكائنات وعلاقتها ببعض. المقصود بـ [`lifetime`](../../GLOSSARY.md#lifetime) هو الفترة اللي الكائن موجود فيها وينفع تستخدمه. الحالات في المثال موجودة بره الباب `Door`؛ عشان كده، الانتقال مش بيدمر الحالة وهي لسه بتنفّذ. حافظ على الضمان ده في التصميم الأكبر.
-
-## Related Patterns
-
-[Strategy](../strategy/README.ar-EG.md) · [Observer](../observer/README.ar-EG.md)
-
-## Common Confusion
-
-في `Strategy`، المستدعي (`Client`) غالبًا بيختار طريقة الحل (`algorithm`). أما `State`، فبتمثل مرحلة من دورة عمل الكيان وممكن تحدد الانتقال التالي بنفسها. دورة العمل اسمها [`lifecycle`](../../GLOSSARY.md#lifecycle)، ودي مختلفة عن عمر الكائن في الذاكرة (`lifetime`).
-
-## Terms to Remember
-
-- `State` — خلّي الحالة الحالية للكائن (`state`) هي اللي تحدد استجابته والانتقالات المتاحة ليه.
-- `Context` — الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). مثال: `Door`.
-- `State interface` — العقد اللي `Context` بتفوّض من خلاله `behavior` المعتمدة على `state`. مثال: `DoorState`.
-- `Concrete State` — تنفيذ لحالة معينة (`Concrete State`) بيحدد سلوكها (`behavior`) والانتقالات المتاحة منها. مثال: `Open, Closed`.
-
-## Interview Vocabulary
-
-- [`state transition`](../../GLOSSARY.md#state-transition) — انتقال من وضع ممثّل في التصميم لوضع تاني بعد `event`.
-- [`runtime behavior`](../../GLOSSARY.md#runtime-behavior) — اللي البرنامج بيعمله وهو شغال، بما فيه `behavior` بتتحدد من المدخلات.
-- [`delegation`](../../GLOSSARY.md#delegation) — الكائن بيفوّض جزء من شغله لكائن متعاون معاه (`object`)، بدل ما ينفّذ كل حاجة بنفسه.
-
-## Interview Question
-
-مين بيختار الـ `state` التالية هنا؟ وإيه الفرق عن اختيار `Strategy` للشحن؟
-
-## Mini Challenge
-
-ضيف `Locked` تخلي `press` ما تفتحش، وحدث `unlock` منفصل واختبر التسلسل.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. مين بيختار الـ`State` اللي بعدها لما نضغط زر الباب؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف `Locked` تخلي `press` ما تفتحش، وحدث `unlock` منفصل واختبر التسلسل.
 
-- **المشكلة:** الباب بيرد على نفس الزر بشكل مختلف وهو مفتوح أو مقفول؛ أجهزة أكبر فيها قفل أو عطل.
-- **الحل:** خلّي الباب `Door` يفوّض العملية `press` للحالة الحالية من نوع `DoorState`. تنفيذ الحالة هو اللي بيحدد الحالة التالية.
-- **`Trade-off`:** التصميم بيضيف أنواع جديدة (`classes`)، ولازم تتابع عمر الكائنات وعلاقتها ببعض. المقصود بـ `lifetime` هو الفترة اللي الكائن موجود فيها وينفع تستخدمه. الحالات في المثال موجودة بره الباب `Door`؛ عشان كده، الانتقال مش بيدمر الحالة وهي لسه بتنفّذ. حافظ على الضمان ده في التصميم الأكبر.
-- **افتكر:** نفس الـ `event`، حالة مختلفة، رد مختلف.
-
-[السابق](../../behavioral/observer/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/strategy/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

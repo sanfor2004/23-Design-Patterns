@@ -1,63 +1,26 @@
 # Bridge
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../structural/adapter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/composite/README.ar-EG.md)
+**الفكرة في سطر:** افصل ناحيتين بيتغيروا بشكل مستقل، واربطهم عن طريق [`composition`](../../GLOSSARY.md#composition): تركيب الحل من كائنات بتتعاون مع بعض.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+التنبيه بيتغير حسب الأولوية وقناة الإرسال، وكل ناحية محتاجة تتوسع لوحدها. الـ `class` لكل تركيبة أولوية وقناة بتزوّد التركيبات وبتكرر منطق الإرسال.
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
+## الحل ببساطة
 
-## Difficulty
+التنبيه ممكن يبقى عادي أو عاجل، والإرسال ممكن يبقى إيميل أو SMS.الـ`Bridge` بيربط التنبيه بقناة إرسال بدل `Class` لكل تركيبة. خلّي `Notice` تفوّض الإرسال لقناة من نوع `Channel`. النوع `UrgentNotice` يقدر يغيّر الرسالة من غير ما يختار وسيلة النقل.
 
-متوسط
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-افصل ناحيتين بيتغيروا بشكل مستقل، واربطهم عن طريق [`composition`](../../GLOSSARY.md#composition): تركيب الحل من كائنات بتتعاون مع بعض.
-
-## ببساطة
-
-التنبيه ممكن يبقى عادي أو عاجل، والإرسال ممكن يبقى إيميل أو SMS.الـ`Bridge` بيربط التنبيه بقناة إرسال بدل `Class` لكل تركيبة.
-
-## The Problem
-
-التنبيه بيتغير حسب الأولوية وقناة الإرسال، وكل ناحية محتاجة تتوسع لوحدها.
-
-## Naive Solution
-
-```cpp
-struct UrgentEmailNotice {};
-struct UrgentSmsNotice {};
-struct NormalEmailNotice {};
-struct NormalSmsNotice {};
-```
-
-## Why It Becomes a Problem
-
-الـ `class` لكل تركيبة أولوية وقناة بتزوّد التركيبات وبتكرر منطق الإرسال.
-
-## The Idea
-
-خلّي `Notice` تفوّض الإرسال لقناة من نوع `Channel`. النوع `UrgentNotice` يقدر يغيّر الرسالة من غير ما يختار وسيلة النقل.
-
-## Real-World Analogy
-
-الريموت ووصلة الاتصال بتاعته ممكن يتطوروا لوحدهم طالما بينهم بروتوكول صغير.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Bridge](../../assets/diagrams/bridge.svg)
+![خريطة مثال Bridge](../../assets/diagrams/bridge.svg)
 
 ```text
 Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 ```
-
-## Participants
 
 في المثال، `Notice` هي ناحية [`abstraction`](../../GLOSSARY.md#abstraction): بتعرض العمليات اللي المستدعي محتاجها وتخفي تفاصيل الإرسال. النوع `UrgentNotice` بيخصص الرسالة. عقد الإرسال هو `Channel`، وبيتوفّر له تنفيذان: `Email` و `Sms`.
 
@@ -68,11 +31,53 @@ Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 - [`Implementor`](../../GLOSSARY.md#implementor) — العقد اللي `Abstraction` بتستخدمه للشغل في الناحية التانية من `Bridge`. هنا: `Channel`.
 - [`Concrete Implementor`](../../GLOSSARY.md#concrete-implementor) — تنفيذ محدد (`implementation`) لعقد `Implementor`. هنا: `Email, Sms`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Email:
+    def deliver(self, text):
+        print("Email:", text)
+
+
+class Sms:
+    def deliver(self, text):
+        print("SMS:", text)
+
+
+class Notice:
+    def __init__(self, channel):
+        self.channel = channel
+
+    def send(self):
+        self.channel.deliver("status normal")
+
+
+class UrgentNotice(Notice):
+    def send(self):
+        self.channel.deliver("URGENT: disk full")
+
+
+if __name__ == "__main__":
+    Notice(Email()).send()
+    UrgentNotice(Email()).send()
+    UrgentNotice(Sms()).send()
+```
+
+### Python output
+
+```text
+Email: status normal
+Email: URGENT: disk full
+SMS: URGENT: disk full
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -110,7 +115,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Email: status normal
@@ -118,7 +123,13 @@ Email: URGENT: disk full
 SMS: URGENT: disk full
 ```
 
-## When to Use
+## قارن اللغتين
+
+Both examples use Composition to separate notice type from delivery channel. Python retains a channel reference and relies on `deliver`; C++ borrows an Object implementing Channel, so its Lifetime must cover the notice.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لما ناحيتين من التغيير هيعملوا عدد كبير من الـ `subclasses` لكل التركيبات.
 
@@ -126,59 +137,14 @@ SMS: URGENT: disk full
 
 مناسب لأشكال رسم مع `Backends` مختلفة، أو أنواع تنبيه بقنوات متنوعة.
 
-## When NOT to Use
+**التكلفة:** فيه طبقة `delegation` زيادة، ولازم الحد الفاصل يبقى واضح. القناة المستعارة لازم تعيش أطول من التنبيه.
 
-بلاش لو فيه ناحية بسيطة واحدة ومتغير لـ `function` كفاية.
-
-## Advantages
-
-القناة الجديدة تشتغل مع أنواع التنبيه الموجودة من غير `classes` لكل تركيبة.
-
-## Trade-offs
-
-فيه طبقة `delegation` زيادة، ولازم الحد الفاصل يبقى واضح. القناة المستعارة لازم تعيش أطول من التنبيه.
-
-## Related Patterns
-
-[Adapter](../adapter/README.ar-EG.md) · [Strategy](../../behavioral/strategy/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Adapter` بتصلح عدم توافق موجود. الـ `Bridge` فصل مقصود لاتجاهين بيتطوروا لوحدهم، و `Strategy` مركزة على `behavior` قابل للتبديل.
-
-## Terms to Remember
-
-- `Bridge` — افصل ناحيتين بيتغيروا بشكل مستقل، واربطهم عن طريق التركيب (`composition`).
-- `Abstraction` — الناحية اللي بتوفر العمليات الأساسية في `Bridge` وبتفوّض شغل التنفيذ. مثال: `Notice`.
-- `Refined Abstraction` — تخصيص لـ `Abstraction` مستقل عن ناحية التنفيذ. مثال: `UrgentNotice`.
-- `Implementor` — العقد اللي `Abstraction` بتستخدمه للشغل في الناحية التانية من `Bridge`. مثال: `Channel`.
-- `Concrete Implementor` — تنفيذ محدد (`implementation`) لعقد `Implementor`. مثال: `Email, Sms`.
-
-## Interview Vocabulary
-
-- [`object composition`](../../GLOSSARY.md#object-composition) — بتوصل الكائنات (`objects`) ببعض عشان تبني سلوك متكامل (`behavior`) أو تركيب أكبر.
-- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل تركيب الحل من كائنات متعاونة (`objects`)، لما ده يكون أوضح من توسيع شجرة الوراثة (`inheritance`).
-- [`encapsulate what varies`](../../GLOSSARY.md#encapsulate-what-varies) — حط القرار اللي بيتغير ورا حدود ثابتة وواضحة.
-
-## Interview Question
-
-لو ضفت `Push` و `ScheduledNotice`، هتحتاج كام `class` باستخدام `Bridge` ومن غيره؟
-
-## Mini Challenge
-
-ضيف `Push` واستخدم نوعي التنبيه من غير تعديلهم.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. إيه الـ`Classes` اللي هتتغير لو ضفت قناة إرسال بس؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف `Push` واستخدم نوعي التنبيه من غير تعديلهم.
 
-- **المشكلة:** التنبيه بيتغير حسب الأولوية وقناة الإرسال، وكل ناحية محتاجة تتوسع لوحدها.
-- **الحل:** خلّي `Notice` تفوّض الإرسال لقناة من نوع `Channel`. النوع `UrgentNotice` يقدر يغيّر الرسالة من غير ما يختار وسيلة النقل.
-- **`Trade-off`:** فيه طبقة `delegation` زيادة، ولازم الحد الفاصل يبقى واضح. القناة المستعارة لازم تعيش أطول من التنبيه.
-- **افتكر:** ناحيتين، ووصلة واحدة.
-
-[السابق](../../structural/adapter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/composite/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

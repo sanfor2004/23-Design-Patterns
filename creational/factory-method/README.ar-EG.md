@@ -1,65 +1,28 @@
 # Factory Method
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../creational/builder/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/prototype/README.ar-EG.md)
+**الفكرة في سطر:** خلّي الـ `subclass` هي اللي تحدد الـ `concrete object` اللي خطوات الشغل المشتركة (`workflow`) هتستخدمه.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
-
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الـ`Objects` وإعدادها.
-
-## Difficulty
-
-مبتدئ
-
-## In One Sentence
-
-خلّي الـ `subclass` هي اللي تحدد الـ `concrete object` اللي خطوات الشغل المشتركة (`workflow`) هتستخدمه.
-
-## ببساطة
-
-مهمة التنبيه بتبعت نفس الرسالة، بس وسيلة الإرسال بتختلف.الخطوات بتنادي `Factory Method`، وكل `subclass` بتعمل الـ`Sender` المناسب.
-
-## The Problem
-
-مهمة التنبيه بتبعت نفس رسالة الانتهاء، بس كل بيئة محتاجة `Sender` مختلفة.
-
-## Naive Solution
-
-```cpp
-void run() {
-    EmailSender sender;
-    sender.send("build complete");
-}
-```
-
-## Why It Becomes a Problem
-
-تثبيت `EmailSender` جوه `run` بيربط الخطوات بالإيميل؛ نسخ `run` للـ `Console` بيكرر نفس المنطق.
+مهمة التنبيه بتبعت نفس رسالة الانتهاء، بس كل بيئة محتاجة `Sender` مختلفة. تثبيت `EmailSender` جوه `run` بيربط الخطوات بالإيميل؛ نسخ `run` للـ `Console` بيكرر نفس المنطق.
 
 ده `tight coupling`: خطوات الشغل مرتبطة بنوع `Sender` بعينه، فتغيير الإرسال ممكن يحتاج تعديل نفس الخطوات.
 
-## The Idea
+## الحل ببساطة
 
-حط خطوات الشغل المشتركة في `AlertJob`. خلّي إنشاء المرسِل مسؤولية الدالة `make_sender`، والأنواع المشتقة تغيّر تنفيذها باستخدام `override`.
+مهمة التنبيه بتبعت نفس الرسالة، بس وسيلة الإرسال بتختلف.الخطوات بتنادي `Factory Method`، وكل `subclass` بتعمل الـ`Sender` المناسب. حط خطوات الشغل المشتركة في `AlertJob`. خلّي إنشاء المرسِل مسؤولية الدالة `make_sender`، والأنواع المشتقة تغيّر تنفيذها باستخدام `override`.
 
-## Real-World Analogy
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-مكتب التوصيل عنده نفس خطوات الشحن، وكل فرع بيختار وسيلة النقل.
+## اقرأ الرسمة
 
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Factory Method](../../assets/diagrams/factory-method.svg)
+![خريطة مثال Factory Method](../../assets/diagrams/factory-method.svg)
 
 ```text
 AlertJob::run  -->  make_sender()  -->  Sender
 ```
-
-## Participants
 
 في المثال، `AlertJob` ماسكة خطوات الشغل. اختيار طريقة الإنشاء بيتغير في `EmailJob` و `ConsoleJob`، وعقد الإرسال هو `Sender`. بنستخدم [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) لامتلاك المنتج وتحريره تلقائيًا لما المالك يتدمر.
 
@@ -69,11 +32,57 @@ AlertJob::run  -->  make_sender()  -->  Sender
 - [`Concrete Creator`](../../GLOSSARY.md#concrete-creator) — نوع مشتق (`subclass`) من `Creator`، مسؤول عن إنشاء منتج معين (`Product`). هنا: `EmailJob, ConsoleJob`.
 - [`Product`](../../GLOSSARY.md#product) — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. هنا: `Sender`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class EmailSender:
+    def send(self, message):
+        print("Email:", message)
+
+
+class ConsoleSender:
+    def send(self, message):
+        print("Console:", message)
+
+
+class AlertJob:
+    def make_sender(self):
+        raise NotImplementedError
+
+    def run(self):
+        sender = self.make_sender()
+        sender.send("build complete")
+
+
+class EmailJob(AlertJob):
+    def make_sender(self):
+        return EmailSender()
+
+
+class ConsoleJob(AlertJob):
+    def make_sender(self):
+        return ConsoleSender()
+
+
+if __name__ == "__main__":
+    EmailJob().run()
+    ConsoleJob().run()
+```
+
+### Python output
+
+```text
+Email: build complete
+Console: build complete
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -112,14 +121,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Email: build complete
 Console: build complete
 ```
 
-## When to Use
+## قارن اللغتين
+
+Both versions keep a workflow in a base Class and override its creation method. Python checks the returned Object when `send` is called; C++ declares a Sender Interface and transfers Ownership with `unique_ptr`. A standalone factory function is often enough outside an inherited workflow.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لما `Workflow` مبنية أصلاً على الـ [`inheritance`](../../GLOSSARY.md#inheritance) ومحتاجة نقطة إنشاء قابلة للتوسيع.
 
@@ -127,59 +142,14 @@ Console: build complete
 
 مناسب لتصدير بصيغ مختلفة أو `Jobs` حسب البيئة؛ الـ `Senders` هنا بتطبع بس.
 
-## When NOT to Use
+**التكلفة:** كل اختيار جديد ممكن يحتاج نوع مشتق (`subclass`). خد بالك من الاستدعاء أثناء الإنشاء: لو ناديت `virtual method` من دالة الإنشاء (`constructor`) في النوع الأساسي (`base class`)، النداء مش هيوصل لتنفيذ النوع المشتق (`derived class`). المقصود بـ [`implementation`](../../GLOSSARY.md#implementation) هو الكود الفعلي اللي بينفّذ العملية.
 
-بلاش لو تمرير `Sender` جاهزة لـ `function` كفاية؛ الـ `inheritance` ساعتها زيادة.
-
-## Advantages
-
-الخطوات بتفضل في مكان واحد، واختيار المنتج بيتغير.
-
-## Trade-offs
-
-كل اختيار جديد ممكن يحتاج نوع مشتق (`subclass`). خد بالك من الاستدعاء أثناء الإنشاء: لو ناديت `virtual method` من دالة الإنشاء (`constructor`) في النوع الأساسي (`base class`)، النداء مش هيوصل لتنفيذ النوع المشتق (`derived class`). المقصود بـ [`implementation`](../../GLOSSARY.md#implementation) هو الكود الفعلي اللي بينفّذ العملية.
-
-## Related Patterns
-
-[Abstract Factory](../abstract-factory/README.ar-EG.md) · [Template Method](../../behavioral/template-method/README.ar-EG.md)
-
-## Common Confusion
-
-وجود دالة عادية (`function`) فيها `switch` لاختيار المنتج بنسميه `Simple Factory`. أما هنا، فبنستخدم نقطة توسعة بالوراثة (`inheritance`). نمط `Abstract Factory` بينظم إنشاء عيلة منتجات مرتبطة.
-
-## Terms to Remember
-
-- `Factory Method` — خلّي الـ `subclass` هي اللي تحدد الـ `concrete object` اللي خطوات الشغل المشتركة (`workflow`) هتستخدمه.
-- `Creator` — الدور الأساسي اللي ماسك الخطوات وبيعلن عملية الإنشاء اللي بيحتاجها. مثال: `AlertJob`.
-- `Concrete Creator` — نوع مشتق (`subclass`) من `Creator`، مسؤول عن إنشاء منتج معين (`Product`). مثال: `EmailJob, ConsoleJob`.
-- `Product` — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. مثال: `Sender`.
-
-## Interview Vocabulary
-
-- [`object creation`](../../GLOSSARY.md#object-creation) — اختيار النوع الفعلي وتجهيز قيمه الأولية. من هنا بيبدأ عمر الكائن (`lifetime`).
-- [`tight coupling`](../../GLOSSARY.md#tight-coupling) — الأجزاء معتمدة بقوة على التفاصيل الداخلية لبعض، فالتغيير في واحد بينتشر للباقي.
-- [`inheritance`](../../GLOSSARY.md#inheritance) — بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه.
-- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — خلّي التوسيع ممكن من غير تعديل الكود المستقر، عند حدود مختارة بوضوح. التعبير هو `open for extension, closed for modification`.
-
-## Interview Question
-
-ليه `run` بتنادي `make_sender` بعد الإنشاء، مش من `constructor` بتاعة `AlertJob`؟
-
-## Mini Challenge
-
-ضيف `FileJob` بتكتب في ملف مؤقت، واتأكد من محتواه.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. اختيار الـ`Sender` بيحصل فين، وإيه الخطوات اللي بتفضل مشتركة؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف `FileJob` بتكتب في ملف مؤقت، واتأكد من محتواه.
 
-- **المشكلة:** مهمة التنبيه بتبعت نفس رسالة الانتهاء، بس كل بيئة محتاجة `Sender` مختلفة.
-- **الحل:** حط خطوات الشغل المشتركة في `AlertJob`. خلّي إنشاء المرسِل مسؤولية الدالة `make_sender`، والأنواع المشتقة تغيّر تنفيذها باستخدام `override`.
-- **`Trade-off`:** كل اختيار جديد ممكن يحتاج نوع مشتق (`subclass`). خد بالك من الاستدعاء أثناء الإنشاء: لو ناديت `virtual method` من دالة الإنشاء (`constructor`) في النوع الأساسي (`base class`)، النداء مش هيوصل لتنفيذ النوع المشتق (`derived class`). المقصود بـ `implementation` هو الكود الفعلي اللي بينفّذ العملية.
-- **افتكر:** ثبّت الخطوات، وغيّر الإنشاء.
-
-[السابق](../../creational/builder/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/prototype/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

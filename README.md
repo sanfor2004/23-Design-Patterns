@@ -2,11 +2,11 @@
 
 # 23 Design Patterns
 
-Learn all 23 Gang of Four (GoF) design patterns with runnable Python and C++20 examples, diagrams, and explanations in English, Egyptian Arabic, Simplified Chinese, and Italian.
+Learn all 23 Gang of Four (GoF) design patterns with runnable Python and C++20 examples, diagrams, and explanations in English and Egyptian Arabic.
 
 [Sanfor2004](https://github.com/Sanfor2004) · Python + C++20
 
-[English](README.md) · [العربية المصرية](README.ar-EG.md) · [简体中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [العربية المصرية](README.ar-EG.md)
 
 Start with a real problem. See where the simple solution bends. Learn the pattern, run Python and C++20, and decide whether the extra structure earns its place.
 
@@ -52,7 +52,7 @@ On Windows, use a Visual Studio developer shell. See the [compiler and build not
 
 ## How to navigate
 
-Choose a category below or follow the learning path. Every pattern directory contains four translations, a diagram, and `python/` and `cpp/` directories. Language links keep you on the same pattern.
+Choose a category below or follow the learning path. Every pattern directory contains English and Egyptian Arabic lessons, a diagram, and `python/` and `cpp/` directories. Both lessons show the complete Python example first, followed by C++20 and each version's output.
 
 ## Creational Pattern
 

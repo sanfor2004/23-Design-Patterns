@@ -1,60 +1,26 @@
 # Strategy
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../behavioral/state/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/template-method/README.ar-EG.md)
+**الفكرة في سطر:** افصل طريقة الحساب (`algorithm`) عن الكائن اللي بيستخدمها، عشان تقدر تختار طريقة بديلة لنفس المهمة.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه `Checkout`. شرط واحد مقروء؛ تكرار فروع السياسات في كذا مسار بيصعّب إضافة القواعد واختبارها.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
+## الحل ببساطة
 
-## Difficulty
+الشراء ممكن يحسب شحن عادي أو سريع.الـ`Strategy` بيدي `Checkout` قاعدة شحن يستخدمها، بدل ما حساب الإجمالي يحتوي كل القواعد. خلّي حساب الشراء `Checkout` يحتفظ بطريقة لحساب رسوم الشحن. بيمثلها عقد قابل للاستدعاء (`callable`) اسمه `ShippingRule`. المستدعي بيختار الطريقة وقت الإنشاء، وحساب الإجمالي بيستخدمها من غير ما يعرف تفاصيلها.
 
-مبتدئ
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-افصل طريقة الحساب (`algorithm`) عن الكائن اللي بيستخدمها، عشان تقدر تختار طريقة بديلة لنفس المهمة.
-
-## ببساطة
-
-الشراء ممكن يحسب شحن عادي أو سريع.الـ`Strategy` بيدي `Checkout` قاعدة شحن يستخدمها، بدل ما حساب الإجمالي يحتوي كل القواعد.
-
-## The Problem
-
-إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه `Checkout`.
-
-## Naive Solution
-
-```cpp
-int fee = express ? (subtotal_cents >= 100 ? 0 : 15) : 5;
-```
-
-## Why It Becomes a Problem
-
-شرط واحد مقروء؛ تكرار فروع السياسات في كذا مسار بيصعّب إضافة القواعد واختبارها.
-
-## The Idea
-
-خلّي حساب الشراء `Checkout` يحتفظ بطريقة لحساب رسوم الشحن. بيمثلها عقد قابل للاستدعاء (`callable`) اسمه `ShippingRule`. المستدعي بيختار الطريقة وقت الإنشاء، وحساب الإجمالي بيستخدمها من غير ما يعرف تفاصيلها.
-
-## Real-World Analogy
-
-اختار تخطيط طريق للمشي أو السواقة، والوجهة واحدة.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Strategy](../../assets/diagrams/strategy.svg)
+![خريطة مثال Strategy](../../assets/diagrams/strategy.svg)
 
 ```text
 Checkout::total()  -->  ShippingRule  -->  standard / express lambda
 ```
-
-## Participants
 
 في المثال، حساب الشراء `Checkout` بيلعب دور `Context`. عقد طريقة الحساب هو `ShippingRule`. بننفّذ طريقتي الشحن العادي والسريع باستخدام دوال قصيرة (`lambdas`).
 
@@ -64,11 +30,57 @@ Checkout::total()  -->  ShippingRule  -->  standard / express lambda
 - [`Strategy interface`](../../GLOSSARY.md#strategy-interface) — بتحدد العقد المشترك للـ`algorithms` المختلفة. الـ`Context` بيعتمد على العقد ده بدل `implementation` محدد. هنا: `ShippingRule`.
 - [`Concrete Strategy`](../../GLOSSARY.md#concrete-strategy) — تنفيذ محدد لعقد `Strategy interface`. ممكن تمثّله بحاجة قابلة للاستدعاء (`callable`)، ومش لازم يكون `class` مستقلة. هنا: `standard / express lambdas`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Checkout:
+    def __init__(self, shipping_rule):
+        self.shipping_rule = shipping_rule
+
+    def total(self, subtotal_cents):
+        if subtotal_cents < 0:
+            raise ValueError("Negative subtotal")
+        return subtotal_cents + self.shipping_rule(subtotal_cents)
+
+
+def standard(subtotal_cents):
+    return 500
+
+
+def express(subtotal_cents):
+    return 0 if subtotal_cents >= 10000 else 1500
+
+
+def main():
+    print("Standard:", Checkout(standard).total(4000))
+    print("Express:", Checkout(express).total(4000))
+    print("Express boundary:", Checkout(express).total(10000))
+    try:
+        Checkout(standard).total(-1)
+    except ValueError:
+        print("Negative subtotal rejected")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Python output
+
+```text
+Standard: 4500
+Express: 5500
+Express boundary: 10000
+Negative subtotal rejected
+```
+
+## C++20 example
 
 ```cpp
 // Monetary amounts in this example are integer cents.
@@ -103,7 +115,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Standard: 45
@@ -114,7 +126,13 @@ Negative subtotal rejected
 Missing rule rejected
 ```
 
-## When to Use
+## قارن اللغتين
+
+A Python function is the Concrete Strategy. C++ stores the same kind of callable in `std::function`; a template policy can instead select it at Compile time. Both examples choose the rule when constructing Checkout. Amounts are integer cents.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدم `Strategy` لما قواعد الحساب بتتغير بشكل مستقل عن `Checkout`، والمستدعي محتاج يختار القاعدة المناسبة.
 
@@ -122,60 +140,14 @@ Missing rule rejected
 
 مناسب للتسعير والترتيب وسياسات إعادة المحاولة.
 
-## When NOT to Use
+**التكلفة:** بنستخدم [`std::function`](../../GLOSSARY.md#stdfunction) لتخزين دالة قابلة للاستدعاء بتوقيع محدد، مع إخفاء نوعها الفعلي. ده اسمه [`type erasure`](../../GLOSSARY.md#type-erasure)، وليه تكلفة وممكن يحتاج حجز ذاكرة. حسب القيود، ممكن تختار `template` أو مؤشر دالة (`function pointer`) بدلها. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
 
-بلاش لـ `algorithm` ثابتة واحدة أو شرط واضح مش محتاج توسعة فعلية.
-
-## Advantages
-
-كل سياسة تتختبر لوحدها، وحساب الإجمالي يفضل مشترك.
-
-## Trade-offs
-
-بنستخدم [`std::function`](../../GLOSSARY.md#stdfunction) لتخزين دالة قابلة للاستدعاء بتوقيع محدد، مع إخفاء نوعها الفعلي. ده اسمه [`type erasure`](../../GLOSSARY.md#type-erasure)، وليه تكلفة وممكن يحتاج حجز ذاكرة. حسب القيود، ممكن تختار `template` أو مؤشر دالة (`function pointer`) بدلها. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
-
-## Related Patterns
-
-[State](../state/README.ar-EG.md) · [Template Method](../template-method/README.ar-EG.md)
-
-## Common Confusion
-
-في `Strategy`، بنختار طريقة حل (`algorithm`) لنفس المهمة. أما `State`، فبتمثل مراحل وانتقالات دورة العمل ([`lifecycle`](../../GLOSSARY.md#lifecycle))؛ ودي مش نفس عمر الكائن في الذاكرة (`lifetime`). نمط `Template Method` بيغيّر خطوات موروثة، بدل ما يستقبل طريقة مستقلة قابلة للاستدعاء (`callable`).
-
-## Terms to Remember
-
-- `Strategy` — افصل طريقة الحساب (`algorithm`) عن الكائن اللي بيستخدمها، عشان تقدر تختار طريقة بديلة لنفس المهمة.
-- `Context` — الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). مثال: `Checkout`.
-- `Strategy interface` — بتحدد العقد المشترك للـ`algorithms` المختلفة. الـ`Context` بيعتمد على العقد ده بدل `implementation` محدد. مثال: `ShippingRule`.
-- `Concrete Strategy` — تنفيذ محدد لعقد `Strategy interface`. ممكن تمثّله بحاجة قابلة للاستدعاء (`callable`)، ومش لازم يكون `class` مستقلة. مثال: `standard / express lambdas`.
-
-## Interview Vocabulary
-
-- [`interchangeable behavior`](../../GLOSSARY.md#interchangeable-behavior) — سلوكيات مختلفة (`behaviors`) تقدر تختار أي واحدة منها من خلال نفس العقد.
-- [`encapsulate an algorithm`](../../GLOSSARY.md#encapsulate-an-algorithm) — حط `algorithm` ورا عملية بتخفي خطواتها الداخلية.
-- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل تركيب الحل من كائنات متعاونة (`objects`)، لما ده يكون أوضح من توسيع شجرة الوراثة (`inheritance`).
-- [`runtime selection`](../../GLOSSARY.md#runtime-selection) — اختيار `implementation` والبرنامج شغال.
-- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
-
-## Interview Question
-
-استخدام معامل نوع (`template parameter`) بدل `std::function` هيأثر إزاي على الاختيار وقت [`runtime`](../../GLOSSARY.md#runtime) والترجمة؟
-
-## Mini Challenge
-
-ضيف شحن مجاني من 80 واختبر 79 و80 و81.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. هل الـ`API` العامة في `Checkout` دي بتسمح بتغيير القاعدة بعد الإنشاء؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف شحن مجاني من 80 واختبر 79 و80 و81.
 
-- **المشكلة:** إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه `Checkout`.
-- **الحل:** خلّي حساب الشراء `Checkout` يحتفظ بطريقة لحساب رسوم الشحن. بيمثلها عقد قابل للاستدعاء (`callable`) اسمه `ShippingRule`. المستدعي بيختار الطريقة وقت الإنشاء، وحساب الإجمالي بيستخدمها من غير ما يعرف تفاصيلها.
-- **`Trade-off`:** بنستخدم `std::function` لتخزين دالة قابلة للاستدعاء بتوقيع محدد، مع إخفاء نوعها الفعلي. ده اسمه `type erasure`، وليه تكلفة وممكن يحتاج حجز ذاكرة. حسب القيود، ممكن تختار `template` أو مؤشر دالة (`function pointer`) بدلها. راجع الرسوم لو كود خارجي ممكن يرجع قيم غير صالحة.
-- **افتكر:** نفس المهمة، اختار الـ `algorithm`.
-
-[السابق](../../behavioral/state/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/template-method/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

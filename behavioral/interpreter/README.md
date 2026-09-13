@@ -1,60 +1,30 @@
 # Interpreter
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../behavioral/command/README.md) · [Category](../README.md) · [Next](../../behavioral/iterator/README.md)
+**In one sentence:** Represent small language rules as an expression tree.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+Permission rules combine named roles and conjunctions, and rules should be built as data structures. One hardcoded boolean expression is simple but changing nested rule structures requires changing application code.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
+## The idea
 
-## Difficulty
+An access rule can require both editor and verified roles. Each node evaluates one grammar rule, and larger expressions combine smaller ones. Role is a terminal expression. Both is a nonterminal that evaluates two child expressions with short-circuit AND.
 
-Advanced
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Represent small language rules as an expression tree.
-
-## Explain It Simply
-
-An access rule can require both editor and verified roles. Each node evaluates one grammar rule, and larger expressions combine smaller ones.
-
-## The Problem
-
-Permission rules combine named roles and conjunctions, and rules should be built as data structures.
-
-## Naive Solution
-
-```cpp
-bool allowed = roles.contains("editor") && roles.contains("verified");
-```
-
-## Why It Becomes a Problem
-
-One hardcoded boolean expression is simple but changing nested rule structures requires changing application code.
-
-## The Idea
-
-Role is a terminal expression. Both is a nonterminal that evaluates two child expressions with short-circuit AND.
-
-## Real-World Analogy
-
-A sentence combines words using grammar; a rule combines role names using AND.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Interpreter](../../assets/diagrams/interpreter.svg)
+![Interpreter example map](../../assets/diagrams/interpreter.svg)
 
 ```text
 Context  -->  Both(Expression, Expression)  -->  Role / nested Both
 ```
 
-## Participants
+Expression defines evaluation, Context supplies roles, Role tests membership, Both owns its child expressions. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Expression defines evaluation, Context supplies roles, Role tests membership, Both owns its child expressions.
 
@@ -65,11 +35,43 @@ Canonical roles in this example:
 - [`Nonterminal Expression`](../../GLOSSARY.md#nonterminal-expression) — An expression that combines child expressions according to a grammar rule. Here: `Both`.
 - `Context` — The evaluation data used by expressions; here it is the set of role names. `Context`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Role:
+    def __init__(self, name):
+        self.name = name
+
+    def evaluate(self, context):
+        return self.name in context
+
+
+class Both:
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+
+    def evaluate(self, context):
+        return self.left.evaluate(context) and self.right.evaluate(context)
+
+
+if __name__ == "__main__":
+    rule = Both(Role("editor"), Role("verified"))
+    for context in [set(), {"editor"}, {"editor", "verified"}]:
+        print(rule.evaluate(context))
+```
+
+### Python output
+
+```text
+False
+False
+True
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -108,14 +110,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 false
 true
 ```
 
-## When to Use
+## Compare the languages
+
+Both examples build an expression tree directly; neither parses text. Python uses a set as Context and matching `evaluate` methods. C++ declares an Expression Interface. Use a direct boolean expression when rules do not need to be represented as data.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it for a small stable grammar whose expression tree is useful to construct and inspect.
 
@@ -123,59 +131,14 @@ Use it for a small stable grammar whose expression tree is useful to construct a
 
 Small filtering or eligibility languages fit; this is not a secure authorization system or a general parser.
 
-## When NOT to Use
+**Cost:** Each grammar form adds code. Deep trees risk stack exhaustion, and a parser is deliberately absent: main constructs the syntax tree directly.
 
-Avoid it for a large language needing robust parsing, diagnostics and optimization; established parser tools are more appropriate.
-
-## Advantages
-
-Rules compose recursively and can be evaluated against different contexts.
-
-## Trade-offs
-
-Each grammar form adds code. Deep trees risk stack exhaustion, and a parser is deliberately absent: main constructs the syntax tree directly.
-
-## Related Patterns
-
-[Composite](../../structural/composite/README.md) · [Visitor](../visitor/README.md)
-
-## Common Confusion
-
-Composite describes the tree structure; Interpreter adds grammar-specific meaning and evaluation. Visitor can add operations over that tree.
-
-## Terms to Remember
-
-- `Interpreter` — Represent a small language as objects that evaluate its grammar rules.
-- `Abstract Expression` — The contract for evaluating nodes in an Interpreter grammar. Example: `Expression`.
-- `Terminal Expression` — An expression with no child expressions. Example: `Role`.
-- `Nonterminal Expression` — An expression that combines child expressions according to a grammar rule. Example: `Both`.
-- `Context` — The evaluation data used by expressions; here it is the set of role names.
-
-## Interview Vocabulary
-
-- [`abstract syntax tree`](../../GLOSSARY.md#abstract-syntax-tree) — A tree representing grammatical structure rather than the original text's surface formatting.
-- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — Building a structure from parts that expose the same contract as the whole.
-- [`short-circuit evaluation`](../../GLOSSARY.md#short-circuit-evaluation) — Skipping later operands when an earlier result already determines the answer.
-
-## Interview Question
-
-Where would precedence be handled if users typed editor AND verified OR admin?
-
-## Mini Challenge
-
-Add Either for OR and test a nested rule with three distinct contexts.
-
-## Check Yourself
+## Check yourself
 
 1. Does this example parse text, or evaluate an already built tree?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add Either for OR and test a nested rule with three distinct contexts.
 
-- **Problem:** Permission rules combine named roles and conjunctions, and rules should be built as data structures.
-- **Solution:** Role is a terminal expression. Both is a nonterminal that evaluates two child expressions with short-circuit AND.
-- **Trade-off:** Each grammar form adds code. Deep trees risk stack exhaustion, and a parser is deliberately absent: main constructs the syntax tree directly.
-- **Remember:** Grammar nodes give expressions meaning.
-
-[Previous](../../behavioral/command/README.md) · [Category](../README.md) · [Next](../../behavioral/iterator/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

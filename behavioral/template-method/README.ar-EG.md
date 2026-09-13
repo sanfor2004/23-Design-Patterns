@@ -1,61 +1,26 @@
 # Template Method
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../behavioral/strategy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/visitor/README.ar-EG.md)
+**الفكرة في سطر:** ثبّت ترتيب خطوات الحل (`algorithm`)، وسيب تنفيذ خطوات معينة للأنواع المشتقة (`subclasses`).
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+التقارير بتشترك في بداية وقراءة وتنسيق ونهاية، بس مصدر البيانات أو التنسيق مختلف. دوال كاملة لكل تقرير بتكرر الترتيب وممكن تختلف لما خطوة مشتركة تتعدل.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
+## الحل ببساطة
 
-## Difficulty
+التقارير بتبدأ وتقرا البيانات وتنسّقها وبعدين تخلص.الـ`Template Method` بيحافظ على الترتيب في مكان واحد، والـ`subclass` بتنفّذ الجزء المتغير. ثبّت ترتيب الخطوات في `Report::generate`، وهي دالة مش `virtual`. جواها، نادِ `read` وبعدها `format`؛ الاتنين متعرّفين باستخدام `protected` و`virtual` عشان الأنواع المشتقة تقدر تغيّر تنفيذهم.
 
-متوسط
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-ثبّت ترتيب خطوات الحل (`algorithm`)، وسيب تنفيذ خطوات معينة للأنواع المشتقة (`subclasses`).
-
-## ببساطة
-
-التقارير بتبدأ وتقرا البيانات وتنسّقها وبعدين تخلص.الـ`Template Method` بيحافظ على الترتيب في مكان واحد، والـ`subclass` بتنفّذ الجزء المتغير.
-
-## The Problem
-
-التقارير بتشترك في بداية وقراءة وتنسيق ونهاية، بس مصدر البيانات أو التنسيق مختلف.
-
-## Naive Solution
-
-```cpp
-void text_report() { /* begin, read, format, end */ }
-void html_report() { /* duplicated order, different format */ }
-```
-
-## Why It Becomes a Problem
-
-دوال كاملة لكل تقرير بتكرر الترتيب وممكن تختلف لما خطوة مشتركة تتعدل.
-
-## The Idea
-
-ثبّت ترتيب الخطوات في `Report::generate`، وهي دالة مش `virtual`. جواها، نادِ `read` وبعدها `format`؛ الاتنين متعرّفين باستخدام `protected` و`virtual` عشان الأنواع المشتقة تقدر تغيّر تنفيذهم.
-
-## Real-World Analogy
-
-الوصفة بتثبت ترتيب التحضير مع حرية اختيار الحشو.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Template Method](../../assets/diagrams/template-method.svg)
+![خريطة مثال Template Method](../../assets/diagrams/template-method.svg)
 
 ```text
 Report::generate()  -->  read() + format()  -->  TextReport overrides
 ```
-
-## Participants
 
 في المثال، `Report` بتحدد ترتيب خطوات الحل، و `TextReport` بتنفّذ الخطوات المتغيرة. المستدعي (`Client`) بيبدأ العملية عن طريق `generate`.
 
@@ -65,11 +30,50 @@ Report::generate()  -->  read() + format()  -->  TextReport overrides
 - [`Concrete Class`](../../GLOSSARY.md#concrete-class-template-method-role) — دور `Template Method` اللي بيوفر الخطوات المتغيرة. هنا: `TextReport`.
 - [`hook method`](../../GLOSSARY.md#hook-method) — عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها `implementation` افتراضية. هنا: `read, format`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Report:
+    def generate(self):
+        print("Begin report")
+        data = self.read()
+        self.format(data)
+        print("End report")
+
+    def read(self):
+        raise NotImplementedError
+
+    def format(self, data):
+        raise NotImplementedError
+
+
+class TextReport(Report):
+    def read(self):
+        return "sales=42"
+
+    def format(self, data):
+        print(data)
+
+
+if __name__ == "__main__":
+    TextReport().generate()
+```
+
+### Python output
+
+```text
+Begin report
+sales=42
+End report
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -96,7 +100,7 @@ class TextReport final : public Report {
 int main() { TextReport{}.generate(); }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Begin report
@@ -104,7 +108,13 @@ sales=42
 End report
 ```
 
-## When to Use
+## قارن اللغتين
+
+Both versions use Inheritance to keep the sequence in `generate` and vary individual steps. C++ marks the steps virtual and keeps the workflow non-virtual. Python can override any method, so keeping the sequence fixed is a design convention. Injected callables are an alternative when Composition fits better.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لتسلسل ثابت فيه نقاط توسعة قليلة وواضحة بالـ [`inheritance`](../../GLOSSARY.md#inheritance).
 
@@ -112,58 +122,14 @@ End report
 
 مناسب للاستيراد والتقارير لما الهيكل ثابت.
 
-## When NOT to Use
+**التكلفة:** استخدام `Inheritance` بيخلّي الـ`subclass` تعتمد على عقد الـ`base class`. الـ `End` مش مضمونة لو `read` أو `format` رمت `Exception`؛ تنظيف الموارد الحقيقي محتاج [`RAII`](../../GLOSSARY.md#raii)، مش الاعتماد على آخر خطوة.
 
-بلاش لو الخطوات لازم يتغير ترتيبها وقت [`runtime`](../../GLOSSARY.md#runtime) أو الـ [`composition`](../../GLOSSARY.md#composition) أوضح.
-
-## Advantages
-
-الترتيب المشترك يفضل في الأساس، والابن يكتب الاختلاف بس.
-
-## Trade-offs
-
-استخدام `Inheritance` بيخلّي الـ`subclass` تعتمد على عقد الـ`base class`. الـ `End` مش مضمونة لو `read` أو `format` رمت `Exception`؛ تنظيف الموارد الحقيقي محتاج [`RAII`](../../GLOSSARY.md#raii)، مش الاعتماد على آخر خطوة.
-
-## Related Patterns
-
-[Strategy](../strategy/README.ar-EG.md) · [Factory Method](../../creational/factory-method/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Strategy` بتحقن `behavior` قابل للتبديل. الـ `Template Method` بتستخدم `Hooks` موروثة، وممكن `Factory Method` تبقى خطوة إنشاء جوه الهيكل.
-
-## Terms to Remember
-
-- `Template Method` — ثبّت ترتيب خطوات الحل (`algorithm`)، وسيب تنفيذ خطوات معينة للأنواع المشتقة (`subclasses`).
-- `Abstract Class` — دور `Template Method` اللي ماسك `algorithm skeleton` وبيعلن الخطوات المتغيرة. مثال: `Report`.
-- `Concrete Class` — دور `Template Method` اللي بيوفر الخطوات المتغيرة. مثال: `TextReport`.
-- `hook method` — عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها `implementation` افتراضية. مثال: `read, format`.
-
-## Interview Vocabulary
-
-- [`algorithm skeleton`](../../GLOSSARY.md#algorithm-skeleton) — ترتيب `algorithm` الثابت اللي بعض خطواته ممكن تتغير.
-- [`inheritance`](../../GLOSSARY.md#inheritance) — بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه.
-- [`Open/Closed Principle`](../../GLOSSARY.md#openclosed-principle) — خلّي التوسيع ممكن من غير تعديل الكود المستقر، عند حدود مختارة بوضوح. التعبير هو `open for extension, closed for modification`.
-
-## Interview Question
-
-ليه `generate` مش `virtual` و `read` و `format virtual`؟ ده بيوضح ثوابت إيه؟
-
-## Mini Challenge
-
-ضيف `CsvReport` وراجع الترتيب، وبعدها جرّب `Exception` في التنسيق وناقش تنظيف الموارد.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. أنهي method بتحدد الترتيب، وأنهي methods ممكن تختلف؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف `CsvReport` وراجع الترتيب، وبعدها جرّب `Exception` في التنسيق وناقش تنظيف الموارد.
 
-- **المشكلة:** التقارير بتشترك في بداية وقراءة وتنسيق ونهاية، بس مصدر البيانات أو التنسيق مختلف.
-- **الحل:** ثبّت ترتيب الخطوات في `Report::generate`، وهي دالة مش `virtual`. جواها، نادِ `read` وبعدها `format`؛ الاتنين متعرّفين باستخدام `protected` و`virtual` عشان الأنواع المشتقة تقدر تغيّر تنفيذهم.
-- **`Trade-off`:** استخدام `Inheritance` بيخلّي الـ`subclass` تعتمد على عقد الـ`base class`. الـ `End` مش مضمونة لو `read` أو `format` رمت `Exception`؛ تنظيف الموارد الحقيقي محتاج `RAII`، مش الاعتماد على آخر خطوة.
-- **افتكر:** ثبّت الوصفة، وغيّر الخطوات.
-
-[السابق](../../behavioral/strategy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/visitor/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

@@ -1,61 +1,30 @@
 # Prototype
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../creational/factory-method/README.md) · [Category](../README.md) · [Next](../../creational/singleton/README.md)
+**In one sentence:** Create a new Object by copying a configured one.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+A game needs several enemies based on a configured template whose concrete type the spawning code does not know. Reconstructing a default Guard repeats setup and loses any custom equipment on the template.
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
+## The idea
 
-## Difficulty
+A game already has a guard with useful equipment. Prototype copies that setup so you can change the new guard without changing the original. Expose clone on Enemy. Guard copies its value members and returns a [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) to an independent object.
 
-Intermediate
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Create a new Object by copying a configured one.
-
-## Explain It Simply
-
-A game already has a guard with useful equipment. Prototype copies that setup so you can change the new guard without changing the original.
-
-## The Problem
-
-A game needs several enemies based on a configured template whose concrete type the spawning code does not know.
-
-## Naive Solution
-
-```cpp
-Guard another;
-another.rename("gate guard"); // must repeat any custom setup
-```
-
-## Why It Becomes a Problem
-
-Reconstructing a default Guard repeats setup and loses any custom equipment on the template.
-
-## The Idea
-
-Expose clone on Enemy. Guard copies its value members and returns a [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) to an independent object.
-
-## Real-World Analogy
-
-Make a copy of a prepared document, then rename the copy without changing the original.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Prototype](../../assets/diagrams/prototype.svg)
+![Prototype example map](../../assets/diagrams/prototype.svg)
 
 ```text
 Client  -->  Enemy::clone()  -->  independent Guard
 ```
 
-## Participants
+Enemy defines polymorphic cloning; Guard implements the copy; the client owns the clone and changes its name. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Enemy defines polymorphic cloning; Guard implements the copy; the client owns the clone and changes its name.
 
@@ -65,11 +34,44 @@ Canonical roles in this example:
 - [`deep copy`](../../GLOSSARY.md#deep-copy) — Copying owned nested data so the new object does not share that mutable data with the original. Here: `Guard::clone`.
 - [`value semantics`](../../GLOSSARY.md#value-semantics) — Copies behave as independent values according to the type's contract. Here: `name_, equipment_`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Guard:
+    def __init__(self, name, equipment):
+        self.name = name
+        self.equipment = equipment
+
+    def clone(self):
+        return Guard(self.name, self.equipment.copy())
+
+    def describe(self):
+        print(self.name + ": " + ", ".join(self.equipment))
+
+
+def main():
+    prototype = Guard("template", ["shield", "spear"])
+    guard = prototype.clone()
+    guard.name = "gate guard"
+    guard.equipment.append("helmet")
+    prototype.describe()
+    guard.describe()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Python output
+
+```text
+template: shield, spear
+gate guard: shield, spear, helmet
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -103,14 +105,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 template: 2 items
 gate guard: 2 items
 ```
 
-## When to Use
+## Compare the languages
+
+Assignment in Python shares an Object. This clone copies the equipment list explicitly; its strings are immutable. C++ copies the vector by value inside a polymorphic `clone`. Nested mutable data would require a deliberate deeper copy in Python; `copy.deepcopy` is an option, not a universal resource-copy policy.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it when [`runtime`](../../GLOSSARY.md#runtime) objects carry useful configuration and clients should not reconstruct their concrete types.
 
@@ -118,58 +126,14 @@ Use it when [`runtime`](../../GLOSSARY.md#runtime) objects carry useful configur
 
 Game entity templates and editable document presets fit; this example copies a string and std::vector with value semantics.
 
-## When NOT to Use
+**Cost:** Pointers require a deliberate deep-versus-shared-copy policy. Copying live sockets or unique external resources may be impossible or misleading.
 
-Avoid it when ordinary value copying already expresses the requirement clearly.
-
-## Advantages
-
-Configured state can be reused without exposing each construction step to the client.
-
-## Trade-offs
-
-Pointers require a deliberate deep-versus-shared-copy policy. Copying live sockets or unique external resources may be impossible or misleading.
-
-## Related Patterns
-
-[Abstract Factory](../abstract-factory/README.md) · [Memento](../../behavioral/memento/README.md)
-
-## Common Confusion
-
-Memento restores a previous state of an object. Prototype creates another object; a copy constructor alone does not provide polymorphic cloning.
-
-## Terms to Remember
-
-- `Prototype` — Create an independent object by cloning an existing configured object.
-- `Concrete Prototype` — An object whose clone operation produces another object from its configured values. Example: `Guard`.
-- `deep copy` — Copying owned nested data so the new object does not share that mutable data with the original. Example: `Guard::clone`.
-- `value semantics` — Copies behave as independent values according to the type's contract. Example: `name_, equipment_`.
-
-## Interview Vocabulary
-
-- [`object creation`](../../GLOSSARY.md#object-creation) — Choosing a concrete type and establishing an object's initial values and lifetime.
-- [`polymorphism`](../../GLOSSARY.md#polymorphism) — Using one interface with different implementations; C++ supports runtime and compile-time forms.
-- [`ownership`](../../GLOSSARY.md#ownership) — Responsibility for keeping a resource alive and eventually releasing it.
-
-## Interview Question
-
-If equipment becomes `std::vector<std::shared_ptr<Item>>`, will clone still be independent? Explain the aliasing.
-
-## Mini Challenge
-
-Add editable equipment and verify that changing the clone's equipment leaves the prototype unchanged.
-
-## Check Yourself
+## Check yourself
 
 1. Would assigning the original to a second variable create an independent copy?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add editable equipment and verify that changing the clone's equipment leaves the prototype unchanged.
 
-- **Problem:** A game needs several enemies based on a configured template whose concrete type the spawning code does not know.
-- **Solution:** Expose clone on Enemy. Guard copies its value members and returns a std::unique_ptr to an independent object.
-- **Trade-off:** Pointers require a deliberate deep-versus-shared-copy policy. Copying live sockets or unique external resources may be impossible or misleading.
-- **Remember:** Copy the setup, not the identity.
-
-[Previous](../../creational/factory-method/README.md) · [Category](../README.md) · [Next](../../creational/singleton/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

@@ -1,62 +1,26 @@
 # Chain of Responsibility
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../structural/proxy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/command/README.ar-EG.md)
+**الفكرة في سطر:** مرّر الطلب على سلسلة معالجات (`Handlers`)؛ كل واحدة تقدر توقفه أو تمرّره للي بعدها.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+الطلب لازم يعدّي فحص الهوية وحد الإنفاق، وكل مدخل ممكن يحتاج سياسة مختلفة. شرط واحد كويس في الأول؛ نسخه وتعديله لكذا مسار بيصعّب إعادة الاستخدام وترتيب السياسات.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
+## الحل ببساطة
 
-## Difficulty
+الطلب لازم يعدّي فحص الهوية وحدّ المبلغ.كل `Handler` مسؤول عن فحص واحد، والمستدعي بيختار ترتيب السلسلة. خلّي كل معالج (`Handler`) يعمل فحصه، ويمرّر الطلب للي بعده بس لو الفحص نجح. في المثال ده، الطلب بيتقبل بعد نجاح كل الفحوصات.
 
-متوسط
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-مرّر الطلب على سلسلة معالجات (`Handlers`)؛ كل واحدة تقدر توقفه أو تمرّره للي بعدها.
-
-## ببساطة
-
-الطلب لازم يعدّي فحص الهوية وحدّ المبلغ.كل `Handler` مسؤول عن فحص واحد، والمستدعي بيختار ترتيب السلسلة.
-
-## The Problem
-
-الطلب لازم يعدّي فحص الهوية وحد الإنفاق، وكل مدخل ممكن يحتاج سياسة مختلفة.
-
-## Naive Solution
-
-```cpp
-bool accept(Request r) {
-    return r.authenticated && r.amount_cents > 0 && r.amount_cents <= 100;
-}
-```
-
-## Why It Becomes a Problem
-
-شرط واحد كويس في الأول؛ نسخه وتعديله لكذا مسار بيصعّب إعادة الاستخدام وترتيب السياسات.
-
-## The Idea
-
-خلّي كل معالج (`Handler`) يعمل فحصه، ويمرّر الطلب للي بعده بس لو الفحص نجح. في المثال ده، الطلب بيتقبل بعد نجاح كل الفحوصات.
-
-## Real-World Analogy
-
-الدعم الفني يحل الطلب أو يبعته للمختص اللي بعده.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Chain of Responsibility](../../assets/diagrams/chain-of-responsibility.svg)
+![خريطة مثال Chain of Responsibility](../../assets/diagrams/chain-of-responsibility.svg)
 
 ```text
 Request  -->  Auth  -->  Limit
 ```
-
-## Participants
 
 في المثال، كل `Handler` بتمتلك اللي بعدها. فحص الهوية موجود في `Auth`، وفحص المبلغ في `Limit`. المستدعي (`Client`) بيختار ترتيب السلسلة.
 
@@ -66,11 +30,65 @@ Request  -->  Auth  -->  Limit
 - [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — معالج (`Handler`) بينفّذ قاعدة معينة. هنا: `Auth, Limit`.
 - [`chain termination`](../../GLOSSARY.md#chain-termination) — القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر `Handler`. هنا: `Handler::handle`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Request:
+    def __init__(self, authenticated, amount_cents):
+        self.authenticated = authenticated
+        self.amount_cents = amount_cents
+
+
+class Handler:
+    def __init__(self, next_handler=None):
+        self.next_handler = next_handler
+
+    def accepts(self, request):
+        raise NotImplementedError
+
+    def handle(self, request):
+        if not self.accepts(request):
+            return False
+        if self.next_handler is None:
+            return True
+        return self.next_handler.handle(request)
+
+
+class Auth(Handler):
+    def accepts(self, request):
+        return request.authenticated
+
+
+class Limit(Handler):
+    def accepts(self, request):
+        return 0 < request.amount_cents <= 10000
+
+
+if __name__ == "__main__":
+    chain = Auth(Limit())
+    for authenticated, amount_cents in [(False, 2000), (True, 20000),
+                                       (True, 2000), (True, 0), (True, 10000)]:
+        request = Request(authenticated, amount_cents)
+        print("Accepted" if chain.handle(request) else "Rejected")
+```
+
+### Python output
+
+```text
+Rejected
+Rejected
+Accepted
+Rejected
+Accepted
+```
+
+## C++20 example
 
 ```cpp
 // Monetary amounts in this example are integer cents.
@@ -109,7 +127,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Rejected
@@ -117,7 +135,13 @@ Rejected
 Accepted
 ```
 
-## When to Use
+## قارن اللغتين
+
+Both versions use a validation chain: each Handler may reject, or pass onward; reaching the end means success. Other chains stop at the first Handler that can fulfill a request. Python holds successor references; C++ owns them with `unique_ptr`.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لما ترتيب الفحوصات أو اختيارها محتاج تركيب مستقل.
 
@@ -125,58 +149,14 @@ Accepted
 
 مناسب للـ `Validation` والـ `Middleware`. النسخة دي بتطلب موافقة الكل، مش أول `Handler` ناجحة بس.
 
-## When NOT to Use
+**التكلفة:** الترتيب بيأثر، ولازم سياسة واضحة لنهاية السلسلة. هنا بنقبل بعد نجاح الكل؛ سلاسل تانية ممكن ترفض الطلب غير المعالج.
 
-بلاش لو فحصين ثابتين في مكان واحد؛ الشرط الأول أبسط.
-
-## Advantages
-
-تقدر تعيد استخدام الفحوصات وترتبها من غير `Conditional` ضخمة.
-
-## Trade-offs
-
-الترتيب بيأثر، ولازم سياسة واضحة لنهاية السلسلة. هنا بنقبل بعد نجاح الكل؛ سلاسل تانية ممكن ترفض الطلب غير المعالج.
-
-## Related Patterns
-
-[Decorator](../../structural/decorator/README.ar-EG.md) · [Command](../command/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Decorator` بتضيف طبقات `behavior`؛ السلسلة دي ممكن توقف قبل باقي الخطوات. الـ `Command` بتمثل الطلب كـ `object`.
-
-## Terms to Remember
-
-- `Chain of Responsibility` — مرّر الطلب على سلسلة معالجات (`Handlers`)؛ كل واحدة تقدر توقفه أو تمرّره للي بعدها.
-- `Handler` — دور بيعمل معالجة للطلب أو يبعته للي بعده. مثال: `Handler`.
-- `Concrete Handler` — معالج (`Handler`) بينفّذ قاعدة معينة. مثال: `Auth, Limit`.
-- `chain termination` — القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر `Handler`. مثال: `Handler::handle`.
-
-## Interview Vocabulary
-
-- [`delegation`](../../GLOSSARY.md#delegation) — الكائن بيفوّض جزء من شغله لكائن متعاون معاه (`object`)، بدل ما ينفّذ كل حاجة بنفسه.
-- [`object composition`](../../GLOSSARY.md#object-composition) — بتوصل الكائنات (`objects`) ببعض عشان تبني سلوك متكامل (`behavior`) أو تركيب أكبر.
-- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
-
-## Interview Question
-
-لو `Limit` مكلفة وجت الأول، إيه اللي هيحصل لطلب غير مسجل؟
-
-## Mini Challenge
-
-ضيف فحص وضع الصيانة، واتأكد إن المرفوض ما يوصلش للفحوصات اللي بعده.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. الوصول لنهاية السلسلة هنا معناه إيه، وإمتى الفحص بيوقفها؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف فحص وضع الصيانة، واتأكد إن المرفوض ما يوصلش للفحوصات اللي بعده.
 
-- **المشكلة:** الطلب لازم يعدّي فحص الهوية وحد الإنفاق، وكل مدخل ممكن يحتاج سياسة مختلفة.
-- **الحل:** خلّي كل معالج (`Handler`) يعمل فحصه، ويمرّر الطلب للي بعده بس لو الفحص نجح. في المثال ده، الطلب بيتقبل بعد نجاح كل الفحوصات.
-- **`Trade-off`:** الترتيب بيأثر، ولازم سياسة واضحة لنهاية السلسلة. هنا بنقبل بعد نجاح الكل؛ سلاسل تانية ممكن ترفض الطلب غير المعالج.
-- **افتكر:** عالجه، أو مرّره.
-
-[السابق](../../structural/proxy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/command/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

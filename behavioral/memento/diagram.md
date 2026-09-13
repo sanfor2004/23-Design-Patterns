@@ -1,6 +1,8 @@
-# Memento: structure
+# Memento: example map
 
-[Explanation](README.md) · [C++20 source](cpp/main.cpp)
+[English lesson](README.md) · [الشرح بالمصري](README.ar-EG.md) · [Python source](python/main.py) · [C++20 source](cpp/main.cpp)
+
+![Memento example map](../../assets/diagrams/memento.svg)
 
 ```text
 Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
@@ -8,5 +10,4 @@ Caretaker  -->  Editor::Snapshot  -->  Editor::restore()
 
 Editor is the originator. Snapshot is the memento with private state. main is the caretaker holding it without inspecting its contents.
 
-
-The arrows show collaboration or delegation, not a complete UML model. This diagram describes this repository’s example.
+The sketch maps the example's call path. The middle card is where the pattern assigns or changes responsibility; arrows show the demonstrated flow, not inheritance or object ownership.

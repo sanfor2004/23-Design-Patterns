@@ -1,61 +1,30 @@
 # Singleton
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../creational/prototype/README.md) · [Category](../README.md) · [Next](../../structural/adapter/README.md)
+**In one sentence:** Provide one shared instance with global access.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+Two independently created metrics counters split a process-wide total. Making the constructor public gives each caller its own counter; the intended shared total is no longer shared.
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
+## The idea
 
-## Difficulty
+Several callers need the same metrics counter. Singleton controls creation, but that shared state also makes tests and dependencies harder to isolate. Hide construction, delete copying, and return a function-local static instance.
 
-Intermediate
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Provide one shared instance with global access.
-
-## Explain It Simply
-
-Several callers need the same metrics counter. Singleton controls creation, but that shared state also makes tests and dependencies harder to isolate.
-
-## The Problem
-
-Two independently created metrics counters split a process-wide total.
-
-## Naive Solution
-
-```cpp
-Metrics first;
-Metrics second; // separate counters; assumes a public constructor
-```
-
-## Why It Becomes a Problem
-
-Making the constructor public gives each caller its own counter; the intended shared total is no longer shared.
-
-## The Idea
-
-Hide construction, delete copying, and return a function-local static instance.
-
-## Real-World Analogy
-
-A small office has one visitor ledger, so every desk writes to the same book.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Singleton](../../assets/diagrams/singleton.svg)
+![Singleton example map](../../assets/diagrams/singleton.svg)
 
 ```text
 Client A + B  -->  Metrics::instance()  -->  one Metrics
 ```
 
-## Participants
+Metrics controls its lifetime and stores the count. instance returns a non-owning reference; callers must never delete it. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Metrics controls its [`lifetime`](../../GLOSSARY.md#lifetime) and stores the count. instance returns a non-owning reference; callers must never delete it.
 
@@ -65,11 +34,45 @@ Canonical roles in this example:
 - [`global state`](../../GLOSSARY.md#global-state) — Data reachable broadly across a program whose changes can affect distant code. Here: `Metrics::requests_`.
 - [`thread-safe initialization`](../../GLOSSARY.md#thread-safe-initialization) — Initialization protected against concurrent construction; it does not make later operations thread-safe. Here: `static Metrics metrics`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Metrics:
+    def __init__(self):
+        self.requests = 0
+
+    def record(self):
+        self.requests += 1
+
+
+# One shared instance under normal imports of this module.
+# This expresses shared access, not a ban on creating other Metrics objects.
+metrics = Metrics()
+
+
+def main():
+    first = metrics
+    second = metrics
+    first.record()
+    second.record()
+    print("Same instance:", first is second)
+    print("Requests:", metrics.requests)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Python output
+
+```text
+Same instance: True
+Requests: 2
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -97,14 +100,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Same instance: true
 Requests: 2
 ```
 
-## When to Use
+## Compare the languages
+
+Python uses one module-level instance, a common alternative to a strict Singleton Class. It does not prevent callers from constructing Metrics. C++ makes its constructor private and deletes copying. Shared mutable State complicates isolation in both; prefer passing a Dependency explicitly. Neither counter is thread-safe.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Consider it only when one instance really is a process-level invariant and its lifetime is appropriate.
 
@@ -112,58 +121,14 @@ Consider it only when one instance really is a process-level invariant and its l
 
 A tiny single-threaded diagnostic counter demonstrates the mechanism, not a recommendation for production metrics architecture.
 
-## When NOT to Use
+**Cost:** Global access hides dependencies and contaminates tests. Local-static initialization is thread-safe, but record is not; concurrent calls need synchronization. Shutdown order can also matter.
 
-Avoid it for convenient access to ordinary dependencies. Pass a Metrics reference explicitly when tests need isolation.
-
-## Advantages
-
-There is one well-defined initialization point and callers reach the same object.
-
-## Trade-offs
-
-Global access hides dependencies and contaminates tests. Local-static initialization is thread-safe, but record is not; concurrent calls need synchronization. Shutdown order can also matter.
-
-## Related Patterns
-
-[Abstract Factory](../abstract-factory/README.md) · [Facade](../../structural/facade/README.md)
-
-## Common Confusion
-
-One object managed by [`dependency injection`](../../GLOSSARY.md#dependency-injection) is not necessarily a Singleton: uniqueness need not be enforced by the type.
-
-## Terms to Remember
-
-- `Singleton` — Restrict a type to one accessible instance, accepting the cost of shared global state.
-- `instance` — A particular object of a type. Example: `Metrics::instance()`.
-- `global state` — Data reachable broadly across a program whose changes can affect distant code. Example: `Metrics::requests_`.
-- `thread-safe initialization` — Initialization protected against concurrent construction; it does not make later operations thread-safe. Example: `static Metrics metrics`.
-
-## Interview Vocabulary
-
-- [`dependency injection`](../../GLOSSARY.md#dependency-injection) — Supplying a dependency from outside instead of choosing or constructing it inside the consumer.
-- [`testability`](../../GLOSSARY.md#testability) — How readily behavior can be isolated, exercised, and checked.
-- [`lifetime`](../../GLOSSARY.md#lifetime) — The interval during which an object exists and may be used according to its rules.
-
-## Interview Question
-
-Does thread-safe initialization make requests_ thread-safe? Identify the separate operations involved.
-
-## Mini Challenge
-
-Refactor the example to inject a Metrics-like counter into two jobs, then test two isolated counters.
-
-## Check Yourself
+## Check yourself
 
 1. How could one test leave counter State that affects the next test?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Refactor the example to inject a Metrics-like counter into two jobs, then test two isolated counters.
 
-- **Problem:** Two independently created metrics counters split a process-wide total.
-- **Solution:** Hide construction, delete copying, and return a function-local static instance.
-- **Trade-off:** Global access hides dependencies and contaminates tests. Local-static initialization is thread-safe, but record is not; concurrent calls need synchronization. Shutdown order can also matter.
-- **Remember:** One instance can still mean many problems.
-
-[Previous](../../creational/prototype/README.md) · [Category](../README.md) · [Next](../../structural/adapter/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

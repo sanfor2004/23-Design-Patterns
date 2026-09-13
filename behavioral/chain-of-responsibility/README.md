@@ -1,62 +1,30 @@
 # Chain of Responsibility
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../structural/proxy/README.md) · [Category](../README.md) · [Next](../../behavioral/command/README.md)
+**In one sentence:** Pass a request through Handlers that can stop or continue.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+A request must pass authentication and spending checks, and different entry points need different policies. One expression is fine initially; duplicating and editing it for several pipelines makes policy order and reuse difficult.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
+## The idea
 
-## Difficulty
+A request must pass authentication and an amount limit. Each Handler owns one check; the caller chooses the chain order. Each Handler runs its own check and delegates only on success; the final successful handler accepts.
 
-Intermediate
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Pass a request through Handlers that can stop or continue.
-
-## Explain It Simply
-
-A request must pass authentication and an amount limit. Each Handler owns one check; the caller chooses the chain order.
-
-## The Problem
-
-A request must pass authentication and spending checks, and different entry points need different policies.
-
-## Naive Solution
-
-```cpp
-bool accept(Request r) {
-    return r.authenticated && r.amount_cents > 0 && r.amount_cents <= 100;
-}
-```
-
-## Why It Becomes a Problem
-
-One expression is fine initially; duplicating and editing it for several pipelines makes policy order and reuse difficult.
-
-## The Idea
-
-Each Handler runs its own check and delegates only on success; the final successful handler accepts.
-
-## Real-World Analogy
-
-A support desk resolves a request or passes it to the next specialist.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Chain of Responsibility](../../assets/diagrams/chain-of-responsibility.svg)
+![Chain of Responsibility example map](../../assets/diagrams/chain-of-responsibility.svg)
 
 ```text
 Request  -->  Auth  -->  Limit
 ```
 
-## Participants
+Handler owns its successor. Auth checks identity, Limit checks amount. The client chooses the chain order. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Handler owns its successor. Auth checks identity, Limit checks amount. The client chooses the chain order.
 
@@ -66,11 +34,61 @@ Canonical roles in this example:
 - [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — A Handler implementing one particular processing rule. Here: `Auth, Limit`.
 - [`chain termination`](../../GLOSSARY.md#chain-termination) — The rule for stopping a chain and deciding what happens after the last handler. Here: `Handler::handle`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Request:
+    def __init__(self, authenticated, amount_cents):
+        self.authenticated = authenticated
+        self.amount_cents = amount_cents
+
+
+class Handler:
+    def __init__(self, next_handler=None):
+        self.next_handler = next_handler
+
+    def accepts(self, request):
+        raise NotImplementedError
+
+    def handle(self, request):
+        if not self.accepts(request):
+            return False
+        if self.next_handler is None:
+            return True
+        return self.next_handler.handle(request)
+
+
+class Auth(Handler):
+    def accepts(self, request):
+        return request.authenticated
+
+
+class Limit(Handler):
+    def accepts(self, request):
+        return 0 < request.amount_cents <= 10000
+
+
+if __name__ == "__main__":
+    chain = Auth(Limit())
+    for authenticated, amount_cents in [(False, 2000), (True, 20000),
+                                       (True, 2000), (True, 0), (True, 10000)]:
+        request = Request(authenticated, amount_cents)
+        print("Accepted" if chain.handle(request) else "Rejected")
+```
+
+### Python output
+
+```text
+Rejected
+Rejected
+Accepted
+Rejected
+Accepted
+```
+
+## C++20 example
 
 ```cpp
 // Monetary amounts in this example are integer cents.
@@ -109,7 +127,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Rejected
@@ -117,7 +135,13 @@ Rejected
 Accepted
 ```
 
-## When to Use
+## Compare the languages
+
+Both versions use a validation chain: each Handler may reject, or pass onward; reaching the end means success. Other chains stop at the first Handler that can fulfill a request. Python holds successor references; C++ owns them with `unique_ptr`.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it when request handling order or membership must be composed independently.
 
@@ -125,58 +149,14 @@ Use it when request handling order or membership must be composed independently.
 
 Validation pipelines and request middleware fit. This variant requires every handler to approve, rather than stopping at the first successful handler.
 
-## When NOT to Use
+**Cost:** Order affects behavior. A chain needs an explicit end policy; this example accepts after all checks, while other chains may reject unhandled requests.
 
-Avoid it for two fixed checks in one place; the initial expression is then clearer.
-
-## Advantages
-
-Checks can be reused and reordered without a giant conditional.
-
-## Trade-offs
-
-Order affects behavior. A chain needs an explicit end policy; this example accepts after all checks, while other chains may reject unhandled requests.
-
-## Related Patterns
-
-[Decorator](../../structural/decorator/README.md) · [Command](../command/README.md)
-
-## Common Confusion
-
-Decorator layers behavior around a component; this chain may terminate without reaching later handlers. Command represents the request as an object.
-
-## Terms to Remember
-
-- `Chain of Responsibility` — Pass a request along handlers that can stop or continue processing.
-- `Handler` — A role that handles a request or passes it to its successor. Example: `Handler`.
-- `Concrete Handler` — A Handler implementing one particular processing rule. Example: `Auth, Limit`.
-- `chain termination` — The rule for stopping a chain and deciding what happens after the last handler. Example: `Handler::handle`.
-
-## Interview Vocabulary
-
-- [`delegation`](../../GLOSSARY.md#delegation) — An object asks a collaborator to perform part of its work.
-- [`object composition`](../../GLOSSARY.md#object-composition) — Connecting objects to form a larger behavior or structure.
-- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Parts know only the small contracts needed to cooperate, limiting change propagation.
-
-## Interview Question
-
-What happens to an unauthenticated request if Limit is expensive and placed first?
-
-## Mini Challenge
-
-Add a maintenance-mode handler and verify that rejected requests never reach later checks.
-
-## Check Yourself
+## Check yourself
 
 1. What does reaching the end of this chain mean, and when does a check stop it?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add a maintenance-mode handler and verify that rejected requests never reach later checks.
 
-- **Problem:** A request must pass authentication and spending checks, and different entry points need different policies.
-- **Solution:** Each Handler runs its own check and delegates only on success; the final successful handler accepts.
-- **Trade-off:** Order affects behavior. A chain needs an explicit end policy; this example accepts after all checks, while other chains may reject unhandled requests.
-- **Remember:** Handle it, or pass it on.
-
-[Previous](../../structural/proxy/README.md) · [Category](../README.md) · [Next](../../behavioral/command/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

@@ -1,61 +1,26 @@
 # Decorator
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[السابق](../../structural/composite/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/facade/README.ar-EG.md)
+**الفكرة في سطر:** ضيف سلوك جديد (`behavior`) عن طريق كائن بيغلّف الكائن الأصلي. حافظ على نفس [`interface`](../../GLOSSARY.md#interface)، يعني نفس العمليات المتاحة للمستدعي.
 
-[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## المشكلة
 
-## Category
+طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير `class` لكل تركيبة. الـ `classes` التركيبات بتكرر السعر الأساسي، وعددها بيزيد مع كل إضافة.
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
+## الحل ببساطة
 
-## Difficulty
+المشروب ممكن يكون عليه إضافات اختيارية.كل `Decorator` بيوفر نفس الـ`Interface` وبيضيف شغله قبل أو بعد استدعاء اللي جواه. خلّي طبقة الإضافة `Milk` تمتلك مشروب من نوع `Drink`. الأول بتطلب منه الوصف والسعر، وبعدها بتضيف وصفها وتكلفتها على النتيجة.
 
-مبتدئ
+الـ **interface** هو الاتفاق اللي الكود المستدعي متوقعه: هيستدعي إيه، وإيه النتيجة. المثال بيحط المسؤولية دي في مكان واضح بدل ما تتكرر في كل مكان.
 
-## In One Sentence
+## اقرأ الرسمة
 
-ضيف سلوك جديد (`behavior`) عن طريق كائن بيغلّف الكائن الأصلي. حافظ على نفس [`interface`](../../GLOSSARY.md#interface)، يعني نفس العمليات المتاحة للمستدعي.
-
-## ببساطة
-
-المشروب ممكن يكون عليه إضافات اختيارية.كل `Decorator` بيوفر نفس الـ`Interface` وبيضيف شغله قبل أو بعد استدعاء اللي جواه.
-
-## The Problem
-
-طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير `class` لكل تركيبة.
-
-## Naive Solution
-
-```cpp
-struct CoffeeWithMilk {};
-struct CoffeeWithDoubleMilk {}; // another combination
-```
-
-## Why It Becomes a Problem
-
-الـ `classes` التركيبات بتكرر السعر الأساسي، وعددها بيزيد مع كل إضافة.
-
-## The Idea
-
-خلّي طبقة الإضافة `Milk` تمتلك مشروب من نوع `Drink`. الأول بتطلب منه الوصف والسعر، وبعدها بتضيف وصفها وتكلفتها على النتيجة.
-
-## Real-World Analogy
-
-كل طبقة تغليف بتحيط بالهدية اللي قبلها، ولسه الناتج هدية متغلفة.
-
-## Structure
-
-[الرسم التوضيحي](diagram.md) · [شغّل المثال](cpp/README.md)
-
-![Decorator](../../assets/diagrams/decorator.svg)
+![خريطة مثال Decorator](../../assets/diagrams/decorator.svg)
 
 ```text
 Client  -->  Milk(Drink)  -->  Coffee or Milk
 ```
-
-## Participants
 
 في المثال، العقد المشترك هو `Drink`، والتنفيذ الأساسي هو `Coffee`. طبقة الإضافة `Milk` بتغلّف مشروب واحد. المستدعي (`Client`) بيمتلك الطبقة الخارجية.
 
@@ -65,11 +30,46 @@ Client  -->  Milk(Drink)  -->  Coffee or Milk
 - [`Concrete Component`](../../GLOSSARY.md#concrete-component) — الـ `implementation` الأساسية قبل إضافة طبقات اختيارية. هنا: `Coffee`.
 - [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — طبقة تغليف (`Wrapper`) بتحافظ على عقد `Component`، وبتضيف مسؤولية محددة (`responsibility`). هنا: `Milk`.
 
-## Python Example
+الأسهم بتوضح مسار المثال ده، مش كل تطبيق ممكن للـ pattern. [شرح الرسمة](diagram.md).
 
-ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+## امشِ مع الكود
 
-## Modern C++20 Example
+ابدأ من `main` في C++ أو من آخر جزء في Python. تابع الدور اللي في نص الرسمة، وبعدين شوف الناتج. الكود الكامل موجود كمان في [ملف Python](python/main.py) و[ملف C++20](cpp/main.cpp).
+
+## Python example
+
+```python
+class Coffee:
+    def description(self):
+        return "coffee"
+
+    def price_cents(self):
+        return 1000
+
+
+class Milk:
+    def __init__(self, inner):
+        self.inner = inner
+
+    def description(self):
+        return self.inner.description() + " + milk"
+
+    def price_cents(self):
+        return self.inner.price_cents() + 200
+
+
+if __name__ == "__main__":
+    drink = Milk(Milk(Coffee()))
+    print(f"{drink.description()}: {drink.price_cents()} cents")
+```
+
+### Python output
+
+```text
+coffee + milk + milk: 1400 cents
+```
+
+## C++20 example
 
 ```cpp
 // Monetary amounts in this example are integer cents.
@@ -105,13 +105,19 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 coffee + milk + milk: 14
 ```
 
-## When to Use
+## قارن اللغتين
+
+This is the GoF Object-wrapping Decorator, not Python function-decorator syntax. Python retains the wrapped drink; C++ transfers exclusive Ownership into each wrapper. Prices use integer cents. A list of ingredients is simpler if price addition is the whole problem.
+
+الفكرة واحدة في المثالين، حتى لو تفاصيل اللغة والناتج اختلفت. اقرأ الناتجين قبل ما تغيّر أي قيمة.
+
+## إمتى تستخدمه؟
 
 استخدمه لإضافة سلوك اختياري (`behavior`) قابل للتركيب وبيحافظ على عقد العنصر الأصلي.
 
@@ -119,58 +125,14 @@ coffee + milk + milk: 14
 
 ينفع لطبقات ضغط وتشفير الـ `Streams`، مع الانتباه للترتيب والأخطاء.
 
-## When NOT to Use
+**التكلفة:** ترتيب الطبقات ممكن يغيّر الـ `behavior`، وكتر الـ `objects` الصغيرة بيصعّب التتبع. نفس الـ `interface` مش ضمان لنفس الوعود المرتبطة بالـ `behavior`.
 
-بلاش لو قائمة مكونات وجمع أسعار كفاية؛ المثال متعمد عشان يوضح التركيب.
-
-## Advantages
-
-الإضافات بتتركب وقت [`runtime`](../../GLOSSARY.md#runtime)، والتنفيذ الأساسي ([`implementation`](../../GLOSSARY.md#implementation)) بيفضل صغير، يعني الكود المسؤول عن السلوك الأصلي بس.
-
-## Trade-offs
-
-ترتيب الطبقات ممكن يغيّر الـ `behavior`، وكتر الـ `objects` الصغيرة بيصعّب التتبع. نفس الـ `interface` مش ضمان لنفس الوعود المرتبطة بالـ `behavior`.
-
-## Related Patterns
-
-[Proxy](../proxy/README.ar-EG.md) · [Composite](../composite/README.ar-EG.md)
-
-## Common Confusion
-
-الـ `Proxy` بتتحكم في الوصول، و `Decorator` بتضيف `responsibilities`؛ شكل طبقة التغليف (`Wrapper`) لوحده مش كفاية تعرف المقصود.
-
-## Terms to Remember
-
-- `Decorator` — ضيف سلوك جديد (`behavior`) عن طريق كائن بيغلّف الكائن الأصلي، مع الحفاظ على نفس العقد (`interface`).
-- `Component` — العقد المشترك اللي العنصر أو المجموعة أو `Wrapper` بتوفره. مثال: `Drink`.
-- `Concrete Component` — الـ `implementation` الأساسية قبل إضافة طبقات اختيارية. مثال: `Coffee`.
-- `Concrete Decorator` — طبقة تغليف (`Wrapper`) بتحافظ على عقد `Component`، وبتضيف مسؤولية محددة (`responsibility`). مثال: `Milk`.
-
-## Interview Vocabulary
-
-- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — فضّل تركيب الحل من كائنات متعاونة (`objects`)، لما ده يكون أوضح من توسيع شجرة الوراثة (`inheritance`).
-- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — بتبني تركيب من أجزاء بتوفر نفس عقد الكل.
-- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — خلّي الجزء مركز على سبب واحد مترابط للتغيير.
-
-## Interview Question
-
-هل `Logging` قبل التشفير هيشوف نفس البيانات بعد التشفير؟
-
-## Mini Challenge
-
-ضيف `Syrup` بسعر 3 وجرّب ترتيبين، واشرح اختلاف الوصف.
-
-## اختبر فهمك
+## جرّب تجاوب
 
 1. ليه `Milk` تقدر تغلّف `Milk` تانية من غير معرفة النوع الفعلي؟
 2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
 3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
-## Quick Summary
+**تجربة صغيرة:** ضيف `Syrup` بسعر 3 وجرّب ترتيبين، واشرح اختلاف الوصف.
 
-- **المشكلة:** طلب القهوة ممكن يحتاج لبن مرة أو مرتين من غير `class` لكل تركيبة.
-- **الحل:** خلّي طبقة الإضافة `Milk` تمتلك مشروب من نوع `Drink`. الأول بتطلب منه الوصف والسعر، وبعدها بتضيف وصفها وتكلفتها على النتيجة.
-- **`Trade-off`:** ترتيب الطبقات ممكن يغيّر الـ `behavior`، وكتر الـ `objects` الصغيرة بيصعّب التتبع. نفس الـ `interface` مش ضمان لنفس الوعود المرتبطة بالـ `behavior`.
-- **افتكر:** نفس العقد، وطبقة زيادة.
-
-[السابق](../../structural/composite/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/facade/README.ar-EG.md)
+[كل الأنماط](../../README.ar-EG.md) · [المصطلحات](../../GLOSSARY.md) · [دليل Python](../../PYTHON_EXAMPLES.md) · [دليل C++20](../../CPP_EXAMPLES.md)

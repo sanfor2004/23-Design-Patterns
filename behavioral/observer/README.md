@@ -1,61 +1,30 @@
 # Observer
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../behavioral/memento/README.md) · [Category](../README.md) · [Next](../../behavioral/state/README.md)
+**In one sentence:** Notify subscribers when something changes.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+Stock changes should update interested displays without making Stock know every concrete display type. Calling each concrete consumer directly couples the publisher to the current list and requires edits whenever consumers change.
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
+## The idea
 
-## Difficulty
+Several displays may need the latest stock quantity. Observer lets them subscribe, so Stock can send updates without hardcoding every display. Stock stores weak references to Listener objects and broadcasts updates to the live subscribers.
 
-Beginner
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Notify subscribers when something changes.
-
-## Explain It Simply
-
-Several displays may need the latest stock quantity. Observer lets them subscribe, so Stock can send updates without hardcoding every display.
-
-## The Problem
-
-Stock changes should update interested displays without making Stock know every concrete display type.
-
-## Naive Solution
-
-```cpp
-display.update(quantity);
-email.update(quantity); // publisher names every consumer
-```
-
-## Why It Becomes a Problem
-
-Calling each concrete consumer directly couples the publisher to the current list and requires edits whenever consumers change.
-
-## The Idea
-
-Stock stores weak references to Listener objects and broadcasts updates to the live subscribers.
-
-## Real-World Analogy
-
-Subscribers receive a shop's stock alert only while their subscription remains active.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Observer](../../assets/diagrams/observer.svg)
+![Observer example map](../../assets/diagrams/observer.svg)
 
 ```text
 Stock::set()  -->  weak Listener subscriptions  -->  Display::update()
 ```
 
-## Participants
+Stock is the subject, Listener the callback interface, Display a subscriber. The client owns subscribers; weak_ptr avoids extending their lifetime. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Stock is the subject, Listener the callback [`interface`](../../GLOSSARY.md#interface), Display a subscriber. The client owns subscribers; [`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr) avoids extending their [`lifetime`](../../GLOSSARY.md#lifetime).
 
@@ -65,11 +34,60 @@ Canonical roles in this example:
 - [`Observer interface`](../../GLOSSARY.md#observer-interface) — The callback contract implemented by subscribers. Here: `Listener`.
 - [`Concrete Observer`](../../GLOSSARY.md#concrete-observer) — An Observer implementation that reacts to notifications. Here: `Display`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Stock:
+    def __init__(self):
+        self.listeners = []
+
+    def subscribe(self, listener):
+        self.listeners.append(listener)
+
+    def unsubscribe(self, listener):
+        self.listeners.remove(listener)
+
+    def set(self, quantity):
+        for listener in self.listeners.copy():
+            listener(quantity)
+
+
+def screen(quantity):
+    print("Screen:", quantity)
+
+
+def log(quantity):
+    print("Log:", quantity)
+
+
+def main():
+    stock = Stock()
+    stock.subscribe(screen)
+    stock.subscribe(log)
+    stock.set(4)
+    stock.unsubscribe(screen)
+    stock.set(0)
+    stock.unsubscribe(log)
+    stock.set(8)
+    print("No subscribers")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Python output
+
+```text
+Screen: 4
+Log: 4
+Log: 0
+No subscribers
+```
+
+## C++20 example
 
 ```cpp
 #include <algorithm>
@@ -111,7 +129,7 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 Stock: 4
@@ -120,7 +138,13 @@ Stock: 2
 Stock: 2
 ```
 
-## When to Use
+## Compare the languages
+
+Python stores callbacks with strong references and removes them explicitly. C++ uses `weak_ptr` and skips expired listeners. Neither version sends notifications asynchronously. A snapshot makes changes to subscriptions affect the next notification.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it when one change has several independently registered consumers.
 
@@ -128,58 +152,14 @@ Use it when one change has several independently registered consumers.
 
 UI updates and local event subscriptions fit; delivery guarantees of distributed event systems are separate concerns.
 
-## When NOT to Use
+**Cost:** Callback order and exceptions need a policy. This synchronous example propagates exceptions and is not thread-safe. Snapshotting tolerates subscription changes but does not prevent recursive notifications.
 
-Avoid it for one fixed dependency where a direct call is clearer, or when strict transactional consistency is required.
-
-## Advantages
-
-Subscribers can come and go without changing publisher code.
-
-## Trade-offs
-
-Callback order and exceptions need a policy. This synchronous example propagates exceptions and is not thread-safe. Snapshotting tolerates subscription changes but does not prevent recursive notifications.
-
-## Related Patterns
-
-[Mediator](../mediator/README.md) · [State](../state/README.md)
-
-## Common Confusion
-
-Mediator defines coordination rules among known peers. Observer broadcasts notifications and does not prescribe the subscribers' relationship.
-
-## Terms to Remember
-
-- `Observer` — Notify subscribed objects when something they follow changes.
-- `Subject` — The publisher whose changes are announced to registered Observers. Example: `Stock`.
-- `Observer interface` — The callback contract implemented by subscribers. Example: `Listener`.
-- `Concrete Observer` — An Observer implementation that reacts to notifications. Example: `Display`.
-
-## Interview Vocabulary
-
-- [`one-to-many dependency`](../../GLOSSARY.md#one-to-many-dependency) — One source has multiple dependents that react to its changes.
-- [`loose coupling`](../../GLOSSARY.md#loose-coupling) — Parts know only the small contracts needed to cooperate, limiting change propagation.
-- [`subscription lifetime`](../../GLOSSARY.md#subscription-lifetime) — The interval in which a listener is registered and eligible for notification.
-
-## Interview Question
-
-Why use std::weak_ptr for stored listeners but lock it into [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) during the callback?
-
-## Mini Challenge
-
-Add two listeners, destroy one, and verify only the survivor receives later updates. Define an explicit unsubscribe operation.
-
-## Check Yourself
+## Check yourself
 
 1. How do unsubscribe in Python and an expired weak_ptr in C++ differ?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add two listeners, destroy one, and verify only the survivor receives later updates. Define an explicit unsubscribe operation.
 
-- **Problem:** Stock changes should update interested displays without making Stock know every concrete display type.
-- **Solution:** Stock stores weak references to Listener objects and broadcasts updates to the live subscribers.
-- **Trade-off:** Callback order and exceptions need a policy. This synchronous example propagates exceptions and is not thread-safe. Snapshotting tolerates subscription changes but does not prevent recursive notifications.
-- **Remember:** Publish a change, let subscribers react.
-
-[Previous](../../behavioral/memento/README.md) · [Category](../README.md) · [Next](../../behavioral/state/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

@@ -1,61 +1,30 @@
 # Decorator
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../structural/composite/README.md) · [Category](../README.md) · [Next](../../structural/facade/README.md)
+**In one sentence:** Add behavior by wrapping an Object.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+A coffee order can add milk once or several times without inventing a drink class for every combination. Separate combination classes duplicate base pricing and expand with every add-on.
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
+## The idea
 
-## Difficulty
+A drink can have several optional extras. Each Decorator keeps the same Interface and adds its part before or after calling the wrapped Object. Milk owns a Drink and delegates before adding its own description and price.
 
-Beginner
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Add behavior by wrapping an Object.
-
-## Explain It Simply
-
-A drink can have several optional extras. Each Decorator keeps the same Interface and adds its part before or after calling the wrapped Object.
-
-## The Problem
-
-A coffee order can add milk once or several times without inventing a drink class for every combination.
-
-## Naive Solution
-
-```cpp
-struct CoffeeWithMilk {};
-struct CoffeeWithDoubleMilk {}; // another combination
-```
-
-## Why It Becomes a Problem
-
-Separate combination classes duplicate base pricing and expand with every add-on.
-
-## The Idea
-
-Milk owns a Drink and delegates before adding its own description and price.
-
-## Real-World Analogy
-
-Each layer of gift wrapping surrounds the previous package while it remains a package.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Decorator](../../assets/diagrams/decorator.svg)
+![Decorator example map](../../assets/diagrams/decorator.svg)
 
 ```text
 Client  -->  Milk(Drink)  -->  Coffee or Milk
 ```
 
-## Participants
+Drink is the shared contract. Coffee supplies the base behavior. Milk wraps exactly one Drink. The client owns the outermost wrapper. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Drink is the shared contract. Coffee supplies the base behavior. Milk wraps exactly one Drink. The client owns the outermost wrapper.
 
@@ -65,11 +34,42 @@ Canonical roles in this example:
 - [`Concrete Component`](../../GLOSSARY.md#concrete-component) — The basic implementation before optional wrappers are added. Here: `Coffee`.
 - [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — A wrapper that keeps the Component contract and adds a specific responsibility. Here: `Milk`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Coffee:
+    def description(self):
+        return "coffee"
+
+    def price_cents(self):
+        return 1000
+
+
+class Milk:
+    def __init__(self, inner):
+        self.inner = inner
+
+    def description(self):
+        return self.inner.description() + " + milk"
+
+    def price_cents(self):
+        return self.inner.price_cents() + 200
+
+
+if __name__ == "__main__":
+    drink = Milk(Milk(Coffee()))
+    print(f"{drink.description()}: {drink.price_cents()} cents")
+```
+
+### Python output
+
+```text
+coffee + milk + milk: 1400 cents
+```
+
+## C++20 example
 
 ```cpp
 // Monetary amounts in this example are integer cents.
@@ -105,13 +105,19 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 coffee + milk + milk: 14
 ```
 
-## When to Use
+## Compare the languages
+
+This is the GoF Object-wrapping Decorator, not Python function-decorator syntax. Python retains the wrapped drink; C++ transfers exclusive Ownership into each wrapper. Prices use integer cents. A list of ingredients is simpler if price addition is the whole problem.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it for optional, composable behavior that preserves the wrapped contract.
 
@@ -119,58 +125,14 @@ Use it for optional, composable behavior that preserves the wrapped contract.
 
 Streams with compression or encryption layers are a technical context; order and failure handling matter.
 
-## When NOT to Use
+**Cost:** Wrapper order can change behavior. Many tiny objects complicate debugging, and preserving the interface does not automatically preserve every semantic promise.
 
-Avoid it when a simple list of ingredients and a sum express the entire requirement; this example intentionally illustrates the structure.
-
-## Advantages
-
-Add-ons combine at [`runtime`](../../GLOSSARY.md#runtime), and the base [`implementation`](../../GLOSSARY.md#implementation) stays small.
-
-## Trade-offs
-
-Wrapper order can change behavior. Many tiny objects complicate debugging, and preserving the interface does not automatically preserve every semantic promise.
-
-## Related Patterns
-
-[Proxy](../proxy/README.md) · [Composite](../composite/README.md)
-
-## Common Confusion
-
-Proxy controls access to an object. Decorator adds responsibilities. A wrapper's shape alone does not tell you its intent.
-
-## Terms to Remember
-
-- `Decorator` — Add behavior by wrapping an object in another object with the same interface.
-- `Component` — The common contract exposed by leaves, groups, or wrappers. Example: `Drink`.
-- `Concrete Component` — The basic implementation before optional wrappers are added. Example: `Coffee`.
-- `Concrete Decorator` — A wrapper that keeps the Component contract and adds a specific responsibility. Example: `Milk`.
-
-## Interview Vocabulary
-
-- [`composition over inheritance`](../../GLOSSARY.md#composition-over-inheritance) — Prefer collaborating objects when they express variation more clearly than extending a class hierarchy.
-- [`recursive composition`](../../GLOSSARY.md#recursive-composition) — Building a structure from parts that expose the same contract as the whole.
-- [`single responsibility`](../../GLOSSARY.md#single-responsibility) — Keep a module focused on one coherent reason to change.
-
-## Interview Question
-
-Would logging before encryption observe the same data as logging after encryption?
-
-## Mini Challenge
-
-Add a Syrup decorator costing 3, wrap it in two different orders, and explain the resulting descriptions.
-
-## Check Yourself
+## Check yourself
 
 1. Why can Milk wrap another Milk without knowing its concrete type?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add a Syrup decorator costing 3, wrap it in two different orders, and explain the resulting descriptions.
 
-- **Problem:** A coffee order can add milk once or several times without inventing a drink class for every combination.
-- **Solution:** Milk owns a Drink and delegates before adding its own description and price.
-- **Trade-off:** Wrapper order can change behavior. Many tiny objects complicate debugging, and preserving the interface does not automatically preserve every semantic promise.
-- **Remember:** Same contract, another layer.
-
-[Previous](../../structural/composite/README.md) · [Category](../README.md) · [Next](../../structural/facade/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

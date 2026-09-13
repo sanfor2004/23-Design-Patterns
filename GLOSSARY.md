@@ -2,7 +2,7 @@
 
 [23 Design Patterns](README.md)
 
-Translate the explanation, not the terminology. English labels are shared across all four languages. Pattern roles refer to the examples linked from each article; a role is not always a separate class.
+Translate the explanation, not the terminology. English labels are shared across English and Egyptian Arabic. Pattern roles refer to the examples linked from each article; a role is not always a separate class.
 
 Use your editor or browser’s Find command to locate a term. Lowercase `state` describes an object’s condition; `State` names the Design Pattern. Likewise, lowercase `iterator` is a traversal object and `Iterator` is the pattern.
 
@@ -12,9 +12,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** فكرة تصميم بتتكرر مع نوع مشكلة معروف؛ مش كود تنقله زي ما هو.
 
-**中文:** 针对反复出现的问题总结的设计思路，不是直接照搬的代码。
 
-**Italiano:** Un'idea di progettazione riutilizzabile per un problema ricorrente, non codice da copiare senza adattarlo.
 
 ## Creational Pattern
 
@@ -22,9 +20,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
 
-**中文:** 关注如何创建和配置 object 的 Design Pattern。
 
-**Italiano:** Un Design Pattern che riguarda la creazione e configurazione degli object.
 
 ## Structural Pattern
 
@@ -32,9 +28,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
 
-**中文:** 关注 object 与 class 如何组织在一起的 Design Pattern。
 
-**Italiano:** Un Design Pattern che organizza le relazioni fra object e class.
 
 ## Behavioral Pattern
 
@@ -42,9 +36,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
 
-**中文:** 关注 object 的 behavior 与协作方式的 Design Pattern。
 
-**Italiano:** Un Design Pattern che organizza behavior e collaborazione fra object.
 
 ## abstraction
 
@@ -52,9 +44,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتظهر العمليات اللي المستدعي محتاجها وبتخفي التفاصيل اللي مش محتاج يعرفها.
 
-**中文:** 只呈现调用方需要的操作，隐藏无关细节。
 
-**Italiano:** Una vista che espone le operazioni necessarie e nasconde i dettagli irrilevanti per chi la usa.
 
 ## interface
 
@@ -62,9 +52,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها.
 
-**中文:** 约定可调用的操作及其对外可观察行为。
 
-**Italiano:** Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa.
 
 ## implementation
 
@@ -72,9 +60,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد `interface`.
 
-**中文:** 实际完成操作或履行 interface 约定的代码。
 
-**Italiano:** Il codice concreto che esegue un'operazione o soddisfa un'interface.
 
 ## composition
 
@@ -82,9 +68,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتبني السلوك (`behavior`) عن طريق كائنات متعاونة (`objects`)، كل واحد منها بيستخدم أو بيحتوي كائنات تانية.
 
-**中文:** 通过连接使用或包含其他 object 的 object 来组合行为。
 
-**Italiano:** Costruire behavior collegando object che usano o contengono altri object.
 
 ## inheritance
 
@@ -92,9 +76,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه.
 
-**中文:** 从 base class 定义 derived class，复用或扩展约定及实现。
 
-**Italiano:** Definire una derived class da una base class per riusarne o specializzarne contratto e implementation.
 
 ## encapsulation
 
@@ -102,9 +84,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة.
 
-**中文:** 把内部表示和必须保持的规则放在受控操作之后。
 
-**Italiano:** Proteggere rappresentazione interna e invarianti mediante operazioni controllate.
 
 ## polymorphism
 
@@ -112,9 +92,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** نفس العقد (`interface`) يقبل تنفيذات مختلفة (`implementations`). في `C++`، فيه أشكال بتتحدد وقت التشغيل (`runtime`)، وأشكال وقت الترجمة (`compile time`).
 
-**中文:** 同一 interface 对应不同 implementation；C++ 同时支持 runtime 与 compile time 的形式。
 
-**Italiano:** Usare un'interface con implementation diverse; C++ offre forme a runtime e a compile time.
 
 ## coupling
 
@@ -122,9 +100,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** قد إيه جزء مرتبط بجزء تاني لدرجة إن تغييره يحتاج معرفة أو تعديل الجزء التاني.
 
-**中文:** 一个部分的修改需要了解或修改另一部分的程度。
 
-**Italiano:** Quanto una parte richiede conoscenza o modifiche di un'altra quando cambia.
 
 ## tight coupling
 
@@ -132,9 +108,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الأجزاء معتمدة بقوة على التفاصيل الداخلية لبعض، فالتغيير في واحد بينتشر للباقي.
 
-**中文:** 各部分过度依赖彼此的具体细节，修改容易扩散。
 
-**Italiano:** Le parti dipendono molto dai dettagli concreti reciproci e le modifiche tendono a propagarsi.
 
 ## loose coupling
 
@@ -142,9 +116,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** كل جزء يعرف العقد الصغير اللي محتاجه للتعاون، فالتعديلات ما تنتشرش بسهولة.
 
-**中文:** 各部分只了解协作所需的小范围约定，限制修改传播。
 
-**Italiano:** Le parti conoscono solo i contratti necessari a collaborare, limitando la propagazione delle modifiche.
 
 ## cohesion
 
@@ -152,9 +124,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** قد إيه مسؤوليات الجزء الواحد مرتبطة ببعض وبتخدم غرض واضح.
 
-**中文:** 一个模块内部的职责是否紧密相关并服务于明确目的。
 
-**Italiano:** Quanto le responsabilità di un modulo sono collegate e rivolte a uno scopo coerente.
 
 ## dependency
 
@@ -162,9 +132,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** حاجة جزء من الكود محتاجها عشان يشتغل.
 
-**中文:** 一段代码正常工作所需要的另一部分。
 
-**Italiano:** Qualcosa di cui una parte del codice ha bisogno per funzionare.
 
 ## dependency injection
 
@@ -172,9 +140,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتمرّر `dependency` من بره بدل ما الجزء اللي بيستخدمها يختارها أو يعملها بنفسه.
 
-**中文:** 从外部传入 dependency，而不是由使用方自行选择或创建。
 
-**Italiano:** Fornire una dependency dall'esterno invece di sceglierla o costruirla nel codice che la usa.
 
 ## delegation
 
@@ -182,9 +148,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الكائن بيفوّض جزء من شغله لكائن متعاون معاه (`object`)، بدل ما ينفّذ كل حاجة بنفسه.
 
-**中文:** 一个 object 把部分工作交给协作方完成。
 
-**Italiano:** Un object affida parte del proprio lavoro a un collaboratore.
 
 ## responsibility
 
@@ -192,9 +156,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** شغل أو التزام جزء معين في التصميم مسؤول عنه.
 
-**中文:** 设计中分配给某个部分的工作或义务。
 
-**Italiano:** Un compito o obbligo assegnato a una parte del progetto.
 
 ## separation of concerns
 
@@ -202,9 +164,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتفصل أنواع الشغل المختلفة عشان كل نوع يقدر يتغير لوحده.
 
-**中文:** 把不同关注点分开，使它们能够独立变化。
 
-**Italiano:** Tenere separate responsabilità di natura diversa perché possano cambiare indipendentemente.
 
 ## object composition
 
@@ -212,9 +172,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتوصل الكائنات (`objects`) ببعض عشان تبني سلوك متكامل (`behavior`) أو تركيب أكبر.
 
-**中文:** 连接多个 object，形成更大的行为或结构。
 
-**Italiano:** Collegare object per costruire una struttura o un comportamento più ampio.
 
 ## object
 
@@ -222,9 +180,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** كيان له هوية و `lifetime`؛ في `C++` الـ `object` بتشغل مساحة تخزين.
 
-**中文:** 具有身份和 lifetime 的实体；在 C++ 中 object 占用存储空间。
 
-**Italiano:** Un'entità con identità e lifetime; in C++ un object occupa memoria.
 
 ## class
 
@@ -232,9 +188,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** نوع بتعرّفه في `C++` وبتجمع فيه بيانات وعمليات مرتبطة.
 
-**中文:** 在 C++ 中把相关数据和操作组织起来的自定义类型。
 
-**Italiano:** Un tipo definito dall'utente in C++ che raggruppa dati e operazioni.
 
 ## instance
 
@@ -242,9 +196,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** كائن محدد (`object`) من نوع معين.
 
-**中文:** 某个类型的一个具体 object。
 
-**Italiano:** Un particolare object appartenente a un tipo.
 
 ## client
 
@@ -252,9 +204,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الكود اللي بيستخدم `interface` أو بيتعامل مع `objects` بتاعة الـ `Pattern`.
 
-**中文:** 使用 interface 或与模式中的 object 协作的代码。
 
-**Italiano:** Il codice che usa un'interface o collabora con gli object del pattern.
 
 ## concrete class
 
@@ -262,9 +212,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `class` ينفع تعمل منها `instance` وبتوفر العمليات المطلوبة.
 
-**中文:** 可以创建 instance 并提供所需操作的 class。
 
-**Italiano:** Una class di cui si possono creare instance e che fornisce le operazioni richieste.
 
 ## abstract class
 
@@ -272,9 +220,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `class` ما ينفعش تعمل منها `instance` مباشرة؛ غالباً فيها عمليات `pure virtual`.
 
-**中文:** 不能直接创建 instance 的 class，通常包含 pure virtual 操作。
 
-**Italiano:** Una class non istanziabile direttamente, di solito con operazioni pure virtual.
 
 ## base class
 
@@ -282,9 +228,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `class` اللي `class` تانية بتورّث منها.
 
-**中文:** 另一 class 所继承的 class。
 
-**Italiano:** La class da cui un'altra class eredita.
 
 ## derived class
 
@@ -292,9 +236,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `class` بتورّث من `base class`، واسمها كمان `subclass`.
 
-**中文:** 继承自 base class 的 class，也称 subclass。
 
-**Italiano:** Una class che eredita da una base class; detta anche subclass.
 
 ## constructor
 
@@ -302,9 +244,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** العملية الخاصة اللي بتجهّز `instance` جديدة وقت إنشائها.
 
-**中文:** 创建 class instance 时负责初始化的特殊操作。
 
-**Italiano:** L'operazione speciale che inizializza una nuova instance di una class.
 
 ## destructor
 
@@ -312,9 +252,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** العملية الخاصة اللي بتتنفذ لما `lifetime` بتاعة `instance` تنتهي.
 
-**中文:** class instance 的 lifetime 结束时执行的特殊操作。
 
-**Italiano:** L'operazione speciale eseguita al termine della lifetime di una instance.
 
 ## method
 
@@ -322,9 +260,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** عملية مرتبطة بـ `object` أو `class`؛ غالباً `member function` في `C++`.
 
-**中文:** 与 object 或 class 关联的操作，在 C++ 中通常是 member function。
 
-**Italiano:** Un'operazione associata a un object o a una class; in C++ solitamente una member function.
 
 ## function
 
@@ -332,9 +268,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** جزء كود تقدر تناديه، وله مدخلات ونتيجة متفق عليهم.
 
-**中文:** 可调用的代码单元，具有明确的输入与结果约定。
 
-**Italiano:** Un'unità di codice richiamabile con un contratto per ingressi e risultato.
 
 ## callback
 
@@ -342,9 +276,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** دالة (`function`) أو عملية بتمرّرها لجزء تاني، عشان يناديها وقت ما يحتاجها.
 
-**中文:** 传给另一部分、在需要时由它调用的 function 或操作。
 
-**Italiano:** Una function o operazione fornita perché un'altra parte possa richiamarla quando serve.
 
 ## event
 
@@ -352,9 +284,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** حاجة حصلت والكود ممكن يرد عليها، زي مدخل جديد أو تغيير `state`.
 
-**中文:** 代码可以响应的事情，例如输入或 state 变化。
 
-**Italiano:** Un fatto a cui il codice può reagire, come un input o una modifica di state.
 
 ## state
 
@@ -362,9 +292,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** المعلومات اللي بتوصف وضع الـ `object` دلوقتي.
 
-**中文:** 描述 object 当前状况的信息。
 
-**Italiano:** Le informazioni che descrivono la condizione corrente di un object.
 
 ## behavior
 
@@ -372,9 +300,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** اللي `object` أو عملية بتعمله بناءً على المدخلات والـ `state`.
 
-**中文:** object 或操作根据输入和 state 所执行的动作。
 
-**Italiano:** Ciò che un object o un'operazione fa in risposta a input e state.
 
 ## algorithm
 
@@ -382,9 +308,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** خطوات محددة لحل نوع معين من المشاكل.
 
-**中文:** 解决某类问题的一套明确步骤。
 
-**Italiano:** Una procedura definita per risolvere una categoria di problemi.
 
 ## runtime
 
@@ -392,9 +316,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الوقت اللي البرنامج فيه شغال بعد البناء.
 
-**中文:** 编译后的程序正在执行的阶段。
 
-**Italiano:** Il periodo in cui il programma compilato è in esecuzione.
 
 ## compile time
 
@@ -402,9 +324,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** المرحلة اللي فيها `source code` بيتراجع وبيتحول لبرنامج.
 
-**中文:** 检查 source code 并将其转换为程序的阶段。
 
-**Italiano:** La fase in cui il source code viene controllato e tradotto in un programma.
 
 ## memory allocation
 
@@ -412,9 +332,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** حجز مساحة للبيانات؛ تكلفته وطريقة فشله حسب الآلية المستخدمة.
 
-**中文:** 为数据取得存储空间，其成本和失败方式取决于所用机制。
 
-**Italiano:** Ottenere spazio per i dati; costi e possibilità di errore dipendono dal meccanismo.
 
 ## ownership
 
@@ -422,9 +340,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** مين مسؤول يخلي المورد عايش ومين يحرره في الآخر.
 
-**中文:** 负责维持资源存活并最终释放资源的责任。
 
-**Italiano:** La responsabilità di mantenere una risorsa valida e infine rilasciarla.
 
 ## lifetime
 
@@ -432,9 +348,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الفترة اللي الـ `object` موجودة فيها وينفع تستخدمها حسب قواعدها.
 
-**中文:** object 存在且可按规则使用的时间区间。
 
-**Italiano:** L'intervallo in cui un object esiste e può essere usato secondo le sue regole.
 
 ## smart pointer
 
@@ -442,9 +356,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `object` بتغلف `pointer` ومعاها قواعد واضحة للـ `ownership` أو `lifetime`.
 
-**中文:** 为 pointer 的访问附加 lifetime 或 ownership 规则的 object。
 
-**Italiano:** Un object che avvolge un pointer con una politica di lifetime o ownership.
 
 ## RAII
 
@@ -452,9 +364,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** اربط المورد بعمر الكائن، عشان `destructor` تحرره تلقائياً؛ والاسم الكامل هو `Resource Acquisition Is Initialization`.
 
-**中文:** Resource Acquisition Is Initialization：把资源 ownership 绑定到 object lifetime，在析构时释放资源。
 
-**Italiano:** Resource Acquisition Is Initialization: legare l'ownership di una risorsa alla lifetime di un object, così la distruzione la rilascia.
 
 ## STL
 
@@ -462,9 +372,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** `Standard Template Library`: الـ `containers` والـ `iterators` والـ `algorithms` العامة المرتبطة بمكتبة `C++` القياسية.
 
-**中文:** Standard Template Library：与 C++ 标准库相关的通用 container、iterator 和 algorithm。
 
-**Italiano:** Standard Template Library: container, iterator e algorithm generici associati alla libreria standard C++.
 
 ## container
 
@@ -472,9 +380,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `object` بتخزّن مجموعة عناصر.
 
-**中文:** 保存一组元素的 object。
 
-**Italiano:** Un object che conserva una raccolta di elementi.
 
 ## iterator
 
@@ -482,9 +388,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `object` بتمثل مكانك أثناء المرور والعمليات المسموحة في المكان ده.
 
-**中文:** 表示遍历位置及该位置上可用操作的 object。
 
-**Italiano:** Un object che rappresenta una posizione di attraversamento e le operazioni consentite.
 
 ## template
 
@@ -492,9 +396,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** وسيلة في `C++` لتعريف عيلة `types` أو `functions` بمعاملات بتتحدد وقت `compile time`.
 
-**中文:** C++ 中在 compile time 通过参数定义一组 type 或 function 的机制。
 
-**Italiano:** Un meccanismo C++ per definire famiglie di tipi o function parametrizzate a compile time.
 
 ## generic programming
 
@@ -502,9 +404,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتكتب `algorithms` على أساس متطلبات النوع بدل ما تربطها بنوع واحد.
 
-**中文:** 根据类型需要满足的要求编写 algorithm，而不是绑定一个具体类型。
 
-**Italiano:** Scrivere algorithm basati sui requisiti dei tipi invece che su un solo tipo concreto.
 
 ## trade-off
 
@@ -512,9 +412,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** ميزة بتكسبها قصاد تكلفة أو تنازل في ناحية تانية.
 
-**中文:** 获得一种好处时付出的另一种代价。
 
-**Italiano:** Un vantaggio ottenuto rinunciando a un'altra proprietà desiderabile.
 
 ## use case
 
@@ -522,9 +420,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** موقف محدد التصميم بينفع فيه.
 
-**中文:** 某种设计能发挥作用的具体场景。
 
-**Italiano:** Una situazione concreta in cui un progetto è utile.
 
 ## extensibility
 
@@ -532,9 +428,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** سهولة إضافة `behavior` جديدة من غير ما تلخبط الكود الموجود.
 
-**中文:** 增加新 behavior 而不破坏现有代码的容易程度。
 
-**Italiano:** Quanto è facile aggiungere behavior senza compromettere il codice esistente.
 
 ## maintainability
 
@@ -542,9 +436,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** سهولة فهم الكود وتصليحه وتعديله مع الوقت.
 
-**中文:** 长期理解、修正和修改代码的容易程度。
 
-**Italiano:** Quanto è facile capire, correggere e modificare il codice nel tempo.
 
 ## testability
 
@@ -552,9 +444,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** سهولة عزل `behavior` وتشغيلها والتأكد من نتيجتها.
 
-**中文:** 隔离、执行并检查 behavior 的容易程度。
 
-**Italiano:** Quanto è facile isolare, esercitare e verificare un behavior.
 
 ## scalability
 
@@ -562,9 +452,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** قدرة النظام يتعامل مع زيادة الشغل أو البيانات لما تزود موارده.
 
-**中文:** 系统在增加资源后应对工作量或数据增长的能力。
 
-**Italiano:** La capacità di sostenere più lavoro o dati mediante risorse aggiuntive.
 
 ## refactoring
 
@@ -572,9 +460,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتغيّر تركيب الكود من جوه مع الحفاظ على `behavior` اللي باينة للمستخدم.
 
-**中文:** 调整内部结构，同时保持对外可观察的 behavior。
 
-**Italiano:** Cambiare la struttura interna preservando il behavior osservabile dall'esterno.
 
 ## anti-pattern
 
@@ -582,9 +468,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** حل بيتكرر وشكله مريح، بس بيؤدي لمشاكل متكررة في سياق معين.
 
-**中文:** 在特定场景中看似方便、却反复产生不良结果的做法。
 
-**Italiano:** Un approccio ricorrente che sembra conveniente ma produce ripetutamente problemi in un contesto.
 
 ## code smell
 
@@ -592,9 +476,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** علامة تستاهل تراجع الكود بسببها، مش دليل لوحدها إن الكود غلط.
 
-**中文:** 值得进一步检查的迹象，并不自动证明代码有错。
 
-**Italiano:** Un indizio da approfondire, non una prova automatica che il codice sia sbagliato.
 
 ## composition over inheritance
 
@@ -602,9 +484,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** فضّل تركيب الحل من كائنات متعاونة (`objects`)، لما ده يكون أوضح من توسيع شجرة الوراثة (`inheritance`).
 
-**中文:** 当协作 object 能更清楚地表达变化时，优先使用它们而不是扩展 inheritance 层次。
 
-**Italiano:** Preferire object collaboranti quando esprimono la variazione meglio di una gerarchia di inheritance.
 
 ## program to an interface, not an implementation
 
@@ -612,9 +492,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** اعتمد على العقد المعلن بدل تفاصيل `implementation` بعينها.
 
-**中文:** 依赖公开约定，而不是某个具体 implementation。
 
-**Italiano:** Dipendere dal contratto promesso anziché da una particolare implementation concreta.
 
 ## favor loose coupling
 
@@ -622,9 +500,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** قلّل معرفة كل جزء بتفاصيل اللي بيتعاون معاهم عشان التغيير ما ينتشرش.
 
-**中文:** 限制对具体协作方的了解，减少修改传播。
 
-**Italiano:** Limitare la conoscenza dei collaboratori concreti per contenere la propagazione delle modifiche.
 
 ## encapsulate what varies
 
@@ -632,9 +508,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** حط القرار اللي بيتغير ورا حدود ثابتة وواضحة.
 
-**中文:** 把会变化的设计决策放在稳定边界之后。
 
-**Italiano:** Racchiudere una decisione variabile dietro un confine stabile.
 
 ## single responsibility
 
@@ -642,9 +516,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** خلّي الجزء مركز على سبب واحد مترابط للتغيير.
 
-**中文:** 让一个模块围绕一个连贯的变化原因组织职责。
 
-**Italiano:** Concentrare un modulo su un motivo coerente di cambiamento.
 
 ## Single Responsibility Principle
 
@@ -652,9 +524,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** نظّم الجزء حوالين `responsibility` واحدة عشان أسباب التغيير المختلفة ما تتخلطش.
 
-**中文:** 围绕一种 responsibility 组织模块，避免混合互不相关的修改压力。
 
-**Italiano:** Organizzare un modulo attorno a una responsibility, evitando pressioni di cambiamento non correlate.
 
 ## Open/Closed Principle
 
@@ -662,9 +532,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** خلّي التوسيع ممكن من غير تعديل الكود المستقر، عند حدود مختارة بوضوح. التعبير هو `open for extension, closed for modification`.
 
-**中文:** 在选定的有效边界上追求 open for extension, closed for modification。
 
-**Italiano:** Mirare a open for extension, closed for modification lungo un confine scelto e utile.
 
 ## open for extension, closed for modification
 
@@ -672,9 +540,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** ضيف التغييرات المقصودة من نقاط توسعة بدل تعديل منطق `client` المستقر.
 
-**中文:** 通过扩展点增加预期变化，而不修改稳定的 client 逻辑。
 
-**Italiano:** Aggiungere le variazioni previste attraverso punti di estensione senza modificare la logica client stabile.
 
 ## dependency inversion
 
@@ -682,9 +548,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** السياسة العامة والتفاصيل يعتمدوا على `abstractions` بدل ما السياسة تتربط بالتفاصيل مباشرة.
 
-**中文:** 高层规则和底层细节都依赖 abstraction，而不是让高层规则直接依赖细节。
 
-**Italiano:** Politiche di alto livello e dettagli dipendono da abstraction, invece di legare direttamente le politiche ai dettagli.
 
 ## SOLID
 
@@ -692,9 +556,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** خمس مبادئ للتصميم: `Single Responsibility` و `Open`/`Closed` و `Liskov Substitution` و `Interface Segregation` و `Dependency Inversion`.
 
-**中文:** 五项面向对象设计原则：Single Responsibility、Open/Closed、Liskov Substitution、Interface Segregation 和 Dependency Inversion。
 
-**Italiano:** Cinque principi: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation e Dependency Inversion.
 
 ## object creation
 
@@ -702,9 +564,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** اختيار النوع الفعلي وتجهيز قيمه الأولية. من هنا بيبدأ عمر الكائن (`lifetime`).
 
-**中文:** 选择具体类型，建立 object 的初始值并开始其 lifetime。
 
-**Italiano:** Scegliere il tipo concreto e stabilire valori iniziali e lifetime di un object.
 
 ## runtime behavior
 
@@ -712,9 +572,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** اللي البرنامج بيعمله وهو شغال، بما فيه `behavior` بتتحدد من المدخلات.
 
-**中文:** 程序执行时实际发生的动作，包括由运行时输入选择的 behavior。
 
-**Italiano:** Ciò che il programma fa durante l'esecuzione, incluso il behavior scelto dagli input.
 
 ## compile-time dependency
 
@@ -722,9 +580,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `dependency` لازمة عشان تترجم جزء كود، زي تعريف نوع في `header`.
 
-**中文:** 编译一段代码所需的 dependency，例如 header 中的类型声明。
 
-**Italiano:** Una dependency necessaria a compilare codice, come una dichiarazione di tipo in un header.
 
 ## interchangeable behavior
 
@@ -732,9 +588,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** سلوكيات مختلفة (`behaviors`) تقدر تختار أي واحدة منها من خلال نفس العقد.
 
-**中文:** 可以通过同一约定提供的不同 behavior。
 
-**Italiano:** Behavior diversi fornibili attraverso lo stesso contratto.
 
 ## encapsulate an algorithm
 
@@ -742,9 +596,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** حط `algorithm` ورا عملية بتخفي خطواتها الداخلية.
 
-**中文:** 把 algorithm 放在隐藏其内部步骤的操作之后。
 
-**Italiano:** Racchiudere un algorithm dietro un'operazione che ne nasconde i passi interni.
 
 ## runtime selection
 
@@ -752,9 +604,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** اختيار `implementation` والبرنامج شغال.
 
-**中文:** 在程序执行期间选择 implementation。
 
-**Italiano:** Scegliere un'implementation durante l'esecuzione del programma.
 
 ## type erasure
 
@@ -762,9 +612,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتخفي النوع الفعلي ورا `interface` موحدة وقت `runtime`، زي `std::function` مع `callables`.
 
-**中文:** 把具体类型隐藏在统一的 runtime interface 后面，例如 std::function 对 callable 的处理。
 
-**Italiano:** Nascondere un tipo concreto dietro un'interface uniforme a runtime, come std::function per i callable.
 
 ## one-to-many dependency
 
@@ -772,9 +620,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** مصدر واحد ليه أكتر من طرف بيتأثروا بتغييره.
 
-**中文:** 一个来源发生变化时，有多个依赖方需要响应。
 
-**Italiano:** Una sorgente ha più dipendenti che reagiscono ai suoi cambiamenti.
 
 ## subscription lifetime
 
@@ -782,9 +628,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الفترة اللي المستمع فيها مسجل وينفع توصله `notification`.
 
-**中文:** 监听方已注册且可以接收通知的时间区间。
 
-**Italiano:** Il periodo in cui un listener è registrato e può ricevere notifiche.
 
 ## state transition
 
@@ -792,9 +636,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** انتقال من وضع ممثّل في التصميم لوضع تاني بعد `event`.
 
-**中文:** 在 event 后从一个建模状态转到另一个状态。
 
-**Italiano:** Il passaggio fra due condizioni modellate in seguito a un event.
 
 ## algorithm skeleton
 
@@ -802,9 +644,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** ترتيب `algorithm` الثابت اللي بعض خطواته ممكن تتغير.
 
-**中文:** 某些步骤可以变化、整体顺序保持固定的 algorithm 框架。
 
-**Italiano:** La sequenza fissa di un algorithm di cui alcuni passi possono variare.
 
 ## hook method
 
@@ -812,9 +652,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها `implementation` افتراضية.
 
-**中文:** 由固定流程调用的扩展操作，可以有默认 implementation。
 
-**Italiano:** Un'operazione di estensione richiamata da un flusso fisso, eventualmente con implementation predefinita.
 
 ## double dispatch
 
@@ -822,9 +660,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** اختيار `behavior` بناءً على نوعين وقت `runtime`؛ الـ `Visitor` التقليدية بتجمع نداءين `virtual` مع `overload resolution`.
 
-**中文:** 依据两个 runtime 类型选择 behavior；经典 Visitor 结合两次 virtual 调用与 overload resolution。
 
-**Italiano:** Selezionare behavior usando due tipi a runtime; il Visitor classico combina due chiamate virtual con overload resolution.
 
 ## overload resolution
 
@@ -832,9 +668,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** اختيار `function` من كذا واحدة بنفس الاسم حسب أنواع المعاملات وقت `compile time`.
 
-**中文:** 在 compile time 根据参数类型，从同名 function 中选择匹配项。
 
-**Italiano:** La scelta a compile time fra function omonime in base ai tipi degli argomenti.
 
 ## deep copy
 
@@ -842,9 +676,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتنسخ البيانات الداخلية المملوكة عشان تعديل النسخة ما يغيرش الأصل.
 
-**中文:** 复制所拥有的嵌套数据，使新 object 不与原 object 共享这些可变数据。
 
-**Italiano:** Copiare i dati interni posseduti perché il nuovo object non condivida quei dati modificabili con l'originale.
 
 ## value semantics
 
@@ -852,9 +684,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** النسخ تتعامل كقيم مستقلة حسب عقد النوع.
 
-**中文:** 按照类型约定，副本表现为独立的值。
 
-**Italiano:** Le copie si comportano come valori indipendenti secondo il contratto del tipo.
 
 ## global state
 
@@ -862,9 +692,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بيانات أجزاء كتير تقدر توصلها، وتغييرها ممكن يأثر على كود بعيد.
 
-**中文:** 程序中广泛可访问、修改后可能影响远处代码的数据。
 
-**Italiano:** Dati accessibili da molte parti del programma, le cui modifiche possono influire su codice distante.
 
 ## thread-safe initialization
 
@@ -872,9 +700,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** حماية التهيئة من الإنشاء المتزامن؛ مش معناها إن كل العمليات بعد كده `thread-safe`.
 
-**中文:** 避免并发重复构造的初始化保障，不代表后续操作也 thread-safe。
 
-**Italiano:** Inizializzazione protetta dalla costruzione concorrente; non rende thread-safe le operazioni successive.
 
 ## fluent interface
 
@@ -882,9 +708,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** عقد (`interface`) بيسمح تكتب سلسلة استدعاءات بشكل مقروء؛ ده لوحده مش معناه إنك بتستخدم `Builder`.
 
-**中文:** 设计成链式调用的 interface；它本身并不等于 Builder。
 
-**Italiano:** Un'interface pensata come catena leggibile di chiamate; da sola non implica Builder.
 
 ## intrinsic state
 
@@ -892,9 +716,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بيانات مستقلة عن مكان الاستخدام، فالـ `Flyweight` تقدر تشاركها.
 
-**中文:** 不依赖具体使用位置、可由 Flyweight 共享的数据。
 
-**Italiano:** Dati indipendenti dal contesto della singola occorrenza, condivisibili da un Flyweight.
 
 ## extrinsic state
 
@@ -902,9 +724,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بيانات تخص كل استخدام وبتفضل بره الـ `Flyweight` المشتركة.
 
-**中文:** 每次使用独有、保存在共享 Flyweight 外部的数据。
 
-**Italiano:** Dati specifici di un'occorrenza conservati fuori dal Flyweight condiviso.
 
 ## interning
 
@@ -912,9 +732,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتعيد استخدام تمثيل واحد للقيم المتساوية عن طريق `pool` للبحث.
 
-**中文:** 通过查找池为等价值复用同一个表示。
 
-**Italiano:** Riutilizzare una rappresentazione per valori equivalenti attraverso un pool di ricerca.
 
 ## lazy initialization
 
@@ -922,9 +740,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتأجل الإنشاء لأول مرة تحتاج فيها القيمة أو المورد.
 
-**中文:** 把创建推迟到首次需要值或资源时。
 
-**Italiano:** Rinviare la creazione fino al primo utilizzo del valore o della risorsa.
 
 ## part-whole hierarchy
 
@@ -932,9 +748,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تركيب متكرر فيه مجموعات بتحتوي عناصر أو مجموعات أصغر.
 
-**中文:** 分组包含叶子或更小分组的递归结构。
 
-**Italiano:** Una struttura ricorsiva in cui gruppi contengono foglie o gruppi più piccoli.
 
 ## recursive composition
 
@@ -942,9 +756,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتبني تركيب من أجزاء بتوفر نفس عقد الكل.
 
-**中文:** 由提供与整体相同约定的部分递归构建结构。
 
-**Italiano:** Costruire ricorsivamente una struttura con parti che espongono il contratto dell'insieme.
 
 ## chain termination
 
@@ -952,9 +764,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر `Handler`.
 
-**中文:** 决定处理链何时停止以及最后一个 Handler 之后如何处理的规则。
 
-**Italiano:** La regola che ferma una catena e stabilisce cosa succede dopo l'ultimo Handler.
 
 ## undo
 
@@ -962,9 +772,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بترجع لنتيجة سابقة باستخدام `state` محفوظة أو عملية عكسية لما ينفع.
 
-**中文:** 在可行时用保存的 state 或逆操作恢复之前的逻辑结果。
 
-**Italiano:** Ripristinare un risultato precedente con state salvato o un'operazione inversa, quando possibile.
 
 ## exception safety
 
@@ -972,9 +780,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الضمانات اللي العملية بتحافظ عليها لو فشلت ورمت `exception`.
 
-**中文:** 操作抛出 exception 时仍能保持的保证。
 
-**Italiano:** Le garanzie mantenute da un'operazione quando fallisce lanciando un'exception.
 
 ## snapshot
 
@@ -982,9 +788,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** صورة محفوظة لجزء محدد من `state` في لحظة معينة.
 
-**中文:** 某一时刻所选 state 的保存表示。
 
-**Italiano:** Una rappresentazione di uno state selezionato in un dato momento.
 
 ## abstract syntax tree
 
@@ -992,9 +796,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** شجرة بتمثل تركيب القواعد بدل الشكل المكتوب للنص.
 
-**中文:** 表示语法结构、而不是原始文本表面格式的树。
 
-**Italiano:** Un albero che rappresenta la struttura grammaticale anziché la forma testuale originale.
 
 ## short-circuit evaluation
 
@@ -1002,9 +804,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتتخطى باقي المعاملات لما نتيجة بدري تكون حسمت الإجابة.
 
-**中文:** 当前面的结果已决定答案时，跳过后续操作数的求值。
 
-**Italiano:** Saltare gli operandi successivi quando un risultato precedente determina già la risposta.
 
 ## iterator invalidation
 
@@ -1012,9 +812,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** عملية بتخلي `iterator` ما بقتش صالحة للاستخدام المقصود.
 
-**中文:** 某个操作导致 iterator 不再适合原本的使用方式。
 
-**Italiano:** Un'operazione rende un iterator non più valido per l'uso previsto.
 
 ## forward iterator
 
@@ -1022,9 +820,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** أداة مرور (`iterator`) بتتحرك لقدام، وبتدعم المرور المستقل أكتر من مرة (`multipass`). يعني نسخها المستقلة تقدر تمر على نفس النطاق.
 
-**中文:** 支持向前遍历与 multipass 保证的 iterator，独立副本可以遍历同一范围。
 
-**Italiano:** Un iterator con avanzamento e garanzia multipass: copie indipendenti possono percorrere lo stesso intervallo.
 
 ## god object
 
@@ -1032,9 +828,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** كائن (`object`) بيجمع مسؤوليات كتير مالهاش علاقة قوية ببعض.
 
-**中文:** 积累过多无关职责的 object。
 
-**Italiano:** Un object che accumula troppe responsabilità non correlate.
 
 ## UML
 
@@ -1042,9 +836,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** `Unified Modeling Language`: طرق رسم لوصف تركيب البرامج والتفاعلات بينها.
 
-**中文:** Unified Modeling Language：描述软件结构与交互的一组建模记法。
 
-**Italiano:** Unified Modeling Language, una famiglia di notazioni per descrivere struttura e interazioni del software.
 
 ## class diagram
 
@@ -1052,9 +844,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** رسم بيوضح `classes` وعقودها والعلاقات بينها.
 
-**中文:** 展示 class、约定及相互关系的结构图。
 
-**Italiano:** Un diagramma strutturale di class, contratti e relazioni.
 
 ## sequence diagram
 
@@ -1062,9 +852,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** رسم بيوضح التفاعلات بالترتيب اللي بتحصل بيه.
 
-**中文:** 按执行顺序展示交互的图。
 
-**Italiano:** Un diagramma che mostra le interazioni nel loro ordine di esecuzione.
 
 ## lifecycle
 
@@ -1072,9 +860,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** المراحل والانتقالات اللي بنمثلها لكيان في المشكلة؛ مش نفس `lifetime` بتاعة `object` في `C++`.
 
-**中文:** 领域实体的建模阶段与转换，不等于 C++ object 的 lifetime。
 
-**Italiano:** Le fasi e transizioni modellate di un'entità del dominio, distinte dalla lifetime di un object C++.
 
 ## std::unique_ptr
 
@@ -1082,9 +868,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** مؤشر ذكي (`smart pointer`) بملكية حصرية؛ بيحرر الكائن لما المالك يتدمر.
 
-**中文:** 具有独占 ownership 的 smart pointer，在所有者销毁时释放 object。
 
-**Italiano:** Uno smart pointer con ownership esclusiva che rilascia l'object alla distruzione del proprietario.
 
 ## std::shared_ptr
 
@@ -1092,9 +876,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** مؤشر ذكي (`smart pointer`) بيشارك الملكية (`ownership`)؛ الكائن بيتحرر لما آخر مرجع مالك يختفي.
 
-**中文:** 共享 ownership 的 smart pointer，最后一个拥有引用消失时释放 object。
 
-**Italiano:** Uno smart pointer con ownership condivisa; l'object viene rilasciato quando scompare l'ultimo riferimento proprietario.
 
 ## std::weak_ptr
 
@@ -1102,9 +884,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** مرجع مش مالك لملكية مشتركة؛ الـ `lock` بتحاول تجيب `shared_ptr` مؤقتة.
 
-**中文:** 观察共享 ownership 但不拥有 object；lock 尝试取得临时 shared_ptr。
 
-**Italiano:** Un riferimento non proprietario a ownership condivisa; lock tenta di ottenere uno shared_ptr temporaneo.
 
 ## std::vector
 
@@ -1112,9 +892,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `container` قياسية بتخزن العناصر جنب بعض وحجمها ممكن يتغير.
 
-**中文:** 连续保存元素、大小可变的标准 container。
 
-**Italiano:** Un container standard con elementi contigui e dimensione modificabile.
 
 ## std::function
 
@@ -1122,9 +900,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `Wrapper` بتخزن `callable` بتوقيع محدد وبتخفي نوعها الفعلي.
 
-**中文:** 保存指定签名 callable 并隐藏其具体类型的包装器。
 
-**Italiano:** Un wrapper con type erasure che conserva un callable con una firma scelta.
 
 ## virtual
 
@@ -1132,9 +908,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** كلمة `C++` بتسمح باختيار `implementation` من `derived class` من خلال `interface` الأساس.
 
-**中文:** 允许通过 base interface 选择 derived implementation 的 C++ 关键字。
 
-**Italiano:** Una parola chiave C++ che consente di selezionare implementation derivate tramite l'interface base.
 
 ## override
 
@@ -1142,9 +916,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** محدد في `C++` بيطلب من المترجم يتأكد إن `method` بتعيد تعريف `virtual method` في الأساس.
 
-**中文:** 要求编译器确认 method 覆盖了 base virtual method 的 C++ 指定符。
 
-**Italiano:** Uno specificatore C++ che fa verificare che un method ridefinisca un virtual method della base.
 
 ## const
 
@@ -1152,9 +924,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** محدد بيقيّد التعديل من طريق وصول معين؛ مش ضمان لأمان التزامن.
 
-**中文:** 限制通过某种访问方式进行修改的 C++ 限定符，并不保证线程安全。
 
-**Italiano:** Un qualificatore C++ che limita le modifiche attraverso un accesso; non garantisce sicurezza fra thread.
 
 ## type
 
@@ -1162,9 +932,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** وصف للقيم والعمليات اللي الكيان بيدعمها.
 
-**中文:** 规定实体支持哪些值和操作的描述。
 
-**Italiano:** La specifica dei valori e delle operazioni supportati da un'entità.
 
 ## pointer
 
@@ -1172,9 +940,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** قيمة ممكن تشير لـ `object` أو `function`؛ الـ `raw pointer` لوحدها ما بتحددش `ownership`.
 
-**中文:** 可指向 object 或 function 的值；raw pointer 本身不表示 ownership。
 
-**Italiano:** Un valore che può riferirsi a un object o function; un raw pointer da solo non esprime ownership.
 
 ## reference
 
@@ -1182,9 +948,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** اسم بديل لكيان موجود، مش `ownership` لوحده.
 
-**中文:** 现有实体的别名，本身不代表 ownership。
 
-**Italiano:** Un alias di un'entità esistente, che da solo non esprime ownership.
 
 ## callable
 
@@ -1192,9 +956,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** حاجة ينفع تناديها بصيغة `function`، زي `lambda` أو `function object`.
 
-**中文:** 可用 function 调用语法执行的实体，例如 lambda 或 function object。
 
-**Italiano:** Qualcosa di invocabile con la sintassi di chiamata, come una lambda o un function object.
 
 ## lambda
 
@@ -1202,9 +964,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تعبير `C++` بيعمل `callable` وممكن يحتفظ بقيم من حواليه.
 
-**中文:** 创建 callable、并可捕获周围值的 C++ 表达式。
 
-**Italiano:** Un'espressione C++ che crea un callable e può catturare valori circostanti.
 
 ## Product
 
@@ -1212,9 +972,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الكائن (`object`) اللي نمط الإنشاء بينتجه. بعض الأنماط بتحدد له `Product interface` مشترك.
 
-**中文:** 创建型模式生成的 object。有些模式还会为 Product 定义共同的 interface。
 
-**Italiano:** L'object prodotto dal pattern creazionale. Alcuni pattern definiscono anche una Product interface comune.
 
 ## Concrete Product
 
@@ -1222,9 +980,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ فعلي (`implementation`) لعقد المنتج (`Product`).
 
-**中文:** Product 约定的一种具体 implementation。
 
-**Italiano:** Una particolare implementation del contratto Product.
 
 ## Concrete Factory
 
@@ -1232,9 +988,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ فعلي (`implementation`) بينشئ عيلة منتجات متوافقة (`Product family`).
 
-**中文:** 创建一组配套 Product 的 implementation。
 
-**Italiano:** Un'implementation che crea una famiglia coerente di Product.
 
 ## Creator
 
@@ -1242,9 +996,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الدور الأساسي اللي ماسك الخطوات وبيعلن عملية الإنشاء اللي بيحتاجها.
 
-**中文:** 拥有公共流程并声明创建操作的基础角色。
 
-**Italiano:** Il ruolo base che contiene il flusso e dichiara l'operazione di creazione.
 
 ## Concrete Creator
 
@@ -1252,9 +1004,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** نوع مشتق (`subclass`) من `Creator`، مسؤول عن إنشاء منتج معين (`Product`).
 
-**中文:** 提供某种 Product 的 Creator subclass。
 
-**Italiano:** Una subclass di Creator che fornisce un particolare Product.
 
 ## Concrete Prototype
 
@@ -1262,9 +1012,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** كائن بيوفّر العملية `clone` لإنشاء كائن تاني (`object`) من القيم المتجهّزة.
 
-**中文:** 通过 clone 操作按已配置值创建另一 object 的 object。
 
-**Italiano:** Un object la cui operazione clone crea un altro object dai valori configurati.
 
 ## Target
 
@@ -1272,9 +1020,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `interface` اللي `Client` متوقع يتعامل معاها.
 
-**中文:** Client 期望使用的 interface。
 
-**Italiano:** L'interface attesa dal Client.
 
 ## Adaptee
 
@@ -1282,9 +1028,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `object` الموجودة اللي `interface` بتاعتها محتاجة تتوافق مع المطلوب.
 
-**中文:** 其现有 interface 需要适配的 object。
 
-**Italiano:** L'object esistente la cui interface deve essere adattata.
 
 ## Abstraction (Bridge role)
 
@@ -1292,9 +1036,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الناحية اللي بتوفر العمليات الأساسية في `Bridge` وبتفوّض شغل التنفيذ.
 
-**中文:** Bridge 中提供高层操作并委托实现工作的角色。
 
-**Italiano:** Il lato di alto livello di Bridge che delega il lavoro di implementazione.
 
 ## Refined Abstraction
 
@@ -1302,9 +1044,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تخصيص لـ `Abstraction` مستقل عن ناحية التنفيذ.
 
-**中文:** 独立于实现侧的 Abstraction 特化。
 
-**Italiano:** Una specializzazione di Abstraction indipendente dal lato implementativo.
 
 ## Implementor
 
@@ -1312,9 +1052,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** العقد اللي `Abstraction` بتستخدمه للشغل في الناحية التانية من `Bridge`.
 
-**中文:** Bridge 的 Abstraction 用于底层工作的约定。
 
-**Italiano:** Il contratto usato dall'Abstraction di Bridge per il lavoro di livello inferiore.
 
 ## Concrete Implementor
 
@@ -1322,9 +1060,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ محدد (`implementation`) لعقد `Implementor`.
 
-**中文:** Implementor 约定的一种具体 implementation。
 
-**Italiano:** Una particolare implementation del contratto Implementor.
 
 ## Component
 
@@ -1332,9 +1068,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** العقد المشترك اللي العنصر أو المجموعة أو `Wrapper` بتوفره.
 
-**中文:** 叶子、分组或包装层共同提供的约定。
 
-**Italiano:** Il contratto comune esposto da foglie, gruppi o wrapper.
 
 ## Leaf
 
@@ -1342,9 +1076,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** عنصر (`Component`) مافيهوش عناصر تحته.
 
-**中文:** 不含子 Component 的 Component。
 
-**Italiano:** Un Component senza Component figli.
 
 ## Concrete Component
 
@@ -1352,9 +1084,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `implementation` الأساسية قبل إضافة طبقات اختيارية.
 
-**中文:** 添加可选包装层之前的基础 implementation。
 
-**Italiano:** L'implementation di base prima dell'aggiunta di wrapper facoltativi.
 
 ## Concrete Decorator
 
@@ -1362,9 +1092,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** طبقة تغليف (`Wrapper`) بتحافظ على عقد `Component`، وبتضيف مسؤولية محددة (`responsibility`).
 
-**中文:** 保留 Component 约定并增加某项 responsibility 的包装层。
 
-**Italiano:** Un wrapper che mantiene il contratto Component e aggiunge una responsibility specifica.
 
 ## subsystem
 
@@ -1372,9 +1100,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** مجموعة خدمات أو `objects` بتتعاون جوه نظام أكبر.
 
-**中文:** 较大系统中相互协作的一组服务或 object。
 
-**Italiano:** Un gruppo di servizi o object collaboranti dentro un sistema più ampio.
 
 ## Flyweight Factory
 
@@ -1382,9 +1108,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** جزء بيبحث بالمفتاح ويرجع `Flyweight` مشتركة.
 
-**中文:** 按键查找并返回共享 Flyweight 的服务。
 
-**Italiano:** Un servizio di ricerca che restituisce un Flyweight condiviso per una chiave.
 
 ## Subject interface
 
@@ -1392,9 +1116,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** العقد المشترك اللي `Proxy` و `Real Subject` بيوفروه.
 
-**中文:** Proxy 与 Real Subject 共同提供的约定。
 
-**Italiano:** Il contratto condiviso da Proxy e Real Subject.
 
 ## Real Subject
 
@@ -1402,9 +1124,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `object` اللي بتنفذ الشغل الحقيقي ورا `Proxy`.
 
-**中文:** 在 Proxy 后面实际完成工作的 object。
 
-**Italiano:** L'object che svolge il lavoro dietro un Proxy.
 
 ## Handler
 
@@ -1412,9 +1132,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** دور بيعمل معالجة للطلب أو يبعته للي بعده.
 
-**中文:** 处理请求或把请求传给后继的角色。
 
-**Italiano:** Un ruolo che elabora una richiesta o la passa al successore.
 
 ## Concrete Handler
 
@@ -1422,9 +1140,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** معالج (`Handler`) بينفّذ قاعدة معينة.
 
-**中文:** 实现某项处理规则的 Handler。
 
-**Italiano:** Un Handler che implementa una specifica regola di elaborazione.
 
 ## Receiver
 
@@ -1432,9 +1148,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الـ `object` اللي بيتنفذ عليها الشغل المطلوب من `Command`.
 
-**中文:** 执行 Command 所请求工作的 object。
 
-**Italiano:** L'object che svolge il lavoro richiesto da un Command.
 
 ## Invoker
 
@@ -1442,9 +1156,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الدور اللي بيشغّل `Commands` أو بيخزنها من غير معرفة تفاصيل كل عملية.
 
-**中文:** 启动或保存 Command、无需了解每项操作细节的角色。
 
-**Italiano:** Il ruolo che avvia o conserva Command senza conoscere i dettagli delle singole operazioni.
 
 ## Concrete Command
 
@@ -1452,9 +1164,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ للأمر (`Command implementation`) بيربط الفعل المطلوب بالجهة اللي هتنفّذه (`Receiver`).
 
-**中文:** 把 Receiver 与动作绑定起来的 Command implementation。
 
-**Italiano:** Un'implementation di Command che collega un Receiver a un'azione.
 
 ## Abstract Expression
 
@@ -1462,9 +1172,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** عقد تقييم العقد اللي بتمثل قواعد `Interpreter`.
 
-**中文:** 对 Interpreter 语法节点求值的约定。
 
-**Italiano:** Il contratto per valutare i nodi della grammatica di Interpreter.
 
 ## Terminal Expression
 
@@ -1472,9 +1180,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تعبير مافيش جواه تعبيرات أطفال.
 
-**中文:** 不含子表达式的表达式。
 
-**Italiano:** Un'espressione senza espressioni figlie.
 
 ## Nonterminal Expression
 
@@ -1482,9 +1188,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تعبير بيركب تعبيرات أصغر حسب قاعدة في اللغة.
 
-**中文:** 按照语法规则组合子表达式的表达式。
 
-**Italiano:** Un'espressione che combina espressioni figlie secondo una regola grammaticale.
 
 ## Context
 
@@ -1492,9 +1196,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** في `Strategy` و `State`، دي الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). في `Interpreter`، ده البيانات اللي الـ `expressions` بترجع لها وقت التقييم، زي قيم المتغيرات أو الأدوار المتاحة.
 
-**中文:** 在 Strategy 和 State 中，指使用 Strategy 或把 behavior 委托给当前 State 的 object。在 Interpreter 中，指 expressions 求值时读取的数据，例如变量值或可用角色。
 
-**Italiano:** In Strategy e State, l'object che usa una Strategy o delega il behavior allo State corrente. In Interpreter, sono i dati consultati dalle expressions durante la valutazione, per esempio i valori delle variabili o i ruoli disponibili.
 
 ## Aggregate
 
@@ -1502,9 +1204,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** المجموعة اللي بتوفر `iterators` للمرور عليها.
 
-**中文:** 提供 iterator 访问能力的集合。
 
-**Italiano:** La raccolta che fornisce accesso tramite iterator.
 
 ## Concrete Iterator
 
@@ -1512,9 +1212,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ (`implementation`) بيحفظ موضع المرور في مجموعة محددة (`Aggregate`).
 
-**中文:** 为某种 Aggregate 保存遍历位置的 implementation。
 
-**Italiano:** Un'implementation che conserva una posizione di attraversamento per un particolare Aggregate.
 
 ## Colleague
 
@@ -1522,9 +1220,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** كائن متعاون (`object`) بيتولى الـ `Mediator` تنسيق تعاملاته مع باقي الأطراف.
 
-**中文:** 其交互由 Mediator 协调的 object。
 
-**Italiano:** Un object le cui interazioni vengono coordinate da un Mediator.
 
 ## Concrete Mediator
 
@@ -1532,9 +1228,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ (`implementation`) بيجمع قواعد التنسيق بين الأطراف المتعاونة (`Colleagues`).
 
-**中文:** 保存 Colleague 之间协调规则的 implementation。
 
-**Italiano:** Un'implementation che contiene le regole di coordinazione dei Colleague.
 
 ## Originator
 
@@ -1542,9 +1236,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الكائن اللي يعرف يحفظ حالته (`state`) ويسترجعها.
 
-**中文:** 知道如何保存和恢复自身 state 的 object。
 
-**Italiano:** L'object che sa acquisire e ripristinare il proprio state.
 
 ## Caretaker
 
@@ -1552,9 +1244,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الدور اللي بيحتفظ بـ `Memento` من غير ما يفتش في تمثيلها الداخلي.
 
-**中文:** 保存 Memento、但不检查其私有表示的角色。
 
-**Italiano:** Il ruolo che conserva un Memento senza ispezionarne la rappresentazione privata.
 
 ## Subject
 
@@ -1562,9 +1252,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** المصدر اللي بيعلن تغييراته للـ `Observers` المسجلين.
 
-**中文:** 把自身变化通知给已注册 Observer 的发布方。
 
-**Italiano:** Il publisher che comunica i propri cambiamenti agli Observer registrati.
 
 ## Concrete Observer
 
@@ -1572,9 +1260,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ للمشترك (`Observer implementation`) بيحدد استجابته للإشعارات (`notifications`).
 
-**中文:** 响应通知的 Observer implementation。
 
-**Italiano:** Un'implementation di Observer che reagisce alle notifiche.
 
 ## Strategy interface
 
@@ -1582,9 +1268,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** بتحدد العقد المشترك للـ`algorithms` المختلفة. الـ`Context` بيعتمد على العقد ده بدل `implementation` محدد.
 
-**中文:** Context 所使用的可替换 algorithm 的约定。
 
-**Italiano:** Il contratto degli algorithm intercambiabili usati da un Context.
 
 ## Concrete Strategy
 
@@ -1592,9 +1276,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ محدد لعقد `Strategy interface`. ممكن تمثّله بحاجة قابلة للاستدعاء (`callable`)، ومش لازم يكون `class` مستقلة.
 
-**中文:** Strategy interface 的一种具体 implementation，可以是 callable 而不必是 class。
 
-**Italiano:** Una particolare implementation della Strategy interface, anche un callable invece di una class.
 
 ## Concrete State
 
@@ -1602,9 +1284,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ لحالة معينة (`Concrete State`) بيحدد سلوكها (`behavior`) والانتقالات المتاحة منها.
 
-**中文:** 为某个 State 定义 behavior 和转换规则的 implementation。
 
-**Italiano:** Un'implementation che definisce behavior e transizioni di uno State.
 
 ## Abstract Class (Template Method role)
 
@@ -1612,9 +1292,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** دور `Template Method` اللي ماسك `algorithm skeleton` وبيعلن الخطوات المتغيرة.
 
-**中文:** Template Method 中拥有 algorithm skeleton 并声明可变步骤的角色。
 
-**Italiano:** Il ruolo di Template Method che contiene l'algorithm skeleton e dichiara i passi variabili.
 
 ## Concrete Class (Template Method role)
 
@@ -1622,9 +1300,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** دور `Template Method` اللي بيوفر الخطوات المتغيرة.
 
-**中文:** Template Method 中提供可变步骤的角色。
 
-**Italiano:** Il ruolo di Template Method che fornisce i passi variabili.
 
 ## Element
 
@@ -1632,9 +1308,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** عقد الـ `objects` اللي بتقبل `Visitor`.
 
-**中文:** 接受 Visitor 的 object 所提供的约定。
 
-**Italiano:** Il contratto degli object che accettano un Visitor.
 
 ## Concrete Element
 
@@ -1642,9 +1316,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ للعنصر (`Element implementation`) بيختار الاستدعاء المناسب لنوعه من عمليات الزيارة (`Visitor overload`).
 
-**中文:** 选择与自身类型匹配的 Visitor overload 的 Element implementation。
 
-**Italiano:** Un'implementation di Element che seleziona l'overload di Visitor adatto al proprio tipo.
 
 ## Concrete Visitor
 
@@ -1652,9 +1324,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** تنفيذ للزائر (`Visitor implementation`) فيه عملية لكل نوع عنصر مدعوم (`Element`).
 
-**中文:** 为每种受支持的 Element 类型提供操作的 Visitor implementation。
 
-**Italiano:** Un'implementation di Visitor con un'operazione per ogni tipo Element supportato.
 
 ## Client (pattern role)
 
@@ -1662,9 +1332,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** الكود اللي بيستخدم `interface` أو بيتعامل مع `objects` بتاعة الـ `Pattern`.
 
-**中文:** 使用 interface 或与模式中的 object 协作的代码。
 
-**Italiano:** Il codice che usa un'interface o collabora con gli object del pattern.
 
 ## Observer interface
 
@@ -1672,16 +1340,10 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **مصري:** عقد `callback` اللي المشتركين بينفذوه.
 
-**中文:** 订阅方实现的 callback 约定。
 
-**Italiano:** Il contratto di callback implementato dagli iscritti.
 
 ## State interface
 
 **Meaning:** The contract through which a Context delegates state-dependent behavior.
 
 **مصري:** العقد اللي `Context` بتفوّض من خلاله `behavior` المعتمدة على `state`.
-
-**中文:** Context 用于委托与 state 有关的 behavior 的约定。
-
-**Italiano:** Il contratto con cui un Context delega il behavior dipendente dallo state.

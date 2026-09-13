@@ -8,32 +8,27 @@ import xml.etree.ElementTree as ET
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-LOCALES = ('en', 'ar-EG', 'zh-CN', 'it')
-LANGUAGES = ('README.md', 'README.ar-EG.md', 'README.zh-CN.md', 'README.it.md')
+LOCALES = ('en', 'ar-EG')
+LANGUAGES = ('README.md', 'README.ar-EG.md')
 CATEGORIES = {
     'creational': 'abstract-factory builder factory-method prototype singleton'.split(),
     'structural': 'adapter bridge composite decorator facade flyweight proxy'.split(),
     'behavioral': ('chain-of-responsibility command interpreter iterator mediator memento '
                    'observer state strategy template-method visitor').split(),
 }
-ENGLISH_SECTIONS = (
-    'Category', 'Difficulty', 'In One Sentence', 'Explain It Simply', 'The Problem', 'Naive Solution',
-    'Why It Becomes a Problem', 'The Idea', 'Real-World Analogy', 'Structure',
-    'Participants', 'Python Example', 'Modern C++20 Example', 'Example Output', 'When to Use',
-    'When NOT to Use', 'Advantages', 'Trade-offs',
-    'Related Patterns', 'Common Confusion', 'Terms to Remember', 'Interview Vocabulary',
-    'Interview Question', 'Mini Challenge', 'Check Yourself', 'Quick Summary',
-)
-STUDY_HEADINGS = {
-    'README.md': ('Explain It Simply', 'Check Yourself'),
-    'README.ar-EG.md': ('ببساطة', 'اختبر فهمك'),
-    'README.zh-CN.md': ('简单理解', '检查理解'),
-    'README.it.md': ('In parole semplici', 'Verifica cosa hai capito'),
+LESSON_HEADINGS = {
+    'README.md': ('The problem', 'The idea', 'Trace the sketch', 'Read the code',
+                  'Python example', 'C++20 example', 'Compare the languages', 'When it helps', 'Check yourself'),
+    'README.ar-EG.md': ('المشكلة', 'الحل ببساطة', 'اقرأ الرسمة', 'امشِ مع الكود',
+                        'Python example', 'C++20 example', 'قارن اللغتين', 'إمتى تستخدمه؟', 'جرّب تجاوب'),
 }
 
 
 def main():
     errors = []
+    removed_locales = [*ROOT.rglob('*.zh-CN.md'), *ROOT.rglob('*.it.md')]
+    if removed_locales:
+        errors.append(f'Unsupported translated documents remain: {removed_locales}')
     def heading_anchors(text):
         counts = {}
         anchors = set()
@@ -90,46 +85,22 @@ def main():
             expected_name = ' '.join(word.capitalize() if word not in ('of',) else word for word in slug.split('-'))
             if not text.startswith(f'# {expected_name}\n'):
                 errors.append(f'{article.relative_to(ROOT)}: pattern title must be {expected_name}')
-            headings = re.findall(r'^## (.+)$', text, re.M)
-            if len(headings) != len(ENGLISH_SECTIONS):
-                errors.append(f'{article.relative_to(ROOT)}: incomplete sections')
-            simple, check = STUDY_HEADINGS[filename]
-            required_sections = tuple(simple if h == 'Explain It Simply' else
-                                      check if h == 'Check Yourself' else h for h in ENGLISH_SECTIONS)
-            if tuple(headings) != required_sections:
-                errors.append(f'{article.relative_to(ROOT)}: required template mismatch')
+            headings = tuple(re.findall(r'^## (.+)$', text, re.M))
+            if headings != LESSON_HEADINGS[filename]:
+                errors.append(f'{article.relative_to(ROOT)}: missing or out-of-order lesson sections')
+            check = 'Check yourself' if filename == 'README.md' else 'جرّب تجاوب'
             questions = re.search(r'^## ' + re.escape(check) + r'\n(.*?)(?=^## |\Z)', text, re.M | re.S)
             if not questions or len(re.findall(r'^\d+\. ', questions[1], re.M)) != 3:
                 errors.append(f'{article.relative_to(ROOT)}: expected three self-check questions')
-            for target in ('python/README.md', 'python/main.py', 'python/expected.txt', 'cpp/README.md',
-                           '../../LEARNING_PATH' + filename.removeprefix('README'),
-                           '../../CHEATSHEET' + filename.removeprefix('README')):
+            for target in ('python/main.py', 'cpp/main.cpp', 'diagram.md',
+                           '../../LEARNING_PATH' + filename.removeprefix('README')):
                 if f']({target})' not in text:
                     errors.append(f'{article.relative_to(ROOT)}: missing study navigation {target}')
-            for section in ('Terms to Remember', 'Interview Vocabulary'):
-                match = re.search(r'^## '+section+r'\n(.*?)(?=^## |\Z)', text, re.M | re.S)
-                if not match or len(re.findall(r'^- ', match[1], re.M)) < 3:
-                    errors.append(f'{article.relative_to(ROOT)}: {section} needs at least three explained entries')
-                elif any(' — ' not in line for line in match[1].splitlines() if line.startswith('- ')):
-                    errors.append(f'{article.relative_to(ROOT)}: vocabulary entries need explanations')
-                elif filename == 'README.ar-EG.md' and not re.search(r'[\u0600-\u06ff]', match[1]):
-                    errors.append(f'{article.relative_to(ROOT)}: vocabulary needs an Arabic explanation')
-                elif filename == 'README.zh-CN.md' and not re.search(r'[\u3400-\u9fff]', match[1]):
-                    errors.append(f'{article.relative_to(ROOT)}: vocabulary needs a Chinese explanation')
-            if '../../GLOSSARY.md#' not in text:
-                errors.append(f'{article.relative_to(ROOT)}: missing glossary links')
             if any(not section.strip() for section in re.split(r'^## .+\n', text, flags=re.M)[1:]):
                 errors.append(f'{article.relative_to(ROOT)}: empty section')
             for language in LANGUAGES:
                 if f']({language})' not in text:
                     errors.append(f'{article.relative_to(ROOT)}: missing language navigation')
-            if f'](../{filename})' not in text:
-                errors.append(f'{article.relative_to(ROOT)}: missing category navigation')
-            for adjacent in (index - 1, index + 1):
-                if 0 <= adjacent < len(ordered):
-                    ac, ap = ordered[adjacent]
-                    if f'](../../{ac}/{ap}/{filename})' not in text:
-                        errors.append(f'{article.relative_to(ROOT)}: missing adjacent navigation')
         for guide in ('CHEATSHEET', 'LEARNING_PATH', 'PATTERN_MAP', 'COMPARISONS'):
             path = ROOT / (guide + filename.removeprefix('README'))
             if not path.is_file():
@@ -140,8 +111,8 @@ def main():
                 for category, slug in ordered:
                     if f']({category}/{slug}/{filename})' not in text:
                         errors.append(f'{path.name}: missing {slug}')
-            if guide == 'COMPARISONS' and len(re.findall(r'^## ', text, re.M)) != 8:
-                errors.append(f'{path.name}: expected eight comparisons')
+            if guide == 'COMPARISONS' and len(re.findall(r'^## ', text, re.M)) < 7:
+                errors.append(f'{path.name}: missing comparisons')
     for source in sources:
         slug = source.parent.parent.name
         for required in ('python/main.py', 'python/expected.txt', 'python/README.md', 'cpp/README.md'):
@@ -161,7 +132,7 @@ def main():
             diagram_blocks = []
         else:
             diagram_blocks = re.findall(r'^```text\n(.*?)^```', diagram.read_text(encoding='utf-8'), re.M | re.S)
-            if any(re.search(r'[\u0600-\u06ff\u3400-\u9fff]', block) for block in diagram_blocks):
+            if any(re.search(r'[\u0600-\u06ff]', block) for block in diagram_blocks):
                 errors.append(f'{slug}: diagram labels must remain English')
         for locale, filename in zip(LOCALES, LANGUAGES):
             article = source.parent.parent / filename
@@ -169,13 +140,22 @@ def main():
                 continue
             text = article.read_text(encoding='utf-8')
             cpp_blocks = re.findall(r'^```cpp\n(.*?)^```', text, re.M | re.S)
+            python_blocks = re.findall(r'^```python\n(.*?)^```', text, re.M | re.S)
             output_blocks = re.findall(r'^```text\n(.*?)^```', text, re.M | re.S)
+            python_code = (source.parent.parent / 'python/main.py').read_text(encoding='utf-8').strip()
+            python_output = (source.parent.parent / 'python/expected.txt').read_text(encoding='utf-8').strip()
+            if python_code not in [block.strip() for block in python_blocks]:
+                errors.append(f'{locale}/{slug}: complete Python example differs from main.py')
+            if python_output not in [block.strip() for block in output_blocks]:
+                errors.append(f'{locale}/{slug}: Python output differs from expected.txt')
             if code not in [block.strip() for block in cpp_blocks]:
                 errors.append(f'{locale}/{slug}: complete C++ example differs from main.cpp')
             if output not in [block.strip() for block in output_blocks]:
                 errors.append(f'{locale}/{slug}: expected output differs from expected.txt')
             if not diagram_blocks or diagram_blocks[0].strip() not in [block.strip() for block in output_blocks]:
                 errors.append(f'{locale}/{slug}: diagram differs from diagram.md')
+            if text.index('```python') > text.index('```cpp'):
+                errors.append(f'{locale}/{slug}: Python must appear before C++')
     python_sources = [p for category in CATEGORIES for p in (ROOT / category).glob('*/python/main.py')]
     if len(python_sources) != 23:
         errors.append(f'Expected 23 Python examples, found {len(python_sources)}')
@@ -188,7 +168,7 @@ def main():
     if glossary_path.is_file():
         glossary = glossary_path.read_text(encoding='utf-8')
         for entry in re.split(r'^## ', glossary, flags=re.M)[1:]:
-            for label in ('Meaning', 'مصري', '中文', 'Italiano'):
+            for label in ('Meaning', 'مصري'):
                 if not re.search(r'\*\*'+label+r':\*\* \S', entry):
                     errors.append(f'Glossary entry {entry.splitlines()[0]}: missing {label} explanation')
     for svg in (ROOT / 'assets').rglob('*.svg'):
@@ -206,8 +186,8 @@ def main():
     if errors:
         print('\n'.join(errors), file=sys.stderr)
         return 1
-    print(f'Validated {len(documents)} Markdown files: local links, navigation, diagrams, and four-language article coverage.')
-    print('Implementation coverage: C++ 23/23; Python 23/23. Embedded C++ sources and expected outputs match.')
+    print(f'Validated {len(documents)} Markdown files: local links, navigation, diagrams, and two-language article coverage.')
+    print('Implementation coverage: C++ 23/23; Python 23/23. Embedded sources and expected outputs match.')
     return 0
 
 

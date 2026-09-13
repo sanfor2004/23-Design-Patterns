@@ -14,16 +14,15 @@ These are **candidate search phrases**, derived from repository content, not ver
 | design patterns cheat sheet | Review responsibilities and trade-offs | [cheat sheet](../CHEATSHEET.md) | LI-01, DEV-01 | Candidate; unmeasured |
 | design patterns interview preparation | Explain trade-offs in interviews | [learning path](../LEARNING_PATH.md) | RD-01 | Candidate; unmeasured |
 | شرح Design Patterns بالمصري | Read explanations in Egyptian Arabic | [Arabic catalog](../README.ar-EG.md) | LI-01, FB-01 | Candidate; unmeasured |
-| C++ 设计模式 | Read Simplified Chinese explanations | [Chinese catalog](../README.zh-CN.md) | X-01 | Candidate; unmeasured |
-| design pattern C++ italiano | Read Italian explanations | [Italian catalog](../README.it.md) | FB-01 | Candidate; unmeasured |
+| design patterns Python examples | Run small Python examples | [Python guide](../PYTHON_EXAMPLES.md) | Future content angle; no post claimed |
 
 ## Proposed GitHub About settings
 
-**Description:** Learn all 23 GoF design patterns with runnable C++20 examples, diagrams, trade-offs, and explanations in English, Egyptian Arabic, Chinese, and Italian.
+**Description:** Learn all 23 GoF design patterns with runnable Python and C++20 examples, diagrams, trade-offs, and explanations in English and Egyptian Arabic.
 
 **Topics:** `design-patterns`, `gof`, `cpp`, `cpp20`, `object-oriented-programming`, `software-design`, `learning-resources`, `interview-preparation`.
 
-These are proposals; no remote settings were changed. The display name is **23 Design Patterns**, while the existing repository slug remains `Design-Patterns-23`. Update destinations only after a remote rename is completed and verified.
+These are proposals; no remote settings were changed. The display name is **23 Design Patterns**, and the current repository slug is `23-Design-Patterns`.
 
 ## Record observations
 

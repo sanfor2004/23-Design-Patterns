@@ -1,60 +1,30 @@
 # Adapter
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Previous](../../creational/singleton/README.md) · [Category](../README.md) · [Next](../../structural/bridge/README.md)
+**In one sentence:** Make an existing Interface fit another.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+A dashboard expects Celsius but an existing sensor exposes Fahrenheit. Passing the raw number displays the wrong unit. Scattered conversion formulas duplicate a compatibility rule.
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
+## The idea
 
-## Difficulty
+A sensor returns Fahrenheit, while the display expects Celsius. Adapter translates the call and value so neither side needs to change. Implement Temperature around a borrowed LegacyThermometer and convert Fahrenheit to Celsius at the boundary.
 
-Beginner
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Make an existing Interface fit another.
-
-## Explain It Simply
-
-A sensor returns Fahrenheit, while the display expects Celsius. Adapter translates the call and value so neither side needs to change.
-
-## The Problem
-
-A dashboard expects Celsius but an existing sensor exposes Fahrenheit.
-
-## Naive Solution
-
-```cpp
-double displayed = sensor.fahrenheit(); // UI expects Celsius
-```
-
-## Why It Becomes a Problem
-
-Passing the raw number displays the wrong unit. Scattered conversion formulas duplicate a compatibility rule.
-
-## The Idea
-
-Implement Temperature around a borrowed LegacyThermometer and convert Fahrenheit to Celsius at the boundary.
-
-## Real-World Analogy
-
-A travel plug connects incompatible sockets; this adapter also translates the value's meaning.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Adapter](../../assets/diagrams/adapter.svg)
+![Adapter example map](../../assets/diagrams/adapter.svg)
 
 ```text
 display(Temperature)  -->  CelsiusAdapter  -->  LegacyThermometer
 ```
 
-## Participants
+Temperature is the target interface. LegacyThermometer is the existing API. CelsiusAdapter borrows it; display uses only Temperature. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Temperature is the target interface. LegacyThermometer is the existing API. CelsiusAdapter borrows it; display uses only Temperature.
 
@@ -64,11 +34,39 @@ Canonical roles in this example:
 - [`Adaptee`](../../GLOSSARY.md#adaptee) — The existing object whose interface needs adaptation. Here: `LegacyThermometer`.
 - [`interface`](../../GLOSSARY.md#interface) — The contract of operations and observable behavior offered to a caller. Here: `Temperature`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class LegacyThermometer:
+    def fahrenheit(self):
+        return 77.0
+
+
+class CelsiusAdapter:
+    def __init__(self, sensor):
+        self.sensor = sensor
+
+    def celsius(self):
+        return (self.sensor.fahrenheit() - 32) * 5 / 9
+
+
+def display(temperature):
+    print(temperature.celsius(), "C")
+
+
+if __name__ == "__main__":
+    display(CelsiusAdapter(LegacyThermometer()))
+```
+
+### Python output
+
+```text
+25.0 C
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -98,13 +96,19 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 25 C
 ```
 
-## When to Use
+## Compare the languages
+
+Python accepts any Object with `celsius`; C++ declares Temperature as an Interface. The Python Adapter retains its sensor. The C++ reference borrows it, so the sensor must outlive the Adapter.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it at a boundary to an existing API you cannot or should not change.
 
@@ -112,58 +116,14 @@ Use it at a boundary to an existing API you cannot or should not change.
 
 Legacy API integration and unit conversion are common contexts; conversion accuracy and error handling still need explicit contracts.
 
-## When NOT to Use
+**Cost:** An adapter can hide semantic mismatches if it only renames methods. The sensor must outlive the adapter because the reference does not own it.
 
-Avoid it when you own both sides and a single consistent interface would be simpler.
-
-## Advantages
-
-Unit conversion lives in one place, and the display can accept other Temperature implementations.
-
-## Trade-offs
-
-An adapter can hide semantic mismatches if it only renames methods. The sensor must outlive the adapter because the reference does not own it.
-
-## Related Patterns
-
-[Facade](../facade/README.md) · [Bridge](../bridge/README.md)
-
-## Common Confusion
-
-Facade simplifies a subsystem. Adapter makes a specific existing interface compatible with a target contract.
-
-## Terms to Remember
-
-- `Adapter` — Translate an existing interface into the one a client expects.
-- `Target` — The interface expected by the Client. Example: `Temperature`.
-- `Adaptee` — The existing object whose interface needs adaptation. Example: `LegacyThermometer`.
-- `interface` — The contract of operations and observable behavior offered to a caller. Example: `Temperature`.
-
-## Interview Vocabulary
-
-- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — Depend on the promised contract instead of a particular concrete implementation.
-- [`delegation`](../../GLOSSARY.md#delegation) — An object asks a collaborator to perform part of its work.
-- [`lifetime`](../../GLOSSARY.md#lifetime) — The interval during which an object exists and may be used according to its rules.
-
-## Interview Question
-
-Can an adapter always preserve behavior if the source API is asynchronous and the target is synchronous?
-
-## Mini Challenge
-
-Test freezing and boiling points by allowing the legacy sensor to return configurable Fahrenheit values.
-
-## Check Yourself
+## Check yourself
 
 1. Who converts the units, and who keeps the sensor alive?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Test freezing and boiling points by allowing the legacy sensor to return configurable Fahrenheit values.
 
-- **Problem:** A dashboard expects Celsius but an existing sensor exposes Fahrenheit.
-- **Solution:** Implement Temperature around a borrowed LegacyThermometer and convert Fahrenheit to Celsius at the boundary.
-- **Trade-off:** An adapter can hide semantic mismatches if it only renames methods. The sensor must outlive the adapter because the reference does not own it.
-- **Remember:** Translate at the boundary.
-
-[Previous](../../creational/singleton/README.md) · [Category](../README.md) · [Next](../../structural/bridge/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)

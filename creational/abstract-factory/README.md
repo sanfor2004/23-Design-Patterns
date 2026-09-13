@@ -1,61 +1,30 @@
 # Abstract Factory
 
-[English](README.md) · [مصري](README.ar-EG.md) · [中文](README.zh-CN.md) · [Italiano](README.it.md)
+[English](README.md) · [مصري](README.ar-EG.md) · [Learning path](../../LEARNING_PATH.md) · [Python](python/main.py) · [C++20](cpp/main.cpp)
 
-[Category](../README.md) · [Next](../../creational/builder/README.md)
+**In one sentence:** Create a matching family of Objects.
 
-[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+## The problem
 
-## Category
+A settings screen needs buttons and panels that belong to the same theme. Constructing each widget directly lets a dark button accidentally sit inside a light panel. Every client must remember the matching rules.
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
+## The idea
 
-## Difficulty
+A screen needs buttons and panels with the same theme. One Factory supplies both, so the caller does not choose each concrete Class separately. Pass one Theme to render. The chosen factory supplies both products, so the client never names concrete widget classes.
 
-Intermediate
+An **interface** is the behavior a caller expects. The example gives that behavior a clear owner instead of spreading the decision through callers.
 
-## In One Sentence
+## Trace the sketch
 
-Create a matching family of Objects.
-
-## Explain It Simply
-
-A screen needs buttons and panels with the same theme. One Factory supplies both, so the caller does not choose each concrete Class separately.
-
-## The Problem
-
-A settings screen needs buttons and panels that belong to the same theme.
-
-## Naive Solution
-
-```cpp
-auto button = DarkButton{};
-auto panel = LightPanel{}; // mixed theme
-```
-
-## Why It Becomes a Problem
-
-Constructing each widget directly lets a dark button accidentally sit inside a light panel. Every client must remember the matching rules.
-
-## The Idea
-
-Pass one Theme to render. The chosen factory supplies both products, so the client never names concrete widget classes.
-
-## Real-World Analogy
-
-Ordering a matching furniture set is easier than choosing each piece independently.
-
-## Structure
-
-[Diagram](diagram.md) · [Run the example](cpp/README.md)
-
-![Abstract Factory](../../assets/diagrams/abstract-factory.svg)
+![Abstract Factory example map](../../assets/diagrams/abstract-factory.svg)
 
 ```text
 render()  -->  Theme  -->  Button + Panel
 ```
 
-## Participants
+Theme defines the family; DarkTheme and LightTheme create it. Button and Panel define product interfaces. render consumes those interfaces. The arrows follow this example's calls, not every possible implementation of the pattern. [Open the diagram notes](diagram.md).
+
+## Read the code
 
 Theme defines the family; DarkTheme and LightTheme create it. Button and Panel define product interfaces. render consumes those interfaces.
 
@@ -65,11 +34,60 @@ Canonical roles in this example:
 - [`Concrete Product`](../../GLOSSARY.md#concrete-product) — A particular implementation of a Product contract. Here: `DarkButton, LightButton, DarkPanel, LightPanel`.
 - [`Concrete Factory`](../../GLOSSARY.md#concrete-factory) — An implementation that creates one matching Product family. Here: `DarkTheme, LightTheme`.
 
-## Python Example
+Start at the call in `main` or the Python `if __name__ == "__main__"` block. Follow the middle role in the sketch, then compare the printed result. The full sources below are also in [python/main.py](python/main.py) and [cpp/main.cpp](cpp/main.cpp).
 
-Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+## Python example
 
-## Modern C++20 Example
+```python
+class Button:
+    def __init__(self, theme):
+        self.theme = theme
+
+    def paint(self):
+        return self.theme + " button"
+
+
+class Panel:
+    def __init__(self, theme):
+        self.theme = theme
+
+    def paint(self):
+        return self.theme + " panel"
+
+
+class DarkTheme:
+    def button(self):
+        return Button("dark")
+
+    def panel(self):
+        return Panel("dark")
+
+
+class LightTheme:
+    def button(self):
+        return Button("light")
+
+    def panel(self):
+        return Panel("light")
+
+
+def render(theme):
+    print(theme.button().paint() + " + " + theme.panel().paint())
+
+
+if __name__ == "__main__":
+    render(DarkTheme())
+    render(LightTheme())
+```
+
+### Python output
+
+```text
+dark button + dark panel
+light button + light panel
+```
+
+## C++20 example
 
 ```cpp
 #include <iostream>
@@ -120,14 +138,20 @@ int main() {
 }
 ```
 
-## Example Output
+### C++20 output
 
 ```text
 dark button + dark panel
 light button + light panel
 ```
 
-## When to Use
+## Compare the languages
+
+Python uses matching method names instead of abstract base classes. C++ declares separate Button, Panel, and Theme Interfaces. Both create a family of products. Neither language automatically proves that the products match visually.
+
+Both examples assign the same pattern responsibility, although their output or setup may differ. Compare the two expected-output blocks before changing an input.
+
+## When it helps
 
 Use it when several product types must vary together and clients should not choose concrete classes.
 
@@ -135,58 +159,14 @@ Use it when several product types must vary together and clients should not choo
 
 Theme kits and interchangeable database driver families are useful design contexts; this example only renders names.
 
-## When NOT to Use
+**Cost:** Adding a new product type, such as Slider, requires changing every factory. The interface cannot alone prove that an [`implementation`](../../GLOSSARY.md#implementation) returns a visually consistent family.
 
-Avoid it for one stable product type or when independent choices are actually desirable.
-
-## Advantages
-
-The client can switch whole families without changing its rendering workflow.
-
-## Trade-offs
-
-Adding a new product type, such as Slider, requires changing every factory. The interface cannot alone prove that an [`implementation`](../../GLOSSARY.md#implementation) returns a visually consistent family.
-
-## Related Patterns
-
-[Factory Method](../factory-method/README.md) · [Builder](../builder/README.md)
-
-## Common Confusion
-
-Factory Method varies a creation step. Abstract Factory coordinates multiple related product types; a concrete factory can implement its operations with factory methods.
-
-## Terms to Remember
-
-- `Abstract Factory` — Create related objects through one family interface.
-- `Product` — The contract of an object returned by creation code. Example: `Button, Panel`.
-- `Concrete Product` — A particular implementation of a Product contract. Example: `DarkButton, LightButton, DarkPanel, LightPanel`.
-- `Concrete Factory` — An implementation that creates one matching Product family. Example: `DarkTheme, LightTheme`.
-
-## Interview Vocabulary
-
-- [`object creation`](../../GLOSSARY.md#object-creation) — Choosing a concrete type and establishing an object's initial values and lifetime.
-- [`program to an interface, not an implementation`](../../GLOSSARY.md#program-to-an-interface-not-an-implementation) — Depend on the promised contract instead of a particular concrete implementation.
-- [`encapsulate what varies`](../../GLOSSARY.md#encapsulate-what-varies) — Put a changing design decision behind a stable boundary.
-
-## Interview Question
-
-What changes when you add a new theme versus a new widget type? Trace every interface affected.
-
-## Mini Challenge
-
-Add a high-contrast family. Then add a Slider product and compare the number of files or classes affected.
-
-## Check Yourself
+## Check yourself
 
 1. Why does one Theme create both products?
 2. When would the naive solution on this page be easier to maintain? Give a concrete example.
 3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
-## Quick Summary
+Try this change: Add a high-contrast family. Then add a Slider product and compare the number of files or classes affected.
 
-- **Problem:** A settings screen needs buttons and panels that belong to the same theme.
-- **Solution:** Pass one Theme to render. The chosen factory supplies both products, so the client never names concrete widget classes.
-- **Trade-off:** Adding a new product type, such as Slider, requires changing every factory. The interface cannot alone prove that an implementation returns a visually consistent family.
-- **Remember:** One factory, one matching set.
-
-[Category](../README.md) · [Next](../../creational/builder/README.md)
+[All patterns](../../README.md) · [Glossary](../../GLOSSARY.md) · [C++20 build guide](../../CPP_EXAMPLES.md) · [Python guide](../../PYTHON_EXAMPLES.md)
