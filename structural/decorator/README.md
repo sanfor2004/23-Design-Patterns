@@ -4,6 +4,8 @@
 
 [Previous](../../structural/composite/README.md) · [Category](../README.md) · [Next](../../structural/facade/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
@@ -14,7 +16,11 @@ Beginner
 
 ## In One Sentence
 
-Add behavior by wrapping an object in another object with the same [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller).
+Add behavior by wrapping an Object.
+
+## Explain It Simply
+
+A drink can have several optional extras. Each Decorator keeps the same Interface and adds its part before or after calling the wrapped Object.
 
 ## The Problem
 
@@ -59,9 +65,14 @@ Canonical roles in this example:
 - [`Concrete Component`](../../GLOSSARY.md#concrete-component) — The basic implementation before optional wrappers are added. Here: `Coffee`.
 - [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — A wrapper that keeps the Component contract and adds a specific responsibility. Here: `Milk`.
 
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -71,11 +82,11 @@ Canonical roles in this example:
 struct Drink {
     virtual ~Drink() = default;
     virtual std::string description() const = 0;
-    virtual int price() const = 0;
+    virtual int price_cents() const = 0;
 };
 struct Coffee final : Drink {
     std::string description() const override { return "coffee"; }
-    int price() const override { return 10; }
+    int price_cents() const override { return 10; }
 };
 class Milk final : public Drink {
     std::unique_ptr<Drink> inner_;
@@ -84,13 +95,13 @@ public:
         if (!inner_) throw std::invalid_argument("Missing drink");
     }
     std::string description() const override { return inner_->description() + " + milk"; }
-    int price() const override { return inner_->price() + 2; }
+    int price_cents() const override { return inner_->price_cents() + 2; }
 };
 int main() {
     std::unique_ptr<Drink> drink = std::make_unique<Coffee>();
     drink = std::make_unique<Milk>(std::move(drink));
     drink = std::make_unique<Milk>(std::move(drink));
-    std::cout << drink->description() << ": " << drink->price() << '\n';
+    std::cout << drink->description() << ": " << drink->price_cents() << '\n';
 }
 ```
 
@@ -114,7 +125,7 @@ Avoid it when a simple list of ingredients and a sum express the entire requirem
 
 ## Advantages
 
-Add-ons combine at [`runtime`](../../GLOSSARY.md#runtime) (The period when a compiled program is executing), and the base [`implementation`](../../GLOSSARY.md#implementation) (The concrete code that fulfills an interface or performs an operation) stays small.
+Add-ons combine at [`runtime`](../../GLOSSARY.md#runtime), and the base [`implementation`](../../GLOSSARY.md#implementation) stays small.
 
 ## Trade-offs
 
@@ -148,6 +159,12 @@ Would logging before encryption observe the same data as logging after encryptio
 ## Mini Challenge
 
 Add a Syrup decorator costing 3, wrap it in two different orders, and explain the resulting descriptions.
+
+## Check Yourself
+
+1. Why can Milk wrap another Milk without knowing its concrete type?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

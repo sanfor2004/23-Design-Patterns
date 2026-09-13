@@ -4,9 +4,11 @@
 
 [السابق](../../structural/adapter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/composite/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 افصل ناحيتين بيتغيروا بشكل مستقل، واربطهم عن طريق [`composition`](../../GLOSSARY.md#composition): تركيب الحل من كائنات بتتعاون مع بعض.
+
+## ببساطة
+
+التنبيه ممكن يبقى عادي أو عاجل، والإرسال ممكن يبقى إيميل أو SMS.الـ`Bridge` بيربط التنبيه بقناة إرسال بدل `Class` لكل تركيبة.
 
 ## The Problem
 
@@ -61,6 +67,10 @@ Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 - [`Refined Abstraction`](../../GLOSSARY.md#refined-abstraction) — تخصيص لـ `Abstraction` مستقل عن ناحية التنفيذ. هنا: `UrgentNotice`.
 - [`Implementor`](../../GLOSSARY.md#implementor) — العقد اللي `Abstraction` بتستخدمه للشغل في الناحية التانية من `Bridge`. هنا: `Channel`.
 - [`Concrete Implementor`](../../GLOSSARY.md#concrete-implementor) — تنفيذ محدد (`implementation`) لعقد `Implementor`. هنا: `Email, Sms`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -157,6 +167,12 @@ SMS: URGENT: disk full
 ## Mini Challenge
 
 ضيف `Push` واستخدم نوعي التنبيه من غير تعديلهم.
+
+## اختبر فهمك
+
+1. إيه الـ`Classes` اللي هتتغير لو ضفت قناة إرسال بس؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

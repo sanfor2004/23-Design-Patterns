@@ -4,6 +4,8 @@
 
 [Precedente](../../structural/flyweight/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/chain-of-responsibility/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
@@ -14,7 +16,11 @@ Intermedio
 
 ## In One Sentence
 
-Controlla l'accesso a un object tramite un sostituto con la stessa [`interface`](../../GLOSSARY.md#interface) (Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa).
+Controlla l'accesso a un object tramite un sostituto con la stessa [`interface`](../../GLOSSARY.md#interface).
+
+## In parole semplici
+
+Una galleria non deve caricare tutte le immagini in anticipo.Questo Proxy offre `display`, crea l’immagine al primo uso e poi la riutilizza.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Ruoli canonici in questo esempio:
 - [`Subject interface`](../../GLOSSARY.md#subject-interface) — Il contratto condiviso da Proxy e Real Subject. Qui: `Image`.
 - [`Real Subject`](../../GLOSSARY.md#real-subject) — L'object che svolge il lavoro dietro un Proxy. Qui: `DiskImage`.
 - [`lazy initialization`](../../GLOSSARY.md#lazy-initialization) — Rinviare la creazione fino al primo utilizzo del valore o della risorsa. Qui: `LazyImage::display`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -145,6 +155,12 @@ Se il caricamento lancia un'eccezione, ritenti o memorizzi il fallimento? Defini
 ## Mini Challenge
 
 Conta i caricamenti su tre display e prova un loader che fallisce una volta.
+
+## Verifica cosa hai capito
+
+1. Quante immagini reali esistono dopo due chiamate a display e quando sono nate?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

@@ -4,6 +4,8 @@
 
 [Categoria](../README.it.md) · [Successivo](../../creational/builder/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
@@ -15,6 +17,10 @@ Intermedio
 ## In One Sentence
 
 Crea object compatibili attraverso un unico contratto di famiglia.
+
+## In parole semplici
+
+Una schermata richiede pulsanti e pannelli dello stesso tema. Una sola `Factory` crea la coppia compatibile, così il chiamante non deve scegliere i tipi concreti uno per uno.
 
 ## The Problem
 
@@ -33,7 +39,7 @@ Creare ogni widget direttamente permette di mescolare un pulsante scuro e un pan
 
 ## The Idea
 
-Passa un Theme a render: la fabbrica produce entrambi gli object e il client usa soltanto le [`interface`](../../GLOSSARY.md#interface) (Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa).
+Passa un `Theme` a `render`: la `Factory` crea entrambi i prodotti, mentre il chiamante usa le loro [`Interface`](../../GLOSSARY.md#interface).
 
 ## Real-World Analogy
 
@@ -58,6 +64,10 @@ Ruoli canonici in questo esempio:
 - [`Product`](../../GLOSSARY.md#product) — Il contratto dell'object restituito dal codice di creazione. Qui: `Button, Panel`.
 - [`Concrete Product`](../../GLOSSARY.md#concrete-product) — Una particolare implementation del contratto Product. Qui: `DarkButton, LightButton, DarkPanel, LightPanel`.
 - [`Concrete Factory`](../../GLOSSARY.md#concrete-factory) — Un'implementation che crea una famiglia coerente di Product. Qui: `DarkTheme, LightTheme`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -135,7 +145,7 @@ Puoi sostituire una famiglia completa senza modificare il flusso di rendering.
 
 ## Trade-offs
 
-Aggiungere un prodotto come Slider richiede modifiche a tutte le fabbriche. Il contratto non garantisce da solo la coerenza visiva delle [`implementation`](../../GLOSSARY.md#implementation) (Il codice concreto che esegue un'operazione o soddisfa un'interface).
+Aggiungere un prodotto come Slider richiede modifiche a tutte le fabbriche. Il contratto non garantisce da solo la coerenza visiva delle [`implementation`](../../GLOSSARY.md#implementation).
 
 ## Related Patterns
 
@@ -165,6 +175,12 @@ Quali interface cambiano aggiungendo un tema? E aggiungendo un tipo di widget?
 ## Mini Challenge
 
 Aggiungi una famiglia ad alto contrasto, poi un prodotto Slider. Confronta l'estensione delle modifiche.
+
+## Verifica cosa hai capito
+
+1. Perché un solo Theme crea entrambi i prodotti?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

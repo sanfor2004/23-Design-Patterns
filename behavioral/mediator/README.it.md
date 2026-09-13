@@ -4,6 +4,8 @@
 
 [Precedente](../../behavioral/iterator/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/memento/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
@@ -15,6 +17,10 @@ Intermedio
 ## In One Sentence
 
 Sposta la coordinazione fra object pari in un object dedicato.
+
+## In parole semplici
+
+Il pulsante di accesso richiede due campi compilati.Mediator gestisce la regola, così ogni campo non deve conoscere l’altro o il pulsante.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Ruoli canonici in questo esempio:
 - [`Colleague`](../../GLOSSARY.md#colleague) — Un object le cui interazioni vengono coordinate da un Mediator. Qui: `Field, Button`.
 - [`Concrete Mediator`](../../GLOSSARY.md#concrete-mediator) — Un'implementation che contiene le regole di coordinazione dei Colleague. Qui: `LoginForm`.
 - [`callback`](../../GLOSSARY.md#callback) — Una function o operazione fornita perché un'altra parte possa richiamarla quando serve. Qui: `Mediator::changed`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -104,6 +114,8 @@ int main() {
     std::cout << "Ready: " << std::boolalpha << form.ready() << '\n';
     form.password("example");
     std::cout << "Ready: " << form.ready() << '\n';
+    form.password("");
+    std::cout << "Ready after clearing: " << form.ready() << '\n';
 }
 ```
 
@@ -112,6 +124,7 @@ int main() {
 ```text
 Ready: false
 Ready: true
+Ready after clearing: false
 ```
 
 ## When to Use
@@ -162,6 +175,12 @@ Perché un copy constructor automatico sarebbe pericoloso per LoginForm?
 ## Mini Challenge
 
 Aggiungi l'accettazione dei termini senza far conoscere il pulsante a Field.
+
+## Verifica cosa hai capito
+
+1. Chi decide se abilitare il pulsante quando un campo si svuota?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

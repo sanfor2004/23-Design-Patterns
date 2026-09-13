@@ -1,1 +1,3 @@
 Total: 30 bytes
+Empty: 0 bytes
+Negative size rejected

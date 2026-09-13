@@ -4,6 +4,8 @@
 
 [Previous](../../structural/decorator/README.md) · [Category](../README.md) · [Next](../../structural/flyweight/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
@@ -14,7 +16,11 @@ Beginner
 
 ## In One Sentence
 
-Offer a small entry point to a subsystem's common workflow.
+Give a complex subsystem one simple entry point.
+
+## Explain It Simply
+
+Checkout needs stock, payment, and shipping in order. Facade puts that common sequence behind one call; it does not automatically make the steps a transaction.
 
 ## The Problem
 
@@ -59,16 +65,21 @@ Canonical roles in this example:
 - [`interface`](../../GLOSSARY.md#interface) — The contract of operations and observable behavior offered to a caller. Here: `Checkout::buy`.
 - [`Client`](../../GLOSSARY.md#client-pattern-role) — Code that uses an interface or collaborates with a pattern's objects. Here: `main`.
 
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 
 struct Stock {
     bool available(int quantity) const { return quantity > 0 && quantity <= 3; }
 };
 struct Payment {
-    void charge(int amount) const { std::cout << "Charged " << amount << '\n'; }
+    void charge(int amount_cents) const { std::cout << "Charged " << amount_cents << '\n'; }
 };
 struct Shipping {
     void dispatch() const { std::cout << "Dispatched\n"; }
@@ -148,6 +159,12 @@ If charging succeeds but shipping fails, what guarantee can buy honestly provide
 ## Mini Challenge
 
 Add a simulated shipping failure and design an explicit refund result rather than silently returning success.
+
+## Check Yourself
+
+1. What does buy fail to guarantee if shipping fails after payment?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

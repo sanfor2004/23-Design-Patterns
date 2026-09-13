@@ -4,6 +4,8 @@
 
 [上一个](../../behavioral/command/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/iterator/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -14,7 +16,11 @@
 
 ## In One Sentence
 
-用 object 表示小型语言，并按 grammar 规则 求值（evaluation）。
+用 object 表示小型语言，并按 grammar 规则求值（evaluation）。
+
+## 简单理解
+
+访问规则可以要求同时具备 editor 和 verified。每个节点计算一条规则，较大的表达式由较小的表达式组合而成。
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Expression 定义 求值（evaluation），Context 提供角色集合，Role 检
 - [`Terminal Expression`](../../GLOSSARY.md#terminal-expression) — 不含子表达式的表达式。 对应代码： `Role`。
 - [`Nonterminal Expression`](../../GLOSSARY.md#nonterminal-expression) — 按照语法规则组合子表达式的表达式。 对应代码： `Both`。
 - `Context` — 表达式求值时使用的数据，本例中是权限角色名称的集合。 `Context`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -119,7 +129,7 @@ grammar 小而稳定，且 expression tree 本身有构建和检查价值时使�
 
 ## Advantages
 
-规则 recursive 组合，可在不同 Context 中重复 求值（evaluation）。
+规则 recursive 组合，可在不同 Context 中重复求值（evaluation）。
 
 ## Trade-offs
 
@@ -131,11 +141,11 @@ grammar 小而稳定，且 expression tree 本身有构建和检查价值时使�
 
 ## Common Confusion
 
-Composite 描述树结构， Interpreter 赋予 grammar 含义和 求值（evaluation）； Visitor 可以给树增加操作。
+Composite 描述树结构， Interpreter 赋予 grammar 含义和求值（evaluation）； Visitor 可以给树增加操作。
 
 ## Terms to Remember
 
-- `Interpreter` — 用 object 表示小型语言，并按 grammar 规则 求值（evaluation）。
+- `Interpreter` — 用 object 表示小型语言，并按 grammar 规则求值（evaluation）。
 - `Abstract Expression` — 对 Interpreter 语法节点求值的约定。 示例： `Expression`。
 - `Terminal Expression` — 不含子表达式的表达式。 示例： `Role`。
 - `Nonterminal Expression` — 按照语法规则组合子表达式的表达式。 示例： `Both`。
@@ -154,6 +164,12 @@ Composite 描述树结构， Interpreter 赋予 grammar 含义和 求值（evalu
 ## Mini Challenge
 
 增加表示 OR 的 Either，用三个不同 Context 测试嵌套规则。
+
+## 检查理解
+
+1. 本例是在解析文本，还是计算已构建的树？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

@@ -29,4 +29,9 @@ int main() {
     display.reset();
     stock.set(0);
     std::cout << "Expired listener skipped\n";
+    auto screen = std::make_shared<Display>();
+    auto log = std::make_shared<Display>();
+    stock.subscribe(screen);
+    stock.subscribe(log);
+    stock.set(2);
 }

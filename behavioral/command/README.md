@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/chain-of-responsibility/README.md) · [Category](../README.md) · [Next](../../behavioral/interpreter/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Turn an action into an object that can be stored and invoked later.
+Keep an action as an Object.
+
+## Explain It Simply
+
+An editor needs to remember edits so users can undo them. Command stores the action and the information needed to reverse it, while History decides when to run or undo it.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Canonical roles in this example:
 - [`Receiver`](../../GLOSSARY.md#receiver) — The object that performs the work requested by a Command. Here: `Document`.
 - [`Invoker`](../../GLOSSARY.md#invoker) — The role that starts or stores Commands without knowing each operation's details. Here: `History`.
 - [`Concrete Command`](../../GLOSSARY.md#concrete-command) — A Command implementation that binds a Receiver and an action. Here: `Append`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -105,6 +115,8 @@ int main() {
     std::cout << document.text << '\n';
     history.undo();
     std::cout << document.text << '\n';
+    history.undo();
+    std::cout << "Empty undo: " << document.text << '\n';
 }
 ```
 
@@ -113,6 +125,7 @@ int main() {
 ```text
 Hello world
 Hello
+Empty undo: Hello
 ```
 
 ## When to Use
@@ -163,6 +176,12 @@ Can sending an email be undone in the same sense as restoring a string? Define c
 ## Mini Challenge
 
 Add a second append, undo twice, and verify the empty-history call is harmless.
+
+## Check Yourself
+
+1. Why must these edits be undone in reverse order?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

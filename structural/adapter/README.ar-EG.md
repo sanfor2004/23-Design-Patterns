@@ -4,9 +4,11 @@
 
 [السابق](../../creational/singleton/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/bridge/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 وفّق طريقة التعامل الحالية مع العقد اللي الكود المستدعي (`Client`) محتاجه. العقد ده بنسميه [`interface`](../../GLOSSARY.md#interface): بيحدد العمليات المتاحة والنتيجة المتوقعة منها.
+
+## ببساطة
+
+الحساس بيرجع فهرنهايت، والعرض محتاج مئوية.الـ`Adapter` بيحوّل الاستدعاء والقيمة من غير تعديل الطرفين.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ display(Temperature)  -->  CelsiusAdapter  -->  LegacyThermometer
 - [`Target`](../../GLOSSARY.md#target) — الـ `interface` اللي `Client` متوقع يتعامل معاها. هنا: `Temperature`.
 - [`Adaptee`](../../GLOSSARY.md#adaptee) — الـ `object` الموجودة اللي `interface` بتاعتها محتاجة تتوافق مع المطلوب. هنا: `LegacyThermometer`.
 - [`interface`](../../GLOSSARY.md#interface) — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. هنا: `Temperature`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -108,7 +118,7 @@ int main() {
 
 ## Advantages
 
-التحويل في مكان واحد، والعرض يقبل أي [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد `interface`) لـ `Temperature`.
+التحويل في مكان واحد، والعرض يقبل أي [`implementation`](../../GLOSSARY.md#implementation) لـ `Temperature`.
 
 ## Trade-offs
 
@@ -142,6 +152,12 @@ int main() {
 ## Mini Challenge
 
 خلّي `Fahrenheit` قابلة للتغيير، واختبر نقطتي التجمد والغليان.
+
+## اختبر فهمك
+
+1. مين بيحوّل الوحدات، ومين مسؤول عن `Lifetime` الحساس؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

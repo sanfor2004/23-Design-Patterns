@@ -1,0 +1,2 @@
+template: shield, spear
+gate guard: shield, spear, helmet

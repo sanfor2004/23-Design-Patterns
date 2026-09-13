@@ -4,9 +4,11 @@
 
 [السابق](../../creational/abstract-factory/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/factory-method/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الـ`Objects` وإعدادها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 جهّز الكائن (`object`) بخطوات أساميها واضحة، وبعدين طلّع النتيجة.
+
+## ببساطة
+
+الطلب ليه اختيارات كتير، واستدعاء `constructor` طويل بيخلّي معنى القيم مش واضح.الـ`Builder` بيجمع الاختيارات بأسماء واضحة ويراجعها قبل ما يطلع النتيجة.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Client  -->  RequestBuilder  -->  Request
 - [`Product`](../../GLOSSARY.md#product) — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. هنا: `Request`.
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — عقد (`interface`) بيسمح تكتب سلسلة استدعاءات بشكل مقروء؛ ده لوحده مش معناه إنك بتستخدم `Builder`. هنا: `RequestBuilder.endpoint().timeout().retry()`.
 - [`constructor`](../../GLOSSARY.md#constructor) — العملية الخاصة اللي بتجهّز `instance` جديدة وقت إنشائها. هنا: `Request::Request`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -153,6 +163,12 @@ Invalid request rejected
 ## Mini Challenge
 
 ارفض `Timeout` أكبر من 120، وجرّب آخر قيمة مقبولة وأول قيمة مرفوضة.
+
+## اختبر فهمك
+
+1. إيه اللي يحصل لو المستدعي استخدم `Request` مباشرة بدل `build`؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

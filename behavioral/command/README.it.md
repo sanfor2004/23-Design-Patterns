@@ -4,6 +4,8 @@
 
 [Precedente](../../behavioral/chain-of-responsibility/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/interpreter/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
@@ -15,6 +17,10 @@ Intermedio
 ## In One Sentence
 
 Trasforma un'azione in un object conservabile e invocabile in seguito.
+
+## In parole semplici
+
+Un editor deve ricordare le modifiche per annullarle.Command conserva azione e dati per annullarla, mentre History decide quando eseguire o annullare.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Ruoli canonici in questo esempio:
 - [`Receiver`](../../GLOSSARY.md#receiver) — L'object che svolge il lavoro richiesto da un Command. Qui: `Document`.
 - [`Invoker`](../../GLOSSARY.md#invoker) — Il ruolo che avvia o conserva Command senza conoscere i dettagli delle singole operazioni. Qui: `History`.
 - [`Concrete Command`](../../GLOSSARY.md#concrete-command) — Un'implementation di Command che collega un Receiver a un'azione. Qui: `Append`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -105,6 +115,8 @@ int main() {
     std::cout << document.text << '\n';
     history.undo();
     std::cout << document.text << '\n';
+    history.undo();
+    std::cout << "Empty undo: " << document.text << '\n';
 }
 ```
 
@@ -113,6 +125,7 @@ int main() {
 ```text
 Hello world
 Hello
+Empty undo: Hello
 ```
 
 ## When to Use
@@ -163,6 +176,12 @@ Inviare un'email è annullabile come ripristinare una stringa? Distingui compens
 ## Mini Challenge
 
 Esegui due append, annulla due volte e verifica che annullare una storia vuota sia innocuo.
+
+## Verifica cosa hai capito
+
+1. Perché queste modifiche vanno annullate in ordine inverso?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

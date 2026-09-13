@@ -4,6 +4,8 @@
 
 [Previous](../../creational/prototype/README.md) · [Category](../README.md) · [Next](../../structural/adapter/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Restrict a type to one accessible instance, accepting the cost of shared global state.
+Provide one shared instance with global access.
+
+## Explain It Simply
+
+Several callers need the same metrics counter. Singleton controls creation, but that shared state also makes tests and dependencies harder to isolate.
 
 ## The Problem
 
@@ -51,13 +57,17 @@ Client A + B  -->  Metrics::instance()  -->  one Metrics
 
 ## Participants
 
-Metrics controls its [`lifetime`](../../GLOSSARY.md#lifetime) (The interval during which an object exists and may be used according to its rules) and stores the count. instance returns a non-owning reference; callers must never delete it.
+Metrics controls its [`lifetime`](../../GLOSSARY.md#lifetime) and stores the count. instance returns a non-owning reference; callers must never delete it.
 
 Canonical roles in this example:
 
 - [`instance`](../../GLOSSARY.md#instance) — A particular object of a type. Here: `Metrics::instance()`.
 - [`global state`](../../GLOSSARY.md#global-state) — Data reachable broadly across a program whose changes can affect distant code. Here: `Metrics::requests_`.
 - [`thread-safe initialization`](../../GLOSSARY.md#thread-safe-initialization) — Initialization protected against concurrent construction; it does not make later operations thread-safe. Here: `static Metrics metrics`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -120,7 +130,7 @@ Global access hides dependencies and contaminates tests. Local-static initializa
 
 ## Common Confusion
 
-One object managed by [`dependency injection`](../../GLOSSARY.md#dependency-injection) (Supplying a dependency from outside instead of choosing or constructing it inside the consumer) is not necessarily a Singleton: uniqueness need not be enforced by the type.
+One object managed by [`dependency injection`](../../GLOSSARY.md#dependency-injection) is not necessarily a Singleton: uniqueness need not be enforced by the type.
 
 ## Terms to Remember
 
@@ -142,6 +152,12 @@ Does thread-safe initialization make requests_ thread-safe? Identify the separat
 ## Mini Challenge
 
 Refactor the example to inject a Metrics-like counter into two jobs, then test two isolated counters.
+
+## Check Yourself
+
+1. How could one test leave counter State that affects the next test?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

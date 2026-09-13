@@ -4,6 +4,8 @@
 
 [上一个](../../structural/bridge/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/decorator/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 让单个叶子和 object 树提供同一种操作。
+
+## 简单理解
+
+文件夹中可以有文件和其他文件夹。Composite 让两者都提供 `bytes`，调用方无需自己处理每一层嵌套。
 
 ## The Problem
 
@@ -51,13 +57,17 @@ Client::bytes()  -->  Entry  -->  File / Folder[Entry]
 
 ## Participants
 
-Entry 定义 bytes；File 返回自身大小；Folder 用 [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr)（具有独占 ownership 的 smart pointer，在所有者销毁时释放 object） 拥有子节点并汇总结果。
+Entry 定义 bytes；File 返回自身大小；Folder 用 [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) 拥有子节点并汇总结果。
 
 本例中的标准角色：
 
 - [`Component`](../../GLOSSARY.md#component) — 叶子、分组或包装层共同提供的约定。 对应代码： `Entry`。
 - [`Leaf`](../../GLOSSARY.md#leaf) — 不含子 Component 的 Component。 对应代码： `File`。
 - [`ownership`](../../GLOSSARY.md#ownership) — 负责维持资源存活并最终释放资源的责任。 对应代码： `Folder::children_`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -100,6 +110,9 @@ int main() {
     root.add(std::make_unique<File>(10));
     root.add(std::move(images));
     std::cout << "Total: " << root.bytes() << " bytes\n";
+    std::cout << "Empty: " << Folder{}.bytes() << " bytes\n";
+    try { const File invalid{-1}; }
+    catch (const std::invalid_argument&) { std::cout << "Negative size rejected\n"; }
 }
 ```
 
@@ -107,6 +120,8 @@ int main() {
 
 ```text
 Total: 30 bytes
+Empty: 0 bytes
+Negative size rejected
 ```
 
 ## When to Use
@@ -135,7 +150,7 @@ Client 无需知道深度和具体结构，就能计算子树总量。
 
 ## Common Confusion
 
-Decorator 包装一个 object 以增加 behavior；Composite 通常包含多个子节点来表示整体，两者都可能 递归地依赖共同 [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为）。
+Decorator 包装一个 object 以增加 behavior；Composite 通常包含多个子节点来表示整体，两者都可能 递归地依赖共同 [`interface`](../../GLOSSARY.md#interface)。
 
 ## Terms to Remember
 
@@ -157,6 +172,12 @@ Decorator 包装一个 object 以增加 behavior；Composite 通常包含多个�
 ## Mini Challenge
 
 增加空目录和更深一层目录，验证总量，并考虑更宽的大小 type。
+
+## 检查理解
+
+1. 为什么空 Folder 能通过与 File 相同的 Interface 返回零？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

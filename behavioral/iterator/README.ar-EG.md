@@ -4,9 +4,11 @@
 
 [السابق](../../behavioral/interpreter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/mediator/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 لف على مجموعة من خلال طريقة وصول ثابتة.
+
+## ببساطة
+
+المستدعي محتاج الأغاني واحدة واحدة، مش تفاصيل التخزين.الـ`Iterator` بيتابع مكانه وبيخلّي الحلقة تطلب العنصر اللي بعده.
 
 ## The Problem
 
@@ -60,6 +66,10 @@ range-for client  -->  Playlist::Iterator  -->  private tracks
 - [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — تنفيذ (`implementation`) بيحفظ موضع المرور في مجموعة محددة (`Aggregate`). هنا: `Playlist::Iterator`.
 - [`forward iterator`](../../GLOSSARY.md#forward-iterator) — أداة مرور (`iterator`) بتتحرك لقدام، وبتدعم المرور المستقل أكتر من مرة (`multipass`). يعني نسخها المستقلة تقدر تمر على نفس النطاق. هنا: `std::forward_iterator`.
 
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+
 ## Modern C++20 Example
 
 ```cpp
@@ -94,6 +104,12 @@ static_assert(std::forward_iterator<Playlist::Iterator>);
 int main() {
     const Playlist playlist{{7, 12, 18}};
     for (int track : playlist) std::cout << "Track " << track << '\n';
+    const Playlist empty{{}};
+    std::cout << "Empty: " << std::boolalpha << (empty.begin() == empty.end()) << '\n';
+    auto first = playlist.begin();
+    const auto copy = first;
+    ++first;
+    std::cout << "Independent positions: " << *first << ' ' << *copy << '\n';
 }
 ```
 
@@ -103,6 +119,8 @@ int main() {
 Track 7
 Track 12
 Track 18
+Empty: true
+Independent positions: 12 7
 ```
 
 ## When to Use
@@ -115,7 +133,7 @@ Track 18
 
 ## When NOT to Use
 
-بلاش `Iterator` مخصصة لو `const iterators` موجودة أو `Range` كفاية؛ الـ [`implementation`](../../GLOSSARY.md#implementation) (الكود الفعلي اللي بينفذ عملية أو بيوفّي عقد `interface`) هنا للتعليم.
+بلاش `Iterator` مخصصة لو `const iterators` موجودة أو `Range` كفاية؛ الـ [`implementation`](../../GLOSSARY.md#implementation) هنا للتعليم.
 
 ## Advantages
 
@@ -123,7 +141,7 @@ Track 18
 
 ## Trade-offs
 
-الـ `Iterator` مش بتطوّل عمر المجموعة. نقل أو تدمير `Playlist` يبطل الافتراضات، وقراءة `end` غير صالحة زي القياسي.
+الـ`Iterator` بيستعير البيانات ومش بيطوّل الـ`Lifetime` بتاعة المجموعة. لازم الـ`Playlist` تفضل موجودة وما تتنقلش أثناء استخدامه. القيمة `end` بتحدد نهاية النطاق، ومينفعش تقراها كأنها عنصر.
 
 ## Related Patterns
 
@@ -154,11 +172,17 @@ Track 18
 
 اختبر قائمة فاضية و `Iterator` اتنين مستقلين؛ تحريك واحدة ما يحركش التانية.
 
+## اختبر فهمك
+
+1. هل نقدر نمشي في نفس الـ`Playlist` مرتين وكل مرة ليها مكان مستقل؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
+
 ## Quick Summary
 
 - **المشكلة:** الـ `Client` محتاج يقرأ أغاني القائمة من غير ما يدخل على التخزين الخاص.
 - **الحل:** وفّر بداية النطاق ونهايته عن طريق `begin` و`end`. أداة المرور (`Iterator`) تدعم قراءة العنصر الحالي، والانتقال للي بعده، والمقارنة.
-- **`Trade-off`:** الـ `Iterator` مش بتطوّل عمر المجموعة. نقل أو تدمير `Playlist` يبطل الافتراضات، وقراءة `end` غير صالحة زي القياسي.
+- **`Trade-off`:** الـ`Iterator` بيستعير البيانات ومش بيطوّل الـ`Lifetime` بتاعة المجموعة. لازم الـ`Playlist` تفضل موجودة وما تتنقلش أثناء استخدامه. القيمة `end` بتحدد نهاية النطاق، ومينفعش تقراها كأنها عنصر.
 - **افتكر:** امشي على البيانات من غير ما تفتح الـ `container`.
 
 [السابق](../../behavioral/interpreter/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/mediator/README.ar-EG.md)

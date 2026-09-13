@@ -4,9 +4,11 @@
 
 [السابق](../../creational/builder/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/prototype/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الـ`Objects` وإعدادها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 خلّي الـ `subclass` هي اللي تحدد الـ `concrete object` اللي خطوات الشغل المشتركة (`workflow`) هتستخدمه.
+
+## ببساطة
+
+مهمة التنبيه بتبعت نفس الرسالة، بس وسيلة الإرسال بتختلف.الخطوات بتنادي `Factory Method`، وكل `subclass` بتعمل الـ`Sender` المناسب.
 
 ## The Problem
 
@@ -62,6 +68,10 @@ AlertJob::run  -->  make_sender()  -->  Sender
 - [`Creator`](../../GLOSSARY.md#creator) — الدور الأساسي اللي ماسك الخطوات وبيعلن عملية الإنشاء اللي بيحتاجها. هنا: `AlertJob`.
 - [`Concrete Creator`](../../GLOSSARY.md#concrete-creator) — نوع مشتق (`subclass`) من `Creator`، مسؤول عن إنشاء منتج معين (`Product`). هنا: `EmailJob, ConsoleJob`.
 - [`Product`](../../GLOSSARY.md#product) — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. هنا: `Sender`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -111,7 +121,7 @@ Console: build complete
 
 ## When to Use
 
-استخدمه لما `Workflow` مبنية أصلاً على الـ [`inheritance`](../../GLOSSARY.md#inheritance) (بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه) ومحتاجة نقطة إنشاء قابلة للتوسيع.
+استخدمه لما `Workflow` مبنية أصلاً على الـ [`inheritance`](../../GLOSSARY.md#inheritance) ومحتاجة نقطة إنشاء قابلة للتوسيع.
 
 ### Use cases
 
@@ -158,6 +168,12 @@ Console: build complete
 ## Mini Challenge
 
 ضيف `FileJob` بتكتب في ملف مؤقت، واتأكد من محتواه.
+
+## اختبر فهمك
+
+1. اختيار الـ`Sender` بيحصل فين، وإيه الخطوات اللي بتفضل مشتركة؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

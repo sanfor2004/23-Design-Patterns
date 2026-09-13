@@ -1,2 +1,4 @@
 Stock: 4
 Expired listener skipped
+Stock: 2
+Stock: 2

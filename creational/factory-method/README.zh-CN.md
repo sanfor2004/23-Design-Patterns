@@ -4,6 +4,8 @@
 
 [上一个](../../creational/builder/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../creational/prototype/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — 关注如何创建和配置 object 的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 让 subclass 决定公共流程所使用的 concrete object。
+
+## 简单理解
+
+通知任务发送相同消息，但发送方式不同。流程调用 Factory Method，由各个 subclass 创建合适的 Sender。
 
 ## The Problem
 
@@ -55,13 +61,17 @@ AlertJob::run  -->  make_sender()  -->  Sender
 
 ## Participants
 
-AlertJob 管理流程；EmailJob、ConsoleJob 重写创建步骤；Sender 提供操作，返回的 [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr)（具有独占 ownership 的 smart pointer，在所有者销毁时释放 object） 拥有产品。
+AlertJob 管理流程；EmailJob、ConsoleJob 重写创建步骤；Sender 提供操作，返回的 [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) 拥有产品。
 
 本例中的标准角色：
 
 - [`Creator`](../../GLOSSARY.md#creator) — 拥有公共流程并声明创建操作的基础角色。 对应代码： `AlertJob`。
 - [`Concrete Creator`](../../GLOSSARY.md#concrete-creator) — 提供某种 Product 的 Creator subclass。 对应代码： `EmailJob, ConsoleJob`。
 - [`Product`](../../GLOSSARY.md#product) — 创建代码返回的 object 所提供的约定。 对应代码： `Sender`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -111,7 +121,7 @@ Console: build complete
 
 ## When to Use
 
-已有 [`inheritance`](../../GLOSSARY.md#inheritance)（从 base class 定义 derived class，复用或扩展约定及实现） 体系中的公共流程需要 可扩展（extensibility） 的创建步骤时使用。
+已有 [`inheritance`](../../GLOSSARY.md#inheritance) 体系中的公共流程需要 可扩展（extensibility） 的创建步骤时使用。
 
 ### Use cases
 
@@ -158,6 +168,12 @@ Console: build complete
 ## Mini Challenge
 
 添加 FileJob，把消息写入临时文件，并验证文件内容。
+
+## 检查理解
+
+1. 在哪里选择 Sender？哪些流程保持共用？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

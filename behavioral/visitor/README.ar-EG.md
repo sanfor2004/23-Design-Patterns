@@ -4,9 +4,11 @@
 
 [السابق](../../behavioral/template-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 ضيف عمليات جديدة على مجموعة أنواع ثابتة، وحط العمليات دي في `Visitor` منفصلة.
+
+## ببساطة
+
+الكتب والأكل ليهم حساب ضريبة مختلف.الـ`Visitor` بيجمع الحسابات، وكل عنصر بينادي العملية المناسبة لنوعه.
 
 ## The Problem
 
@@ -59,9 +65,14 @@ Item::accept(visitor)  -->  Visitor::visit(type)  -->  Tax(Book) / Tax(Food)
 - [`Concrete Element`](../../GLOSSARY.md#concrete-element) — تنفيذ للعنصر (`Element implementation`) بيختار الاستدعاء المناسب لنوعه من عمليات الزيارة (`Visitor overload`). هنا: `Book, Food`.
 - [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — تنفيذ للزائر (`Visitor implementation`) فيه عملية لكل نوع عنصر مدعوم (`Element`). هنا: `Tax`.
 
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -78,17 +89,17 @@ struct Item {
     virtual void accept(Visitor& visitor) const = 0;
 };
 struct Book final : Item {
-    int price = 20;
+    int price_cents = 20;
     void accept(Visitor& visitor) const override { visitor.visit(*this); }
 };
 struct Food final : Item {
-    int price = 10;
+    int price_cents = 10;
     void accept(Visitor& visitor) const override { visitor.visit(*this); }
 };
 struct Tax final : Visitor {
-    int total = 0;
-    void visit(const Book& book) override { total += book.price / 10; }
-    void visit(const Food& food) override { total += food.price / 5; }
+    int total_cents = 0;
+    void visit(const Book& book) override { total_cents += book.price_cents / 10; }
+    void visit(const Food& food) override { total_cents += food.price_cents / 5; }
 };
 int main() {
     std::vector<std::unique_ptr<Item>> basket;
@@ -96,7 +107,7 @@ int main() {
     basket.push_back(std::make_unique<Food>());
     Tax tax;
     for (const auto& item : basket) item->accept(tax);
-    std::cout << "Tax: " << tax.total << '\n';
+    std::cout << "Tax: " << tax.total_cents << '\n';
 }
 ```
 
@@ -116,7 +127,7 @@ Tax: 4
 
 ## When NOT to Use
 
-بلاش لو الأنواع الجديدة بتزيد باستمرار أو كشف تفاصيلها هيكسر الـ [`encapsulation`](../../GLOSSARY.md#encapsulation) (بتحمي تمثيل البيانات والقواعد اللي لازم تفضل صحيحة وبتسمح بالتعامل معاهم من عمليات محددة).
+بلاش لو الأنواع الجديدة بتزيد باستمرار أو كشف تفاصيلها هيكسر الـ [`encapsulation`](../../GLOSSARY.md#encapsulation).
 
 ## Advantages
 
@@ -154,6 +165,12 @@ Tax: 4
 ## Mini Challenge
 
 ضيف `Label Visitor` من غير تعديل `Book` أو `Food`، وبعدها ضيف نوع ثالث وعدّ التغييرات.
+
+## اختبر فهمك
+
+1. إيه اللي بيتغير لما تضيف نوع عنصر جديد بدل عملية جديدة؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

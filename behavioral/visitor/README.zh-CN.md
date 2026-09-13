@@ -4,6 +4,8 @@
 
 [上一个](../../behavioral/template-method/README.zh-CN.md) · [类别](../README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 通过独立 Visitor，为稳定的 Element type 集合增加操作。
+
+## 简单理解
+
+图书和食品需要不同的税额计算。Visitor 把这些计算放在一起，每个元素调用对应自身类型的方法。
 
 ## The Problem
 
@@ -59,9 +65,14 @@ Item 定义 accept，Book 和 Food 选择 type 重载，Visitor 列出支持 typ
 - [`Concrete Element`](../../GLOSSARY.md#concrete-element) — 选择与自身类型匹配的 Visitor overload 的 Element implementation。 对应代码： `Book, Food`。
 - [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — 为每种受支持的 Element 类型提供操作的 Visitor implementation。 对应代码： `Tax`。
 
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -78,17 +89,17 @@ struct Item {
     virtual void accept(Visitor& visitor) const = 0;
 };
 struct Book final : Item {
-    int price = 20;
+    int price_cents = 20;
     void accept(Visitor& visitor) const override { visitor.visit(*this); }
 };
 struct Food final : Item {
-    int price = 10;
+    int price_cents = 10;
     void accept(Visitor& visitor) const override { visitor.visit(*this); }
 };
 struct Tax final : Visitor {
-    int total = 0;
-    void visit(const Book& book) override { total += book.price / 10; }
-    void visit(const Food& food) override { total += food.price / 5; }
+    int total_cents = 0;
+    void visit(const Book& book) override { total_cents += book.price_cents / 10; }
+    void visit(const Food& food) override { total_cents += food.price_cents / 5; }
 };
 int main() {
     std::vector<std::unique_ptr<Item>> basket;
@@ -96,7 +107,7 @@ int main() {
     basket.push_back(std::make_unique<Food>());
     Tax tax;
     for (const auto& item : basket) item->accept(tax);
-    std::cout << "Tax: " << tax.total << '\n';
+    std::cout << "Tax: " << tax.total_cents << '\n';
 }
 ```
 
@@ -116,7 +127,7 @@ Element type 稳定，而新操作频繁增加时使用。
 
 ## When NOT to Use
 
-Element type 经常增加，或暴露内部细节会破坏 [`encapsulation`](../../GLOSSARY.md#encapsulation)（把内部表示和必须保持的规则放在受控操作之后） 时避免。
+Element type 经常增加，或暴露内部细节会破坏 [`encapsulation`](../../GLOSSARY.md#encapsulation) 时避免。
 
 ## Advantages
 
@@ -124,7 +135,7 @@ Element type 经常增加，或暴露内部细节会破坏 [`encapsulation`](../
 
 ## Trade-offs
 
-新增 Element type 要修改 Visitor [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为） 和所有 Visitor。整数税率仅供演示，不代表真实税法，舍入需要领域规则。
+新增 Element type 要修改 Visitor [`interface`](../../GLOSSARY.md#interface) 和所有 Visitor。整数税率仅供演示，不代表真实税法，舍入需要领域规则。
 
 ## Related Patterns
 
@@ -154,6 +165,12 @@ iterator 负责遍历， Visitor 按 Element type 分派操作，Composite 可�
 ## Mini Challenge
 
 不修改 Book 和 Food，添加 Label Visitor；再添加第三种元素，统计修改范围。
+
+## 检查理解
+
+1. 增加元素类型与增加操作时，需要修改的地方有何不同？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

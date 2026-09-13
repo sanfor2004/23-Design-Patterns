@@ -4,6 +4,8 @@
 
 [Precedente](../../structural/proxy/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/command/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
@@ -16,6 +18,10 @@ Intermedio
 
 Passa una richiesta fra gestori che possono fermarla o proseguire.
 
+## In parole semplici
+
+La richiesta deve superare autenticazione e limite di importo.Ogni Handler gestisce un controllo; il chiamante sceglie l’ordine.
+
 ## The Problem
 
 Una richiesta deve superare autenticazione e limiti di spesa, con politiche diverse per ingresso.
@@ -24,7 +30,7 @@ Una richiesta deve superare autenticazione e limiti di spesa, con politiche dive
 
 ```cpp
 bool accept(Request r) {
-    return r.authenticated && r.amount > 0 && r.amount <= 100;
+    return r.authenticated && r.amount_cents > 0 && r.amount_cents <= 100;
 }
 ```
 
@@ -60,15 +66,20 @@ Ruoli canonici in questo esempio:
 - [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — Un Handler che implementa una specifica regola di elaborazione. Qui: `Auth, Limit`.
 - [`chain termination`](../../GLOSSARY.md#chain-termination) — La regola che ferma una catena e stabilisce cosa succede dopo l'ultimo Handler. Qui: `Handler::handle`.
 
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <initializer_list>
 #include <iostream>
 #include <memory>
 #include <utility>
 
-struct Request { bool authenticated; int amount; };
+struct Request { bool authenticated; int amount_cents; };
 class Handler {
     std::unique_ptr<Handler> next_;
 protected:
@@ -87,7 +98,7 @@ public:
     using Handler::Handler;
 };
 class Limit final : public Handler {
-    bool accepts(const Request& request) const override { return request.amount > 0 && request.amount <= 100; }
+    bool accepts(const Request& request) const override { return request.amount_cents > 0 && request.amount_cents <= 100; }
 public:
     using Handler::Handler;
 };
@@ -108,7 +119,7 @@ Accepted
 
 ## When to Use
 
-Usala quando ordine e [`composition`](../../GLOSSARY.md#composition) (Costruire behavior collegando object che usano o contengono altri object) dei controlli devono variare indipendentemente.
+Usala quando ordine e [`composition`](../../GLOSSARY.md#composition) dei controlli devono variare indipendentemente.
 
 ### Use cases
 
@@ -154,6 +165,12 @@ Cosa costa mettere un Limit oneroso prima di Auth per richieste anonime?
 ## Mini Challenge
 
 Aggiungi un controllo di manutenzione e verifica che un rifiuto blocchi i successivi.
+
+## Verifica cosa hai capito
+
+1. Cosa significa raggiungere la fine di questa catena e quando si interrompe?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

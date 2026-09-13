@@ -2,19 +2,29 @@
 
 # 23 Design Patterns
 
-23 Patterns · 4 Languages · Real Examples · Simple Explanations
+23 个 Design Patterns · 四种语言 · 可运行示例 · 清晰讲解
 
-[Sanfor2004](https://github.com/Sanfor2004) · C++20
+[Sanfor2004](https://github.com/Sanfor2004) · Python + C++20
 
 [English](README.md) · [العربية المصرية](README.ar-EG.md) · [简体中文](README.zh-CN.md) · [Italiano](README.it.md)
 
-从真实问题出发，看看简单方案何时遇到困难。理解模式，运行 C++，再判断额外结构是否值得。
+从真实问题出发，看看简单方案何时遇到困难。理解 Design Pattern，运行 Python 和 C++20，再判断额外结构是否值得。
 
 - [学习路线](LEARNING_PATH.zh-CN.md)
+- [Python 示例](PYTHON_EXAMPLES.md)
 - [速查表](CHEATSHEET.zh-CN.md)
 - [关系图](PATTERN_MAP.zh-CN.md)
 - [模式对比](COMPARISONS.zh-CN.md)
 - [C++20](CPP_EXAMPLES.md)
+
+## 每个 Design Pattern 的两种实现
+
+**Python** 减少语法细节，便于看清 Design Pattern 的意图。先阅读、运行并修改 [Python 示例](PYTHON_EXAMPLES.md)。
+
+**C++20** 用于进一步学习 Ownership、Lifetime、static typing、Runtime dispatch、RAII 等实现细节。对照两种版本：相同设计意图可以用不同语言特性表达。
+
+按照[学习顺序](LEARNING_PATH.zh-CN.md)，从 Strategy、Observer、Factory Method、Adapter 和 Decorator 开始，逐步完成全部23种，最后学习 Singleton。每个目录都有 `python/` 和 `cpp/`，分别包含 README、可运行源码和预期输出。
+
 
 ## 为什么建立这个仓库
 
@@ -22,7 +32,7 @@
 
 ## 如何阅读
 
-从下面的分类或学习路径开始。每个模式目录包含四种语言的说明、结构图和 `cpp/` 目录。语言链接会打开同一模式的对应译文。
+从下面的分类或学习路径开始。每个 Design Pattern 目录都有四种语言的说明、结构图，以及 `python/` 和 `cpp/` 目录。语言链接会打开同一 Design Pattern 的对应译文。
 
 ## Creational Pattern
 
@@ -69,7 +79,7 @@
 1. **认识问题** — 具体示例说明设计为何存在。
 2. **检查简单方案** — 找出真正造成阻力的 coupling 或重复。
 3. **跟踪设计** — 理解 responsibility、 ownership 和权衡。
-4. **运行并修改 C++** — 对照输出，完成练习，测试边界。
+4. **运行并修改 Python 和 C++20** — 对照输出，完成练习，测试边界。
 
 ## 仓库资源
 

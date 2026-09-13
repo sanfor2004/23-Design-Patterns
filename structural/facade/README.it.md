@@ -4,6 +4,8 @@
 
 [Precedente](../../structural/decorator/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/flyweight/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
@@ -15,6 +17,10 @@ Principiante
 ## In One Sentence
 
 Offre un ingresso semplice al flusso comune di un subsystem.
+
+## In parole semplici
+
+L’acquisto richiede controllo scorte, pagamento e spedizione in ordine.Facade raccoglie il flusso in una chiamata, senza renderlo automaticamente una Transaction.
 
 ## The Problem
 
@@ -59,16 +65,21 @@ Ruoli canonici in questo esempio:
 - [`interface`](../../GLOSSARY.md#interface) — Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa. Qui: `Checkout::buy`.
 - [`Client`](../../GLOSSARY.md#client-pattern-role) — Il codice che usa un'interface o collabora con gli object del pattern. Qui: `main`.
 
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 
 struct Stock {
     bool available(int quantity) const { return quantity > 0 && quantity <= 3; }
 };
 struct Payment {
-    void charge(int amount) const { std::cout << "Charged " << amount << '\n'; }
+    void charge(int amount_cents) const { std::cout << "Charged " << amount_cents << '\n'; }
 };
 struct Shipping {
     void dispatch() const { std::cout << "Dispatched\n"; }
@@ -148,6 +159,12 @@ Se l'addebito riesce e la spedizione fallisce, cosa può garantire buy?
 ## Mini Challenge
 
 Simula un errore di spedizione e progetta un esito esplicito del rimborso.
+
+## Verifica cosa hai capito
+
+1. Cosa non garantisce buy se la spedizione fallisce dopo il pagamento?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

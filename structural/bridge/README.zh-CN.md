@@ -4,6 +4,8 @@
 
 [上一个](../../structural/adapter/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/composite/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
@@ -14,7 +16,11 @@
 
 ## In One Sentence
 
-把两个变化维度分开，再用 [`composition`](../../GLOSSARY.md#composition)（通过连接使用或包含其他 object 的 object 来组合行为） 连接。
+把两个变化维度分开，再用 [`composition`](../../GLOSSARY.md#composition) 连接。
+
+## 简单理解
+
+通知可以是普通或紧急，发送渠道可以是邮件或短信。Bridge 把通知与渠道连接起来，避免为每种组合建立一个 Class。
 
 ## The Problem
 
@@ -53,7 +59,7 @@ Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 
 ## Participants
 
-Notice 是 [`abstraction`](../../GLOSSARY.md#abstraction)（只呈现调用方需要的操作，隐藏无关细节），UrgentNotice 扩展 abstraction，Channel 是实现 [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为），Email 与 Sms 负责发送。
+Notice 是 [`abstraction`](../../GLOSSARY.md#abstraction)，UrgentNotice 扩展 abstraction，Channel 是实现 [`interface`](../../GLOSSARY.md#interface)，Email 与 Sms 负责发送。
 
 本例中的标准角色：
 
@@ -61,6 +67,10 @@ Notice 是 [`abstraction`](../../GLOSSARY.md#abstraction)（只呈现调用方�
 - [`Refined Abstraction`](../../GLOSSARY.md#refined-abstraction) — 独立于实现侧的 Abstraction 特化。 对应代码： `UrgentNotice`。
 - [`Implementor`](../../GLOSSARY.md#implementor) — Bridge 的 Abstraction 用于底层工作的约定。 对应代码： `Channel`。
 - [`Concrete Implementor`](../../GLOSSARY.md#concrete-implementor) — Implementor 约定的一种具体 implementation。 对应代码： `Email, Sms`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -157,6 +167,12 @@ Adapter 解决已有 interface 不匹配； Bridge 通常主动分离独立演�
 ## Mini Challenge
 
 添加 Push 渠道，不修改现有两种 通知 class。
+
+## 检查理解
+
+1. 只增加发送渠道时，哪些 Class 需要改变？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/iterator/README.md) · [Category](../README.md) · [Next](../../behavioral/memento/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Move coordination between peer objects into a dedicated object.
+Put coordination rules in one Object.
+
+## Explain It Simply
+
+A login button depends on two fields being filled. Mediator handles that rule so each field does not need to know the other field or the button.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Canonical roles in this example:
 - [`Colleague`](../../GLOSSARY.md#colleague) — An object whose interactions are coordinated by a Mediator. Here: `Field, Button`.
 - [`Concrete Mediator`](../../GLOSSARY.md#concrete-mediator) — An implementation that contains the coordination rules for its Colleagues. Here: `LoginForm`.
 - [`callback`](../../GLOSSARY.md#callback) — A function or operation supplied to be called when another operation needs it. Here: `Mediator::changed`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -104,6 +114,8 @@ int main() {
     std::cout << "Ready: " << std::boolalpha << form.ready() << '\n';
     form.password("example");
     std::cout << "Ready: " << form.ready() << '\n';
+    form.password("");
+    std::cout << "Ready after clearing: " << form.ready() << '\n';
 }
 ```
 
@@ -112,6 +124,7 @@ int main() {
 ```text
 Ready: false
 Ready: true
+Ready after clearing: false
 ```
 
 ## When to Use
@@ -162,6 +175,12 @@ Why would an automatically generated copy constructor be dangerous for LoginForm
 ## Mini Challenge
 
 Add a terms checkbox and require all three conditions without teaching Field about the button.
+
+## Check Yourself
+
+1. Who decides whether the button is enabled when a field becomes empty?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

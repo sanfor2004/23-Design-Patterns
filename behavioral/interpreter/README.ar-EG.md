@@ -4,9 +4,11 @@
 
 [السابق](../../behavioral/command/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/iterator/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 مثّل قواعد لغة صغيرة بكائنات (`objects`)، بحيث كل كائن يعرف يقيّم الجزء المسؤول عنه.
+
+## ببساطة
+
+قاعدة السماح ممكن تحتاج دور `editor` ودور `verified` مع بعض.كل جزء بيقيّم قاعدة، والتعبير الكبير بيتركّب من تعبيرات أصغر.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Context  -->  Both(Expression, Expression)  -->  Role / nested Both
 - [`Terminal Expression`](../../GLOSSARY.md#terminal-expression) — تعبير مافيش جواه تعبيرات أطفال. هنا: `Role`.
 - [`Nonterminal Expression`](../../GLOSSARY.md#nonterminal-expression) — تعبير بيركب تعبيرات أصغر حسب قاعدة في اللغة. هنا: `Both`.
 - `Context` — البيانات اللي التعبيرات بتستخدمها وقت التقييم؛ هنا مجموعة أسماء الصلاحيات. `Context`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -154,6 +164,12 @@ true
 ## Mini Challenge
 
 ضيف `Either` للـ `OR` واختبر قاعدة متداخلة مع ثلاث `Contexts` مختلفة.
+
+## اختبر فهمك
+
+1. المثال بيحلّل نص، ولا بيقيّم شجرة جاهزة؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

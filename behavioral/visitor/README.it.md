@@ -4,6 +4,8 @@
 
 [Precedente](../../behavioral/template-method/README.it.md) · [Categoria](../README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
@@ -15,6 +17,10 @@ Avanzato
 ## In One Sentence
 
 Aggiungi operazioni a tipi di elemento stabili tramite un Visitor separato.
+
+## In parole semplici
+
+Libri e alimenti richiedono calcoli fiscali diversi.Visitor raccoglie i calcoli e ogni elemento chiama il metodo per il proprio tipo.
 
 ## The Problem
 
@@ -59,9 +65,14 @@ Ruoli canonici in questo esempio:
 - [`Concrete Element`](../../GLOSSARY.md#concrete-element) — Un'implementation di Element che seleziona l'overload di Visitor adatto al proprio tipo. Qui: `Book, Food`.
 - [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — Un'implementation di Visitor con un'operazione per ogni tipo Element supportato. Qui: `Tax`.
 
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -78,17 +89,17 @@ struct Item {
     virtual void accept(Visitor& visitor) const = 0;
 };
 struct Book final : Item {
-    int price = 20;
+    int price_cents = 20;
     void accept(Visitor& visitor) const override { visitor.visit(*this); }
 };
 struct Food final : Item {
-    int price = 10;
+    int price_cents = 10;
     void accept(Visitor& visitor) const override { visitor.visit(*this); }
 };
 struct Tax final : Visitor {
-    int total = 0;
-    void visit(const Book& book) override { total += book.price / 10; }
-    void visit(const Food& food) override { total += food.price / 5; }
+    int total_cents = 0;
+    void visit(const Book& book) override { total_cents += book.price_cents / 10; }
+    void visit(const Food& food) override { total_cents += food.price_cents / 5; }
 };
 int main() {
     std::vector<std::unique_ptr<Item>> basket;
@@ -96,7 +107,7 @@ int main() {
     basket.push_back(std::make_unique<Food>());
     Tax tax;
     for (const auto& item : basket) item->accept(tax);
-    std::cout << "Tax: " << tax.total << '\n';
+    std::cout << "Tax: " << tax.total_cents << '\n';
 }
 ```
 
@@ -116,7 +127,7 @@ Analisi di AST ed export di documenti con tipi stabili; std::variant e std::visi
 
 ## When NOT to Use
 
-Evitalo se aumentano spesso i tipi o esporre dettagli rompe l'[`encapsulation`](../../GLOSSARY.md#encapsulation) (Proteggere rappresentazione interna e invarianti mediante operazioni controllate).
+Evitalo se aumentano spesso i tipi o esporre dettagli rompe l'[`encapsulation`](../../GLOSSARY.md#encapsulation).
 
 ## Advantages
 
@@ -154,6 +165,12 @@ Perché visit(*this) dentro Book sceglie l'overload Book mentre un reference Ite
 ## Mini Challenge
 
 Aggiungi Label senza modificare Book e Food, poi un terzo tipo e conta le modifiche.
+
+## Verifica cosa hai capito
+
+1. Cosa cambia aggiungendo un tipo di elemento invece di un’operazione?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

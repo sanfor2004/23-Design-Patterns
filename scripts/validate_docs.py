@@ -17,13 +17,19 @@ CATEGORIES = {
                    'observer state strategy template-method visitor').split(),
 }
 ENGLISH_SECTIONS = (
-    'Category', 'Difficulty', 'In One Sentence', 'The Problem', 'Naive Solution',
+    'Category', 'Difficulty', 'In One Sentence', 'Explain It Simply', 'The Problem', 'Naive Solution',
     'Why It Becomes a Problem', 'The Idea', 'Real-World Analogy', 'Structure',
-    'Participants', 'Modern C++20 Example', 'Example Output', 'When to Use',
+    'Participants', 'Python Example', 'Modern C++20 Example', 'Example Output', 'When to Use',
     'When NOT to Use', 'Advantages', 'Trade-offs',
     'Related Patterns', 'Common Confusion', 'Terms to Remember', 'Interview Vocabulary',
-    'Interview Question', 'Mini Challenge', 'Quick Summary',
+    'Interview Question', 'Mini Challenge', 'Check Yourself', 'Quick Summary',
 )
+STUDY_HEADINGS = {
+    'README.md': ('Explain It Simply', 'Check Yourself'),
+    'README.ar-EG.md': ('ببساطة', 'اختبر فهمك'),
+    'README.zh-CN.md': ('简单理解', '检查理解'),
+    'README.it.md': ('In parole semplici', 'Verifica cosa hai capito'),
+}
 
 
 def main():
@@ -39,18 +45,21 @@ def main():
             anchors.add(slug if index == 0 else f'{slug}-{index}')
         return anchors
     documents = list(ROOT.glob('*.md')) + list((ROOT / 'assets').rglob('*.md'))
+    documents.extend((ROOT / 'Marketing').rglob('*.md'))
     for category in CATEGORIES:
         documents.extend((ROOT / category).rglob('*.md'))
     for document in documents:
         text = document.read_text(encoding='utf-8')
+        if 'Mark' + 'ting/' in text or 'Mark' + 'ting\\' in text:
+            errors.append(f'{document.relative_to(ROOT)}: obsolete Marketing path')
         prose = re.sub(r'^```[^\n]*\n.*?^```\s*$', '', text, flags=re.M | re.S)
         if len(re.findall(r'^# ', prose, re.M)) != 1:
             errors.append(f'{document.relative_to(ROOT)}: expected one top-level heading')
         for target in re.findall(r'!?\[[^\]\n]*\]\(([^\s)]+)\)', prose):
             url = urlsplit(target)
-            if url.scheme or url.netloc or not url.path:
+            if url.scheme or url.netloc:
                 continue
-            resolved = (document.parent / unquote(url.path)).resolve()
+            resolved = (document.parent / unquote(url.path)).resolve() if url.path else document
             if url.path.startswith('/') or not resolved.is_relative_to(ROOT) or not resolved.is_file():
                 errors.append(f'{document.relative_to(ROOT)}: broken local link {target}')
             elif url.fragment and resolved.suffix == '.md':
@@ -84,8 +93,19 @@ def main():
             headings = re.findall(r'^## (.+)$', text, re.M)
             if len(headings) != len(ENGLISH_SECTIONS):
                 errors.append(f'{article.relative_to(ROOT)}: incomplete sections')
-            if tuple(headings) != ENGLISH_SECTIONS:
+            simple, check = STUDY_HEADINGS[filename]
+            required_sections = tuple(simple if h == 'Explain It Simply' else
+                                      check if h == 'Check Yourself' else h for h in ENGLISH_SECTIONS)
+            if tuple(headings) != required_sections:
                 errors.append(f'{article.relative_to(ROOT)}: required template mismatch')
+            questions = re.search(r'^## ' + re.escape(check) + r'\n(.*?)(?=^## |\Z)', text, re.M | re.S)
+            if not questions or len(re.findall(r'^\d+\. ', questions[1], re.M)) != 3:
+                errors.append(f'{article.relative_to(ROOT)}: expected three self-check questions')
+            for target in ('python/README.md', 'python/main.py', 'python/expected.txt', 'cpp/README.md',
+                           '../../LEARNING_PATH' + filename.removeprefix('README'),
+                           '../../CHEATSHEET' + filename.removeprefix('README')):
+                if f']({target})' not in text:
+                    errors.append(f'{article.relative_to(ROOT)}: missing study navigation {target}')
             for section in ('Terms to Remember', 'Interview Vocabulary'):
                 match = re.search(r'^## '+section+r'\n(.*?)(?=^## |\Z)', text, re.M | re.S)
                 if not match or len(re.findall(r'^- ', match[1], re.M)) < 3:
@@ -124,6 +144,9 @@ def main():
                 errors.append(f'{path.name}: expected eight comparisons')
     for source in sources:
         slug = source.parent.parent.name
+        for required in ('python/main.py', 'python/expected.txt', 'python/README.md', 'cpp/README.md'):
+            if not (source.parent.parent / required).is_file():
+                errors.append(f'{slug}: missing {required}')
         if not (ROOT / 'assets/diagrams' / f'{slug}.svg').is_file():
             errors.append(f'{slug}: missing SVG diagram')
         expected_file = source.with_name('expected.txt')
@@ -153,7 +176,12 @@ def main():
                 errors.append(f'{locale}/{slug}: expected output differs from expected.txt')
             if not diagram_blocks or diagram_blocks[0].strip() not in [block.strip() for block in output_blocks]:
                 errors.append(f'{locale}/{slug}: diagram differs from diagram.md')
-    for required in ('LICENSE', 'REFERENCES.md', 'CONTRIBUTING.md', 'CPP_EXAMPLES.md', 'GLOSSARY.md'):
+    python_sources = [p for category in CATEGORIES for p in (ROOT / category).glob('*/python/main.py')]
+    if len(python_sources) != 23:
+        errors.append(f'Expected 23 Python examples, found {len(python_sources)}')
+    if (ROOT / 'Mark' 'ting').exists():
+        errors.append('Marketing directory still has its old misspelled name')
+    for required in ('LICENSE', 'REFERENCES.md', 'CONTRIBUTING.md', 'CPP_EXAMPLES.md', 'PYTHON_EXAMPLES.md', 'GLOSSARY.md', 'Marketing/README.md'):
         if not (ROOT / required).is_file():
             errors.append(f'Missing {required}')
     glossary_path = ROOT / 'GLOSSARY.md'
@@ -178,7 +206,8 @@ def main():
     if errors:
         print('\n'.join(errors), file=sys.stderr)
         return 1
-    print(f'Validated {len(documents)} Markdown files, local links, and 23 examples in four languages.')
+    print(f'Validated {len(documents)} Markdown files: local links, navigation, diagrams, and four-language article coverage.')
+    print('Implementation coverage: C++ 23/23; Python 23/23. Embedded C++ sources and expected outputs match.')
     return 0
 
 

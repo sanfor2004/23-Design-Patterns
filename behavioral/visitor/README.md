@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/template-method/README.md) · [Category](../README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Advanced
 
 ## In One Sentence
 
-Add operations across a stable set of element types using a separate visitor.
+Add operations outside a stable set of element types.
+
+## Explain It Simply
+
+Books and food need different tax calculations. Visitor keeps those calculations together, while each item calls the method for its own type.
 
 ## The Problem
 
@@ -59,9 +65,14 @@ Canonical roles in this example:
 - [`Concrete Element`](../../GLOSSARY.md#concrete-element) — An Element implementation that selects its matching Visitor overload. Here: `Book, Food`.
 - [`Concrete Visitor`](../../GLOSSARY.md#concrete-visitor) — A Visitor implementation containing one operation for every supported Element type. Here: `Tax`.
 
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -78,17 +89,17 @@ struct Item {
     virtual void accept(Visitor& visitor) const = 0;
 };
 struct Book final : Item {
-    int price = 20;
+    int price_cents = 20;
     void accept(Visitor& visitor) const override { visitor.visit(*this); }
 };
 struct Food final : Item {
-    int price = 10;
+    int price_cents = 10;
     void accept(Visitor& visitor) const override { visitor.visit(*this); }
 };
 struct Tax final : Visitor {
-    int total = 0;
-    void visit(const Book& book) override { total += book.price / 10; }
-    void visit(const Food& food) override { total += food.price / 5; }
+    int total_cents = 0;
+    void visit(const Book& book) override { total_cents += book.price_cents / 10; }
+    void visit(const Food& food) override { total_cents += food.price_cents / 5; }
 };
 int main() {
     std::vector<std::unique_ptr<Item>> basket;
@@ -96,7 +107,7 @@ int main() {
     basket.push_back(std::make_unique<Food>());
     Tax tax;
     for (const auto& item : basket) item->accept(tax);
-    std::cout << "Tax: " << tax.total << '\n';
+    std::cout << "Tax: " << tax.total_cents << '\n';
 }
 ```
 
@@ -116,7 +127,7 @@ AST analyses and document exports fit a stable node family; std::variant with st
 
 ## When NOT to Use
 
-Avoid it when new element types are frequent or exposing their details would break [`encapsulation`](../../GLOSSARY.md#encapsulation) (Keeping representation and invariants behind controlled operations).
+Avoid it when new element types are frequent or exposing their details would break [`encapsulation`](../../GLOSSARY.md#encapsulation).
 
 ## Advantages
 
@@ -124,7 +135,7 @@ A new operation can be added in a visitor without changing existing element clas
 
 ## Trade-offs
 
-Adding an element type requires updating the Visitor [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller) and all visitors. Integer tax rates here are illustrative, not real tax rules; rounding needs a domain policy.
+Adding an element type requires updating the Visitor [`interface`](../../GLOSSARY.md#interface) and all visitors. Integer tax rates here are illustrative, not real tax rules; rounding needs a domain policy.
 
 ## Related Patterns
 
@@ -154,6 +165,12 @@ Why does visitor.visit(*this) inside Book select the Book overload, while an Ite
 ## Mini Challenge
 
 Add a Label visitor without modifying Book or Food, then add a third item type and count the changes.
+
+## Check Yourself
+
+1. What must change when you add a new item type rather than a new operation?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

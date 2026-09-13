@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/command/README.md) · [Category](../README.md) · [Next](../../behavioral/iterator/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Advanced
 
 ## In One Sentence
 
-Represent a small language as objects that evaluate its grammar rules.
+Represent small language rules as an expression tree.
+
+## Explain It Simply
+
+An access rule can require both editor and verified roles. Each node evaluates one grammar rule, and larger expressions combine smaller ones.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Canonical roles in this example:
 - [`Terminal Expression`](../../GLOSSARY.md#terminal-expression) — An expression with no child expressions. Here: `Role`.
 - [`Nonterminal Expression`](../../GLOSSARY.md#nonterminal-expression) — An expression that combines child expressions according to a grammar rule. Here: `Both`.
 - `Context` — The evaluation data used by expressions; here it is the set of role names. `Context`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -154,6 +164,12 @@ Where would precedence be handled if users typed editor AND verified OR admin?
 ## Mini Challenge
 
 Add Either for OR and test a nested rule with three distinct contexts.
+
+## Check Yourself
+
+1. Does this example parse text, or evaluate an already built tree?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

@@ -4,9 +4,11 @@
 
 [السابق](../../behavioral/strategy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/visitor/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 ثبّت ترتيب خطوات الحل (`algorithm`)، وسيب تنفيذ خطوات معينة للأنواع المشتقة (`subclasses`).
+
+## ببساطة
+
+التقارير بتبدأ وتقرا البيانات وتنسّقها وبعدين تخلص.الـ`Template Method` بيحافظ على الترتيب في مكان واحد، والـ`subclass` بتنفّذ الجزء المتغير.
 
 ## The Problem
 
@@ -59,6 +65,10 @@ Report::generate()  -->  read() + format()  -->  TextReport overrides
 - [`Concrete Class`](../../GLOSSARY.md#concrete-class-template-method-role) — دور `Template Method` اللي بيوفر الخطوات المتغيرة. هنا: `TextReport`.
 - [`hook method`](../../GLOSSARY.md#hook-method) — عملية للتوسعة بتناديها خطوات ثابتة، وممكن يكون ليها `implementation` افتراضية. هنا: `read, format`.
 
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+
 ## Modern C++20 Example
 
 ```cpp
@@ -96,7 +106,7 @@ End report
 
 ## When to Use
 
-استخدمه لتسلسل ثابت فيه نقاط توسعة قليلة وواضحة بالـ [`inheritance`](../../GLOSSARY.md#inheritance) (بتبني نوع مشتق (`derived class`) على أساس نوع موجود (`base class`)، عشان تعيد استخدام العقد أو تخصصه).
+استخدمه لتسلسل ثابت فيه نقاط توسعة قليلة وواضحة بالـ [`inheritance`](../../GLOSSARY.md#inheritance).
 
 ### Use cases
 
@@ -104,7 +114,7 @@ End report
 
 ## When NOT to Use
 
-بلاش لو الخطوات لازم يتغير ترتيبها وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء) أو الـ [`composition`](../../GLOSSARY.md#composition) (بتبني السلوك (`behavior`) عن طريق كائنات متعاونة (`objects`)، كل واحد منها بيستخدم أو بيحتوي كائنات تانية) أوضح.
+بلاش لو الخطوات لازم يتغير ترتيبها وقت [`runtime`](../../GLOSSARY.md#runtime) أو الـ [`composition`](../../GLOSSARY.md#composition) أوضح.
 
 ## Advantages
 
@@ -112,7 +122,7 @@ End report
 
 ## Trade-offs
 
-الـ `inheritance` بتربط الابن بعقد الأساس. الـ `End` مش مضمونة لو `read` أو `format` رمت `Exception`؛ تنظيف الموارد الحقيقي محتاج [`RAII`](../../GLOSSARY.md#raii) (اربط المورد بعمر الكائن، عشان `destructor` تحرره تلقائياً؛ والاسم الكامل هو `Resource Acquisition Is Initialization`)، مش الاعتماد على آخر خطوة.
+استخدام `Inheritance` بيخلّي الـ`subclass` تعتمد على عقد الـ`base class`. الـ `End` مش مضمونة لو `read` أو `format` رمت `Exception`؛ تنظيف الموارد الحقيقي محتاج [`RAII`](../../GLOSSARY.md#raii)، مش الاعتماد على آخر خطوة.
 
 ## Related Patterns
 
@@ -143,11 +153,17 @@ End report
 
 ضيف `CsvReport` وراجع الترتيب، وبعدها جرّب `Exception` في التنسيق وناقش تنظيف الموارد.
 
+## اختبر فهمك
+
+1. أنهي method بتحدد الترتيب، وأنهي methods ممكن تختلف؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
+
 ## Quick Summary
 
 - **المشكلة:** التقارير بتشترك في بداية وقراءة وتنسيق ونهاية، بس مصدر البيانات أو التنسيق مختلف.
 - **الحل:** ثبّت ترتيب الخطوات في `Report::generate`، وهي دالة مش `virtual`. جواها، نادِ `read` وبعدها `format`؛ الاتنين متعرّفين باستخدام `protected` و`virtual` عشان الأنواع المشتقة تقدر تغيّر تنفيذهم.
-- **`Trade-off`:** الـ `inheritance` بتربط الابن بعقد الأساس. الـ `End` مش مضمونة لو `read` أو `format` رمت `Exception`؛ تنظيف الموارد الحقيقي محتاج `RAII`، مش الاعتماد على آخر خطوة.
+- **`Trade-off`:** استخدام `Inheritance` بيخلّي الـ`subclass` تعتمد على عقد الـ`base class`. الـ `End` مش مضمونة لو `read` أو `format` رمت `Exception`؛ تنظيف الموارد الحقيقي محتاج `RAII`، مش الاعتماد على آخر خطوة.
 - **افتكر:** ثبّت الوصفة، وغيّر الخطوات.
 
 [السابق](../../behavioral/strategy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/visitor/README.ar-EG.md)

@@ -4,6 +4,8 @@
 
 [Previous](../../creational/factory-method/README.md) · [Category](../README.md) · [Next](../../creational/singleton/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Create an independent object by cloning an existing configured object.
+Create a new Object by copying a configured one.
+
+## Explain It Simply
+
+A game already has a guard with useful equipment. Prototype copies that setup so you can change the new guard without changing the original.
 
 ## The Problem
 
@@ -33,7 +39,7 @@ Reconstructing a default Guard repeats setup and loses any custom equipment on t
 
 ## The Idea
 
-Expose clone on Enemy. Guard copies its value members and returns a [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (A smart pointer with exclusive ownership that releases its object when the owner is destroyed) to an independent object.
+Expose clone on Enemy. Guard copies its value members and returns a [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) to an independent object.
 
 ## Real-World Analogy
 
@@ -58,6 +64,10 @@ Canonical roles in this example:
 - [`Concrete Prototype`](../../GLOSSARY.md#concrete-prototype) — An object whose clone operation produces another object from its configured values. Here: `Guard`.
 - [`deep copy`](../../GLOSSARY.md#deep-copy) — Copying owned nested data so the new object does not share that mutable data with the original. Here: `Guard::clone`.
 - [`value semantics`](../../GLOSSARY.md#value-semantics) — Copies behave as independent values according to the type's contract. Here: `name_, equipment_`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -102,7 +112,7 @@ gate guard: 2 items
 
 ## When to Use
 
-Use it when [`runtime`](../../GLOSSARY.md#runtime) (The period when a compiled program is executing) objects carry useful configuration and clients should not reconstruct their concrete types.
+Use it when [`runtime`](../../GLOSSARY.md#runtime) objects carry useful configuration and clients should not reconstruct their concrete types.
 
 ### Use cases
 
@@ -148,6 +158,12 @@ If equipment becomes `std::vector<std::shared_ptr<Item>>`, will clone still be i
 ## Mini Challenge
 
 Add editable equipment and verify that changing the clone's equipment leaves the prototype unchanged.
+
+## Check Yourself
+
+1. Would assigning the original to a second variable create an independent copy?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

@@ -4,6 +4,8 @@
 
 [上一个](../../behavioral/interpreter/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/mediator/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 通过稳定的访问协议遍历集合。
+
+## 简单理解
+
+调用方只需要逐个读取曲目，不需要了解播放列表内部的容器。Iterator 单独记录遍历位置，让循环取得下一个元素。
 
 ## The Problem
 
@@ -60,6 +66,10 @@ Playlist 拥有曲目；Iterator 借用向量并保存位置；范围 for 是 Cl
 - [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — 为某种 Aggregate 保存遍历位置的 implementation。 对应代码： `Playlist::Iterator`。
 - [`forward iterator`](../../GLOSSARY.md#forward-iterator) — 支持向前遍历与 multipass 保证的 iterator，独立副本可以遍历同一范围。 对应代码： `std::forward_iterator`。
 
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
+
 ## Modern C++20 Example
 
 ```cpp
@@ -94,6 +104,12 @@ static_assert(std::forward_iterator<Playlist::Iterator>);
 int main() {
     const Playlist playlist{{7, 12, 18}};
     for (int track : playlist) std::cout << "Track " << track << '\n';
+    const Playlist empty{{}};
+    std::cout << "Empty: " << std::boolalpha << (empty.begin() == empty.end()) << '\n';
+    auto first = playlist.begin();
+    const auto copy = first;
+    ++first;
+    std::cout << "Independent positions: " << *first << ' ' << *copy << '\n';
 }
 ```
 
@@ -103,6 +119,8 @@ int main() {
 Track 7
 Track 12
 Track 18
+Empty: true
+Independent positions: 12 7
 ```
 
 ## When to Use
@@ -123,7 +141,7 @@ algorithm 使用统一协议，多份 iterator 拥有独立位置。
 
 ## Trade-offs
 
-iterator 不延长集合 [`lifetime`](../../GLOSSARY.md#lifetime)（object 存在且可按规则使用的时间区间）。移动或销毁 Playlist 会破坏使用前提；和标准 iterator 一样，不能 dereference end。
+iterator 不延长集合 [`lifetime`](../../GLOSSARY.md#lifetime)。移动或销毁 Playlist 会破坏使用前提；和标准 iterator 一样，不能 dereference end。
 
 ## Related Patterns
 
@@ -153,6 +171,12 @@ Visitor 按 Element type 选择操作， iterator 负责遍历，不必知道 Cl
 ## Mini Challenge
 
 测试空列表和两个独立 iterator，验证移动一个不会改变另一个。
+
+## 检查理解
+
+1. 同一 Playlist 上的两次遍历能保留各自的位置吗？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

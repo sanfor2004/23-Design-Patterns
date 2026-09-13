@@ -4,9 +4,11 @@
 
 [السابق](../../creational/prototype/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/adapter/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الـ`Objects` وإعدادها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 اسمح بوجود نسخة واحدة متاحة من النوع (`instance`)، وخد بالك من تكلفة الحالة العامة المشتركة (`shared global state`).
+
+## ببساطة
+
+كذا مستدعي محتاجين نفس عدّاد الطلبات.الـ`Singleton` بيتحكم في الإنشاء، بس مشاركة الـ`state` بتصعّب عزل الاختبارات والـ`Dependencies`.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Client A + B  -->  Metrics::instance()  -->  one Metrics
 - [`instance`](../../GLOSSARY.md#instance) — كائن محدد (`object`) من نوع معين. هنا: `Metrics::instance()`.
 - [`global state`](../../GLOSSARY.md#global-state) — بيانات أجزاء كتير تقدر توصلها، وتغييرها ممكن يأثر على كود بعيد. هنا: `Metrics::requests_`.
 - [`thread-safe initialization`](../../GLOSSARY.md#thread-safe-initialization) — حماية التهيئة من الإنشاء المتزامن؛ مش معناها إن كل العمليات بعد كده `thread-safe`. هنا: `static Metrics metrics`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -120,7 +130,7 @@ Requests: 2
 
 ## Common Confusion
 
-إدارة `object` واحدة بالـ [`dependency injection`](../../GLOSSARY.md#dependency-injection) (بتمرّر `dependency` من بره بدل ما الجزء اللي بيستخدمها يختارها أو يعملها بنفسه) مش بالضرورة `Singleton`؛ النوع نفسه مش لازم يفرض التفرد.
+إدارة `object` واحدة بالـ [`dependency injection`](../../GLOSSARY.md#dependency-injection) مش بالضرورة `Singleton`؛ النوع نفسه مش لازم يفرض التفرد.
 
 ## Terms to Remember
 
@@ -142,6 +152,12 @@ Requests: 2
 ## Mini Challenge
 
 غيّر المثال عشان تمرّر عداد لمهمتين، وبعدها اختبر عدادين معزولين.
+
+## اختبر فهمك
+
+1. إزاي اختبار يسيب `State` في العدّاد تأثر على الاختبار اللي بعده؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

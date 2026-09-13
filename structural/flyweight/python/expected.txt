@@ -1,0 +1,4 @@
+A at 0
+A at 10
+Shared shape: True
+Different shape: False

@@ -1,6 +1,6 @@
 # Contributing
 
-This repository is edited as plain Markdown, SVG, and C++20. Reading or editing the documentation requires no dependency installation or generated site.
+This repository is edited as plain Markdown, SVG, Python, and C++20. Reading or editing the documentation requires no dependency installation or generated site.
 
 ## Documentation
 
@@ -42,7 +42,7 @@ Write the explanation naturally in Egyptian Arabic, and keep English terminology
 
 ## Pattern document template
 
-Use these English headings in all four pattern files. The body is written in the file's language. Existing technical use cases belong under `When to Use`, optionally in a `### Use cases` subsection.
+Use the headings below in all four pattern files. Localize `Explain It Simply` and `Check Yourself`: use `ببساطة` / `اختبر فهمك`, `简单理解` / `检查理解`, and `In parole semplici` / `Verifica cosa hai capito`. Write the body in the file's language. Existing technical use cases belong under `When to Use`, optionally in a `### Use cases` subsection.
 
 ```markdown
 # Official English Pattern Name
@@ -50,6 +50,7 @@ Use these English headings in all four pattern files. The body is written in the
 ## Category
 ## Difficulty
 ## In One Sentence
+## Explain It Simply
 ## The Problem
 ## Naive Solution
 ## Why It Becomes a Problem
@@ -57,6 +58,7 @@ Use these English headings in all four pattern files. The body is written in the
 ## Real-World Analogy
 ## Structure
 ## Participants
+## Python Example
 ## Modern C++20 Example
 ## Example Output
 ## When to Use
@@ -69,6 +71,7 @@ Use these English headings in all four pattern files. The body is written in the
 ## Interview Vocabulary
 ## Interview Question
 ## Mini Challenge
+## Check Yourself
 ## Quick Summary
 ```
 
@@ -82,15 +85,20 @@ Open an [issue](https://github.com/Sanfor2004/Design-Patterns-23/issues) or a pu
 
 The canonical runnable code lives in `<category>/<pattern>/cpp/main.cpp`. When changing it, update its `expected.txt` and the complete C++ and expected-output blocks in every translation.
 
-An optional check uses Python 3.9 or newer and only the standard library:
+Checks use Python 3.10 or newer and only the standard library:
 
 ```sh
 python scripts/validate_docs.py
+python scripts/test_python.py
 ```
 
 It checks local Markdown links and glossary anchors, all 23 English pattern names in all four languages, the required headings and vocabulary sections, four-language glossary entries, shared diagrams, and agreement between article examples and executable sources/expected outputs. Review localized prose separately for natural phrasing and technical accuracy.
 
 For code changes, also [build the examples and run CTest](CPP_EXAMPLES.md). Preview edited Markdown in your editor or on GitHub, especially tables, diagrams, and Arabic text.
+
+Each pattern also has `python/README.md`, `python/main.py`, and `python/expected.txt`. Keep Python focused on the intent, not a line-by-line C++ translation. Explain meaningful differences in the Python README. Maintain exactly 23 implementations in each language.
+
+Keep beginner explanations to 2–5 sentences: simple idea, concrete example, and what changes. Keep the engineering details and three understanding questions later in the page. Preserve the advice to prefer a simple function, constructor, or conditional when the pattern's problem does not exist. A glossary link is usually enough; avoid repeating a full definition inside several sentences.
 
 ## Brand assets
 

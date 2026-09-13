@@ -4,6 +4,8 @@
 
 [上一个](../../structural/proxy/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/command/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -16,6 +18,10 @@
 
 让请求沿 Handler 传递，每个 Handler 可以停止或继续。
 
+## 简单理解
+
+请求需要通过身份检查和金额限制。每个 Handler 负责一项检查，调用方选择排列顺序。
+
 ## The Problem
 
 请求要通过身份和金额检查，不同入口需要不同 policy 组合。
@@ -24,7 +30,7 @@
 
 ```cpp
 bool accept(Request r) {
-    return r.authenticated && r.amount > 0 && r.amount <= 100;
+    return r.authenticated && r.amount_cents > 0 && r.amount_cents <= 100;
 }
 ```
 
@@ -60,15 +66,20 @@ Handler 拥有后继，Auth 检查身份，Limit 检查金额， Client 组装�
 - [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — 实现某项处理规则的 Handler。 对应代码： `Auth, Limit`。
 - [`chain termination`](../../GLOSSARY.md#chain-termination) — 决定处理链何时停止以及最后一个 Handler 之后如何处理的规则。 对应代码： `Handler::handle`。
 
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <initializer_list>
 #include <iostream>
 #include <memory>
 #include <utility>
 
-struct Request { bool authenticated; int amount; };
+struct Request { bool authenticated; int amount_cents; };
 class Handler {
     std::unique_ptr<Handler> next_;
 protected:
@@ -87,7 +98,7 @@ public:
     using Handler::Handler;
 };
 class Limit final : public Handler {
-    bool accepts(const Request& request) const override { return request.amount > 0 && request.amount <= 100; }
+    bool accepts(const Request& request) const override { return request.amount_cents > 0 && request.amount_cents <= 100; }
 public:
     using Handler::Handler;
 };
@@ -154,6 +165,12 @@ Decorator 叠加 behavior；此 Chain of Responsibility 可能提前结束。 Co
 ## Mini Challenge
 
 添加维护模式 Handler，验证被拒绝的请求不会进入后续检查。
+
+## 检查理解
+
+1. 到达本例链尾意味着什么？检查何时停止处理？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

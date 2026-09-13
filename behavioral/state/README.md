@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/observer/README.md) · [Category](../README.md) · [Next](../../behavioral/strategy/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Let an object's current state determine its response and transitions.
+Let current State decide how an Object responds.
+
+## Explain It Simply
+
+Pressing a door button opens a closed door but closes an open one. State moves each response and transition into the Object representing that condition.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Canonical roles in this example:
 - [`Context`](../../GLOSSARY.md#context) — The object that uses a Strategy or delegates behavior to its current State. Here: `Door`.
 - [`State interface`](../../GLOSSARY.md#state-interface) — The contract through which a Context delegates state-dependent behavior. Here: `DoorState`.
 - [`Concrete State`](../../GLOSSARY.md#concrete-state) — An implementation defining behavior and transitions for one State. Here: `Open, Closed`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -129,7 +139,7 @@ Behavior is grouped by state and transitions can be inspected locally.
 
 ## Trade-offs
 
-Classes and [`lifetime`](../../GLOSSARY.md#lifetime) (The interval during which an object exists and may be used according to its rules) relationships add complexity. The demo keeps state objects outside Door, so transitions never destroy the currently executing state; larger designs must preserve that safety.
+Classes and [`lifetime`](../../GLOSSARY.md#lifetime) relationships add complexity. The demo keeps state objects outside Door, so transitions never destroy the currently executing state; larger designs must preserve that safety.
 
 ## Related Patterns
 
@@ -137,7 +147,7 @@ Classes and [`lifetime`](../../GLOSSARY.md#lifetime) (The interval during which 
 
 ## Common Confusion
 
-Strategy is usually selected by a client to choose an algorithm. State represents [`lifecycle`](../../GLOSSARY.md#lifecycle) (The modeled stages and transitions of a domain entity, distinct from a C++ object's lifetime) and may choose its own transitions.
+Strategy is usually selected by a client to choose an algorithm. State represents [`lifecycle`](../../GLOSSARY.md#lifecycle) and may choose its own transitions.
 
 ## Terms to Remember
 
@@ -159,6 +169,12 @@ Who decides the next state here, and how is that different from choosing a shipp
 ## Mini Challenge
 
 Add Locked so press keeps it locked; provide a separate unlock event and test the transition sequence.
+
+## Check Yourself
+
+1. Who chooses the next State when the door button is pressed?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

@@ -4,6 +4,8 @@
 
 [上一个](../../structural/flyweight/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/chain-of-responsibility/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
@@ -14,7 +16,11 @@
 
 ## In One Sentence
 
-通过相同 [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为） 的替身控制对真实 object 的访问。
+通过相同 [`interface`](../../GLOSSARY.md#interface) 的替身控制对真实 object 的访问。
+
+## 简单理解
+
+图库不需要提前加载所有图片。这里的 Proxy 提供 `display`，首次使用时创建真实图片，之后重复使用。
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Image 是共同 interface，DiskImage 完成真实工作，LazyImage 拥有延�
 - [`Subject interface`](../../GLOSSARY.md#subject-interface) — Proxy 与 Real Subject 共同提供的约定。 对应代码： `Image`。
 - [`Real Subject`](../../GLOSSARY.md#real-subject) — 在 Proxy 后面实际完成工作的 object。 对应代码： `DiskImage`。
 - [`lazy initialization`](../../GLOSSARY.md#lazy-initialization) — 把创建推迟到首次需要值或资源时。 对应代码： `LazyImage::display`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -145,6 +155,12 @@ Decorator 增加 behavior； Proxy 控制何时、是否访问目标， class di
 ## Mini Challenge
 
 连续显示三次统计加载次数，再加入首次失败的加载器测试 retry policy。
+
+## 检查理解
+
+1. 调用两次 display 后创建了几个真实图片 Object？何时创建？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

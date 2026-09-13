@@ -4,6 +4,8 @@
 
 [Precedente](../../creational/singleton/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/bridge/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
@@ -14,7 +16,11 @@ Principiante
 
 ## In One Sentence
 
-Traduce un'[`interface`](../../GLOSSARY.md#interface) (Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa) esistente nel contratto atteso dal client.
+Traduce un'[`interface`](../../GLOSSARY.md#interface) esistente nel contratto atteso dal client.
+
+## In parole semplici
+
+Il sensore restituisce Fahrenheit, mentre il display richiede Celsius.Adapter converte chiamata e valore senza modificare le due parti.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Ruoli canonici in questo esempio:
 - [`Target`](../../GLOSSARY.md#target) — L'interface attesa dal Client. Qui: `Temperature`.
 - [`Adaptee`](../../GLOSSARY.md#adaptee) — L'object esistente la cui interface deve essere adattata. Qui: `LegacyThermometer`.
 - [`interface`](../../GLOSSARY.md#interface) — Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa. Qui: `Temperature`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -108,7 +118,7 @@ Evitalo se controlli entrambe le parti e puoi uniformare facilmente il contratto
 
 ## Advantages
 
-La conversione resta centralizzata e display accetta altre [`implementation`](../../GLOSSARY.md#implementation) (Il codice concreto che esegue un'operazione o soddisfa un'interface).
+La conversione resta centralizzata e display accetta altre [`implementation`](../../GLOSSARY.md#implementation).
 
 ## Trade-offs
 
@@ -142,6 +152,12 @@ Puoi sempre preservare il behavior adattando un'API asincrona a una sincrona?
 ## Mini Challenge
 
 Rendi configurabile la temperatura Fahrenheit e prova congelamento ed ebollizione.
+
+## Verifica cosa hai capito
+
+1. Chi converte le unità e chi mantiene in vita il sensore?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

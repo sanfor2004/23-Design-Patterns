@@ -1,3 +1,6 @@
 Standard: 45
 Express: 55
 Express large: 120
+Express boundary: 100
+Negative subtotal rejected
+Missing rule rejected

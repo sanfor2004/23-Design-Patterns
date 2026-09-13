@@ -4,6 +4,8 @@
 
 [上一个](../../behavioral/strategy/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/visitor/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 固定 algorithm 流程，让 subclass 实现部分步骤。
+
+## 简单理解
+
+报告都需要开始、读取、格式化和结束。Template Method 在一个方法中保留顺序，由 subclass 提供变化的部分。
 
 ## The Problem
 
@@ -33,7 +39,7 @@ void html_report() { /* duplicated order, different format */ }
 
 ## The Idea
 
-nonvirtual 的 Report::generate 按固定顺序调用 protected 的 virtual hook methods read、format。
+`Report::generate` 不是 `virtual`，它按固定顺序调用 `read` 和 `format`。这两个方法是 `protected` 和 `virtual`，subclass 可以提供各自的实现。
 
 ## Real-World Analogy
 
@@ -58,6 +64,10 @@ Report 定义 algorithm skeleton，TextReport 实现变化点， Client 通过 g
 - [`Abstract Class`](../../GLOSSARY.md#abstract-class-template-method-role) — Template Method 中拥有 algorithm skeleton 并声明可变步骤的角色。 对应代码： `Report`。
 - [`Concrete Class`](../../GLOSSARY.md#concrete-class-template-method-role) — Template Method 中提供可变步骤的角色。 对应代码： `TextReport`。
 - [`hook method`](../../GLOSSARY.md#hook-method) — 由固定流程调用的扩展操作，可以有默认 implementation。 对应代码： `read, format`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -104,7 +114,7 @@ End report
 
 ## When NOT to Use
 
-步骤需要 [`runtime`](../../GLOSSARY.md#runtime)（编译后的程序正在执行的阶段） 重排，或 [`composition`](../../GLOSSARY.md#composition)（通过连接使用或包含其他 object 的 object 来组合行为） 更能清楚表达 dependency 时避免。
+步骤需要 [`runtime`](../../GLOSSARY.md#runtime) 重排，或 [`composition`](../../GLOSSARY.md#composition) 更能清楚表达 dependency 时避免。
 
 ## Advantages
 
@@ -112,7 +122,7 @@ End report
 
 ## Trade-offs
 
-[`inheritance`](../../GLOSSARY.md#inheritance)（从 base class 定义 derived class，复用或扩展约定及实现） 让 subclass 与 base class 协议产生 [`coupling`](../../GLOSSARY.md#coupling)（一个部分的修改需要了解或修改另一部分的程度）。read 或 format 抛出 exception 时不会保证 End；资源清理应使用 [`RAII`](../../GLOSSARY.md#raii)（Resource Acquisition Is Initialization：把资源 ownership 绑定到 object lifetime，在析构时释放资源），不能把最后一步 当 destructor 的保障。
+[`inheritance`](../../GLOSSARY.md#inheritance) 让 subclass 与 base class 协议产生 [`coupling`](../../GLOSSARY.md#coupling)。read 或 format 抛出 exception 时不会保证 End；资源清理应使用 [`RAII`](../../GLOSSARY.md#raii)，不能依赖流程的最后一步保证资源释放。
 
 ## Related Patterns
 
@@ -143,11 +153,17 @@ Strategy 注入可替换 behavior， Template Method 依赖 inheritance 钩子�
 
 添加 CsvReport 验证首尾顺序，再模拟格式化 exception 并讨论清理。
 
+## 检查理解
+
+1. 哪个方法控制步骤顺序？哪些方法可以变化？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
+
 ## Quick Summary
 
 - **问题:** 报告共享开始、读取、格式化、结束步骤，但数据来源或格式不同。
-- **方案:** nonvirtual 的 Report::generate 按固定顺序调用 protected 的 virtual hook methods read、format。
-- **权衡:** inheritance 让 subclass 与 base class 协议产生 coupling。read 或 format 抛出 exception 时不会保证 End；资源清理应使用 RAII，不能把最后一步 当 destructor 的保障。
+- **方案:** `Report::generate` 不是 `virtual`，它按固定顺序调用 `read` 和 `format`。这两个方法是 `protected` 和 `virtual`，subclass 可以提供各自的实现。
+- **权衡:** inheritance 让 subclass 与 base class 协议产生 coupling。read 或 format 抛出 exception 时不会保证 End；资源清理应使用 RAII，不能依赖流程的最后一步保证资源释放。
 - **记忆提示:** 流程固定，步骤可变。
 
 [上一个](../../behavioral/strategy/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/visitor/README.zh-CN.md)

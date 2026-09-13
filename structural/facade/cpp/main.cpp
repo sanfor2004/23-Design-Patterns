@@ -1,10 +1,11 @@
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 
 struct Stock {
     bool available(int quantity) const { return quantity > 0 && quantity <= 3; }
 };
 struct Payment {
-    void charge(int amount) const { std::cout << "Charged " << amount << '\n'; }
+    void charge(int amount_cents) const { std::cout << "Charged " << amount_cents << '\n'; }
 };
 struct Shipping {
     void dispatch() const { std::cout << "Dispatched\n"; }

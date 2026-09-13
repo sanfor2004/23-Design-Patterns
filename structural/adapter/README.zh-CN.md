@@ -4,6 +4,8 @@
 
 [上一个](../../creational/singleton/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/bridge/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
@@ -14,7 +16,11 @@
 
 ## In One Sentence
 
-把已有 [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为） 转换成 Client 期待的 interface。
+把已有 [`interface`](../../GLOSSARY.md#interface) 转换成 Client 期待的 interface。
+
+## 简单理解
+
+传感器返回华氏温度，显示端需要摄氏温度。Adapter 转换调用和值，两端原有代码都不用修改。
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Temperature 是 Target interface，LegacyThermometer 是旧 API， Adapter 借�
 - [`Target`](../../GLOSSARY.md#target) — Client 期望使用的 interface。 对应代码： `Temperature`。
 - [`Adaptee`](../../GLOSSARY.md#adaptee) — 其现有 interface 需要适配的 object。 对应代码： `LegacyThermometer`。
 - [`interface`](../../GLOSSARY.md#interface) — 约定可调用的操作及其对外可观察行为。 对应代码： `Temperature`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -142,6 +152,12 @@ Facade 简化 subsystem； Adapter 使已有 interface 满足目标契约。
 ## Mini Challenge
 
 让旧传感器返回可配置的华氏温度，测试冰点和沸点。
+
+## 检查理解
+
+1. 谁转换单位？谁保证传感器的 Lifetime？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

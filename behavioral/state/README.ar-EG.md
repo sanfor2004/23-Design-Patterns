@@ -4,9 +4,11 @@
 
 [السابق](../../behavioral/observer/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/strategy/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 خلّي الحالة الحالية للكائن (`state`) هي اللي تحدد استجابته والانتقالات المتاحة ليه.
+
+## ببساطة
+
+ضغطة زر الباب بتفتحه لو مقفول وبتقفله لو مفتوح.الـ`State` بينقل الاستجابة والانتقال للـ`Object` اللي بتمثل الوضع الحالي.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Door::press()  -->  DoorState  -->  Open ↔ Closed
 - [`Context`](../../GLOSSARY.md#context) — الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). هنا: `Door`.
 - [`State interface`](../../GLOSSARY.md#state-interface) — العقد اللي `Context` بتفوّض من خلاله `behavior` المعتمدة على `state`. هنا: `DoorState`.
 - [`Concrete State`](../../GLOSSARY.md#concrete-state) — تنفيذ لحالة معينة (`Concrete State`) بيحدد سلوكها (`behavior`) والانتقالات المتاحة منها. هنا: `Open, Closed`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -159,6 +169,12 @@ closed
 ## Mini Challenge
 
 ضيف `Locked` تخلي `press` ما تفتحش، وحدث `unlock` منفصل واختبر التسلسل.
+
+## اختبر فهمك
+
+1. مين بيختار الـ`State` اللي بعدها لما نضغط زر الباب؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

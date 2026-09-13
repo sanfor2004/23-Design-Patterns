@@ -1,9 +1,10 @@
+// Monetary amounts in this example are integer cents.
 #include <initializer_list>
 #include <iostream>
 #include <memory>
 #include <utility>
 
-struct Request { bool authenticated; int amount; };
+struct Request { bool authenticated; int amount_cents; };
 class Handler {
     std::unique_ptr<Handler> next_;
 protected:
@@ -22,7 +23,7 @@ public:
     using Handler::Handler;
 };
 class Limit final : public Handler {
-    bool accepts(const Request& request) const override { return request.amount > 0 && request.amount <= 100; }
+    bool accepts(const Request& request) const override { return request.amount_cents > 0 && request.amount_cents <= 100; }
 public:
     using Handler::Handler;
 };

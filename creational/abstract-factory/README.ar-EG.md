@@ -4,9 +4,11 @@
 
 [الفئة](../README.ar-EG.md) · [التالي](../../creational/builder/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الـ`Objects` وإعدادها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 أنشئ مجموعة كائنات مرتبطة ومتوافقة مع بعض (`family of related objects`) باستخدام `Factory` واحدة.
+
+## ببساطة
+
+الشاشة محتاجة أزرار ولوحات بنفس الشكل.بنختار `Factory` واحدة توفر الاتنين، بدل ما كل مستدعي يختار كل `Class` لوحدها.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ render()  -->  Theme  -->  Button + Panel
 - [`Product`](../../GLOSSARY.md#product) — العقد بتاع الكائن (`object`) اللي كود الإنشاء بيرجعه. هنا: `Button, Panel`.
 - [`Concrete Product`](../../GLOSSARY.md#concrete-product) — تنفيذ فعلي (`implementation`) لعقد المنتج (`Product`). هنا: `DarkButton, LightButton, DarkPanel, LightPanel`.
 - [`Concrete Factory`](../../GLOSSARY.md#concrete-factory) — تنفيذ فعلي (`implementation`) بينشئ عيلة منتجات متوافقة (`Product family`). هنا: `DarkTheme, LightTheme`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -135,7 +145,7 @@ light button + light panel
 
 ## Trade-offs
 
-إضافة منتج زي `Slider` بتحتاج تعديل كل `Factory`. الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
+إضافة منتج زي `Slider` بتحتاج تعديل كل `Factory`. الـ [`interface`](../../GLOSSARY.md#interface) لوحدها مش بتضمن إن الألوان متوافقة فعلاً.
 
 ## Related Patterns
 
@@ -165,6 +175,12 @@ light button + light panel
 ## Mini Challenge
 
 ضيف مجموعة `High Contrast`، وبعدها ضيف `Slider` وقارن حجم التعديلات.
+
+## اختبر فهمك
+
+1. ليه `Theme` واحدة بتعمل المنتجين؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

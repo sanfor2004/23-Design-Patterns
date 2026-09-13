@@ -4,9 +4,11 @@
 
 [السابق](../../structural/decorator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/flyweight/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 وفّر مدخل بسيط للخطوات الشائعة جوه نظام فرعي (`subsystem`).
+
+## ببساطة
+
+الشراء محتاج مراجعة مخزون ودفع وشحن بالترتيب.الـ`Facade` بيجمع الخطوات المشتركة في استدعاء واحد، بس مش بيحوّلها تلقائيًا لـ`Transaction`.
 
 ## The Problem
 
@@ -59,16 +65,21 @@ Client  -->  Checkout::buy()  -->  Stock / Payment / Shipping
 - [`interface`](../../GLOSSARY.md#interface) — العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها. هنا: `Checkout::buy`.
 - [`Client`](../../GLOSSARY.md#client-pattern-role) — الكود اللي بيستخدم `interface` أو بيتعامل مع `objects` بتاعة الـ `Pattern`. هنا: `main`.
 
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 
 struct Stock {
     bool available(int quantity) const { return quantity > 0 && quantity <= 3; }
 };
 struct Payment {
-    void charge(int amount) const { std::cout << "Charged " << amount << '\n'; }
+    void charge(int amount_cents) const { std::cout << "Charged " << amount_cents << '\n'; }
 };
 struct Shipping {
     void dispatch() const { std::cout << "Dispatched\n"; }
@@ -148,6 +159,12 @@ Unavailable
 ## Mini Challenge
 
 ضيف فشل شحن تجريبي وصمّم نتيجة `Refund` واضحة بدل نجاح وهمي.
+
+## اختبر فهمك
+
+1. إيه اللي `buy` مش بيضمنه لو الشحن فشل بعد الدفع؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

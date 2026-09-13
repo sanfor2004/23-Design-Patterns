@@ -4,6 +4,8 @@
 
 [Precedente](../../behavioral/observer/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/strategy/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
@@ -15,6 +17,10 @@ Intermedio
 ## In One Sentence
 
 Lascia che lo state corrente determini risposta e transizioni.
+
+## In parole semplici
+
+La porta reagisce allo stesso pulsante in modi diversi: si apre se è chiusa e si chiude se è aperta. `State` mette la risposta e la transizione nell’Object che rappresenta lo `state` corrente.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Ruoli canonici in questo esempio:
 - [`Context`](../../GLOSSARY.md#context) — L'object che usa una Strategy o delega il behavior allo State corrente. Qui: `Door`.
 - [`State interface`](../../GLOSSARY.md#state-interface) — Il contratto con cui un Context delega il behavior dipendente dallo state. Qui: `DoorState`.
 - [`Concrete State`](../../GLOSSARY.md#concrete-state) — Un'implementation che definisce behavior e transizioni di uno State. Qui: `Open, Closed`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -129,7 +139,7 @@ Il behavior è raccolto per state e le transizioni sono ispezionabili localmente
 
 ## Trade-offs
 
-Aggiunge class e vincoli di [`lifetime`](../../GLOSSARY.md#lifetime) (L'intervallo in cui un object esiste e può essere usato secondo le sue regole). Gli state esterni a Door non vengono distrutti durante la transizione: preserva questa sicurezza in progetti più grandi.
+Aggiunge class e vincoli di [`lifetime`](../../GLOSSARY.md#lifetime). Gli state esterni a Door non vengono distrutti durante la transizione: preserva questa sicurezza in progetti più grandi.
 
 ## Related Patterns
 
@@ -137,7 +147,7 @@ Aggiunge class e vincoli di [`lifetime`](../../GLOSSARY.md#lifetime) (L'interval
 
 ## Common Confusion
 
-Strategy è solitamente scelta dal client per un algorithm; State rappresenta il [`lifecycle`](../../GLOSSARY.md#lifecycle) (Le fasi e transizioni modellate di un'entità del dominio, distinte dalla lifetime di un object C++) e può decidere le transizioni.
+Strategy è solitamente scelta dal client per un algorithm; State rappresenta il [`lifecycle`](../../GLOSSARY.md#lifecycle) e può decidere le transizioni.
 
 ## Terms to Remember
 
@@ -159,6 +169,12 @@ Chi sceglie lo state successivo e perché è diverso da scegliere una Strategy d
 ## Mini Challenge
 
 Aggiungi Locked che ignora press e un event unlock separato; verifica la sequenza.
+
+## Verifica cosa hai capito
+
+1. Chi sceglie lo State successivo quando si preme il pulsante?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

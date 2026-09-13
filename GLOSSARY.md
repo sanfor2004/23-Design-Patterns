@@ -1580,7 +1580,7 @@ Use your editor or browser’s Find command to locate a term. Lowercase `state` 
 
 **Meaning:** The contract for interchangeable algorithms used by a Context.
 
-**مصري:** عقد الـ `algorithms` القابلة للتبديل اللي `Context` بتستخدمها.
+**مصري:** بتحدد العقد المشترك للـ`algorithms` المختلفة. الـ`Context` بيعتمد على العقد ده بدل `implementation` محدد.
 
 **中文:** Context 所使用的可替换 algorithm 的约定。
 

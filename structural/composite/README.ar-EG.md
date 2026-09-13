@@ -4,9 +4,11 @@
 
 [السابق](../../structural/bridge/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/decorator/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 عامل العنصر الواحد وشجرة العناصر بنفس العملية.
+
+## ببساطة
+
+المجلد فيه ملفات ومجلدات تانية.الـ`Composite` بيوفر `bytes` للاتنين، فالمستدعي يطلب الحجم من غير ما يمشي بنفسه في كل مستوى.
 
 ## The Problem
 
@@ -59,6 +65,10 @@ Client::bytes()  -->  Entry  -->  File / Folder[Entry]
 - [`Leaf`](../../GLOSSARY.md#leaf) — عنصر (`Component`) مافيهوش عناصر تحته. هنا: `File`.
 - [`ownership`](../../GLOSSARY.md#ownership) — مين مسؤول يخلي المورد عايش ومين يحرره في الآخر. هنا: `Folder::children_`.
 
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+
 ## Modern C++20 Example
 
 ```cpp
@@ -100,6 +110,9 @@ int main() {
     root.add(std::make_unique<File>(10));
     root.add(std::move(images));
     std::cout << "Total: " << root.bytes() << " bytes\n";
+    std::cout << "Empty: " << Folder{}.bytes() << " bytes\n";
+    try { const File invalid{-1}; }
+    catch (const std::invalid_argument&) { std::cout << "Negative size rejected\n"; }
 }
 ```
 
@@ -107,6 +120,8 @@ int main() {
 
 ```text
 Total: 30 bytes
+Empty: 0 bytes
+Negative size rejected
 ```
 
 ## When to Use
@@ -115,7 +130,7 @@ Total: 30 bytes
 
 ### Use cases
 
-ينفع لشجر الملفات وقوائم الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) ومشاهد من غير مشاركة عقد.
+ينفع لشجر الملفات وقوائم الـ [`interface`](../../GLOSSARY.md#interface) ومشاهد من غير مشاركة عقد.
 
 ## When NOT to Use
 
@@ -157,6 +172,12 @@ Total: 30 bytes
 ## Mini Challenge
 
 ضيف فولدر فاضي ومستوى تداخل كمان، وراجع الأحجام وفكّر في نوع أوسع للأرقام.
+
+## اختبر فهمك
+
+1. ليه `Folder` فاضية تقدر ترجع صفر بنفس الـ`Interface` بتاعة `File`؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

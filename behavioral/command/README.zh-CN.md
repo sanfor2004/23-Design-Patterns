@@ -4,6 +4,8 @@
 
 [上一个](../../behavioral/chain-of-responsibility/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/interpreter/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -14,7 +16,11 @@
 
 ## In One Sentence
 
-通过 [`encapsulation`](../../GLOSSARY.md#encapsulation)（把内部表示和必须保持的规则放在受控操作之后） 把操作及其数据组成可保存、可延后调用的 object。
+通过 [`encapsulation`](../../GLOSSARY.md#encapsulation) 把操作及其数据组成可保存、可延后调用的 object。
+
+## 简单理解
+
+编辑器需要记住修改，以便用户撤销。Command 保存操作和撤销所需信息，History 决定何时执行或撤销。
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Command 定义执行和撤销，Append 修改借用的 Document，History 按栈
 - [`Receiver`](../../GLOSSARY.md#receiver) — 执行 Command 所请求工作的 object。 对应代码： `Document`。
 - [`Invoker`](../../GLOSSARY.md#invoker) — 启动或保存 Command、无需了解每项操作细节的角色。 对应代码： `History`。
 - [`Concrete Command`](../../GLOSSARY.md#concrete-command) — 把 Receiver 与动作绑定起来的 Command implementation。 对应代码： `Append`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -105,6 +115,8 @@ int main() {
     std::cout << document.text << '\n';
     history.undo();
     std::cout << document.text << '\n';
+    history.undo();
+    std::cout << "Empty undo: " << document.text << '\n';
 }
 ```
 
@@ -113,6 +125,7 @@ int main() {
 ```text
 Hello world
 Hello
+Empty undo: Hello
 ```
 
 ## When to Use
@@ -163,6 +176,12 @@ Memento 保存 state， Command 保存动作并可用 snapshot 撤销；不是�
 ## Mini Challenge
 
 连续追加两次再撤销两次，验证空历史上的撤销无 side effect。
+
+## 检查理解
+
+1. 为什么这些修改必须按相反顺序撤销？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

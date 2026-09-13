@@ -36,4 +36,7 @@ int main() {
     root.add(std::make_unique<File>(10));
     root.add(std::move(images));
     std::cout << "Total: " << root.bytes() << " bytes\n";
+    std::cout << "Empty: " << Folder{}.bytes() << " bytes\n";
+    try { const File invalid{-1}; }
+    catch (const std::invalid_argument&) { std::cout << "Negative size rejected\n"; }
 }

@@ -4,9 +4,11 @@
 
 [السابق](../../creational/factory-method/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../creational/singleton/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الكائنات وتجهيزها (`object creation`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — بيركز على إنشاء الـ`Objects` وإعدادها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 انسخ نموذج متجهّز عشان تنشئ كائن مستقل (`object`) وتعدّله من غير ما تغيّر الأصل.
+
+## ببساطة
+
+اللعبة فيها حارس متجهّز بالمعدات المطلوبة.الـ`Prototype` بينسخ التجهيز ده عشان تغيّر النسخة الجديدة من غير ما تغيّر الأصل.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Client  -->  Enemy::clone()  -->  independent Guard
 - [`Concrete Prototype`](../../GLOSSARY.md#concrete-prototype) — كائن بيوفّر العملية `clone` لإنشاء كائن تاني (`object`) من القيم المتجهّزة. هنا: `Guard`.
 - [`deep copy`](../../GLOSSARY.md#deep-copy) — بتنسخ البيانات الداخلية المملوكة عشان تعديل النسخة ما يغيرش الأصل. هنا: `Guard::clone`.
 - [`value semantics`](../../GLOSSARY.md#value-semantics) — النسخ تتعامل كقيم مستقلة حسب عقد النوع. هنا: `name_, equipment_`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -148,6 +158,12 @@ gate guard: 2 items
 ## Mini Challenge
 
 خلّي المعدات قابلة للتعديل، واتأكد إن تعديل النسخة مايمسش الأصل.
+
+## اختبر فهمك
+
+1. هل إسناد الأصل لمتغير تاني بيعمل نسخة مستقلة؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

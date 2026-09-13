@@ -4,6 +4,8 @@
 
 [上一个](../../behavioral/mediator/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/observer/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -14,7 +16,11 @@
 
 ## In One Sentence
 
-在不 暴露 snapshot 内部数据 的情况下保存和恢复 object state。
+保存并恢复 Object 的 `state`，同时不暴露 Snapshot 的内部数据。
+
+## 简单理解
+
+编辑器需要在可能出错的修改前保留检查点。Memento 保存当前 `state`，由编辑器决定如何恢复。
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Editor 是 Originator，Snapshot 是保存 private state 的 Memento，main 是�
 - [`Caretaker`](../../GLOSSARY.md#caretaker) — 保存 Memento、但不检查其私有表示的角色。 对应代码： `main`。
 - [`snapshot`](../../GLOSSARY.md#snapshot) — 某一时刻所选 state 的保存表示。 对应代码： `Editor::Snapshot`。
 
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
+
 ## Modern C++20 Example
 
 ```cpp
@@ -86,6 +96,9 @@ int main() {
     std::cout << editor.text() << '\n';
     editor.restore(checkpoint);
     std::cout << editor.text() << '\n';
+    editor.write("Another edit");
+    editor.restore(checkpoint);
+    std::cout << "Restore again: " << editor.text() << '\n';
 }
 ```
 
@@ -94,6 +107,7 @@ int main() {
 ```text
 Broken edit
 Draft
+Restore again: Draft
 ```
 
 ## When to Use
@@ -110,7 +124,7 @@ state 巨大、资源不可恢复，或逆操作记录更便宜时避免。
 
 ## Advantages
 
-State 表示 保留在 Originator 内部，Caretaker 无需手动复制字段。
+State 的表示保留在 Originator 内部，Caretaker 无需手动复制字段。
 
 ## Trade-offs
 
@@ -126,7 +140,7 @@ Command 保存动作， Memento 保存 state； Prototype 创建另一个 object
 
 ## Terms to Remember
 
-- `Memento` — 在不 暴露 snapshot 内部数据 的情况下保存和恢复 object state。
+- `Memento` — 保存并恢复 Object 的 `state`，同时不暴露 Snapshot 的内部数据。
 - `Originator` — 知道如何保存和恢复自身 state 的 object。 示例： `Editor`。
 - `Caretaker` — 保存 Memento、但不检查其私有表示的角色。 示例： `main`。
 - `snapshot` — 某一时刻所选 state 的保存表示。 示例： `Editor::Snapshot`。
@@ -144,6 +158,12 @@ Editor 增加光标位置后，哪些地方必须修改才能正确恢复？
 ## Mini Challenge
 
 在 Snapshot 中保存光标，验证文本和光标一起恢复。
+
+## 检查理解
+
+1. 为什么之后的修改不能改变已保存的 Snapshot？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

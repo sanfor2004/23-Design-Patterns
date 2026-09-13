@@ -4,6 +4,8 @@
 
 [Precedente](../../structural/facade/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/proxy/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
@@ -15,6 +17,10 @@ Avanzato
 ## In One Sentence
 
 Condividi dati intrinseci immutabili e separa il contesto di ogni occorrenza.
+
+## In parole semplici
+
+La stessa lettera può comparire migliaia di volte in un documento. `Flyweight` condivide la forma immutabile e lascia a ogni occorrenza la propria posizione.
 
 ## The Problem
 
@@ -51,13 +57,17 @@ PlacedGlyph(x)  -->  GlyphPool::get  -->  shared const Glyph
 
 ## Participants
 
-Glyph contiene la forma intrinseca, GlyphPool la internizza, PlacedGlyph conserva posizione estrinseca e [`ownership`](../../GLOSSARY.md#ownership) (La responsabilità di mantenere una risorsa valida e infine rilasciarla) condivisa.
+Glyph contiene la forma intrinseca, GlyphPool la internizza, PlacedGlyph conserva posizione estrinseca e [`ownership`](../../GLOSSARY.md#ownership) condivisa.
 
 Ruoli canonici in questo esempio:
 
 - [`intrinsic state`](../../GLOSSARY.md#intrinsic-state) — Dati indipendenti dal contesto della singola occorrenza, condivisibili da un Flyweight. Qui: `Glyph::shape`.
 - [`extrinsic state`](../../GLOSSARY.md#extrinsic-state) — Dati specifici di un'occorrenza conservati fuori dal Flyweight condiviso. Qui: `PlacedGlyph::x`.
 - [`Flyweight Factory`](../../GLOSSARY.md#flyweight-factory) — Un servizio di ricerca che restituisce un Flyweight condiviso per una chiave. Qui: `GlyphPool`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -122,7 +132,7 @@ Le occorrenze riutilizzano la forma mantenendo posizioni indipendenti.
 
 ## Trade-offs
 
-Il pool trattiene gli elementi; map e [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (Uno smart pointer con ownership condivisa; l'object viene rilasciato quando scompare l'ultimo riferimento proprietario) hanno costi. La stringa dimostrativa è piccola: non si rivendica un risparmio misurato. Il pool non è sincronizzato.
+Il pool trattiene gli elementi; map e [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) hanno costi. La stringa dimostrativa è piccola: non si rivendica un risparmio misurato. Il pool non è sincronizzato.
 
 ## Related Patterns
 
@@ -152,6 +162,12 @@ Quali campi servono nella chiave se font e dimensione cambiano la forma?
 ## Mini Challenge
 
 Aggiungi il font alla chiave e verifica condivisione per chiavi uguali, separazione per font diversi.
+
+## Verifica cosa hai capito
+
+1. Quali dati devono restare fuori dal Glyph condiviso e perché?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

@@ -1,0 +1,4 @@
+Standard: 4500
+Express: 5500
+Express boundary: 10000
+Negative subtotal rejected

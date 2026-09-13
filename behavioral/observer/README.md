@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/memento/README.md) · [Category](../README.md) · [Next](../../behavioral/state/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Beginner
 
 ## In One Sentence
 
-Notify subscribed objects when something they follow changes.
+Notify subscribers when something changes.
+
+## Explain It Simply
+
+Several displays may need the latest stock quantity. Observer lets them subscribe, so Stock can send updates without hardcoding every display.
 
 ## The Problem
 
@@ -51,13 +57,17 @@ Stock::set()  -->  weak Listener subscriptions  -->  Display::update()
 
 ## Participants
 
-Stock is the subject, Listener the callback [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller), Display a subscriber. The client owns subscribers; [`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr) (A non-owning observer of shared ownership; lock attempts to obtain a temporary shared_ptr) avoids extending their [`lifetime`](../../GLOSSARY.md#lifetime) (The interval during which an object exists and may be used according to its rules).
+Stock is the subject, Listener the callback [`interface`](../../GLOSSARY.md#interface), Display a subscriber. The client owns subscribers; [`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr) avoids extending their [`lifetime`](../../GLOSSARY.md#lifetime).
 
 Canonical roles in this example:
 
 - [`Subject`](../../GLOSSARY.md#subject) — The publisher whose changes are announced to registered Observers. Here: `Stock`.
 - [`Observer interface`](../../GLOSSARY.md#observer-interface) — The callback contract implemented by subscribers. Here: `Listener`.
 - [`Concrete Observer`](../../GLOSSARY.md#concrete-observer) — An Observer implementation that reacts to notifications. Here: `Display`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -93,6 +103,11 @@ int main() {
     display.reset();
     stock.set(0);
     std::cout << "Expired listener skipped\n";
+    auto screen = std::make_shared<Display>();
+    auto log = std::make_shared<Display>();
+    stock.subscribe(screen);
+    stock.subscribe(log);
+    stock.set(2);
 }
 ```
 
@@ -101,6 +116,8 @@ int main() {
 ```text
 Stock: 4
 Expired listener skipped
+Stock: 2
+Stock: 2
 ```
 
 ## When to Use
@@ -146,11 +163,17 @@ Mediator defines coordination rules among known peers. Observer broadcasts notif
 
 ## Interview Question
 
-Why use std::weak_ptr for stored listeners but lock it into [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (A smart pointer sharing ownership; the managed object is released when the last owning reference disappears) during the callback?
+Why use std::weak_ptr for stored listeners but lock it into [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) during the callback?
 
 ## Mini Challenge
 
 Add two listeners, destroy one, and verify only the survivor receives later updates. Define an explicit unsubscribe operation.
+
+## Check Yourself
+
+1. How do unsubscribe in Python and an expired weak_ptr in C++ differ?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

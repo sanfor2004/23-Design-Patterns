@@ -4,6 +4,8 @@
 
 [上一个](../../creational/prototype/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/adapter/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — 关注如何创建和配置 object 的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 限制 type 只提供一个 instance，同时承担全局共享 state 的代价。
+
+## 简单理解
+
+多个调用方需要同一个计数器。Singleton 控制创建过程，但共享 State 也会让测试和 Dependency 更难隔离。
 
 ## The Problem
 
@@ -51,13 +57,17 @@ Client A + B  -->  Metrics::instance()  -->  one Metrics
 
 ## Participants
 
-Metrics 管理自身 [`lifetime`](../../GLOSSARY.md#lifetime)（object 存在且可按规则使用的时间区间） 并保存计数；instance 返回 non-owning reference， Client 不能删除它。
+Metrics 管理自身 [`lifetime`](../../GLOSSARY.md#lifetime) 并保存计数；instance 返回 non-owning reference， Client 不能删除它。
 
 本例中的标准角色：
 
 - [`instance`](../../GLOSSARY.md#instance) — 某个类型的一个具体 object。 对应代码： `Metrics::instance()`。
 - [`global state`](../../GLOSSARY.md#global-state) — 程序中广泛可访问、修改后可能影响远处代码的数据。 对应代码： `Metrics::requests_`。
 - [`thread-safe initialization`](../../GLOSSARY.md#thread-safe-initialization) — 避免并发重复构造的初始化保障，不代表后续操作也 thread-safe。 对应代码： `static Metrics metrics`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -120,7 +130,7 @@ Requests: 2
 
 ## Common Confusion
 
-[`dependency injection`](../../GLOSSARY.md#dependency-injection)（从外部传入 dependency，而不是由使用方自行选择或创建） 管理一个 instance 不等于 Singleton：唯一性不一定由 type 强制。
+[`dependency injection`](../../GLOSSARY.md#dependency-injection) 管理一个 instance 不等于 Singleton：唯一性不一定由 type 强制。
 
 ## Terms to Remember
 
@@ -142,6 +152,12 @@ Requests: 2
 ## Mini Challenge
 
 改成给两个任务注入计数器，再测试两个互不影响的计数器。
+
+## 检查理解
+
+1. 一个测试留下的计数器 State 会怎样影响下一个测试？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

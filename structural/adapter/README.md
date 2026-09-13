@@ -4,6 +4,8 @@
 
 [Previous](../../creational/singleton/README.md) · [Category](../README.md) · [Next](../../structural/bridge/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
@@ -14,7 +16,11 @@ Beginner
 
 ## In One Sentence
 
-Translate an existing [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller) into the one a client expects.
+Make an existing Interface fit another.
+
+## Explain It Simply
+
+A sensor returns Fahrenheit, while the display expects Celsius. Adapter translates the call and value so neither side needs to change.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Canonical roles in this example:
 - [`Target`](../../GLOSSARY.md#target) — The interface expected by the Client. Here: `Temperature`.
 - [`Adaptee`](../../GLOSSARY.md#adaptee) — The existing object whose interface needs adaptation. Here: `LegacyThermometer`.
 - [`interface`](../../GLOSSARY.md#interface) — The contract of operations and observable behavior offered to a caller. Here: `Temperature`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -142,6 +152,12 @@ Can an adapter always preserve behavior if the source API is asynchronous and th
 ## Mini Challenge
 
 Test freezing and boiling points by allowing the legacy sensor to return configurable Fahrenheit values.
+
+## Check Yourself
+
+1. Who converts the units, and who keeps the sensor alive?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

@@ -4,6 +4,8 @@
 
 [Previous](../../creational/abstract-factory/README.md) · [Category](../README.md) · [Next](../../creational/factory-method/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
@@ -14,7 +16,11 @@ Beginner
 
 ## In One Sentence
 
-Assemble a configured object through named steps before producing the result.
+Build an Object through clear steps.
+
+## Explain It Simply
+
+A request has several options, and a long constructor call hides what each value means. Builder collects named choices, checks them, then creates the result.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Canonical roles in this example:
 - [`Product`](../../GLOSSARY.md#product) — The contract of an object returned by creation code. Here: `Request`.
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — An interface shaped to read as a chain of calls; it does not by itself imply Builder. Here: `RequestBuilder.endpoint().timeout().retry()`.
 - [`constructor`](../../GLOSSARY.md#constructor) — The special operation that initializes a new class instance. Here: `Request::Request`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -153,6 +163,12 @@ Does a fluent interface automatically make something a Builder? Explain where co
 ## Mini Challenge
 
 Reject timeouts above 120 and demonstrate both the boundary value and the first rejected value.
+
+## Check Yourself
+
+1. What happens if a caller bypasses build and calls Request directly?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

@@ -4,6 +4,8 @@
 
 [上一个](../../structural/decorator/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/flyweight/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 为 subsystem 的常见流程提供一个小而清晰的入口。
+
+## 简单理解
+
+购买流程需要依次检查库存、付款和发货。Facade 把常用流程放进一次调用，但不会自动保证 Transaction。
 
 ## The Problem
 
@@ -59,16 +65,21 @@ Stock 检查库存，Payment 扣款，Shipping 发货，Checkout 提供公共流
 - [`interface`](../../GLOSSARY.md#interface) — 约定可调用的操作及其对外可观察行为。 对应代码： `Checkout::buy`。
 - [`Client`](../../GLOSSARY.md#client-pattern-role) — 使用 interface 或与模式中的 object 协作的代码。 对应代码： `main`。
 
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 
 struct Stock {
     bool available(int quantity) const { return quantity > 0 && quantity <= 3; }
 };
 struct Payment {
-    void charge(int amount) const { std::cout << "Charged " << amount << '\n'; }
+    void charge(int amount_cents) const { std::cout << "Charged " << amount_cents << '\n'; }
 };
 struct Shipping {
     void dispatch() const { std::cout << "Dispatched\n"; }
@@ -148,6 +159,12 @@ Adapter 处理兼容性； Facade 缩小 subsystem 的使用范围，不必实�
 ## Mini Challenge
 
 模拟发货失败，设计明确的退款结果，不要默默返回成功。
+
+## 检查理解
+
+1. 付款后发货失败时，buy 无法保证什么？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

@@ -4,6 +4,8 @@
 
 [类别](../README.zh-CN.md) · [下一个](../../creational/builder/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — 关注如何创建和配置 object 的 Design Pattern。
@@ -14,7 +16,11 @@
 
 ## In One Sentence
 
-通过统一的工厂 [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为） 创建相互配套的 object。
+通过统一的工厂 [`interface`](../../GLOSSARY.md#interface) 创建相互配套的 object。
+
+## 简单理解
+
+界面的按钮和面板需要使用同一主题。选择一个 Factory 来创建两者，调用方就不用分别选择具体 Class。
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Theme 定义 Product family；DarkTheme 和 LightTheme 创建 Concrete Product�
 - [`Product`](../../GLOSSARY.md#product) — 创建代码返回的 object 所提供的约定。 对应代码： `Button, Panel`。
 - [`Concrete Product`](../../GLOSSARY.md#concrete-product) — Product 约定的一种具体 implementation。 对应代码： `DarkButton, LightButton, DarkPanel, LightPanel`。
 - [`Concrete Factory`](../../GLOSSARY.md#concrete-factory) — 创建一组配套 Product 的 implementation。 对应代码： `DarkTheme, LightTheme`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -165,6 +175,12 @@ Factory Method 改变一个创建步骤； Abstract Factory 组织多种相关�
 ## Mini Challenge
 
 增加高对比度主题，再增加 Slider 产品，对比两次修改的范围。
+
+## 检查理解
+
+1. 为什么同一个 Theme 要创建两种产品？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

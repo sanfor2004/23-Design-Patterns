@@ -1,0 +1,2 @@
+Tax: 400 cents
+Empty basket tax: 0 cents

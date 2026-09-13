@@ -4,6 +4,8 @@
 
 [Precedente](../../creational/abstract-factory/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../creational/factory-method/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
@@ -15,6 +17,10 @@ Principiante
 ## In One Sentence
 
 Configura un object con passi espliciti e produci il risultato alla fine.
+
+## In parole semplici
+
+Con molte opzioni, una chiamata al `constructor` nasconde il significato dei valori. `Builder` raccoglie scelte con nomi chiari, le verifica e crea il risultato.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Ruoli canonici in questo esempio:
 - [`Product`](../../GLOSSARY.md#product) — Il contratto dell'object restituito dal codice di creazione. Qui: `Request`.
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — Un'interface pensata come catena leggibile di chiamate; da sola non implica Builder. Qui: `RequestBuilder.endpoint().timeout().retry()`.
 - [`constructor`](../../GLOSSARY.md#constructor) — L'operazione speciale che inizializza una nuova instance di una class. Qui: `Request::Request`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -153,6 +163,12 @@ Una fluent interface è sempre un Builder? Individua il momento in cui termina l
 ## Mini Challenge
 
 Rifiuta timeout superiori a 120 e prova il limite e il primo valore non valido.
+
+## Verifica cosa hai capito
+
+1. Cosa succede chiamando Request direttamente invece di build?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

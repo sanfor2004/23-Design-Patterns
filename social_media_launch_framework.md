@@ -203,7 +203,7 @@ Use actual audience analytics for timing advice when available. Otherwise label 
 
 ## 9. Output files and project portability
 
-Default all generated campaign content to `Markting/` inside the target workspace. This spelling and capitalization are intentional. Put the first campaign's Markdown files, image exports, previews, validation reports, and reproduction sources there; do not default to `marketing/`, `markting/`, `public/`, or a folder outside the project. An explicit user output path overrides this default. If a previous campaign exists, preserve it and create a dated campaign subfolder inside `Markting/`. Keep temporary campaign captures under that campaign's `source/` directory. Do not modify application behavior to generate marketing material.
+Default all generated campaign content to `Marketing/` inside the target workspace. This spelling and capitalization are intentional. Put the first campaign's Markdown files, image exports, previews, validation reports, and reproduction sources there; do not default to `marketing/`, `markting/`, `public/`, or a folder outside the project. An explicit user output path overrides this default. If a previous campaign exists, preserve it and create a dated campaign subfolder inside `Marketing/`. Keep temporary campaign captures under that campaign's `source/` directory. Do not modify application behavior to generate marketing material.
 
 Save:
 

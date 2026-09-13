@@ -11,3 +11,5 @@ ctest --test-dir build -C Debug -R "^pattern_prototype$" --output-on-failure
 ```
 
 See [compiler requirements and all-example instructions](../../../CPP_EXAMPLES.md). The output check runs the program and compares its stdout with `expected.txt`.
+
+Start with the [Python example](../python/README.md) to see the same intent with less syntax.

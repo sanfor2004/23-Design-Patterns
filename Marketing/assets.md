@@ -42,11 +42,11 @@ Requires Node.js, Playwright, and its Chromium browser. The renderer resolves as
 If Playwright is installed in the current Node module resolution path, run from the repository root:
 
 ```sh
-node Markting/source/render.cjs
+node Marketing/source/render.cjs
 ```
 
 Otherwise install Playwright in a local tool directory, or set `PLAYWRIGHT_MODULE` to the absolute path of an existing Playwright module directory. Install the matching Chromium browser with that installation's Playwright CLI. No dependency installation is performed by the renderer.
 
 For this execution, an existing Playwright installation was reused from the neighboring portfolio's `node_modules/playwright`; its files were read only. No portfolio content, source, or package files were changed. The composition itself has no dependency on that portfolio: an independent Playwright installation works through the documented override.
 
-The HTML embeds the SVG assets as data URLs and can be opened directly in a browser. System font fallback can vary between machines; inspect regenerated output before publishing. Run `node Markting/source/render.cjs --inspect-sources` to recreate the source asset inspection image.
+The HTML embeds the SVG assets as data URLs and can be opened directly in a browser. System font fallback can vary between machines; inspect regenerated output before publishing. Run `node Marketing/source/render.cjs --inspect-sources` to recreate the source asset inspection image.

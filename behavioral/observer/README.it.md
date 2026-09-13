@@ -4,6 +4,8 @@
 
 [Precedente](../../behavioral/memento/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/state/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
@@ -15,6 +17,10 @@ Principiante
 ## In One Sentence
 
 Notifica gli object iscritti quando cambia ciò che seguono.
+
+## In parole semplici
+
+Più display possono richiedere la quantità aggiornata in magazzino.Observer permette l’iscrizione, evitando a Stock una chiamata fissa per ogni display.
 
 ## The Problem
 
@@ -51,13 +57,17 @@ Stock::set()  -->  weak Listener subscriptions  -->  Display::update()
 
 ## Participants
 
-Stock è il Subject, Listener il contratto, Display l'iscritto. Il client possiede gli Observer; [`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr) (Un riferimento non proprietario a ownership condivisa; lock tenta di ottenere uno shared_ptr temporaneo) non ne prolunga la vita.
+Stock è il Subject, Listener il contratto, Display l'iscritto. Il client possiede gli Observer; [`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr) non ne prolunga la vita.
 
 Ruoli canonici in questo esempio:
 
 - [`Subject`](../../GLOSSARY.md#subject) — Il publisher che comunica i propri cambiamenti agli Observer registrati. Qui: `Stock`.
 - [`Observer interface`](../../GLOSSARY.md#observer-interface) — Il contratto di callback implementato dagli iscritti. Qui: `Listener`.
 - [`Concrete Observer`](../../GLOSSARY.md#concrete-observer) — Un'implementation di Observer che reagisce alle notifiche. Qui: `Display`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -93,6 +103,11 @@ int main() {
     display.reset();
     stock.set(0);
     std::cout << "Expired listener skipped\n";
+    auto screen = std::make_shared<Display>();
+    auto log = std::make_shared<Display>();
+    stock.subscribe(screen);
+    stock.subscribe(log);
+    stock.set(2);
 }
 ```
 
@@ -101,6 +116,8 @@ int main() {
 ```text
 Stock: 4
 Expired listener skipped
+Stock: 2
+Stock: 2
 ```
 
 ## When to Use
@@ -146,11 +163,17 @@ Mediator definisce coordinazione fra pari noti; Observer diffonde event senza pr
 
 ## Interview Question
 
-Perché conservare std::weak_ptr e usare lock per ottenere [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (Uno smart pointer con ownership condivisa; l'object viene rilasciato quando scompare l'ultimo riferimento proprietario) durante il callback?
+Perché conservare std::weak_ptr e usare lock per ottenere [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) durante il callback?
 
 ## Mini Challenge
 
 Registra due listener, distruggine uno e verifica le notifiche al superstite; definisci unsubscribe esplicito.
+
+## Verifica cosa hai capito
+
+1. Che differenza c’è tra unsubscribe in Python e un weak_ptr scaduto in C++?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

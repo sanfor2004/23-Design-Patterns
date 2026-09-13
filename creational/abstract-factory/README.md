@@ -4,6 +4,8 @@
 
 [Category](../README.md) · [Next](../../creational/builder/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — A Design Pattern concerned with how objects are created and configured.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Create related objects through one family [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller).
+Create a matching family of Objects.
+
+## Explain It Simply
+
+A screen needs buttons and panels with the same theme. One Factory supplies both, so the caller does not choose each concrete Class separately.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Canonical roles in this example:
 - [`Product`](../../GLOSSARY.md#product) — The contract of an object returned by creation code. Here: `Button, Panel`.
 - [`Concrete Product`](../../GLOSSARY.md#concrete-product) — A particular implementation of a Product contract. Here: `DarkButton, LightButton, DarkPanel, LightPanel`.
 - [`Concrete Factory`](../../GLOSSARY.md#concrete-factory) — An implementation that creates one matching Product family. Here: `DarkTheme, LightTheme`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -135,7 +145,7 @@ The client can switch whole families without changing its rendering workflow.
 
 ## Trade-offs
 
-Adding a new product type, such as Slider, requires changing every factory. The interface cannot alone prove that an [`implementation`](../../GLOSSARY.md#implementation) (The concrete code that fulfills an interface or performs an operation) returns a visually consistent family.
+Adding a new product type, such as Slider, requires changing every factory. The interface cannot alone prove that an [`implementation`](../../GLOSSARY.md#implementation) returns a visually consistent family.
 
 ## Related Patterns
 
@@ -165,6 +175,12 @@ What changes when you add a new theme versus a new widget type? Trace every inte
 ## Mini Challenge
 
 Add a high-contrast family. Then add a Slider product and compare the number of files or classes affected.
+
+## Check Yourself
+
+1. Why does one Theme create both products?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

@@ -40,4 +40,6 @@ int main() {
     std::cout << "Ready: " << std::boolalpha << form.ready() << '\n';
     form.password("example");
     std::cout << "Ready: " << form.ready() << '\n';
+    form.password("");
+    std::cout << "Ready after clearing: " << form.ready() << '\n';
 }

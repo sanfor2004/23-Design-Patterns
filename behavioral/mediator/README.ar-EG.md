@@ -4,9 +4,11 @@
 
 [السابق](../../behavioral/iterator/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/memento/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 خلّي التنسيق بين الأطراف المتعاونة (`Colleagues`) مسؤولية منسّق مستقل (`Mediator`).
+
+## ببساطة
+
+زر الدخول محتاج الحقلين يبقوا مكتوب فيهم.الـ`Mediator` بيطبّق القاعدة، فكل حقل مش محتاج يعرف الحقل التاني أو الزر.
 
 ## The Problem
 
@@ -29,7 +35,7 @@ submit.enable(!username.empty() && !password.empty());
 
 ## Why It Becomes a Problem
 
-لو كل `Field` تعرف التانية والزر، قواعد الـ [`interface`](../../GLOSSARY.md#interface) (العقد اللي بيحدد العمليات المتاحة وإيه اللي المستدعي يتوقعه منها) هتتوزع والـ `dependencies` هتتشابك.
+لو كل `Field` تعرف التانية والزر، قواعد الـ [`interface`](../../GLOSSARY.md#interface) هتتوزع والـ `dependencies` هتتشابك.
 
 ## The Idea
 
@@ -58,6 +64,10 @@ Field::set()  -->  LoginForm(Mediator)  -->  Button::enable()
 - [`Colleague`](../../GLOSSARY.md#colleague) — كائن متعاون (`object`) بيتولى الـ `Mediator` تنسيق تعاملاته مع باقي الأطراف. هنا: `Field, Button`.
 - [`Concrete Mediator`](../../GLOSSARY.md#concrete-mediator) — تنفيذ (`implementation`) بيجمع قواعد التنسيق بين الأطراف المتعاونة (`Colleagues`). هنا: `LoginForm`.
 - [`callback`](../../GLOSSARY.md#callback) — دالة (`function`) أو عملية بتمرّرها لجزء تاني، عشان يناديها وقت ما يحتاجها. هنا: `Mediator::changed`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -104,6 +114,8 @@ int main() {
     std::cout << "Ready: " << std::boolalpha << form.ready() << '\n';
     form.password("example");
     std::cout << "Ready: " << form.ready() << '\n';
+    form.password("");
+    std::cout << "Ready after clearing: " << form.ready() << '\n';
 }
 ```
 
@@ -112,6 +124,7 @@ int main() {
 ```text
 Ready: false
 Ready: true
+Ready after clearing: false
 ```
 
 ## When to Use
@@ -162,6 +175,12 @@ Ready: true
 ## Mini Challenge
 
 ضيف `Checkbox` للشروط واطلب الشروط الثلاثة من غير ما `Field` تعرف الزر.
+
+## اختبر فهمك
+
+1. مين بيقرر حالة الزر لما حقل يبقى فاضي؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

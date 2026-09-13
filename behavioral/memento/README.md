@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/mediator/README.md) · [Category](../README.md) · [Next](../../behavioral/observer/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Save and restore an object's state without exposing snapshot internals.
+Save State now and restore it later.
+
+## Explain It Simply
+
+An editor needs a checkpoint before a risky edit. Memento holds that checkpoint while the editor controls how its state is saved and restored.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Canonical roles in this example:
 - [`Caretaker`](../../GLOSSARY.md#caretaker) — The role that keeps a Memento without inspecting its private representation. Here: `main`.
 - [`snapshot`](../../GLOSSARY.md#snapshot) — A captured representation of selected state at a point in time. Here: `Editor::Snapshot`.
 
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+
 ## Modern C++20 Example
 
 ```cpp
@@ -86,6 +96,9 @@ int main() {
     std::cout << editor.text() << '\n';
     editor.restore(checkpoint);
     std::cout << editor.text() << '\n';
+    editor.write("Another edit");
+    editor.restore(checkpoint);
+    std::cout << "Restore again: " << editor.text() << '\n';
 }
 ```
 
@@ -94,6 +107,7 @@ int main() {
 ```text
 Broken edit
 Draft
+Restore again: Draft
 ```
 
 ## When to Use
@@ -144,6 +158,12 @@ If Editor later stores cursor position, who must change so restoration stays cor
 ## Mini Challenge
 
 Include a cursor position in Snapshot and test that both text and cursor return together.
+
+## Check Yourself
+
+1. Why must later edits leave a saved Snapshot unchanged?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

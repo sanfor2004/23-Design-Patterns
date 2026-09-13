@@ -4,6 +4,8 @@
 
 [上一个](../../behavioral/iterator/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/memento/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 把同级 object 之间的协调规则集中到专门 object。
+
+## 简单理解
+
+登录按钮只有在两个输入框都非空时才能启用。Mediator 处理这条规则，每个输入框无需了解另一个输入框或按钮。
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Mediator 定义通知，Field 报告变化，Button 保存可用 state，LoginFo
 - [`Colleague`](../../GLOSSARY.md#colleague) — 其交互由 Mediator 协调的 object。 对应代码： `Field, Button`。
 - [`Concrete Mediator`](../../GLOSSARY.md#concrete-mediator) — 保存 Colleague 之间协调规则的 implementation。 对应代码： `LoginForm`。
 - [`callback`](../../GLOSSARY.md#callback) — 传给另一部分、在需要时由它调用的 function 或操作。 对应代码： `Mediator::changed`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -104,6 +114,8 @@ int main() {
     std::cout << "Ready: " << std::boolalpha << form.ready() << '\n';
     form.password("example");
     std::cout << "Ready: " << form.ready() << '\n';
+    form.password("");
+    std::cout << "Ready after clearing: " << form.ready() << '\n';
 }
 ```
 
@@ -112,6 +124,7 @@ int main() {
 ```text
 Ready: false
 Ready: true
+Ready after clearing: false
 ```
 
 ## When to Use
@@ -162,6 +175,12 @@ Observer 向订阅者广播变化； Mediator 定义特定同级 object 如何�
 ## Mini Challenge
 
 增加同意条款复选框，要求三个条件都满足，且不让 Field 了解按钮。
+
+## 检查理解
+
+1. 输入框变空时，由谁决定按钮是否启用？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

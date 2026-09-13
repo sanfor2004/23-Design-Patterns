@@ -4,6 +4,8 @@
 
 [Precedente](../../behavioral/strategy/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/visitor/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
@@ -15,6 +17,10 @@ Intermedio
 ## In One Sentence
 
 Fissa la sequenza dell'algorithm lasciando alle subclass alcuni passi.
+
+## In parole semplici
+
+I report iniziano, leggono dati, li formattano e terminano.Template Method conserva l’ordine in un metodo; una subclass fornisce i passi variabili.
 
 ## The Problem
 
@@ -33,7 +39,7 @@ Funzioni complete separate duplicano l'ordine e divergono quando cambia un passo
 
 ## The Idea
 
-Report::generate non è virtual; richiama i protected virtual hook methods read e format nell’ordine stabilito.
+`Report::generate` mantiene l’ordine delle chiamate e non è `virtual`. I metodi `read` e `format` sono `protected` e `virtual`: le subclass possono cambiarne l’implementazione.
 
 ## Real-World Analogy
 
@@ -58,6 +64,10 @@ Ruoli canonici in questo esempio:
 - [`Abstract Class`](../../GLOSSARY.md#abstract-class-template-method-role) — Il ruolo di Template Method che contiene l'algorithm skeleton e dichiara i passi variabili. Qui: `Report`.
 - [`Concrete Class`](../../GLOSSARY.md#concrete-class-template-method-role) — Il ruolo di Template Method che fornisce i passi variabili. Qui: `TextReport`.
 - [`hook method`](../../GLOSSARY.md#hook-method) — Un'operazione di estensione richiamata da un flusso fisso, eventualmente con implementation predefinita. Qui: `read, format`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -104,7 +114,7 @@ Pipeline di importazione e report con scheletro stabile.
 
 ## When NOT to Use
 
-Evitalo se i passi vanno riordinati a [`runtime`](../../GLOSSARY.md#runtime) (Il periodo in cui il programma compilato è in esecuzione) o la [`composition`](../../GLOSSARY.md#composition) (Costruire behavior collegando object che usano o contengono altri object) chiarisce meglio le dependency.
+Evitalo se i passi vanno riordinati a [`runtime`](../../GLOSSARY.md#runtime) o la [`composition`](../../GLOSSARY.md#composition) chiarisce meglio le dependency.
 
 ## Advantages
 
@@ -112,7 +122,7 @@ Le regole d'ordine restano nella base; le subclass scrivono solo differenze.
 
 ## Trade-offs
 
-L'[`inheritance`](../../GLOSSARY.md#inheritance) (Definire una derived class da una base class per riusarne o specializzarne contratto e implementation) lega al protocollo base. End non avviene se un hook lancia: per liberare risorse usa [`RAII`](../../GLOSSARY.md#raii) (Resource Acquisition Is Initialization: legare l'ownership di una risorsa alla lifetime di un object, così la distruzione la rilascia), non l'ultimo passo come garanzia.
+L'[`inheritance`](../../GLOSSARY.md#inheritance) lega al protocollo base. End non avviene se un hook lancia: per liberare risorse usa [`RAII`](../../GLOSSARY.md#raii), non l'ultimo passo come garanzia.
 
 ## Related Patterns
 
@@ -142,6 +152,12 @@ Perché generate non è virtual mentre read e format lo sono? Quali invarianti e
 ## Mini Challenge
 
 Aggiungi CsvReport, verifica l'ordine e simula un'eccezione di formattazione discutendo la pulizia.
+
+## Verifica cosa hai capito
+
+1. Quale metodo controlla l’ordine e quali metodi possono variare?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

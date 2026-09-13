@@ -4,6 +4,8 @@
 
 [上一个](../../structural/facade/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/proxy/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 共享不可变的 intrinsic state，把每次使用的 extrinsic state 留在共享 object 外部。
+
+## 简单理解
+
+同一个字母可能在文档中出现数千次。Flyweight 只保存一份共用字形，每次出现的位置单独保存。
 
 ## The Problem
 
@@ -51,13 +57,17 @@ PlacedGlyph(x)  -->  GlyphPool::get  -->  shared const Glyph
 
 ## Participants
 
-Glyph 保存内在形状，GlyphPool 负责驻留复用，PlacedGlyph 保存外在位置和 shared [`ownership`](../../GLOSSARY.md#ownership)（负责维持资源存活并最终释放资源的责任）。
+Glyph 保存内在形状，GlyphPool 负责驻留复用，PlacedGlyph 保存外在位置和 shared [`ownership`](../../GLOSSARY.md#ownership)。
 
 本例中的标准角色：
 
 - [`intrinsic state`](../../GLOSSARY.md#intrinsic-state) — 不依赖具体使用位置、可由 Flyweight 共享的数据。 对应代码： `Glyph::shape`。
 - [`extrinsic state`](../../GLOSSARY.md#extrinsic-state) — 每次使用独有、保存在共享 Flyweight 外部的数据。 对应代码： `PlacedGlyph::x`。
 - [`Flyweight Factory`](../../GLOSSARY.md#flyweight-factory) — 按键查找并返回共享 Flyweight 的服务。 对应代码： `GlyphPool`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -122,7 +132,7 @@ Shared shape: true
 
 ## Trade-offs
 
-池会保留条目，map 查找和 [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr)（共享 ownership 的 smart pointer，最后一个拥有引用消失时释放 object） 有成本。示例字符串很小，不声称已有内存收益测量；池也未同步。
+池会保留条目，map 查找和 [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) 有成本。示例字符串很小，不声称已有内存收益测量；池也未同步。
 
 ## Related Patterns
 
@@ -152,6 +162,12 @@ Prototype 复制配置生成新 object； Flyweight 有意让多个使用位置�
 ## Mini Challenge
 
 给键增加字体标识，验证相同键共享、不同字体不共享。
+
+## 检查理解
+
+1. 哪些数据必须放在共享 Glyph 之外？为什么？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

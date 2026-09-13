@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/state/README.md) · [Category](../README.md) · [Next](../../behavioral/template-method/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Beginner
 
 ## In One Sentence
 
-Supply an interchangeable algorithm to the object that needs it.
+Use different Algorithms for the same job.
+
+## Explain It Simply
+
+Checkout can calculate standard or express shipping. Strategy gives Checkout a shipping rule to call, so the total calculation does not contain every rule.
 
 ## The Problem
 
@@ -23,7 +29,7 @@ Checkout totals need different shipping policies without mixing every policy int
 ## Naive Solution
 
 ```cpp
-int fee = express ? (subtotal >= 100 ? 0 : 15) : 5;
+int fee = express ? (subtotal_cents >= 100 ? 0 : 15) : 5;
 ```
 
 ## Why It Becomes a Problem
@@ -58,9 +64,14 @@ Canonical roles in this example:
 - [`Strategy interface`](../../GLOSSARY.md#strategy-interface) — The contract for interchangeable algorithms used by a Context. Here: `ShippingRule`.
 - [`Concrete Strategy`](../../GLOSSARY.md#concrete-strategy) — A particular implementation of a Strategy interface, possibly a callable rather than a class. Here: `standard / express lambdas`.
 
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <functional>
 #include <iostream>
 #include <stdexcept>
@@ -73,17 +84,22 @@ public:
     explicit Checkout(ShippingRule shipping) : shipping_(std::move(shipping)) {
         if (!shipping_) throw std::invalid_argument("Missing shipping rule");
     }
-    int total(int subtotal) const {
-        if (subtotal < 0) throw std::invalid_argument("Negative subtotal");
-        return subtotal + shipping_(subtotal);
+    int total(int subtotal_cents) const {
+        if (subtotal_cents < 0) throw std::invalid_argument("Negative subtotal");
+        return subtotal_cents + shipping_(subtotal_cents);
     }
 };
 int main() {
     const Checkout standard{[](int) { return 5; }};
-    const Checkout express{[](int subtotal) { return subtotal >= 100 ? 0 : 15; }};
+    const Checkout express{[](int subtotal_cents) { return subtotal_cents >= 100 ? 0 : 15; }};
     std::cout << "Standard: " << standard.total(40) << '\n';
     std::cout << "Express: " << express.total(40) << '\n';
     std::cout << "Express large: " << express.total(120) << '\n';
+    std::cout << "Express boundary: " << express.total(100) << '\n';
+    try { static_cast<void>(standard.total(-1)); }
+    catch (const std::invalid_argument&) { std::cout << "Negative subtotal rejected\n"; }
+    try { const Checkout missing{ShippingRule{}}; }
+    catch (const std::invalid_argument&) { std::cout << "Missing rule rejected\n"; }
 }
 ```
 
@@ -93,6 +109,9 @@ int main() {
 Standard: 45
 Express: 55
 Express large: 120
+Express boundary: 100
+Negative subtotal rejected
+Missing rule rejected
 ```
 
 ## When to Use
@@ -113,7 +132,7 @@ Each policy can be tested independently while total calculation stays shared.
 
 ## Trade-offs
 
-[`std::function`](../../GLOSSARY.md#stdfunction) (A type-erased wrapper that stores a callable with a chosen signature) adds [`type erasure`](../../GLOSSARY.md#type-erasure) (Hiding a concrete type behind a uniform runtime interface, as std::function does for callables) and may allocate; templates or a function pointer can be better with different constraints. Validate policy results if external code can return invalid fees.
+[`std::function`](../../GLOSSARY.md#stdfunction) adds [`type erasure`](../../GLOSSARY.md#type-erasure) and may allocate; templates or a function pointer can be better with different constraints. Validate policy results if external code can return invalid fees.
 
 ## Related Patterns
 
@@ -121,7 +140,7 @@ Each policy can be tested independently while total calculation stays shared.
 
 ## Common Confusion
 
-State represents [`lifecycle`](../../GLOSSARY.md#lifecycle) (The modeled stages and transitions of a domain entity, distinct from a C++ object's lifetime) and transitions; Strategy chooses an algorithm. Template Method customizes inherited steps rather than an injected callable.
+State represents [`lifecycle`](../../GLOSSARY.md#lifecycle) and transitions; Strategy chooses an algorithm. Template Method customizes inherited steps rather than an injected callable.
 
 ## Terms to Remember
 
@@ -140,11 +159,17 @@ State represents [`lifecycle`](../../GLOSSARY.md#lifecycle) (The modeled stages 
 
 ## Interview Question
 
-How would replacing std::function with a template parameter affect [`runtime`](../../GLOSSARY.md#runtime) (The period when a compiled program is executing) selection and compilation?
+How would replacing std::function with a template parameter affect [`runtime`](../../GLOSSARY.md#runtime) selection and compilation?
 
 ## Mini Challenge
 
 Add free shipping for subtotals of at least 80 and test 79, 80 and 81.
+
+## Check Yourself
+
+1. Can this Checkout change its rule after construction through its public API?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

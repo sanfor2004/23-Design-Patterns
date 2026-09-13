@@ -4,6 +4,8 @@
 
 [Precedente](../../structural/adapter/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/composite/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
@@ -14,7 +16,11 @@ Intermedio
 
 ## In One Sentence
 
-Separa due dimensioni variabili e collegale tramite [`composition`](../../GLOSSARY.md#composition) (Costruire behavior collegando object che usano o contengono altri object).
+Separa due dimensioni variabili e collegale tramite [`composition`](../../GLOSSARY.md#composition).
+
+## In parole semplici
+
+Un avviso può essere normale o urgente, il canale email o SMS.Bridge collega avviso e canale senza richiedere una Class per ogni combinazione.
 
 ## The Problem
 
@@ -53,7 +59,7 @@ Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 
 ## Participants
 
-Notice è l'[`abstraction`](../../GLOSSARY.md#abstraction) (Una vista che espone le operazioni necessarie e nasconde i dettagli irrilevanti per chi la usa), UrgentNotice la raffina, Channel è il contratto d'[`implementation`](../../GLOSSARY.md#implementation) (Il codice concreto che esegue un'operazione o soddisfa un'interface), Email e Sms consegnano.
+Notice è l'[`abstraction`](../../GLOSSARY.md#abstraction), UrgentNotice la raffina, Channel è il contratto d'[`implementation`](../../GLOSSARY.md#implementation), Email e Sms consegnano.
 
 Ruoli canonici in questo esempio:
 
@@ -61,6 +67,10 @@ Ruoli canonici in questo esempio:
 - [`Refined Abstraction`](../../GLOSSARY.md#refined-abstraction) — Una specializzazione di Abstraction indipendente dal lato implementativo. Qui: `UrgentNotice`.
 - [`Implementor`](../../GLOSSARY.md#implementor) — Il contratto usato dall'Abstraction di Bridge per il lavoro di livello inferiore. Qui: `Channel`.
 - [`Concrete Implementor`](../../GLOSSARY.md#concrete-implementor) — Una particolare implementation del contratto Implementor. Qui: `Email, Sms`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -157,6 +167,12 @@ Aggiungendo Push e ScheduledNotice, quante class servono con e senza Bridge?
 ## Mini Challenge
 
 Aggiungi Push e riutilizza entrambi gli avvisi senza modificarli.
+
+## Verifica cosa hai capito
+
+1. Quali Class cambiano aggiungendo solo un canale?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

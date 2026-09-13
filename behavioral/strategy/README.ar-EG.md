@@ -4,9 +4,11 @@
 
 [السابق](../../behavioral/state/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/template-method/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -16,6 +18,10 @@
 
 افصل طريقة الحساب (`algorithm`) عن الكائن اللي بيستخدمها، عشان تقدر تختار طريقة بديلة لنفس المهمة.
 
+## ببساطة
+
+الشراء ممكن يحسب شحن عادي أو سريع.الـ`Strategy` بيدي `Checkout` قاعدة شحن يستخدمها، بدل ما حساب الإجمالي يحتوي كل القواعد.
+
 ## The Problem
 
 إجمالي الشراء محتاج سياسات شحن مختلفة من غير حشر كل سياسة جوه `Checkout`.
@@ -23,7 +29,7 @@
 ## Naive Solution
 
 ```cpp
-int fee = express ? (subtotal >= 100 ? 0 : 15) : 5;
+int fee = express ? (subtotal_cents >= 100 ? 0 : 15) : 5;
 ```
 
 ## Why It Becomes a Problem
@@ -55,12 +61,17 @@ Checkout::total()  -->  ShippingRule  -->  standard / express lambda
 الأدوار القياسية في المثال ده:
 
 - [`Context`](../../GLOSSARY.md#context) — الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). هنا: `Checkout`.
-- [`Strategy interface`](../../GLOSSARY.md#strategy-interface) — عقد الـ `algorithms` القابلة للتبديل اللي `Context` بتستخدمها. هنا: `ShippingRule`.
+- [`Strategy interface`](../../GLOSSARY.md#strategy-interface) — بتحدد العقد المشترك للـ`algorithms` المختلفة. الـ`Context` بيعتمد على العقد ده بدل `implementation` محدد. هنا: `ShippingRule`.
 - [`Concrete Strategy`](../../GLOSSARY.md#concrete-strategy) — تنفيذ محدد لعقد `Strategy interface`. ممكن تمثّله بحاجة قابلة للاستدعاء (`callable`)، ومش لازم يكون `class` مستقلة. هنا: `standard / express lambdas`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <functional>
 #include <iostream>
 #include <stdexcept>
@@ -73,17 +84,22 @@ public:
     explicit Checkout(ShippingRule shipping) : shipping_(std::move(shipping)) {
         if (!shipping_) throw std::invalid_argument("Missing shipping rule");
     }
-    int total(int subtotal) const {
-        if (subtotal < 0) throw std::invalid_argument("Negative subtotal");
-        return subtotal + shipping_(subtotal);
+    int total(int subtotal_cents) const {
+        if (subtotal_cents < 0) throw std::invalid_argument("Negative subtotal");
+        return subtotal_cents + shipping_(subtotal_cents);
     }
 };
 int main() {
     const Checkout standard{[](int) { return 5; }};
-    const Checkout express{[](int subtotal) { return subtotal >= 100 ? 0 : 15; }};
+    const Checkout express{[](int subtotal_cents) { return subtotal_cents >= 100 ? 0 : 15; }};
     std::cout << "Standard: " << standard.total(40) << '\n';
     std::cout << "Express: " << express.total(40) << '\n';
     std::cout << "Express large: " << express.total(120) << '\n';
+    std::cout << "Express boundary: " << express.total(100) << '\n';
+    try { static_cast<void>(standard.total(-1)); }
+    catch (const std::invalid_argument&) { std::cout << "Negative subtotal rejected\n"; }
+    try { const Checkout missing{ShippingRule{}}; }
+    catch (const std::invalid_argument&) { std::cout << "Missing rule rejected\n"; }
 }
 ```
 
@@ -93,11 +109,14 @@ int main() {
 Standard: 45
 Express: 55
 Express large: 120
+Express boundary: 100
+Negative subtotal rejected
+Missing rule rejected
 ```
 
 ## When to Use
 
-استخدمه لما الـ `algorithms` بتتغير باستقلال والـ `Client` محتاج يختار سياسة.
+استخدم `Strategy` لما قواعد الحساب بتتغير بشكل مستقل عن `Checkout`، والمستدعي محتاج يختار القاعدة المناسبة.
 
 ### Use cases
 
@@ -127,7 +146,7 @@ Express large: 120
 
 - `Strategy` — افصل طريقة الحساب (`algorithm`) عن الكائن اللي بيستخدمها، عشان تقدر تختار طريقة بديلة لنفس المهمة.
 - `Context` — الكائن اللي بيستخدم `Strategy`، أو بيفوّض تنفيذ السلوك (`behavior`) للحالة الحالية (`State`). مثال: `Checkout`.
-- `Strategy interface` — عقد الـ `algorithms` القابلة للتبديل اللي `Context` بتستخدمها. مثال: `ShippingRule`.
+- `Strategy interface` — بتحدد العقد المشترك للـ`algorithms` المختلفة. الـ`Context` بيعتمد على العقد ده بدل `implementation` محدد. مثال: `ShippingRule`.
 - `Concrete Strategy` — تنفيذ محدد لعقد `Strategy interface`. ممكن تمثّله بحاجة قابلة للاستدعاء (`callable`)، ومش لازم يكون `class` مستقلة. مثال: `standard / express lambdas`.
 
 ## Interview Vocabulary
@@ -140,11 +159,17 @@ Express large: 120
 
 ## Interview Question
 
-استخدام معامل نوع (`template parameter`) بدل `std::function` هيأثر إزاي على الاختيار وقت [`runtime`](../../GLOSSARY.md#runtime) (الوقت اللي البرنامج فيه شغال بعد البناء) والترجمة؟
+استخدام معامل نوع (`template parameter`) بدل `std::function` هيأثر إزاي على الاختيار وقت [`runtime`](../../GLOSSARY.md#runtime) والترجمة؟
 
 ## Mini Challenge
 
 ضيف شحن مجاني من 80 واختبر 79 و80 و81.
+
+## اختبر فهمك
+
+1. هل الـ`API` العامة في `Checkout` دي بتسمح بتغيير القاعدة بعد الإنشاء؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

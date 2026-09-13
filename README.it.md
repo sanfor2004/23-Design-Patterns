@@ -2,19 +2,29 @@
 
 # 23 Design Patterns
 
-23 Patterns · 4 Languages · Real Examples · Simple Explanations
+23 Design Patterns · Quattro lingue · Esempi eseguibili · Spiegazioni chiare
 
-[Sanfor2004](https://github.com/Sanfor2004) · C++20
+[Sanfor2004](https://github.com/Sanfor2004) · Python + C++20
 
 [English](README.md) · [العربية المصرية](README.ar-EG.md) · [简体中文](README.zh-CN.md) · [Italiano](README.it.md)
 
-Parti da un problema concreto. Scopri quando la soluzione semplice fatica. Comprendi il pattern, esegui il C++ e valuta se la struttura aggiuntiva serve davvero.
+Parti da un problema concreto. Scopri quando la soluzione semplice fatica. Comprendi il Design Pattern, esegui Python e C++20 e valuta se la struttura aggiuntiva serve davvero.
 
 - [Percorso di studio](LEARNING_PATH.it.md)
+- [Esempi Python](PYTHON_EXAMPLES.md)
 - [Scheda rapida](CHEATSHEET.it.md)
 - [Mappa delle relazioni](PATTERN_MAP.it.md)
 - [Confronti](COMPARISONS.it.md)
 - [C++20](CPP_EXAMPLES.md)
+
+## Due modi per studiare ogni Design Pattern
+
+**Python** riduce i dettagli sintattici e rende più visibile l’intento del Design Pattern. Inizia leggendo, eseguendo e modificando gli [esempi Python](PYTHON_EXAMPLES.md).
+
+**C++20** permette di approfondire Ownership, Lifetime, static typing, Runtime dispatch, RAII e altri compromessi di implementazione. Confronta le versioni: lo stesso intento può usare strumenti diversi.
+
+Segui il [percorso consigliato](LEARNING_PATH.it.md): parti da Strategy, Observer, Factory Method, Adapter e Decorator, prosegui con tutti i 23 e lascia Singleton per ultimo. Ogni cartella contiene `python/` e `cpp/`, con README, codice eseguibile e output previsto.
+
 
 ## Perché esiste questo repository
 
@@ -22,7 +32,7 @@ Seguire un problema concreto in un piccolo programma aiuta a capire i pattern. M
 
 ## Come orientarsi
 
-Scegli una categoria o segui il percorso di apprendimento. Ogni directory contiene quattro traduzioni, un diagramma e una cartella `cpp/`. I collegamenti alle lingue aprono lo stesso pattern nella traduzione scelta.
+Scegli una categoria o segui il percorso di apprendimento. Ogni directory contiene quattro traduzioni, un diagramma e le cartelle `python/` e `cpp/`. I collegamenti alle lingue aprono lo stesso Design Pattern nella traduzione scelta.
 
 ## Creational Pattern
 
@@ -69,7 +79,7 @@ Un pattern è un'idea di design riutilizzabile per un problema ricorrente, non u
 1. **Incontra il problema** — Un caso concreto dà un motivo al design.
 2. **Metti alla prova la semplicità** — Individua l'coupling o la duplicazione che crea attrito.
 3. **Segui il design** — Segui responsibility, ownership e trade-offs.
-4. **Esegui e modifica il C++** — Confronta l'output, affronta la sfida e prova i limiti.
+4. **Esegui e modifica Python e C++20** — Confronta l'output, affronta la sfida e prova i limiti.
 
 ## Risorse del repository
 

@@ -4,6 +4,8 @@
 
 [上一个](../../behavioral/memento/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/state/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 被关注的 state 变化时，通知已订阅的 object。
+
+## 简单理解
+
+多个显示端可能需要最新库存数量。Observer 让它们自行订阅，Stock 无需为每个显示端写固定调用。
 
 ## The Problem
 
@@ -51,13 +57,17 @@ Stock::set()  -->  weak Listener subscriptions  -->  Display::update()
 
 ## Participants
 
-Stock 是 Subject，Listener 是 callback [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为），Display 是订阅者。 Client 拥有订阅者，[`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr)（观察共享 ownership 但不拥有 object；lock 尝试取得临时 shared_ptr） 不延长其 [`lifetime`](../../GLOSSARY.md#lifetime)（object 存在且可按规则使用的时间区间）。
+Stock 是 Subject，Listener 是 callback [`interface`](../../GLOSSARY.md#interface)，Display 是订阅者。 Client 拥有订阅者，[`std::weak_ptr`](../../GLOSSARY.md#stdweak_ptr) 不延长其 [`lifetime`](../../GLOSSARY.md#lifetime)。
 
 本例中的标准角色：
 
 - [`Subject`](../../GLOSSARY.md#subject) — 把自身变化通知给已注册 Observer 的发布方。 对应代码： `Stock`。
 - [`Observer interface`](../../GLOSSARY.md#observer-interface) — 订阅方实现的 callback 约定。 对应代码： `Listener`。
 - [`Concrete Observer`](../../GLOSSARY.md#concrete-observer) — 响应通知的 Observer implementation。 对应代码： `Display`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -93,6 +103,11 @@ int main() {
     display.reset();
     stock.set(0);
     std::cout << "Expired listener skipped\n";
+    auto screen = std::make_shared<Display>();
+    auto log = std::make_shared<Display>();
+    stock.subscribe(screen);
+    stock.subscribe(log);
+    stock.set(2);
 }
 ```
 
@@ -101,6 +116,8 @@ int main() {
 ```text
 Stock: 4
 Expired listener skipped
+Stock: 2
+Stock: 2
 ```
 
 ## When to Use
@@ -146,11 +163,17 @@ Mediator 规定已知同级 object 的协调规则； Observer 广播通知，�
 
 ## Interview Question
 
-为什么保存 std::weak_ptr，却在 callback 时 lock 成 [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr)（共享 ownership 的 smart pointer，最后一个拥有引用消失时释放 object）？
+为什么保存 std::weak_ptr，却在 callback 时 lock 成 [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr)？
 
 ## Mini Challenge
 
 注册两个监听者，销毁其中一个，验证后续只通知存活者，再定义显式取消订阅。
+
+## 检查理解
+
+1. Python 的 unsubscribe 与 C++ 的 weak_ptr 失效有什么区别？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

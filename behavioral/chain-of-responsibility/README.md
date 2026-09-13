@@ -4,6 +4,8 @@
 
 [Previous](../../structural/proxy/README.md) · [Category](../README.md) · [Next](../../behavioral/command/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Pass a request along handlers that can stop or continue processing.
+Pass a request through Handlers that can stop or continue.
+
+## Explain It Simply
+
+A request must pass authentication and an amount limit. Each Handler owns one check; the caller chooses the chain order.
 
 ## The Problem
 
@@ -24,7 +30,7 @@ A request must pass authentication and spending checks, and different entry poin
 
 ```cpp
 bool accept(Request r) {
-    return r.authenticated && r.amount > 0 && r.amount <= 100;
+    return r.authenticated && r.amount_cents > 0 && r.amount_cents <= 100;
 }
 ```
 
@@ -60,15 +66,20 @@ Canonical roles in this example:
 - [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — A Handler implementing one particular processing rule. Here: `Auth, Limit`.
 - [`chain termination`](../../GLOSSARY.md#chain-termination) — The rule for stopping a chain and deciding what happens after the last handler. Here: `Handler::handle`.
 
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <initializer_list>
 #include <iostream>
 #include <memory>
 #include <utility>
 
-struct Request { bool authenticated; int amount; };
+struct Request { bool authenticated; int amount_cents; };
 class Handler {
     std::unique_ptr<Handler> next_;
 protected:
@@ -87,7 +98,7 @@ public:
     using Handler::Handler;
 };
 class Limit final : public Handler {
-    bool accepts(const Request& request) const override { return request.amount > 0 && request.amount <= 100; }
+    bool accepts(const Request& request) const override { return request.amount_cents > 0 && request.amount_cents <= 100; }
 public:
     using Handler::Handler;
 };
@@ -154,6 +165,12 @@ What happens to an unauthenticated request if Limit is expensive and placed firs
 ## Mini Challenge
 
 Add a maintenance-mode handler and verify that rejected requests never reach later checks.
+
+## Check Yourself
+
+1. What does reaching the end of this chain mean, and when does a check stop it?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

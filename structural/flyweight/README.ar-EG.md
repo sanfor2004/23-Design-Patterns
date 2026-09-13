@@ -4,9 +4,11 @@
 
 [السابق](../../structural/facade/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../structural/proxy/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 شارك البيانات الثابتة، وخلي سياق كل ظهور منفصل.
+
+## ببساطة
+
+نفس الحرف ممكن يظهر آلاف المرات في المستند.الـ`Flyweight` بيخزّن الشكل المشترك مرة واحدة، وكل ظهور بيحتفظ بمكانه لوحده.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ PlacedGlyph(x)  -->  GlyphPool::get  -->  shared const Glyph
 - [`intrinsic state`](../../GLOSSARY.md#intrinsic-state) — بيانات مستقلة عن مكان الاستخدام، فالـ `Flyweight` تقدر تشاركها. هنا: `Glyph::shape`.
 - [`extrinsic state`](../../GLOSSARY.md#extrinsic-state) — بيانات تخص كل استخدام وبتفضل بره الـ `Flyweight` المشتركة. هنا: `PlacedGlyph::x`.
 - [`Flyweight Factory`](../../GLOSSARY.md#flyweight-factory) — جزء بيبحث بالمفتاح ويرجع `Flyweight` مشتركة. هنا: `GlyphPool`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -152,6 +162,12 @@ Shared shape: true
 ## Mini Challenge
 
 ضيف معرف الخط للمفتاح، واتأكد إن المفاتيح المتساوية بتشارك والمختلفة لأ.
+
+## اختبر فهمك
+
+1. إيه البيانات اللي لازم تفضل بره الـ`Glyph` المشتركة، وليه؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

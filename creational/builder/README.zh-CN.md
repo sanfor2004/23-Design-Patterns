@@ -4,6 +4,8 @@
 
 [上一个](../../creational/abstract-factory/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../creational/factory-method/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — 关注如何创建和配置 object 的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 用具名步骤配置 object，最后一次性生成结果。
+
+## 简单理解
+
+请求选项较多时，很难看出 constructor 中每个参数的含义。Builder 用命名步骤收集选项，检查后再生成结果。
 
 ## The Problem
 
@@ -57,6 +63,10 @@ RequestBuilder 保存和校验临时配置，Request 拥有最终数据， Clien
 - [`Product`](../../GLOSSARY.md#product) — 创建代码返回的 object 所提供的约定。 对应代码： `Request`。
 - [`fluent interface`](../../GLOSSARY.md#fluent-interface) — 设计成链式调用的 interface；它本身并不等于 Builder。 对应代码： `RequestBuilder.endpoint().timeout().retry()`。
 - [`constructor`](../../GLOSSARY.md#constructor) — 创建 class instance 时负责初始化的特殊操作。 对应代码： `Request::Request`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -131,7 +141,7 @@ Invalid request rejected
 
 ## Common Confusion
 
-Factory Method 在 [`inheritance`](../../GLOSSARY.md#inheritance)（从 base class 定义 derived class，复用或扩展约定及实现） 流程中选择 Concrete Product， Builder 分步骤配置一个结果。
+Factory Method 在 [`inheritance`](../../GLOSSARY.md#inheritance) 流程中选择 Concrete Product， Builder 分步骤配置一个结果。
 
 ## Terms to Remember
 
@@ -153,6 +163,12 @@ Factory Method 在 [`inheritance`](../../GLOSSARY.md#inheritance)（从 base cla
 ## Mini Challenge
 
 拒绝大于 120 的超时值，测试边界值及紧邻的非法值。
+
+## 检查理解
+
+1. 绕过 build 直接创建 Request 会怎样？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

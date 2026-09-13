@@ -4,6 +4,8 @@
 
 [Previous](../../structural/adapter/README.md) · [Category](../README.md) · [Next](../../structural/composite/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Separate two changing dimensions and connect them through [`composition`](../../GLOSSARY.md#composition) (Building behavior by connecting objects that use or contain other objects).
+Let two kinds of variation change separately.
+
+## Explain It Simply
+
+Notices can be normal or urgent, and delivery can use email or SMS. Bridge connects a notice to a channel instead of needing a Class for every combination.
 
 ## The Problem
 
@@ -53,7 +59,7 @@ Notice / UrgentNotice  -->  Channel  -->  Email / Sms
 
 ## Participants
 
-Notice is the [`abstraction`](../../GLOSSARY.md#abstraction) (A view that exposes the operations a caller needs while hiding irrelevant details), UrgentNotice refines it, Channel is the [`implementation`](../../GLOSSARY.md#implementation) (The concrete code that fulfills an interface or performs an operation) contract, Email and Sms implement delivery.
+Notice is the [`abstraction`](../../GLOSSARY.md#abstraction), UrgentNotice refines it, Channel is the [`implementation`](../../GLOSSARY.md#implementation) contract, Email and Sms implement delivery.
 
 Canonical roles in this example:
 
@@ -61,6 +67,10 @@ Canonical roles in this example:
 - [`Refined Abstraction`](../../GLOSSARY.md#refined-abstraction) — A specialization of Abstraction independent of the implementation side. Here: `UrgentNotice`.
 - [`Implementor`](../../GLOSSARY.md#implementor) — The contract used by a Bridge Abstraction for lower-level work. Here: `Channel`.
 - [`Concrete Implementor`](../../GLOSSARY.md#concrete-implementor) — A particular implementation of the Implementor contract. Here: `Email, Sms`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -157,6 +167,12 @@ If you add Push and ScheduledNotice, how many classes are needed with and withou
 ## Mini Challenge
 
 Add a Push channel and reuse both notice classes without changing them.
+
+## Check Yourself
+
+1. Which Classes change if you add a new channel but no new notice type?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

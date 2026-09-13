@@ -4,6 +4,8 @@
 
 [Precedente](../../behavioral/interpreter/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/mediator/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
@@ -15,6 +17,10 @@ Principiante
 ## In One Sentence
 
 Attraversa una collezione tramite un protocollo stabile.
+
+## In parole semplici
+
+Il chiamante vuole le tracce, non i dettagli del contenitore.Iterator mantiene la posizione e permette al ciclo di chiedere l’elemento successivo.
 
 ## The Problem
 
@@ -60,6 +66,10 @@ Ruoli canonici in questo esempio:
 - [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — Un'implementation che conserva una posizione di attraversamento per un particolare Aggregate. Qui: `Playlist::Iterator`.
 - [`forward iterator`](../../GLOSSARY.md#forward-iterator) — Un iterator con avanzamento e garanzia multipass: copie indipendenti possono percorrere lo stesso intervallo. Qui: `std::forward_iterator`.
 
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
+
 ## Modern C++20 Example
 
 ```cpp
@@ -94,6 +104,12 @@ static_assert(std::forward_iterator<Playlist::Iterator>);
 int main() {
     const Playlist playlist{{7, 12, 18}};
     for (int track : playlist) std::cout << "Track " << track << '\n';
+    const Playlist empty{{}};
+    std::cout << "Empty: " << std::boolalpha << (empty.begin() == empty.end()) << '\n';
+    auto first = playlist.begin();
+    const auto copy = first;
+    ++first;
+    std::cout << "Independent positions: " << *first << ' ' << *copy << '\n';
 }
 ```
 
@@ -103,6 +119,8 @@ int main() {
 Track 7
 Track 12
 Track 18
+Empty: true
+Independent positions: 12 7
 ```
 
 ## When to Use
@@ -123,7 +141,7 @@ Gli algorithm condividono un protocollo e più iterator mantengono posizioni ind
 
 ## Trade-offs
 
-L'iterator non prolunga la [`lifetime`](../../GLOSSARY.md#lifetime) (L'intervallo in cui un object esiste e può essere usato secondo le sue regole) della raccolta. Spostare o distruggere Playlist invalida le premesse; dereferenziare end non è valido.
+L'iterator non prolunga la [`lifetime`](../../GLOSSARY.md#lifetime) della raccolta. Spostare o distruggere Playlist invalida le premesse; dereferenziare end non è valido.
 
 ## Related Patterns
 
@@ -153,6 +171,12 @@ Perché l'uguaglianza confronta anche il pointer al std::vector oltre all'indice
 ## Mini Challenge
 
 Prova una playlist vuota e due iterator indipendenti: avanzarne uno non deve muovere l'altro.
+
+## Verifica cosa hai capito
+
+1. Due percorsi nella stessa Playlist possono mantenere posizioni separate?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

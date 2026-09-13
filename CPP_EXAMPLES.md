@@ -2,6 +2,8 @@
 
 Each pattern has a standalone `main.cpp` and an `expected.txt` containing its exact output. The same source and output appear in all four translations of the article.
 
+Start with the [Python examples](PYTHON_EXAMPLES.md) to see the design intent, then use C++20 to study Ownership, Lifetime, and implementation trade-offs. Money examples use integer cents; their small demonstration values are not a production money or rounding policy.
+
 Browse the [pattern catalog](README.md) for explanations and links to individual examples.
 
 ## Build and test all examples
@@ -17,6 +19,8 @@ ctest --test-dir build -C Debug --output-on-failure
 On Windows, use a Visual Studio Developer PowerShell or Developer Command Prompt with the C++ build tools installed. `--config Debug` and `-C Debug` select the configuration for generators such as Visual Studio; `CMAKE_BUILD_TYPE` selects it for single-configuration generators such as Ninja or Makefiles.
 
 CTest runs each executable and compares stdout with `expected.txt`, normalizing Windows line endings. These tests check the demonstrated behavior; they do not cover every possible input or mini challenge.
+
+CMake requires exactly 23 C++ examples and 23 Python examples, with companion README and expected-output files. Python is not needed to compile C++; run `python scripts/test_python.py` separately to test Python output. CI runs both sets plus documentation checks on Ubuntu with GCC and Clang, and on Windows with MSVC.
 
 ## Build one pattern
 

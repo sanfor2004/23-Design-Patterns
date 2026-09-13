@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/strategy/README.md) · [Category](../README.md) · [Next](../../behavioral/visitor/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Fix an algorithm's sequence while subclasses implement selected steps.
+Keep the sequence and let subclasses fill in steps.
+
+## Explain It Simply
+
+Reports all begin, read data, format it, and finish. Template Method keeps that order in one method while a subclass supplies the changing steps.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Canonical roles in this example:
 - [`Abstract Class`](../../GLOSSARY.md#abstract-class-template-method-role) — The Template Method role that owns the algorithm skeleton and declares variable steps. Here: `Report`.
 - [`Concrete Class`](../../GLOSSARY.md#concrete-class-template-method-role) — The Template Method role that supplies the variable steps. Here: `TextReport`.
 - [`hook method`](../../GLOSSARY.md#hook-method) — An extension operation called by a fixed workflow; it may have a default implementation. Here: `read, format`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -104,7 +114,7 @@ Import pipelines and report generation fit when the skeleton is stable.
 
 ## When NOT to Use
 
-Avoid it if steps must be rearranged at [`runtime`](../../GLOSSARY.md#runtime) (The period when a compiled program is executing) or [`composition`](../../GLOSSARY.md#composition) (Building behavior by connecting objects that use or contain other objects) would make dependencies clearer.
+Avoid it if steps must be rearranged at [`runtime`](../../GLOSSARY.md#runtime) or [`composition`](../../GLOSSARY.md#composition) would make dependencies clearer.
 
 ## Advantages
 
@@ -112,7 +122,7 @@ Shared ordering rules stay in the base and subclasses implement only their diffe
 
 ## Trade-offs
 
-Inheritance couples subclasses to the base protocol. End is not guaranteed if read or format throws; use [`RAII`](../../GLOSSARY.md#raii) (Resource Acquisition Is Initialization: tie resource ownership to object lifetime so destruction releases it) for real resource cleanup rather than treating the final step as a destructor.
+Inheritance couples subclasses to the base protocol. End is not guaranteed if read or format throws; use [`RAII`](../../GLOSSARY.md#raii) for real resource cleanup rather than treating the final step as a destructor.
 
 ## Related Patterns
 
@@ -142,6 +152,12 @@ Why is generate nonvirtual while read and format are virtual? What invariants do
 ## Mini Challenge
 
 Add CsvReport and verify the begin/end order; then simulate a formatting exception and discuss cleanup.
+
+## Check Yourself
+
+1. Which method owns the step order, and which methods can vary?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

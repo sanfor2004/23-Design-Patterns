@@ -4,6 +4,8 @@
 
 [上一个](../../behavioral/observer/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../behavioral/strategy/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — 关注 object 的 behavior 与协作方式的 Design Pattern。
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 由 object 的当前 state 决定响应和 state transition。
+
+## 简单理解
+
+按门的按钮时，关闭的门会打开，打开的门会关闭。State 把响应和转换放进代表当前状况的 Object。
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Door 是 Context，DoorState 定义 press 和 name；Open、Closed 保存 non-ow
 - [`Context`](../../GLOSSARY.md#context) — 使用 Strategy 或把 behavior 委托给当前 State 的 object。 对应代码： `Door`。
 - [`State interface`](../../GLOSSARY.md#state-interface) — Context 用于委托与 state 有关的 behavior 的约定。 对应代码： `DoorState`。
 - [`Concrete State`](../../GLOSSARY.md#concrete-state) — 为某个 State 定义 behavior 和转换规则的 implementation。 对应代码： `Open, Closed`。
+
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
 
 ## Modern C++20 Example
 
@@ -129,7 +139,7 @@ behavior 按 state 集中，转换可在局部检查。
 
 ## Trade-offs
 
-增加 type 和 [`lifetime`](../../GLOSSARY.md#lifetime)（object 存在且可按规则使用的时间区间） 关系。 state object 在 Door 外部，转换不会销毁仍在执行的 state；复杂设计也需保持这一安全条件。
+增加 type 和 [`lifetime`](../../GLOSSARY.md#lifetime) 关系。 state object 在 Door 外部，转换不会销毁仍在执行的 state；复杂设计也需保持这一安全条件。
 
 ## Related Patterns
 
@@ -137,7 +147,7 @@ behavior 按 state 集中，转换可在局部检查。
 
 ## Common Confusion
 
-Strategy 通常由 Client 选择 algorithm；State 表示 [`lifecycle`](../../GLOSSARY.md#lifecycle)（领域实体的建模阶段与转换，不等于 C++ object 的 lifetime），并可能自行决定转换。
+Strategy 通常由 Client 选择 algorithm；State 表示 [`lifecycle`](../../GLOSSARY.md#lifecycle)，并可能自行决定转换。
 
 ## Terms to Remember
 
@@ -159,6 +169,12 @@ Strategy 通常由 Client 选择 algorithm；State 表示 [`lifecycle`](../../GL
 ## Mini Challenge
 
 增加 Locked，使 press 不解锁，再添加独立 unlock event 并测试转换序列。
+
+## 检查理解
+
+1. 按下门按钮时，谁选择下一个 State？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

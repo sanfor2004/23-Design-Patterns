@@ -4,6 +4,8 @@
 
 [Precedente](../../creational/prototype/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/adapter/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
@@ -15,6 +17,10 @@ Intermedio
 ## In One Sentence
 
 Limita un tipo a un'unica instance accessibile, accettando il costo dello state globale.
+
+## In parole semplici
+
+Più chiamanti usano lo stesso contatore. `Singleton` ne controlla la creazione e offre accesso condiviso, ma lo `state` globale rende più difficile isolare test e Dependency.
 
 ## The Problem
 
@@ -51,13 +57,17 @@ Client A + B  -->  Metrics::instance()  -->  one Metrics
 
 ## Participants
 
-Metrics controlla il proprio [`lifetime`](../../GLOSSARY.md#lifetime) (L'intervallo in cui un object esiste e può essere usato secondo le sue regole) e conserva il conteggio. instance restituisce un non-owning reference, da non eliminare.
+Metrics controlla il proprio [`lifetime`](../../GLOSSARY.md#lifetime) e conserva il conteggio. instance restituisce un non-owning reference, da non eliminare.
 
 Ruoli canonici in questo esempio:
 
 - [`instance`](../../GLOSSARY.md#instance) — Un particolare object appartenente a un tipo. Qui: `Metrics::instance()`.
 - [`global state`](../../GLOSSARY.md#global-state) — Dati accessibili da molte parti del programma, le cui modifiche possono influire su codice distante. Qui: `Metrics::requests_`.
 - [`thread-safe initialization`](../../GLOSSARY.md#thread-safe-initialization) — Inizializzazione protetta dalla costruzione concorrente; non rende thread-safe le operazioni successive. Qui: `static Metrics metrics`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -120,7 +130,7 @@ L'accesso globale nasconde dependency e mescola i test. L'inizializzazione stati
 
 ## Common Confusion
 
-Un solo object gestito tramite [`dependency injection`](../../GLOSSARY.md#dependency-injection) (Fornire una dependency dall'esterno invece di sceglierla o costruirla nel codice che la usa) non implica Singleton: il tipo può non imporre l'unicità.
+Un solo object gestito tramite [`dependency injection`](../../GLOSSARY.md#dependency-injection) non implica Singleton: il tipo può non imporre l'unicità.
 
 ## Terms to Remember
 
@@ -142,6 +152,12 @@ L'inizializzazione sicura fra thread rende sicuro requests_? Distingui le operaz
 ## Mini Challenge
 
 Passa esplicitamente un contatore a due job, poi prova due contatori isolati.
+
+## Verifica cosa hai capito
+
+1. Come può lo State lasciato da un test influenzare il successivo?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

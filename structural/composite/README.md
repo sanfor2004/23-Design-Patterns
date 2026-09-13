@@ -4,6 +4,8 @@
 
 [Previous](../../structural/bridge/README.md) · [Category](../README.md) · [Next](../../structural/decorator/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
@@ -14,7 +16,11 @@ Beginner
 
 ## In One Sentence
 
-Treat a leaf and a tree of objects through the same operation.
+Use the same operation for one item or a tree of items.
+
+## Explain It Simply
+
+A folder contains files and other folders. Composite gives both a `bytes` operation, so a caller can ask for a size without handling every nesting level itself.
 
 ## The Problem
 
@@ -33,7 +39,7 @@ Special loops for each depth break as nesting grows and repeat file-versus-folde
 
 ## The Idea
 
-Give File and Folder the Entry [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller). A folder recursively asks its children for bytes.
+Give File and Folder the Entry [`interface`](../../GLOSSARY.md#interface). A folder recursively asks its children for bytes.
 
 ## Real-World Analogy
 
@@ -51,13 +57,17 @@ Client::bytes()  -->  Entry  -->  File / Folder[Entry]
 
 ## Participants
 
-Entry defines bytes. File returns its size; Folder owns children with [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (A smart pointer with exclusive ownership that releases its object when the owner is destroyed) and aggregates their results.
+Entry defines bytes. File returns its size; Folder owns children with [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) and aggregates their results.
 
 Canonical roles in this example:
 
 - [`Component`](../../GLOSSARY.md#component) — The common contract exposed by leaves, groups, or wrappers. Here: `Entry`.
 - [`Leaf`](../../GLOSSARY.md#leaf) — A Component with no child Components. Here: `File`.
 - [`ownership`](../../GLOSSARY.md#ownership) — Responsibility for keeping a resource alive and eventually releasing it. Here: `Folder::children_`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -100,6 +110,9 @@ int main() {
     root.add(std::make_unique<File>(10));
     root.add(std::move(images));
     std::cout << "Total: " << root.bytes() << " bytes\n";
+    std::cout << "Empty: " << Folder{}.bytes() << " bytes\n";
+    try { const File invalid{-1}; }
+    catch (const std::invalid_argument&) { std::cout << "Negative size rejected\n"; }
 }
 ```
 
@@ -107,6 +120,8 @@ int main() {
 
 ```text
 Total: 30 bytes
+Empty: 0 bytes
+Negative size rejected
 ```
 
 ## When to Use
@@ -157,6 +172,12 @@ Why is add available on Folder rather than Entry? What would a File.add mean?
 ## Mini Challenge
 
 Add an empty folder and a second nesting level; verify both totals and consider a wider size type.
+
+## Check Yourself
+
+1. Why can an empty Folder return zero through the same Interface as File?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

@@ -29,4 +29,10 @@ static_assert(std::forward_iterator<Playlist::Iterator>);
 int main() {
     const Playlist playlist{{7, 12, 18}};
     for (int track : playlist) std::cout << "Track " << track << '\n';
+    const Playlist empty{{}};
+    std::cout << "Empty: " << std::boolalpha << (empty.begin() == empty.end()) << '\n';
+    auto first = playlist.begin();
+    const auto copy = first;
+    ++first;
+    std::cout << "Independent positions: " << *first << ' ' << *copy << '\n';
 }

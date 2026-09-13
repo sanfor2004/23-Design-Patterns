@@ -4,6 +4,8 @@
 
 [Previous](../../behavioral/interpreter/README.md) · [Category](../README.md) · [Next](../../behavioral/mediator/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — A Design Pattern concerned with behavior and collaboration among objects.
@@ -14,7 +16,11 @@ Beginner
 
 ## In One Sentence
 
-Traverse a collection through a stable access protocol.
+Visit a collection without exposing its storage.
+
+## Explain It Simply
+
+A caller wants each track, not the details of a playlist container. Iterator keeps traversal position separate and lets a loop request the next item.
 
 ## The Problem
 
@@ -60,6 +66,10 @@ Canonical roles in this example:
 - [`Concrete Iterator`](../../GLOSSARY.md#concrete-iterator) — An implementation that stores a traversal position for a particular Aggregate. Here: `Playlist::Iterator`.
 - [`forward iterator`](../../GLOSSARY.md#forward-iterator) — An iterator supporting forward traversal and the multipass guarantee, allowing independent copies to traverse the same range. Here: `std::forward_iterator`.
 
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
+
 ## Modern C++20 Example
 
 ```cpp
@@ -94,6 +104,12 @@ static_assert(std::forward_iterator<Playlist::Iterator>);
 int main() {
     const Playlist playlist{{7, 12, 18}};
     for (int track : playlist) std::cout << "Track " << track << '\n';
+    const Playlist empty{{}};
+    std::cout << "Empty: " << std::boolalpha << (empty.begin() == empty.end()) << '\n';
+    auto first = playlist.begin();
+    const auto copy = first;
+    ++first;
+    std::cout << "Independent positions: " << *first << ' ' << *copy << '\n';
 }
 ```
 
@@ -103,6 +119,8 @@ int main() {
 Track 7
 Track 12
 Track 18
+Empty: true
+Independent positions: 12 7
 ```
 
 ## When to Use
@@ -115,7 +133,7 @@ Container traversal and tree walks fit; choose iterator category according to ac
 
 ## When NOT to Use
 
-Avoid a custom iterator when returning existing const iterators or a standard range is sufficient; this custom [`implementation`](../../GLOSSARY.md#implementation) (The concrete code that fulfills an interface or performs an operation) is educational.
+Avoid a custom iterator when returning existing const iterators or a standard range is sufficient; this custom [`implementation`](../../GLOSSARY.md#implementation) is educational.
 
 ## Advantages
 
@@ -123,7 +141,7 @@ Algorithms can use a common protocol, and multiple iterators maintain independen
 
 ## Trade-offs
 
-Iterators do not extend the collection [`lifetime`](../../GLOSSARY.md#lifetime) (The interval during which an object exists and may be used according to its rules). Moving or destroying this Playlist invalidates assumptions; dereferencing end is invalid, just as with standard iterators.
+Iterators do not extend the collection [`lifetime`](../../GLOSSARY.md#lifetime). Moving or destroying this Playlist invalidates assumptions; dereferencing end is invalid, just as with standard iterators.
 
 ## Related Patterns
 
@@ -153,6 +171,12 @@ Why does the equality check include the std::vector pointer as well as the index
 ## Mini Challenge
 
 Test an empty playlist and two independent iterators; verify advancing one does not advance the other.
+
+## Check Yourself
+
+1. Can two traversals keep separate positions in the same Playlist?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

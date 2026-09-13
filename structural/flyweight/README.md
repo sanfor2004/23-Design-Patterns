@@ -4,6 +4,8 @@
 
 [Previous](../../structural/facade/README.md) · [Category](../README.md) · [Next](../../structural/proxy/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
@@ -14,7 +16,11 @@ Advanced
 
 ## In One Sentence
 
-Share immutable intrinsic data while keeping each occurrence's context separate.
+Share repeated immutable data.
+
+## Explain It Simply
+
+A document may display the same letter thousands of times. Flyweight stores the shared shape once while each placement keeps its own position.
 
 ## The Problem
 
@@ -51,13 +57,17 @@ PlacedGlyph(x)  -->  GlyphPool::get  -->  shared const Glyph
 
 ## Participants
 
-Glyph holds shared intrinsic shape; GlyphPool interns it; PlacedGlyph stores extrinsic position and shared [`ownership`](../../GLOSSARY.md#ownership) (Responsibility for keeping a resource alive and eventually releasing it).
+Glyph holds shared intrinsic shape; GlyphPool interns it; PlacedGlyph stores extrinsic position and shared [`ownership`](../../GLOSSARY.md#ownership).
 
 Canonical roles in this example:
 
 - [`intrinsic state`](../../GLOSSARY.md#intrinsic-state) — Data independent of an occurrence's context that a Flyweight can share. Here: `Glyph::shape`.
 - [`extrinsic state`](../../GLOSSARY.md#extrinsic-state) — Per-occurrence data kept outside a shared Flyweight. Here: `PlacedGlyph::x`.
 - [`Flyweight Factory`](../../GLOSSARY.md#flyweight-factory) — A lookup service that returns a shared Flyweight for a key. Here: `GlyphPool`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -122,7 +132,7 @@ Repeated placements reuse the same shape object while positions remain independe
 
 ## Trade-offs
 
-The pool retains entries, map lookup costs time, and [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (A smart pointer sharing ownership; the managed object is released when the last owning reference disappears) adds bookkeeping. This toy string is small; no memory-saving benchmark is claimed. Pool access is not synchronized.
+The pool retains entries, map lookup costs time, and [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) adds bookkeeping. This toy string is small; no memory-saving benchmark is claimed. Pool access is not synchronized.
 
 ## Related Patterns
 
@@ -152,6 +162,12 @@ Which fields belong in the pool key if font family and size affect the shape?
 ## Mini Challenge
 
 Extend the key with a font identifier. Verify same keys share and different fonts do not.
+
+## Check Yourself
+
+1. Which data must stay outside the shared Glyph, and why?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

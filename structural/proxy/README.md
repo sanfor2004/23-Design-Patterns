@@ -4,6 +4,8 @@
 
 [Previous](../../structural/flyweight/README.md) · [Category](../README.md) · [Next](../../behavioral/chain-of-responsibility/README.md)
 
+[Learning Path](../../LEARNING_PATH.md) · [Cheat Sheet](../../CHEATSHEET.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — A Design Pattern concerned with how objects and classes fit together.
@@ -14,7 +16,11 @@ Intermediate
 
 ## In One Sentence
 
-Control access to an object through a stand-in with the same [`interface`](../../GLOSSARY.md#interface) (The contract of operations and observable behavior offered to a caller).
+Control access through a stand-in Object.
+
+## Explain It Simply
+
+A gallery should not load every image before anyone views it. This Proxy offers `display`, creates the real image on first use, then reuses it.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Canonical roles in this example:
 - [`Subject interface`](../../GLOSSARY.md#subject-interface) — The shared contract offered by a Proxy and its Real Subject. Here: `Image`.
 - [`Real Subject`](../../GLOSSARY.md#real-subject) — The object that does the work behind a Proxy. Here: `DiskImage`.
 - [`lazy initialization`](../../GLOSSARY.md#lazy-initialization) — Deferring creation until the value or resource is first needed. Here: `LazyImage::display`.
+
+## Python Example
+
+Read the [small Python example](python/README.md) and [source](python/main.py) first. Predict the [output](python/expected.txt), then run and modify it. The notes compare its design with C++20.
 
 ## Modern C++20 Example
 
@@ -145,6 +155,12 @@ If loading throws, should the proxy retry on the next call or remember failure? 
 ## Mini Challenge
 
 Count loads across three display calls and add a failure-once loader to test your retry policy.
+
+## Check Yourself
+
+1. How many real images exist after two display calls, and when were they created?
+2. When would the naive solution on this page be easier to maintain? Give a concrete example.
+3. Change one input in the Python example. Predict the output and explain which responsibility handles the change.
 
 ## Quick Summary
 

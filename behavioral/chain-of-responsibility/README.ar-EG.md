@@ -4,9 +4,11 @@
 
 [السابق](../../structural/proxy/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/command/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -16,6 +18,10 @@
 
 مرّر الطلب على سلسلة معالجات (`Handlers`)؛ كل واحدة تقدر توقفه أو تمرّره للي بعدها.
 
+## ببساطة
+
+الطلب لازم يعدّي فحص الهوية وحدّ المبلغ.كل `Handler` مسؤول عن فحص واحد، والمستدعي بيختار ترتيب السلسلة.
+
 ## The Problem
 
 الطلب لازم يعدّي فحص الهوية وحد الإنفاق، وكل مدخل ممكن يحتاج سياسة مختلفة.
@@ -24,7 +30,7 @@
 
 ```cpp
 bool accept(Request r) {
-    return r.authenticated && r.amount > 0 && r.amount <= 100;
+    return r.authenticated && r.amount_cents > 0 && r.amount_cents <= 100;
 }
 ```
 
@@ -60,15 +66,20 @@ Request  -->  Auth  -->  Limit
 - [`Concrete Handler`](../../GLOSSARY.md#concrete-handler) — معالج (`Handler`) بينفّذ قاعدة معينة. هنا: `Auth, Limit`.
 - [`chain termination`](../../GLOSSARY.md#chain-termination) — القاعدة اللي بتحدد السلسلة تقف إمتى وإيه يحصل بعد آخر `Handler`. هنا: `Handler::handle`.
 
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <initializer_list>
 #include <iostream>
 #include <memory>
 #include <utility>
 
-struct Request { bool authenticated; int amount; };
+struct Request { bool authenticated; int amount_cents; };
 class Handler {
     std::unique_ptr<Handler> next_;
 protected:
@@ -87,7 +98,7 @@ public:
     using Handler::Handler;
 };
 class Limit final : public Handler {
-    bool accepts(const Request& request) const override { return request.amount > 0 && request.amount <= 100; }
+    bool accepts(const Request& request) const override { return request.amount_cents > 0 && request.amount_cents <= 100; }
 public:
     using Handler::Handler;
 };
@@ -154,6 +165,12 @@ Accepted
 ## Mini Challenge
 
 ضيف فحص وضع الصيانة، واتأكد إن المرفوض ما يوصلش للفحوصات اللي بعده.
+
+## اختبر فهمك
+
+1. الوصول لنهاية السلسلة هنا معناه إيه، وإمتى الفحص بيوقفها؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

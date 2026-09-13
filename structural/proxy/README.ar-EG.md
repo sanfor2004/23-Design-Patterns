@@ -4,9 +4,11 @@
 
 [السابق](../../structural/flyweight/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/chain-of-responsibility/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الكائنات والأنواع (`objects` و`classes`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — بيركز على تركيب الـ`Objects` والـ`Classes` عشان تتعاون.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 تحكّم في الوصول للكائن (`object`) عن طريق بديل بيوفّر نفس [`interface`](../../GLOSSARY.md#interface)، يعني نفس العقد اللي المستدعي بيتعامل معاه.
+
+## ببساطة
+
+معرض الصور مش محتاج يحمّل كل صورة قبل ما حد يشوفها.الـ`Proxy` هنا بيوفر `display`، وبيجهّز الصورة عند أول استخدام وبعدين يعيد استخدامها.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ Client(Image)  -->  LazyImage  -->  DiskImage
 - [`Subject interface`](../../GLOSSARY.md#subject-interface) — العقد المشترك اللي `Proxy` و `Real Subject` بيوفروه. هنا: `Image`.
 - [`Real Subject`](../../GLOSSARY.md#real-subject) — الـ `object` اللي بتنفذ الشغل الحقيقي ورا `Proxy`. هنا: `DiskImage`.
 - [`lazy initialization`](../../GLOSSARY.md#lazy-initialization) — بتأجل الإنشاء لأول مرة تحتاج فيها القيمة أو المورد. هنا: `LazyImage::display`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -123,7 +133,7 @@ Display image
 
 ## Common Confusion
 
-الـ `Decorator` بتضيف `behavior`، `Proxy` بتتحكم إمتى وهل نوصل للأصل؛ الرسم ممكن يبقى شبه بعض.
+الـ`Decorator` بيضيف `behavior`. الـ`Proxy` بيتحكم في الوصول للـ`Object` الأصلية، زي تأجيل إنشائها. شكل الرسم ممكن يتشابه؛ فرّق بينهم حسب الهدف.
 
 ## Terms to Remember
 
@@ -145,6 +155,12 @@ Display image
 ## Mini Challenge
 
 عدّ مرات التحميل مع ثلاث مرات عرض، وجرّب `Loader` بتفشل مرة عشان تختبر سياسة المحاولة.
+
+## اختبر فهمك
+
+1. بعد استدعاء `display` مرتين، كام صورة فعلية اتعملت وإمتى؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

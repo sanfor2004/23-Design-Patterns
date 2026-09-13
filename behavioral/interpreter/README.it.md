@@ -4,6 +4,8 @@
 
 [Precedente](../../behavioral/command/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../behavioral/iterator/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — Un Design Pattern che organizza behavior e collaborazione fra object.
@@ -15,6 +17,10 @@ Avanzato
 ## In One Sentence
 
 Rappresenta un piccolo linguaggio con object che valutano le regole grammaticali.
+
+## In parole semplici
+
+Una regola può richiedere sia editor sia verified.Ogni nodo valuta una regola e le espressioni grandi combinano quelle piccole.
 
 ## The Problem
 
@@ -58,6 +64,10 @@ Ruoli canonici in questo esempio:
 - [`Terminal Expression`](../../GLOSSARY.md#terminal-expression) — Un'espressione senza espressioni figlie. Qui: `Role`.
 - [`Nonterminal Expression`](../../GLOSSARY.md#nonterminal-expression) — Un'espressione che combina espressioni figlie secondo una regola grammaticale. Qui: `Both`.
 - `Context` — I dati usati durante la valutazione delle espressioni; qui l’insieme dei nomi dei ruoli. `Context`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -154,6 +164,12 @@ Dove gestiresti la precedenza nell'input editor AND verified OR admin?
 ## Mini Challenge
 
 Aggiungi Either per OR e prova una regola annidata su tre contesti.
+
+## Verifica cosa hai capito
+
+1. L’esempio analizza testo o valuta un albero già costruito?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

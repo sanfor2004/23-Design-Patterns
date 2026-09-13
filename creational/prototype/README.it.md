@@ -4,6 +4,8 @@
 
 [Precedente](../../creational/factory-method/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../creational/singleton/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
@@ -15,6 +17,10 @@ Intermedio
 ## In One Sentence
 
 Crea un object indipendente copiando un modello già configurato.
+
+## In parole semplici
+
+Un gioco ha già una guardia con l’equipaggiamento necessario.Prototype copia questa configurazione per modificare la nuova guardia senza cambiare l’originale.
 
 ## The Problem
 
@@ -33,7 +39,7 @@ Ricostruire un Guard predefinito ripete la preparazione e perde l'equipaggiament
 
 ## The Idea
 
-Enemy espone clone; Guard copia i membri per valore e restituisce un [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (Uno smart pointer con ownership esclusiva che rilascia l'object alla distruzione del proprietario) a un nuovo object.
+Enemy espone clone; Guard copia i membri per valore e restituisce un [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) a un nuovo object.
 
 ## Real-World Analogy
 
@@ -58,6 +64,10 @@ Ruoli canonici in questo esempio:
 - [`Concrete Prototype`](../../GLOSSARY.md#concrete-prototype) — Un object la cui operazione clone crea un altro object dai valori configurati. Qui: `Guard`.
 - [`deep copy`](../../GLOSSARY.md#deep-copy) — Copiare i dati interni posseduti perché il nuovo object non condivida quei dati modificabili con l'originale. Qui: `Guard::clone`.
 - [`value semantics`](../../GLOSSARY.md#value-semantics) — Le copie si comportano come valori indipendenti secondo il contratto del tipo. Qui: `name_, equipment_`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -148,6 +158,12 @@ Con `std::vector<std::shared_ptr<Item>>`, la copia sarebbe ancora indipendente? 
 ## Mini Challenge
 
 Rendi modificabile l'equipaggiamento e verifica che cambiare la copia non tocchi il Prototype.
+
+## Verifica cosa hai capito
+
+1. Assegnare l’originale a un’altra variabile crea una copia indipendente?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

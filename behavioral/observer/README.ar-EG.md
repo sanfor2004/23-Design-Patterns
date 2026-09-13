@@ -4,9 +4,11 @@
 
 [السابق](../../behavioral/memento/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/state/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 بلّغ المشتركين (`Observers`) لما يحصل تغيير في المصدر اللي بيتابعوه (`Subject`).
+
+## ببساطة
+
+كذا شاشة ممكن تحتاج آخر كمية في المخزون.الـ`Observer` بيسمح بالاشتراك، فـ`Stock` يبعت التحديث من غير ما يكتب استدعاء مخصوص لكل شاشة.
 
 ## The Problem
 
@@ -59,6 +65,10 @@ Stock::set()  -->  weak Listener subscriptions  -->  Display::update()
 - [`Observer interface`](../../GLOSSARY.md#observer-interface) — عقد `callback` اللي المشتركين بينفذوه. هنا: `Listener`.
 - [`Concrete Observer`](../../GLOSSARY.md#concrete-observer) — تنفيذ للمشترك (`Observer implementation`) بيحدد استجابته للإشعارات (`notifications`). هنا: `Display`.
 
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
+
 ## Modern C++20 Example
 
 ```cpp
@@ -93,6 +103,11 @@ int main() {
     display.reset();
     stock.set(0);
     std::cout << "Expired listener skipped\n";
+    auto screen = std::make_shared<Display>();
+    auto log = std::make_shared<Display>();
+    stock.subscribe(screen);
+    stock.subscribe(log);
+    stock.set(2);
 }
 ```
 
@@ -101,6 +116,8 @@ int main() {
 ```text
 Stock: 4
 Expired listener skipped
+Stock: 2
+Stock: 2
 ```
 
 ## When to Use
@@ -121,7 +138,7 @@ Expired listener skipped
 
 ## Trade-offs
 
-ترتيب الـ `callbacks` والـ `Exceptions` محتاج سياسة. المثال `Sync` بيمرر الاستثناء ومش `Thread-safe`. نسخة القائمة بتسمح بتغيير الاشتراكات بس مش بتمنع إشعارات `Recursive`.
+لازم تحدد ترتيب الـ`callbacks` وإيه اللي يحصل لو واحدة رمت `exception`. الإشعارات هنا متزامنة (`synchronous`) ومفيش حماية للـ`threads`. بننسخ قائمة الاشتراكات قبل الإرسال، فإضافة مشترك جديد مش بتغيّر الجولة الحالية. النسخة دي مش بتمنع `callback` من إطلاق إشعار جديد أثناء تنفيذها.
 
 ## Related Patterns
 
@@ -146,17 +163,23 @@ Expired listener skipped
 
 ## Interview Question
 
-ليه نخزن `std::weak_ptr` ونحوّلها لـ [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) (مؤشر ذكي (`smart pointer`) بيشارك الملكية (`ownership`)؛ الكائن بيتحرر لما آخر مرجع مالك يختفي) وقت الـ `callback`؟
+ليه نخزن `std::weak_ptr` ونحوّلها لـ [`std::shared_ptr`](../../GLOSSARY.md#stdshared_ptr) وقت الـ `callback`؟
 
 ## Mini Challenge
 
 ضيف مشتركين، امسح واحد، واتأكد إن الباقي بس يستقبل. عرّف عملية إلغاء اشتراك صريحة.
 
+## اختبر فهمك
+
+1. إيه الفرق بين `unsubscribe` في Python وانتهاء `weak_ptr` في C++؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
+
 ## Quick Summary
 
 - **المشكلة:** تغيير المخزون لازم يحدّث الشاشات المهتمة من غير ما `Stock` تعرف كل نوع شاشة.
 - **الحل:** خلّي المصدر `Stock` يحتفظ بمراجع مش مالكة (`weak references`) للمشتركين من نوع `Listener`. عند التغيير، ابعت التحديث للمشتركين اللي لسه موجودين.
-- **`Trade-off`:** ترتيب الـ `callbacks` والـ `Exceptions` محتاج سياسة. المثال `Sync` بيمرر الاستثناء ومش `Thread-safe`. نسخة القائمة بتسمح بتغيير الاشتراكات بس مش بتمنع إشعارات `Recursive`.
+- **`Trade-off`:** لازم تحدد ترتيب الـ`callbacks` وإيه اللي يحصل لو واحدة رمت `exception`. الإشعارات هنا متزامنة (`synchronous`) ومفيش حماية للـ`threads`. بننسخ قائمة الاشتراكات قبل الإرسال، فإضافة مشترك جديد مش بتغيّر الجولة الحالية. النسخة دي مش بتمنع `callback` من إطلاق إشعار جديد أثناء تنفيذها.
 - **افتكر:** انشر التغيير، وسيب المشترك يرد.
 
 [السابق](../../behavioral/memento/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/state/README.ar-EG.md)

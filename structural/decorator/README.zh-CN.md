@@ -4,6 +4,8 @@
 
 [上一个](../../structural/composite/README.zh-CN.md) · [类别](../README.zh-CN.md) · [下一个](../../structural/facade/README.zh-CN.md)
 
+[学习路线](../../LEARNING_PATH.zh-CN.md) · [速查表](../../CHEATSHEET.zh-CN.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — 关注 object 与 class 如何组织在一起的 Design Pattern。
@@ -14,7 +16,11 @@
 
 ## In One Sentence
 
-用实现相同 [`interface`](../../GLOSSARY.md#interface)（约定可调用的操作及其对外可观察行为） 的包装 object 叠加 behavior。
+用实现相同 [`interface`](../../GLOSSARY.md#interface) 的包装 object 叠加 behavior。
+
+## 简单理解
+
+饮品可以有多种可选配料。每个 Decorator 保持相同 Interface，在调用内部 Object 前后加入自己的处理。
 
 ## The Problem
 
@@ -59,9 +65,14 @@ Drink 是共同契约，Coffee 提供基础 behavior，Milk 包装一个 Drink�
 - [`Concrete Component`](../../GLOSSARY.md#concrete-component) — 添加可选包装层之前的基础 implementation。 对应代码： `Coffee`。
 - [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — 保留 Component 约定并增加某项 responsibility 的包装层。 对应代码： `Milk`。
 
+## Python Example
+
+先读[简短的 Python 示例](python/README.md)和[源码](python/main.py)。预测[输出](python/expected.txt)，然后运行并修改。示例中的英文说明比较了它与 C++20 的设计。
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -71,11 +82,11 @@ Drink 是共同契约，Coffee 提供基础 behavior，Milk 包装一个 Drink�
 struct Drink {
     virtual ~Drink() = default;
     virtual std::string description() const = 0;
-    virtual int price() const = 0;
+    virtual int price_cents() const = 0;
 };
 struct Coffee final : Drink {
     std::string description() const override { return "coffee"; }
-    int price() const override { return 10; }
+    int price_cents() const override { return 10; }
 };
 class Milk final : public Drink {
     std::unique_ptr<Drink> inner_;
@@ -84,13 +95,13 @@ public:
         if (!inner_) throw std::invalid_argument("Missing drink");
     }
     std::string description() const override { return inner_->description() + " + milk"; }
-    int price() const override { return inner_->price() + 2; }
+    int price_cents() const override { return inner_->price_cents() + 2; }
 };
 int main() {
     std::unique_ptr<Drink> drink = std::make_unique<Coffee>();
     drink = std::make_unique<Milk>(std::move(drink));
     drink = std::make_unique<Milk>(std::move(drink));
-    std::cout << drink->description() << ": " << drink->price() << '\n';
+    std::cout << drink->description() << ": " << drink->price_cents() << '\n';
 }
 ```
 
@@ -114,7 +125,7 @@ coffee + milk + milk: 14
 
 ## Advantages
 
-[`runtime`](../../GLOSSARY.md#runtime)（编译后的程序正在执行的阶段） 组合附加 behavior， base [`implementation`](../../GLOSSARY.md#implementation)（实际完成操作或履行 interface 约定的代码） 保持简洁。
+[`runtime`](../../GLOSSARY.md#runtime) 组合附加 behavior， base [`implementation`](../../GLOSSARY.md#implementation) 保持简洁。
 
 ## Trade-offs
 
@@ -148,6 +159,12 @@ Proxy 控制访问， Decorator 增加 responsibility。仅看包装结构不能
 ## Mini Challenge
 
 增加价格为 3 的 Syrup，尝试两种包装顺序并解释描述差异。
+
+## 检查理解
+
+1. 为什么 Milk 不用知道具体类型也能包装另一个 Milk？
+2. 本页的简单方案在什么情况下更容易维护？请举一个具体例子。
+3. 修改 Python 示例中的一个输入，预测输出，并说明由哪个部分负责处理。
 
 ## Quick Summary
 

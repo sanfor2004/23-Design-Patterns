@@ -4,9 +4,11 @@
 
 [السابق](../../behavioral/chain-of-responsibility/README.ar-EG.md) · [الفئة](../README.ar-EG.md) · [التالي](../../behavioral/interpreter/README.ar-EG.md)
 
+[خطة التعلّم](../../LEARNING_PATH.ar-EG.md) · [ملخص سريع](../../CHEATSHEET.ar-EG.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
-[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على السلوك (`behavior`) والتعاون بين الكائنات (`objects`)، وده واحد من أغراض الـ `Design Patterns`.
+[`Behavioral Pattern`](../../GLOSSARY.md#behavioral-pattern) — بيركز على سلوك الـ`Objects` وطريقة تعاونها.
 
 ## Difficulty
 
@@ -15,6 +17,10 @@
 ## In One Sentence
 
 مثّل الفعل بكائن (`object`) تقدر تخزنه وتشغّله بعدين.
+
+## ببساطة
+
+المحرر محتاج يفتكر التعديلات عشان المستخدم يقدر يرجع فيها.الـ`Command` بيحتفظ بالفعل وبيانات التراجع، والـ`History` بيحدد إمتى ينفّذه أو يلغيه.
 
 ## The Problem
 
@@ -57,6 +63,10 @@ History  -->  Command  -->  Append → Document
 - [`Receiver`](../../GLOSSARY.md#receiver) — الـ `object` اللي بيتنفذ عليها الشغل المطلوب من `Command`. هنا: `Document`.
 - [`Invoker`](../../GLOSSARY.md#invoker) — الدور اللي بيشغّل `Commands` أو بيخزنها من غير معرفة تفاصيل كل عملية. هنا: `History`.
 - [`Concrete Command`](../../GLOSSARY.md#concrete-command) — تنفيذ للأمر (`Command implementation`) بيربط الفعل المطلوب بالجهة اللي هتنفّذه (`Receiver`). هنا: `Append`.
+
+## Python Example
+
+ابدأ بـ[مثال Python الصغير](python/README.md) و[الكود](python/main.py). توقّع [الناتج](python/expected.txt)، وبعدها شغّل وعدّل. ملاحظات المثال بالإنجليزي بتوضح الفروق مع C++20.
 
 ## Modern C++20 Example
 
@@ -105,6 +115,8 @@ int main() {
     std::cout << document.text << '\n';
     history.undo();
     std::cout << document.text << '\n';
+    history.undo();
+    std::cout << "Empty undo: " << document.text << '\n';
 }
 ```
 
@@ -113,6 +125,7 @@ int main() {
 ```text
 Hello world
 Hello
+Empty undo: Hello
 ```
 
 ## When to Use
@@ -163,6 +176,12 @@ Hello
 ## Mini Challenge
 
 ضيف تعديلين، ارجع مرتين، واتأكد إن `undo` على تاريخ فاضي آمنة.
+
+## اختبر فهمك
+
+1. ليه لازم نلغي التعديلات دي بعكس ترتيب تنفيذها؟
+2. إمتى الحل البسيط في الصفحة يبقى أسهل في الصيانة؟ ادّي مثال محدد.
+3. غيّر مُدخل واحد في مثال Python. توقّع الناتج واشرح أنهي جزء مسؤول عن التغيير.
 
 ## Quick Summary
 

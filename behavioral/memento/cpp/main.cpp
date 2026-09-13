@@ -23,4 +23,7 @@ int main() {
     std::cout << editor.text() << '\n';
     editor.restore(checkpoint);
     std::cout << editor.text() << '\n';
+    editor.write("Another edit");
+    editor.restore(checkpoint);
+    std::cout << "Restore again: " << editor.text() << '\n';
 }

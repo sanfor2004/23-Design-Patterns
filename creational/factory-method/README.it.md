@@ -4,6 +4,8 @@
 
 [Precedente](../../creational/builder/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../creational/prototype/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Creational Pattern`](../../GLOSSARY.md#creational-pattern) — Un Design Pattern che riguarda la creazione e configurazione degli object.
@@ -15,6 +17,10 @@ Principiante
 ## In One Sentence
 
 Lascia a una subclass la scelta dell'object usato da un flusso comune.
+
+## In parole semplici
+
+Il messaggio di avviso resta uguale, ma cambia il mezzo di invio.Il flusso chiama un Factory Method e ogni subclass crea il proprio Sender.
 
 ## The Problem
 
@@ -55,13 +61,17 @@ AlertJob::run  -->  make_sender()  -->  Sender
 
 ## Participants
 
-AlertJob definisce il flusso; EmailJob e ConsoleJob personalizzano la creazione. Sender espone l'operazione e [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) (Uno smart pointer con ownership esclusiva che rilascia l'object alla distruzione del proprietario) possiede il prodotto.
+AlertJob definisce il flusso; EmailJob e ConsoleJob personalizzano la creazione. Sender espone l'operazione e [`std::unique_ptr`](../../GLOSSARY.md#stdunique_ptr) possiede il prodotto.
 
 Ruoli canonici in questo esempio:
 
 - [`Creator`](../../GLOSSARY.md#creator) — Il ruolo base che contiene il flusso e dichiara l'operazione di creazione. Qui: `AlertJob`.
 - [`Concrete Creator`](../../GLOSSARY.md#concrete-creator) — Una subclass di Creator che fornisce un particolare Product. Qui: `EmailJob, ConsoleJob`.
 - [`Product`](../../GLOSSARY.md#product) — Il contratto dell'object restituito dal codice di creazione. Qui: `Sender`.
+
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
 
 ## Modern C++20 Example
 
@@ -111,7 +121,7 @@ Console: build complete
 
 ## When to Use
 
-Usalo quando un flusso già basato sull'[`inheritance`](../../GLOSSARY.md#inheritance) (Definire una derived class da una base class per riusarne o specializzarne contratto e implementation) richiede un punto di creazione estensibile.
+Usalo quando un flusso già basato sull'[`inheritance`](../../GLOSSARY.md#inheritance) richiede un punto di creazione estensibile.
 
 ### Use cases
 
@@ -158,6 +168,12 @@ Perché chiamare make_sender da run dopo la costruzione e non dal constructor di
 ## Mini Challenge
 
 Aggiungi FileJob con un sender che scrive in un file temporaneo e verificane il contenuto.
+
+## Verifica cosa hai capito
+
+1. Dove viene scelto Sender e quale flusso resta comune?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

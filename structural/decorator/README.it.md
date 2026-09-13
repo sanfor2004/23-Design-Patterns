@@ -4,6 +4,8 @@
 
 [Precedente](../../structural/composite/README.it.md) · [Categoria](../README.it.md) · [Successivo](../../structural/facade/README.it.md)
 
+[Percorso di studio](../../LEARNING_PATH.it.md) · [Scheda rapida](../../CHEATSHEET.it.md) · [Python](python/README.md) · [C++20](cpp/README.md)
+
 ## Category
 
 [`Structural Pattern`](../../GLOSSARY.md#structural-pattern) — Un Design Pattern che organizza le relazioni fra object e class.
@@ -14,7 +16,11 @@ Principiante
 
 ## In One Sentence
 
-Aggiungi behavior avvolgendo un object con la stessa [`interface`](../../GLOSSARY.md#interface) (Il contratto delle operazioni disponibili e del comportamento osservabile da chi le usa).
+Aggiungi behavior avvolgendo un object con la stessa [`interface`](../../GLOSSARY.md#interface).
+
+## In parole semplici
+
+Una bevanda può avere più extra facoltativi.Ogni Decorator mantiene la stessa Interface e aggiunge il proprio lavoro prima o dopo la chiamata all’Object interno.
 
 ## The Problem
 
@@ -59,9 +65,14 @@ Ruoli canonici in questo esempio:
 - [`Concrete Component`](../../GLOSSARY.md#concrete-component) — L'implementation di base prima dell'aggiunta di wrapper facoltativi. Qui: `Coffee`.
 - [`Concrete Decorator`](../../GLOSSARY.md#concrete-decorator) — Un wrapper che mantiene il contratto Component e aggiunge una responsibility specifica. Qui: `Milk`.
 
+## Python Example
+
+Leggi prima il [piccolo esempio Python](python/README.md) e il [codice](python/main.py). Prevedi l’[output](python/expected.txt), poi esegui e modifica. Le note in inglese confrontano il progetto con C++20.
+
 ## Modern C++20 Example
 
 ```cpp
+// Monetary amounts in this example are integer cents.
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -71,11 +82,11 @@ Ruoli canonici in questo esempio:
 struct Drink {
     virtual ~Drink() = default;
     virtual std::string description() const = 0;
-    virtual int price() const = 0;
+    virtual int price_cents() const = 0;
 };
 struct Coffee final : Drink {
     std::string description() const override { return "coffee"; }
-    int price() const override { return 10; }
+    int price_cents() const override { return 10; }
 };
 class Milk final : public Drink {
     std::unique_ptr<Drink> inner_;
@@ -84,13 +95,13 @@ public:
         if (!inner_) throw std::invalid_argument("Missing drink");
     }
     std::string description() const override { return inner_->description() + " + milk"; }
-    int price() const override { return inner_->price() + 2; }
+    int price_cents() const override { return inner_->price_cents() + 2; }
 };
 int main() {
     std::unique_ptr<Drink> drink = std::make_unique<Coffee>();
     drink = std::make_unique<Milk>(std::move(drink));
     drink = std::make_unique<Milk>(std::move(drink));
-    std::cout << drink->description() << ": " << drink->price() << '\n';
+    std::cout << drink->description() << ": " << drink->price_cents() << '\n';
 }
 ```
 
@@ -114,7 +125,7 @@ Evitalo se bastano una lista di ingredienti e una somma; qui lo scopo è mostrar
 
 ## Advantages
 
-Componi gli extra a [`runtime`](../../GLOSSARY.md#runtime) (Il periodo in cui il programma compilato è in esecuzione) mantenendo piccola l'[`implementation`](../../GLOSSARY.md#implementation) (Il codice concreto che esegue un'operazione o soddisfa un'interface) base.
+Componi gli extra a [`runtime`](../../GLOSSARY.md#runtime) mantenendo piccola l'[`implementation`](../../GLOSSARY.md#implementation) base.
 
 ## Trade-offs
 
@@ -148,6 +159,12 @@ Registrare dati prima e dopo la cifratura mostra le stesse informazioni?
 ## Mini Challenge
 
 Aggiungi Syrup con costo 3, prova due ordini e spiega le descrizioni ottenute.
+
+## Verifica cosa hai capito
+
+1. Perché Milk può avvolgere un altro Milk senza conoscerne il tipo concreto?
+2. Quando sarebbe più facile mantenere la soluzione semplice della pagina? Fai un esempio concreto.
+3. Cambia un input dell’esempio Python. Prevedi l’output e spiega quale parte gestisce il cambiamento.
 
 ## Quick Summary
 

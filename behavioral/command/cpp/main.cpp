@@ -42,4 +42,6 @@ int main() {
     std::cout << document.text << '\n';
     history.undo();
     std::cout << document.text << '\n';
+    history.undo();
+    std::cout << "Empty undo: " << document.text << '\n';
 }
